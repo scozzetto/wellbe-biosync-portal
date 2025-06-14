@@ -239,7 +239,7 @@ function deployPortalForPatient(patientName) {
 }
 
 function processIntake() {
-    showNotification('Opening FormAssembly integration...', 'info');
+    window.location.href = 'formassembly.html';
 }
 
 function deployPortal() {

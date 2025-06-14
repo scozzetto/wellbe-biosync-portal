@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Be Well - FormAssembly Integration</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="admin-styles.css">
+    <style>
+        .integration-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 30px;
+        }
+        
+        .intake-header {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 40px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .intake-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        
+        .action-card {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .action-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+        
+        .action-card i {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+        
+        .action-card.new-forms {
+            border: 2px solid #48bb78;
+        }
+        
+        .action-card.new-forms i {
+            color: #48bb78;
+        }
+        
+        .action-card.send-form i {
+            color: #667eea;
+        }
+        
+        .action-card.process i {
+            color: #f6ad55;
+        }
+        
+        .forms-list {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        
+        .form-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            border-bottom: 1px solid #e2e8f0;
+            transition: all 0.3s ease;
+        }
+        
+        .form-item:hover {
+            background: #f7fafc;
+        }
+        
+        .form-item:last-child {
+            border-bottom: none;
+        }
+        
+        .patient-info {
+            flex: 1;
+        }
+        
+        .patient-info h4 {
+            margin-bottom: 5px;
+            color: #2d3748;
+        }
+        
+        .patient-info .meta {
+            color: #718096;
+            font-size: 14px;
+        }
+        
+        .form-status {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #48bb78;
+        }
+        
+        .status-dot.pending {
+            background: #f6ad55;
+        }
+        
+        .process-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .process-btn:hover {
+            transform: scale(1.05);
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 60px;
+            color: #718096;
+        }
+        
+        .empty-state i {
+            font-size: 64px;
+            margin-bottom: 20px;
+            opacity: 0.3;
+        }
+        
+        /* Modal for sending forms */
+        .send-form-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .send-form-content {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 500px;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+        
+        .form-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: flex-end;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="integration-container">
+        <!-- Header -->
+        <div class="intake-header">
+            <h1>BioSync Intake Management</h1>
+            <p>Process FormAssembly submissions and create patient portals</p>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="intake-actions">
+            <div class="action-card new-forms" onclick="checkNewForms()">
+                <i class="fas fa-inbox"></i>
+                <h3>Check New Forms</h3>
+                <p>View unprocessed intake forms</p>
+                <div class="form-count" id="newFormCount">0 new</div>
+            </div>
+            
+            <div class="action-card send-form" onclick="showSendForm()">
+                <i class="fas fa-paper-plane"></i>
+                <h3>Send Intake Form</h3>
+                <p>Email form link to new patient</p>
+            </div>
+            
+            <div class="action-card process" onclick="processAllForms()">
+                <i class="fas fa-magic"></i>
+                <h3>Process All</h3>
+                <p>Auto-create portals for all new intakes</p>
+            </div>
+        </div>
+
+        <!-- Forms List -->
+        <div class="forms-list">
+            <h2>Recent Intake Forms</h2>
+            <div id="formsList">
+                <div class="empty-state">
+                    <i class="fas fa-clipboard-list"></i>
+                    <h3>No new forms</h3>
+                    <p>New intake forms will appear here</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Send Form Modal -->
+        <div class="send-form-modal" id="sendFormModal">
+            <div class="send-form-content">
+                <h2>Send BioSync Intake Form</h2>
+                <form id="sendIntakeForm">
+                    <input type="text" class="form-input" placeholder="Patient Name" required id="patientNameInput">
+                    <input type="email" class="form-input" placeholder="Patient Email" required id="patientEmailInput">
+                    <input type="tel" class="form-input" placeholder="Phone (optional)" id="patientPhoneInput">
+                    
+                    <div class="form-actions">
+                        <button type="button" class="btn-secondary" onclick="closeSendForm()">Cancel</button>
+                        <button type="submit" class="btn-primary">
+                            <i class="fas fa-paper-plane"></i> Send Form
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sample FormAssembly integration data
+        let intakeForms = [];
+        
+        // FormAssembly form URL - Be Well BioSync Intake
+        const FORMASSEMBLY_URL = 'https://www.tfaforms.com/5180217';
+        
+        // Check for new forms
+        function checkNewForms() {
+            // In production, this would call FormAssembly API
+            // For demo, let's simulate finding new forms
+            const demoForms = [
+                {
+                    id: 'FA-' + Date.now(),
+                    patientName: 'Demo Patient',
+                    email: 'demo@example.com',
+                    submittedAt: new Date().toISOString(),
+                    status: 'pending',
+                    responses: {
+                        firstName: 'Demo',
+                        lastName: 'Patient',
+                        email: 'demo@example.com',
+                        phone: '555-0123',
+                        healthGoals: 'Improve overall wellness',
+                        currentChallenges: 'Stress management'
+                    }
+                }
+            ];
+            
+            intakeForms = [...intakeForms, ...demoForms];
+            updateFormsList();
+            showNotification(`Found ${demoForms.length} new form(s)!`, 'success');
+        }
+        
+        // Update forms list display
+        function updateFormsList() {
+            const formsList = document.getElementById('formsList');
+            const newFormCount = document.getElementById('newFormCount');
+            
+            const pendingForms = intakeForms.filter(f => f.status === 'pending');
+            newFormCount.textContent = `${pendingForms.length} new`;
+            
+            if (intakeForms.length === 0) {
+                formsList.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-clipboard-list"></i>
+                        <h3>No new forms</h3>
+                        <p>New intake forms will appear here</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            formsList.innerHTML = intakeForms.map(form => `
+                <div class="form-item">
+                    <div class="patient-info">
+                        <h4>${form.patientName}</h4>
+                        <div class="meta">
+                            ${form.email} • Submitted ${formatDate(form.submittedAt)}
+                        </div>
+                    </div>
+                    <div class="form-status">
+                        <div class="status-dot ${form.status}"></div>
+                        <span>${form.status === 'pending' ? 'New' : 'Processed'}</span>
+                    </div>
+                    ${form.status === 'pending' ? 
+                        `<button class="process-btn" onclick="processIntake('${form.id}')">
+                            Process & Deploy
+                        </button>` : 
+                        `<a href="${form.portalUrl}" target="_blank" class="btn-secondary">
+                            View Portal
+                        </a>`
+                    }
+                </div>
+            `).join('');
+        }
+        
+        // Process single intake
+        function processIntake(formId) {
+            const form = intakeForms.find(f => f.id === formId);
+            if (!form) return;
+            
+            showNotification(`Processing intake for ${form.patientName}...`, 'info');
+            
+            // Simulate processing
+            setTimeout(() => {
+                // Generate portal URL
+                const date = new Date().toISOString().split('T')[0].replace(/-/g, '');
+                const projectName = form.patientName.toLowerCase().replace(/\s+/g, '-') + '-' + date;
+                form.portalUrl = `https://${projectName}.netlify.app`;
+                form.status = 'processed';
+                
+                updateFormsList();
+                showNotification(`Portal deployed for ${form.patientName}!`, 'success');
+                
+                // Open portal
+                if (confirm(`Portal ready! Open ${form.portalUrl}?`)) {
+                    window.open(form.portalUrl, '_blank');
+                }
+            }, 2000);
+        }
+        
+        // Process all pending forms
+        function processAllForms() {
+            const pendingForms = intakeForms.filter(f => f.status === 'pending');
+            
+            if (pendingForms.length === 0) {
+                showNotification('No new forms to process', 'info');
+                return;
+            }
+            
+            showNotification(`Processing ${pendingForms.length} forms...`, 'info');
+            
+            pendingForms.forEach((form, index) => {
+                setTimeout(() => {
+                    processIntake(form.id);
+                }, index * 1000);
+            });
+        }
+        
+        // Send form functions
+        function showSendForm() {
+            document.getElementById('sendFormModal').style.display = 'flex';
+        }
+        
+        function closeSendForm() {
+            document.getElementById('sendFormModal').style.display = 'none';
+            document.getElementById('sendIntakeForm').reset();
+        }
+        
+        // Handle send form submission
+        document.getElementById('sendIntakeForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('patientNameInput').value;
+            const email = document.getElementById('patientEmailInput').value;
+            const phone = document.getElementById('patientPhoneInput').value;
+            
+            // Create personalized form link
+            const formLink = `${FORMASSEMBLY_URL}?name=${encodeURIComponent(name)}&email=${encodeURIComponent(email)}`;
+            
+            // Redirect to email template generator
+            window.location.href = `intake-email-template.html?name=${encodeURIComponent(name)}&email=${encodeURIComponent(email)}&phone=${encodeURIComponent(phone)}`;
+            closeSendForm();
+        });
+        
+        // Utility functions
+        function formatDate(dateStr) {
+            const date = new Date(dateStr);
+            const now = new Date();
+            const diff = now - date;
+            const minutes = Math.floor(diff / 60000);
+            
+            if (minutes < 60) return `${minutes} minutes ago`;
+            if (minutes < 1440) return `${Math.floor(minutes / 60)} hours ago`;
+            return date.toLocaleDateString();
+        }
+        
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            
+            const icons = {
+                info: 'fa-info-circle',
+                success: 'fa-check-circle',
+                error: 'fa-exclamation-circle'
+            };
+            
+            notification.innerHTML = `
+                <i class="fas ${icons[type]}"></i>
+                <span>${message}</span>
+            `;
+            
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: white;
+                padding: 15px 25px;
+                border-radius: 8px;
+                box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                z-index: 2000;
+                animation: slideIn 0.3s ease;
+                border-left: 4px solid ${type === 'success' ? '#48bb78' : type === 'error' ? '#f56565' : '#667eea'};
+            `;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
+        
+        // Auto-check for new forms every 30 seconds
+        setInterval(() => {
+            console.log('Checking for new FormAssembly submissions...');
+            // In production, this would poll FormAssembly API
+        }, 30000);
+        
+        // Add CSS animations
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+            @keyframes slideOut {
+                from { transform: translateX(0); opacity: 1; }
+                to { transform: translateX(100%); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>

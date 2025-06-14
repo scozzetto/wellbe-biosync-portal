@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Be Well - Intake Email Template</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="admin-styles.css">
+    <style>
+        .template-container {
+            max-width: 800px;
+            margin: 30px auto;
+            padding: 30px;
+        }
+        
+        .template-header {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 30px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .template-form {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #2d3748;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+        
+        .email-preview {
+            background: #f7fafc;
+            border: 2px dashed #e2e8f0;
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+        }
+        
+        .email-preview h3 {
+            margin-top: 0;
+            color: #2d3748;
+        }
+        
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .copy-btn {
+            background: #48bb78;
+            color: white;
+        }
+        
+        .copy-btn:hover {
+            background: #38a169;
+        }
+        
+        .important-box {
+            background: #fef5e7;
+            border: 2px solid #f39c12;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        
+        .important-box strong {
+            color: #e67e22;
+        }
+    </style>
+</head>
+<body>
+    <div class="template-container">
+        <div class="template-header">
+            <h1>📧 Intake Email Generator</h1>
+            <p>Create personalized BioSync intake emails</p>
+        </div>
+
+        <div class="template-form">
+            <h2>Patient Information</h2>
+            <form id="emailForm">
+                <div class="form-group">
+                    <label>Patient First Name</label>
+                    <input type="text" class="form-input" id="firstName" placeholder="e.g., Erik" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Patient Email</label>
+                    <input type="email" class="form-input" id="patientEmail" placeholder="patient@email.com" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Special Notes (Optional)</label>
+                    <input type="text" class="form-input" id="specialNotes" placeholder="Any specific instructions or notes">
+                </div>
+                
+                <button type="submit" class="btn-primary">
+                    <i class="fas fa-magic"></i> Generate Email
+                </button>
+            </form>
+        </div>
+
+        <div class="email-preview" id="emailPreview" style="display: none;">
+            <h3>📋 Email Preview</h3>
+            <div id="emailContent"></div>
+            
+            <div class="btn-group">
+                <button class="btn-primary copy-btn" onclick="copyEmail()">
+                    <i class="fas fa-copy"></i> Copy Email
+                </button>
+                <button class="btn-primary" onclick="copySubject()">
+                    <i class="fas fa-heading"></i> Copy Subject
+                </button>
+                <button class="btn-primary" onclick="copyLink()">
+                    <i class="fas fa-link"></i> Copy Form Link
+                </button>
+            </div>
+        </div>
+
+        <div class="template-form">
+            <h3>📌 Quick Actions</h3>
+            <div class="btn-group">
+                <button class="btn-secondary" onclick="window.location.href='formassembly.html'">
+                    <i class="fas fa-arrow-left"></i> Back to Intake Forms
+                </button>
+                <button class="btn-secondary" onclick="viewFormDirectly()">
+                    <i class="fas fa-external-link-alt"></i> View Form
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const BIOSYNC_FORM_URL = 'https://www.tfaforms.com/5180217';
+        let currentEmailContent = '';
+        let currentSubject = '';
+        
+        // Check for URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('name')) {
+            document.getElementById('firstName').value = urlParams.get('name');
+            document.getElementById('patientEmail').value = urlParams.get('email') || '';
+            // Auto-generate if coming from send form
+            setTimeout(() => {
+                generateEmail();
+            }, 100);
+        }
+        
+        document.getElementById('emailForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            generateEmail();
+        });
+        
+        function generateEmail() {
+            const firstName = document.getElementById('firstName').value;
+            const email = document.getElementById('patientEmail').value;
+            const notes = document.getElementById('specialNotes').value;
+            
+            currentSubject = `Be Well BioSync Intake Form - ${firstName}`;
+            
+            currentEmailContent = `📌 Please complete all sections of this form.
+
+IMPORTANT:
+• We use your answers to build your personalized care plan.
+• Missing information slows down our ability to assist you.
+• This may delay or limit your treatment options.
+• Take your time, be thorough, and don't leave anything blank unless it doesn't apply.
+• (Yes, we read every word.)
+• Your results will thank you.
+
+${firstName},
+
+Please fill out the information.
+
+*Be Well BioSync (Intelligent Health Inquiry) Intake Form
+
+${BIOSYNC_FORM_URL}
+
+We will input this information along with any other pertinent information you provide.
+
+Please submit the Intake Form and we will produce a detailed recommendation for services.
+
+Additionally, we will reach out to you in the next few days.${notes ? '\n\nNote: ' + notes : ''}
+
+
+The Be Well LifeStyle Team
+Office: +1248-792-6570
+BeWellLifeStyleCenters.com
+
+
+Be Well BioSync`;
+            
+            // Display preview
+            document.getElementById('emailContent').innerHTML = `
+                <p><strong>To:</strong> ${email}</p>
+                <p><strong>Subject:</strong> ${currentSubject}</p>
+                <hr>
+                <pre style="white-space: pre-wrap; font-family: Arial, sans-serif;">${currentEmailContent}</pre>
+            `;
+            
+            document.getElementById('emailPreview').style.display = 'block';
+            
+            showNotification('Email generated! Click buttons below to copy.', 'success');
+        }
+        
+        function copyEmail() {
+            navigator.clipboard.writeText(currentEmailContent).then(() => {
+                showNotification('Email content copied to clipboard!', 'success');
+            });
+        }
+        
+        function copySubject() {
+            navigator.clipboard.writeText(currentSubject).then(() => {
+                showNotification('Subject line copied to clipboard!', 'success');
+            });
+        }
+        
+        function copyLink() {
+            navigator.clipboard.writeText(BIOSYNC_FORM_URL).then(() => {
+                showNotification('Form link copied to clipboard!', 'success');
+            });
+        }
+        
+        function viewFormDirectly() {
+            window.open(BIOSYNC_FORM_URL, '_blank');
+        }
+        
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            
+            const icons = {
+                info: 'fa-info-circle',
+                success: 'fa-check-circle',
+                error: 'fa-exclamation-circle'
+            };
+            
+            notification.innerHTML = `
+                <i class="fas ${icons[type]}"></i>
+                <span>${message}</span>
+            `;
+            
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: white;
+                padding: 15px 25px;
+                border-radius: 8px;
+                box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                z-index: 2000;
+                animation: slideIn 0.3s ease;
+                border-left: 4px solid ${type === 'success' ? '#48bb78' : type === 'error' ? '#f56565' : '#667eea'};
+            `;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
+        
+        // Add CSS animations
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+            @keyframes slideOut {
+                from { transform: translateX(0); opacity: 1; }
+                to { transform: translateX(100%); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
