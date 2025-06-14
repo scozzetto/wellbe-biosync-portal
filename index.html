@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Be Well - Your Wellness Journey</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="app">
+        <!-- Welcome Screen -->
+        <div class="welcome-screen" id="welcomeScreen">
+            <div class="logo-animation">
+                <div class="pulse-ring"></div>
+                <div class="pulse-ring"></div>
+                <div class="logo">
+                    <i class="fas fa-heartbeat"></i>
+                </div>
+            </div>
+            <h1 class="welcome-title">Be Well</h1>
+            <p class="welcome-subtitle">Your Personalized Wellness Journey Begins</p>
+        </div>
+
+        <!-- Main Dashboard -->
+        <div class="dashboard hidden" id="dashboard">
+            <!-- Header -->
+            <header class="header">
+                <div class="container">
+                    <div class="header-content">
+                        <div class="logo-section">
+                            <i class="fas fa-heartbeat"></i>
+                            <span>Be Well</span>
+                        </div>
+                        <nav class="nav-menu">
+                            <a href="#overview" class="nav-link active">Overview</a>
+                            <a href="#wellness" class="nav-link">Wellness Plan</a>
+                            <a href="#progress" class="nav-link">Progress</a>
+                            <a href="#resources" class="nav-link">Resources</a>
+                        </nav>
+                        <div class="user-menu">
+                            <div class="user-avatar" id="userAvatar"></div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Hero Section -->
+            <section class="hero-section">
+                <div class="container">
+                    <div class="hero-content">
+                        <h1 class="hero-title">Welcome back, <span id="patientName">Friend</span>!</h1>
+                        <p class="hero-subtitle">Your wellness score today</p>
+                        <div class="wellness-score">
+                            <div class="score-circle">
+                                <svg width="200" height="200">
+                                    <circle cx="100" cy="100" r="90" class="score-bg"/>
+                                    <circle cx="100" cy="100" r="90" class="score-progress" id="scoreProgress"/>
+                                </svg>
+                                <div class="score-value">
+                                    <span id="scoreNumber">85</span>%
+                                </div>
+                            </div>
+                            <div class="score-details">
+                                <div class="detail-item">
+                                    <i class="fas fa-heart"></i>
+                                    <span>Physical Health</span>
+                                    <strong>88%</strong>
+                                </div>
+                                <div class="detail-item">
+                                    <i class="fas fa-brain"></i>
+                                    <span>Mental Wellness</span>
+                                    <strong>82%</strong>
+                                </div>
+                                <div class="detail-item">
+                                    <i class="fas fa-leaf"></i>
+                                    <span>Lifestyle Balance</span>
+                                    <strong>85%</strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Wellness Plan Section -->
+            <section class="wellness-section" id="wellness">
+                <div class="container">
+                    <h2 class="section-title">Your Personalized Wellness Plan</h2>
+                    <div class="wellness-grid">
+                        <div class="wellness-card">
+                            <div class="card-icon nutrition">
+                                <i class="fas fa-apple-alt"></i>
+                            </div>
+                            <h3>Nutrition</h3>
+                            <p>Customized meal plans designed for your unique needs</p>
+                            <ul class="wellness-list">
+                                <li><i class="fas fa-check"></i> Anti-inflammatory foods</li>
+                                <li><i class="fas fa-check"></i> Personalized supplements</li>
+                                <li><i class="fas fa-check"></i> Hydration tracking</li>
+                            </ul>
+                            <button class="btn-primary">View Plan</button>
+                        </div>
+                        
+                        <div class="wellness-card">
+                            <div class="card-icon movement">
+                                <i class="fas fa-running"></i>
+                            </div>
+                            <h3>Movement</h3>
+                            <p>Exercise routines that energize and strengthen</p>
+                            <ul class="wellness-list">
+                                <li><i class="fas fa-check"></i> Daily movement goals</li>
+                                <li><i class="fas fa-check"></i> Yoga & stretching</li>
+                                <li><i class="fas fa-check"></i> Strength training</li>
+                            </ul>
+                            <button class="btn-primary">Start Workout</button>
+                        </div>
+                        
+                        <div class="wellness-card">
+                            <div class="card-icon mindfulness">
+                                <i class="fas fa-spa"></i>
+                            </div>
+                            <h3>Mindfulness</h3>
+                            <p>Mental wellness practices for inner peace</p>
+                            <ul class="wellness-list">
+                                <li><i class="fas fa-check"></i> Guided meditation</li>
+                                <li><i class="fas fa-check"></i> Breathing exercises</li>
+                                <li><i class="fas fa-check"></i> Sleep optimization</li>
+                            </ul>
+                            <button class="btn-primary">Begin Session</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Progress Tracking -->
+            <section class="progress-section" id="progress">
+                <div class="container">
+                    <h2 class="section-title">Your Wellness Journey</h2>
+                    <div class="progress-chart">
+                        <canvas id="progressChart"></canvas>
+                    </div>
+                    <div class="milestones">
+                        <h3>Recent Milestones</h3>
+                        <div class="milestone-list">
+                            <div class="milestone-item completed">
+                                <i class="fas fa-trophy"></i>
+                                <div>
+                                    <h4>7-Day Streak</h4>
+                                    <p>Completed daily wellness activities</p>
+                                </div>
+                            </div>
+                            <div class="milestone-item">
+                                <i class="fas fa-star"></i>
+                                <div>
+                                    <h4>Nutrition Goal</h4>
+                                    <p>80% completion this week</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Resources -->
+            <section class="resources-section" id="resources">
+                <div class="container">
+                    <h2 class="section-title">Wellness Resources</h2>
+                    <div class="resource-grid">
+                        <div class="resource-card">
+                            <i class="fas fa-book"></i>
+                            <h3>Educational Articles</h3>
+                            <p>Learn about holistic wellness</p>
+                        </div>
+                        <div class="resource-card">
+                            <i class="fas fa-video"></i>
+                            <h3>Video Library</h3>
+                            <p>Exercise and meditation videos</p>
+                        </div>
+                        <div class="resource-card">
+                            <i class="fas fa-calendar-check"></i>
+                            <h3>Schedule Consultation</h3>
+                            <p>Connect with your wellness coach</p>
+                        </div>
+                        <div class="resource-card">
+                            <i class="fas fa-comments"></i>
+                            <h3>Community Support</h3>
+                            <p>Join our wellness community</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Call to Action -->
+            <section class="cta-section">
+                <div class="container">
+                    <div class="cta-content">
+                        <h2>Ready for Your Next Consultation?</h2>
+                        <p>Our wellness experts are here to support your journey</p>
+                        <button class="btn-cta" onclick="scheduleConsultation()">
+                            <i class="fas fa-calendar"></i> Schedule Now
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Footer -->
+            <footer class="footer">
+                <div class="container">
+                    <div class="footer-content">
+                        <div class="footer-logo">
+                            <i class="fas fa-heartbeat"></i>
+                            <span>Be Well</span>
+                        </div>
+                        <p>&copy; 2024 Be Well. Helping every human being on Earth be well.</p>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
