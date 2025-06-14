@@ -1,10 +1,10 @@
 :root {
-    --primary-color: #667eea;
-    --secondary-color: #764ba2;
-    --success-color: #48bb78;
-    --warning-color: #f6ad55;
-    --danger-color: #f56565;
-    --dark: #2d3748;
+    --primary-color: #1a1a2e;
+    --secondary-color: #16213e;
+    --success-color: #0f4c75;
+    --warning-color: #e94560;
+    --danger-color: #cf455c;
+    --dark: #0f0f0f;
     --light: #f7fafc;
     --gray: #718096;
     --border-radius: 12px;
@@ -19,8 +19,8 @@
 
 body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    background: #f8f9fa;
-    color: var(--dark);
+    background: #0a0a0a;
+    color: #e0e0e0;
     line-height: 1.6;
     overflow-x: hidden;
 }
@@ -92,7 +92,7 @@ body {
     transform: translate(-50%, -50%);
     width: 80px;
     height: 80px;
-    background: white;
+    background: #2a2a3e;
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -135,7 +135,7 @@ body {
 
 /* Header */
 .header {
-    background: white;
+    background: #2a2a3e;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
     position: sticky;
     top: 0;
@@ -301,7 +301,7 @@ body {
     align-items: center;
     gap: 15px;
     padding: 15px 25px;
-    background: white;
+    background: #2a2a3e;
     border-radius: var(--border-radius);
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
     transition: var(--transition);
@@ -346,7 +346,7 @@ body {
 }
 
 .wellness-card {
-    background: white;
+    background: #2a2a3e;
     border-radius: var(--border-radius);
     padding: 40px 30px;
     text-align: center;
@@ -443,7 +443,7 @@ body {
 }
 
 .progress-chart {
-    background: white;
+    background: #2a2a3e;
     border-radius: var(--border-radius);
     padding: 30px;
     box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
@@ -466,7 +466,7 @@ body {
     align-items: center;
     gap: 20px;
     padding: 20px;
-    background: white;
+    background: #2a2a3e;
     border-radius: var(--border-radius);
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
     transition: var(--transition);
@@ -507,7 +507,7 @@ body {
 }
 
 .resource-card {
-    background: white;
+    background: #2a2a3e;
     border-radius: var(--border-radius);
     padding: 40px 30px;
     text-align: center;
@@ -556,7 +556,7 @@ body {
 }
 
 .btn-cta {
-    background: white;
+    background: #2a2a3e;
     color: var(--primary-color);
     border: none;
     padding: 15px 40px;

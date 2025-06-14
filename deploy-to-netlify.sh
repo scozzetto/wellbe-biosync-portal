@@ -6,32 +6,22 @@
 echo "🚀 Be Well Portal Deployment Script"
 echo "=================================="
 
-# Check if Netlify CLI is installed
-if ! command -v netlify &> /dev/null; then
-    echo "❌ Netlify CLI not found. Installing..."
-    npm install -g netlify-cli
-fi
+# Use existing Netlify CLI from bewell-app
+NETLIFY_CLI="/Users/silviomac/bewell-app/node_modules/.bin/netlify"
 
 # Check if logged in to Netlify
-netlify status &> /dev/null
+$NETLIFY_CLI status &> /dev/null
 if [ $? -ne 0 ]; then
     echo "📝 Please log in to Netlify:"
-    netlify login
+    $NETLIFY_CLI login
 fi
 
 # Site name
 SITE_NAME="bewell-biosync-portal"
 
-# Check if site exists
-netlify sites:list | grep $SITE_NAME &> /dev/null
-if [ $? -ne 0 ]; then
-    echo "🌟 Creating new Netlify site: $SITE_NAME"
-    netlify sites:create --name $SITE_NAME
-fi
-
-# Deploy to Netlify
+# Deploy to Netlify (this will create the site if it doesn't exist)
 echo "📦 Deploying to Netlify..."
-netlify deploy --prod --dir . --site $SITE_NAME
+$NETLIFY_CLI deploy --prod --dir .
 
 if [ $? -eq 0 ]; then
     echo "✅ Deployment successful!"

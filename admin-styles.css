@@ -1,17 +1,17 @@
 /* Be Well Admin Dashboard Styles */
 
 :root {
-    --primary-color: #667eea;
-    --secondary-color: #764ba2;
-    --success-color: #48bb78;
-    --warning-color: #f6ad55;
-    --danger-color: #f56565;
-    --dark: #1a202c;
-    --gray-dark: #2d3748;
-    --gray: #718096;
-    --gray-light: #e2e8f0;
-    --light: #f7fafc;
-    --white: #ffffff;
+    --primary-color: #1a1a2e;
+    --secondary-color: #16213e;
+    --success-color: #0f4c75;
+    --warning-color: #e94560;
+    --danger-color: #cf455c;
+    --dark: #0a0a0a;
+    --gray-dark: #1a1a1a;
+    --gray: #606060;
+    --gray-light: #2a2a2a;
+    --light: #0f0f0f;
+    --white: #e0e0e0;
     --sidebar-width: 260px;
     --transition: all 0.3s ease;
 }
@@ -25,7 +25,7 @@
 body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     background: var(--light);
-    color: var(--dark);
+    color: var(--white);
     line-height: 1.6;
 }
 
@@ -117,14 +117,15 @@ body {
 
 /* Top Bar */
 .top-bar {
-    background: var(--white);
+    background: #1a1a2e;
+    border: 1px solid #2a2a3e;
     border-radius: 12px;
     padding: 25px 30px;
     margin-bottom: 30px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
 }
 
 .welcome-text h1 {
@@ -165,7 +166,8 @@ body {
 }
 
 .btn-secondary {
-    background: var(--white);
+    background: #1a1a2e;
+    border: 1px solid #2a2a3e;
     color: var(--primary-color);
     border: 2px solid var(--primary-color);
     padding: 10px 20px;
@@ -202,20 +204,21 @@ body {
 }
 
 .stat-card {
-    background: var(--white);
+    background: #1a1a2e;
+    border: 1px solid #2a2a3e;
     border-radius: 12px;
     padding: 25px;
     display: flex;
     align-items: center;
     gap: 20px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
     transition: var(--transition);
     animation: slideUp 0.5s ease;
 }
 
 .stat-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
 }
 
 .stat-icon {
@@ -271,11 +274,12 @@ body {
 
 /* Recent Patients Table */
 .recent-patients {
-    background: var(--white);
+    background: #1a1a2e;
+    border: 1px solid #2a2a3e;
     border-radius: 12px;
     padding: 30px;
     margin-bottom: 40px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
 }
 
 .section-header {
@@ -424,18 +428,19 @@ tbody tr:hover {
 }
 
 .action-card {
-    background: var(--white);
+    background: #1a1a2e;
+    border: 1px solid #2a2a3e;
     border-radius: 12px;
     padding: 30px;
     text-align: center;
     cursor: pointer;
     transition: var(--transition);
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
 }
 
 .action-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
 }
 
 .action-card i {
@@ -474,7 +479,8 @@ tbody tr:hover {
 }
 
 .modal-content {
-    background: var(--white);
+    background: #1a1a2e;
+    border: 1px solid #2a2a3e;
     border-radius: 12px;
     width: 90%;
     max-width: 600px;

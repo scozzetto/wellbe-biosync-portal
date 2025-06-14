@@ -1,0 +1,11 @@
+{
+  "name": "bewell-biosync-portal",
+  "version": "1.0.0",
+  "description": "Be Well BioSync Portal System",
+  "scripts": {
+    "deploy": "netlify deploy --prod"
+  },
+  "devDependencies": {
+    "netlify-cli": "^17.0.0"
+  }
+}
