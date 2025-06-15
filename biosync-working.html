@@ -425,7 +425,12 @@
 
         <!-- Form -->
         <div class="form-container">
-            <form id="biosyncForm" method="post" action="#" enctype="multipart/form-data">
+            <form id="biosyncForm" action="https://webto.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8&orgId=00DHu000007vmUV" method="POST" enctype="multipart/form-data">
+                
+                <!-- Salesforce Hidden Fields -->
+                <input type="hidden" name="oid" value="00DHu000007vmUV">
+                <input type="hidden" name="retURL" value="https://bewell-biosync-portal.netlify.app/thank-you.html">
+                <input type="hidden" name="lead_source" value="Be Well BioSync Portal">
                 
                 <!-- Basic Information -->
                 <h2 class="section-title">Basic Information</h2>
@@ -448,11 +453,11 @@
                 <div class="form-row">
                     <div class="form-group">
                         <label for="firstName">First Name <span class="required">*</span></label>
-                        <input type="text" id="firstName" name="firstName" required>
+                        <input type="text" id="firstName" name="first_name" required>
                     </div>
                     <div class="form-group">
                         <label for="lastName">Last Name <span class="required">*</span></label>
-                        <input type="text" id="lastName" name="lastName" required>
+                        <input type="text" id="lastName" name="last_name" required>
                     </div>
                 </div>
 
@@ -479,7 +484,7 @@
                     </div>
                     <div class="form-group">
                         <label for="mobilePhone">Mobile Phone <span class="required">*</span></label>
-                        <input type="tel" id="mobilePhone" name="mobilePhone" placeholder="###-###-####" required>
+                        <input type="tel" id="mobilePhone" name="phone" placeholder="###-###-####" required>
                     </div>
                 </div>
 
@@ -1076,6 +1081,10 @@
                     </div>
                 </div>
 
+                <!-- Hidden Salesforce Fields for Data Capture -->
+                <input type="hidden" name="company" value="Be Well LifeStyle Centers - Patient">
+                <textarea name="description" id="healthData" style="display: none;"></textarea>
+                
                 <!-- Submit Button -->
                 <div class="submit-section">
                     <button type="submit" class="btn-submit">
@@ -1182,8 +1191,6 @@
 
         // Form submission
         document.getElementById('biosyncForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
             // Basic validation
             const requiredFields = this.querySelectorAll('[required]');
             let allValid = true;
@@ -1197,12 +1204,127 @@
                 }
             });
             
-            if (allValid) {
-                alert('Complete BioSync Assessment submitted successfully! This comprehensive form captures all the information from the original FormAssembly form and is ready to be connected to Salesforce Web-to-Lead.');
-                console.log('Form data:', new FormData(this));
-            } else {
+            if (!allValid) {
+                e.preventDefault();
                 alert('Please fill in all required fields marked with *');
+                return;
             }
+            
+            // Collect all health and assessment data for Salesforce description field
+            let healthData = "=== BE WELL BIOSYNC ASSESSMENT ===\n\n";
+            
+            // Basic Information
+            healthData += "BASIC INFORMATION:\n";
+            healthData += `Date: ${document.getElementById('date').value}\n`;
+            healthData += `How heard about us: ${document.getElementById('howDidYouHear').value}\n`;
+            healthData += `Referred by: ${document.getElementById('referredBy').value}\n`;
+            healthData += `Birth Date: ${document.getElementById('birthDate').value}\n`;
+            healthData += `Gender: ${document.getElementById('genderAtBirth').value}\n`;
+            healthData += `Emergency Contact: ${document.getElementById('emergencyContactName').value} - ${document.getElementById('emergencyContactNumber').value}\n`;
+            healthData += `Preferred Location: ${document.getElementById('preferredClinicLocation').value}\n\n`;
+            
+            // Insurance Information
+            healthData += "INSURANCE INFORMATION:\n";
+            const insuranceType = document.querySelector('input[name="insuranceType"]:checked')?.value || 'Not specified';
+            healthData += `Insurance Type: ${insuranceType}\n`;
+            if (insuranceType === 'through-another') {
+                healthData += `Insured Name: ${document.getElementById('insuredFirstName').value} ${document.getElementById('insuredLastName').value}\n`;
+                healthData += `Relationship: ${document.getElementById('relationshipToPatient').value}\n`;
+                healthData += `Insured DOB: ${document.getElementById('insuredDateOfBirth').value}\n`;
+                healthData += `Insured Phone: ${document.getElementById('insuredPhone').value}\n`;
+            }
+            healthData += "\n";
+            
+            // Services of Interest
+            healthData += "SERVICES OF INTEREST:\n";
+            const services = document.querySelectorAll('input[name="servicesOfInterest"]:checked');
+            if (services.length > 0) {
+                services.forEach(service => {
+                    healthData += `• ${service.value}\n`;
+                });
+            }
+            healthData += "\n";
+            
+            // Pain Assessment
+            healthData += "PAIN ASSESSMENT:\n";
+            const painLevel = document.querySelector('input[name="painLevel"]:checked')?.value || 'Not specified';
+            healthData += `Current Pain Level: ${painLevel}/10\n`;
+            const painAreas = document.querySelectorAll('input[name="painAreas"]:checked');
+            if (painAreas.length > 0) {
+                healthData += "Pain Areas: ";
+                painAreas.forEach((area, index) => {
+                    healthData += area.value;
+                    if (index < painAreas.length - 1) healthData += ", ";
+                });
+                healthData += "\n";
+            }
+            healthData += "\n";
+            
+            // Health Conditions & Medications
+            healthData += "HEALTH CONDITIONS & MEDICATIONS:\n";
+            const conditions = document.querySelectorAll('input[name="healthConditions"]:checked');
+            if (conditions.length > 0) {
+                healthData += "Health Conditions: ";
+                conditions.forEach((condition, index) => {
+                    healthData += condition.value;
+                    if (index < conditions.length - 1) healthData += ", ";
+                });
+                healthData += "\n";
+            }
+            
+            const medications = document.getElementById('currentMedications').value;
+            if (medications) {
+                healthData += `Current Medications: ${medications}\n`;
+            }
+            
+            const supplements = document.getElementById('supplements').value;
+            if (supplements) {
+                healthData += `Supplements: ${supplements}\n`;
+            }
+            healthData += "\n";
+            
+            // Lifestyle Information
+            healthData += "LIFESTYLE INFORMATION:\n";
+            const diet = document.querySelector('input[name="specialDiet"]:checked')?.value || 'Not specified';
+            healthData += `Special Diet: ${diet}\n`;
+            if (diet === 'yes') {
+                healthData += `Diet Details: ${document.getElementById('dietDescription').value}\n`;
+            }
+            
+            const exercise = document.querySelector('input[name="exerciseRoutine"]:checked')?.value || 'Not specified';
+            healthData += `Exercise Routine: ${exercise}\n`;
+            
+            const sleep = document.querySelector('input[name="sleepQuality"]:checked')?.value || 'Not specified';
+            healthData += `Sleep Quality: ${sleep}\n`;
+            
+            const stress = document.querySelector('input[name="stressLevel"]:checked')?.value || 'Not specified';
+            healthData += `Stress Level: ${stress}\n`;
+            healthData += "\n";
+            
+            // Goals and Additional Info
+            const goals = document.getElementById('healthGoals').value;
+            if (goals) {
+                healthData += `HEALTH GOALS:\n${goals}\n\n`;
+            }
+            
+            const additional = document.getElementById('additionalInfo').value;
+            if (additional) {
+                healthData += `ADDITIONAL INFORMATION:\n${additional}\n\n`;
+            }
+            
+            // Consent confirmations
+            healthData += "CONSENT & CONFIRMATIONS:\n";
+            const signature = document.getElementById('electronicSignature').value;
+            if (signature) {
+                healthData += `Electronic Signature: ${signature}\n`;
+            }
+            healthData += `Form submitted: ${new Date().toLocaleString()}\n`;
+            
+            // Populate the hidden description field
+            document.getElementById('healthData').value = healthData;
+            
+            // Let the form submit naturally to Salesforce
+            console.log('Submitting to Salesforce with health data:', healthData);
         });
     </script>
 </body>
