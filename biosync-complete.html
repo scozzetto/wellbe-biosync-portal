@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Be Well BioSync (Intelligent Health Inquiry) - Be Well LifeStyle Centers</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            /* Be Well Brand Colors */
+            --brown-primary: #5B3A29;     /* Pantone 476C */
+            --blue-dark: #1C2630;         /* Pantone 433C */
+            --green-forest: #3E5B3D;      /* Pantone 5743C */
+            --green-olive: #5E6F4C;       /* Pantone 5753C */
+            --tan-warm: #A47C5B;          /* Pantone 479C */
+            --gray-medium: #717C7D;       /* Pantone 444C */
+            
+            /* Applied Colors */
+            --primary-color: #A47C5B;     /* Warm tan - Pantone 479C */
+            --secondary-color: #5B3A29;   /* Brown - Pantone 476C */
+            --accent-color: #3E5B3D;      /* Forest green */
+            --bg-color: #1C2630;          /* Dark blue-gray background */
+            --text-color: #f3f4f6;
+            --card-bg: #2A3441;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        .header {
+            background: var(--card-bg);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 0;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--primary-color);
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .logo-section img {
+            filter: brightness(0) invert(1);
+            transition: all 0.3s ease;
+        }
+
+        .logo-section span {
+            font-size: 26px;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 
+                1px 1px 0px rgba(164, 124, 91, 0.3),
+                2px 2px 0px rgba(164, 124, 91, 0.2),
+                3px 3px 0px rgba(164, 124, 91, 0.1),
+                4px 4px 8px rgba(0, 0, 0, 0.3);
+            letter-spacing: 0.5px;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-link {
+            color: #d1d5db;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: var(--primary-color);
+        }
+
+        /* Form Section */
+        .form-section {
+            padding: 60px 0;
+            min-height: calc(100vh - 100px);
+        }
+
+        .form-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .form-header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--text-color);
+            margin-bottom: 20px;
+        }
+
+        .form-notice {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            padding: 30px;
+            border-radius: 16px;
+            margin-bottom: 40px;
+            color: white;
+        }
+
+        .form-notice h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        .form-notice ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .form-notice li {
+            margin-bottom: 8px;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .form-notice li::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: white;
+            font-weight: bold;
+        }
+
+        .biosync-form {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .form-section-title {
+            font-size: 1.875rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin: 40px 0 30px 0;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--primary-color);
+        }
+
+        .form-section-title:first-child {
+            margin-top: 0;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            color: var(--text-color);
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-color);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(164, 124, 91, 0.1);
+        }
+
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .checkbox-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            font-weight: 400;
+            padding: 8px;
+            border-radius: 8px;
+            transition: background-color 0.3s ease;
+        }
+
+        .checkbox-label:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .checkbox-label input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+        }
+
+        .radio-group {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+
+        .radio-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            font-weight: 400;
+            padding: 8px 12px;
+            border-radius: 8px;
+            transition: background-color 0.3s ease;
+        }
+
+        .radio-label:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .radio-label input[type="radio"] {
+            width: 18px;
+            height: 18px;
+        }
+
+        .file-upload {
+            position: relative;
+            border: 2px dashed rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            padding: 30px;
+            text-align: center;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .file-upload:hover {
+            border-color: var(--primary-color);
+        }
+
+        .file-upload input[type="file"] {
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .file-upload-label {
+            cursor: pointer;
+            color: var(--text-color);
+            display: block;
+        }
+
+        .file-upload-label i {
+            font-size: 2rem;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .consent-section {
+            background: rgba(164, 124, 91, 0.1);
+            padding: 30px;
+            border-radius: 16px;
+            margin: 40px 0;
+            border: 1px solid rgba(164, 124, 91, 0.2);
+        }
+
+        .consent-section h3 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            font-size: 1.25rem;
+        }
+
+        .consent-section p {
+            margin-bottom: 15px;
+            line-height: 1.8;
+        }
+
+        .signature-section {
+            background: rgba(255, 255, 255, 0.02);
+            padding: 30px;
+            border-radius: 16px;
+            margin: 30px 0;
+            border: 2px solid var(--primary-color);
+        }
+
+        .submit-section {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 16px 32px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1.125rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(164, 124, 91, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            .biosync-form {
+                padding: 30px 20px;
+            }
+
+            .form-header h1 {
+                font-size: 2rem;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .checkbox-group {
+                grid-template-columns: 1fr;
+            }
+
+            .radio-group {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <!-- Header -->
+        <header class="header">
+            <div class="container">
+                <div class="header-content">
+                    <a href="/" class="logo-section">
+                        <img src="logo.svg" alt="Be Well Logo" style="height: 40px; width: auto;">
+                        <span data-text="Be Well LifeStyle Centers">Be Well LifeStyle Centers</span>
+                    </a>
+                    <nav class="nav-menu">
+                        <a href="/" class="nav-link">← Back to Portal</a>
+                    </nav>
+                </div>
+            </div>
+        </header>
+
+        <!-- Form Section -->
+        <section class="form-section">
+            <div class="container">
+                <!-- Form Header -->
+                <div class="form-header">
+                    <h1>* Be Well BioSync (Intelligent Health Inquiry)</h1>
+                    
+                    <div class="form-notice">
+                        <h3>📌 Please complete all sections of this form.</h3>
+                        <p><strong>IMPORTANT:</strong></p>
+                        <ul>
+                            <li>We use your answers to build your personalized care plan.</li>
+                            <li>Missing information slows down our ability to assist you.</li>
+                            <li>This may delay or limit your treatment options.</li>
+                            <li>Take your time, be thorough, and don't leave anything blank unless it doesn't apply.</li>
+                            <li>(Yes, we read every word.)</li>
+                        </ul>
+                        <p><strong>Your results will thank you.</strong></p>
+                    </div>
+                </div>
+
+                <!-- BioSync Form -->
+                <form id="biosyncForm" class="biosync-form" method="post" action="#" enctype="multipart/form-data">
+                    
+                    <!-- Basic Information Section -->
+                    <h2 class="form-section-title">Basic Information</h2>
+                    
+                    <div class="form-group">
+                        <label for="date">Date</label>
+                        <input type="date" id="date" name="date" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="howDidYouHear">How did you hear about us?</label>
+                        <input type="text" id="howDidYouHear" name="howDidYouHear">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="referredBy">Referred By</label>
+                        <input type="text" id="referredBy" name="referredBy">
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="firstName">First Name *</label>
+                            <input type="text" id="firstName" name="firstName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="lastName">Last Name *</label>
+                            <input type="text" id="lastName" name="lastName" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="birthDate">Date of Birth *</label>
+                            <input type="date" id="birthDate" name="birthDate" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="genderAtBirth">Gender at Birth *</label>
+                            <select id="genderAtBirth" name="genderAtBirth" required>
+                                <option value="">Please select...</option>
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                                <option value="other">Other</option>
+                                <option value="prefer-not-to-say">Prefer not to say</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="socialNumber">Social Security Number</label>
+                            <input type="text" id="socialNumber" name="socialNumber" placeholder="###-##-####">
+                        </div>
+                        <div class="form-group">
+                            <label for="mobilePhone">Mobile Phone *</label>
+                            <input type="tel" id="mobilePhone" name="mobilePhone" placeholder="###-###-####" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email *</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="address1">Address 1 *</label>
+                            <input type="text" id="address1" name="address1" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="address2">Address 2</label>
+                            <input type="text" id="address2" name="address2">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="city">City *</label>
+                            <input type="text" id="city" name="city" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="state">State *</label>
+                            <input type="text" id="state" name="state" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="zipCode">Zip Code *</label>
+                            <input type="text" id="zipCode" name="zipCode" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="emergencyContactName">Emergency Contact Name</label>
+                            <input type="text" id="emergencyContactName" name="emergencyContactName">
+                        </div>
+                        <div class="form-group">
+                            <label for="emergencyContactNumber">Emergency Contact Number</label>
+                            <input type="tel" id="emergencyContactNumber" name="emergencyContactNumber">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="preferredClinicLocation">Preferred Clinic Location</label>
+                        <select id="preferredClinicLocation" name="preferredClinicLocation">
+                            <option value="">Please select...</option>
+                            <option value="birmingham">Birmingham, MI</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+
+                    <!-- Insurance Information Section -->
+                    <h2 class="form-section-title">Insurance Info (If Applicable)</h2>
+                    
+                    <div class="form-group">
+                        <label>Upload Insurance Card</label>
+                        <div class="file-upload">
+                            <input type="file" id="insuranceCard" name="insuranceCard" accept="image/*,.pdf" multiple>
+                            <label for="insuranceCard" class="file-upload-label">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                <span>Click to upload insurance card files</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Upload License</label>
+                        <div class="file-upload">
+                            <input type="file" id="license" name="license" accept="image/*,.pdf">
+                            <label for="license" class="file-upload-label">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                <span>Click to upload license</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="selfInsured">Are You Self Insured or through another Individual?</label>
+                        <select id="selfInsured" name="selfInsured">
+                            <option value="">Please select...</option>
+                            <option value="self-insured">Self Insured</option>
+                            <option value="through-another">Through Another Individual</option>
+                            <option value="no-insurance">No Insurance</option>
+                        </select>
+                    </div>
+
+                    <!-- Insurance Details for "Through Another Individual" -->
+                    <div id="insuranceDetails" style="display: none;">
+                        <h3 style="color: var(--primary-color); margin: 20px 0 15px 0;">If Insured through another Individual, Please enter the Following Information</h3>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="insuredFirstName">First Name</label>
+                                <input type="text" id="insuredFirstName" name="insuredFirstName">
+                            </div>
+                            <div class="form-group">
+                                <label for="insuredLastName">Last Name</label>
+                                <input type="text" id="insuredLastName" name="insuredLastName">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="insuredGender">Gender at birth</label>
+                                <select id="insuredGender" name="insuredGender">
+                                    <option value="">Please select...</option>
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="relationshipToPatient">Relationship to Patient</label>
+                                <input type="text" id="relationshipToPatient" name="relationshipToPatient">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="insuredDateOfBirth">Date of Birth</label>
+                                <input type="date" id="insuredDateOfBirth" name="insuredDateOfBirth">
+                            </div>
+                            <div class="form-group">
+                                <label for="insuredPhone">Phone Number</label>
+                                <input type="tel" id="insuredPhone" name="insuredPhone">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="insuredAddress">Address</label>
+                                <input type="text" id="insuredAddress" name="insuredAddress">
+                            </div>
+                            <div class="form-group">
+                                <label for="insuredEmail">Email</label>
+                                <input type="email" id="insuredEmail" name="insuredEmail">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Submit Section -->
+                    <div class="submit-section">
+                        <button type="submit" class="btn-primary">
+                            <i class="fas fa-paper-plane"></i>
+                            Continue to Health Inquiry
+                        </button>
+                        <p style="margin-top: 20px; color: #9ca3af;">This is Step 1 of the complete BioSync assessment. Click continue to proceed to the Health/Services section.</p>
+                    </div>
+
+                </form>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // Insurance details toggle
+        document.getElementById('selfInsured').addEventListener('change', function() {
+            const insuranceDetails = document.getElementById('insuranceDetails');
+            if (this.value === 'through-another') {
+                insuranceDetails.style.display = 'block';
+            } else {
+                insuranceDetails.style.display = 'none';
+            }
+        });
+
+        // File upload visual feedback
+        document.querySelectorAll('input[type="file"]').forEach(input => {
+            input.addEventListener('change', function() {
+                const label = this.nextElementSibling.querySelector('span');
+                if (this.files.length > 0) {
+                    if (this.files.length === 1) {
+                        label.textContent = `Selected: ${this.files[0].name}`;
+                    } else {
+                        label.textContent = `Selected: ${this.files.length} files`;
+                    }
+                    label.style.color = 'var(--primary-color)';
+                } else {
+                    label.textContent = 'Click to upload files';
+                    label.style.color = '';
+                }
+            });
+        });
+
+        // Form submission
+        document.getElementById('biosyncForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('This is Step 1 of the BioSync form! Next we would add the Health/Services Inquiry and Consent sections. For now, this demonstrates the complete Basic Information and Insurance sections with proper styling and functionality.');
+        });
+
+        // Auto-set today's date
+        document.getElementById('date').valueAsDate = new Date();
+    </script>
+</body>
+</html>

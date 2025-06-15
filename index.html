@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Be Well - Your Wellness Journey</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
 </head>
@@ -16,7 +16,7 @@
                 <div class="pulse-ring"></div>
                 <div class="pulse-ring"></div>
                 <div class="logo">
-                    <i class="fas fa-heartbeat"></i>
+                    <img src="logo.svg" alt="Be Well Logo" style="width: 60px; height: 60px;">
                 </div>
             </div>
             <h1 class="welcome-title">Be Well</h1>
@@ -29,10 +29,10 @@
             <header class="header">
                 <div class="container">
                     <div class="header-content">
-                        <div class="logo-section">
-                            <i class="fas fa-heartbeat"></i>
-                            <span>Be Well</span>
-                        </div>
+                        <a href="https://bewelllifestylecenters.com" target="_blank" class="logo-section">
+                            <img src="logo.svg" alt="Be Well Logo" style="height: 40px; width: auto;">
+                            <span data-text="Be Well LifeStyle Centers">Be Well LifeStyle Centers</span>
+                        </a>
                         <nav class="nav-menu">
                             <a href="#overview" class="nav-link active">Overview</a>
                             <a href="#wellness" class="nav-link">Wellness Plan</a>
@@ -46,38 +46,123 @@
                 </div>
             </header>
 
+            <!-- BioSync Introduction -->
+            <section class="biosync-intro-section">
+                <div class="container">
+                    <h2 class="section-title">Be Well BioSync</h2>
+                    
+                    <div class="biosync-description">
+                        <p class="biosync-intro">
+                            <strong>Your gateway to total transformation.</strong> Whether you're exploring what Be Well can offer or have specific health concerns, BioSync provides comprehensive insights that help us understand your unique needs. From targeted individual treatments to complete lifestyle transformation programs, BioSync ensures you're placed on the optimal path for your wellness journey.
+                        </p>
+                        <p class="biosync-subtitle">BioSync identifies key areas that provide insight into:</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Services Overview -->
+            <section class="services-overview">
+                <div class="container">
+                    <h2 class="section-title">Be Well LifeStyle Centers: Your Fully Integrated Total Transformation Healthcare System</h2>
+                    <div class="services-grid">
+                        <div class="service-item">
+                            <i class="fas fa-hands-helping"></i>
+                            <h4>Therapeutic Services</h4>
+                            <p>Chiropractic therapy, massage therapy, cupping, dry needling, and physiotherapy</p>
+                        </div>
+                        <div class="service-item">
+                            <i class="fas fa-spa"></i>
+                            <h4>Wellness Treatments</h4>
+                            <p>Colon hydrotherapy for detoxification and digestive health</p>
+                        </div>
+                        <div class="service-item">
+                            <i class="fas fa-syringe"></i>
+                            <h4>IV & Regenerative</h4>
+                            <p>IV nutrition, vitamin injections, and peptide therapy</p>
+                        </div>
+                        <div class="service-item">
+                            <i class="fas fa-microscope"></i>
+                            <h4>Lab Analysis</h4>
+                            <p>Comprehensive blood lab and urine lab analysis</p>
+                        </div>
+                        <div class="service-item">
+                            <i class="fas fa-utensils"></i>
+                            <h4>Nutrition Center</h4>
+                            <p>Beautiful full menu eatery and smoothie café</p>
+                        </div>
+                        <div class="service-item">
+                            <i class="fas fa-chart-line"></i>
+                            <h4>Personalized Care</h4>
+                            <p>Customized treatment plans based on your unique needs</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
             <!-- Hero Section -->
             <section class="hero-section">
                 <div class="container">
                     <div class="hero-content">
-                        <h1 class="hero-title">Welcome back, <span id="patientName">Friend</span>!</h1>
-                        <p class="hero-subtitle">Your wellness score today</p>
-                        <div class="wellness-score">
-                            <div class="score-circle">
-                                <svg width="200" height="200">
-                                    <circle cx="100" cy="100" r="90" class="score-bg"/>
-                                    <circle cx="100" cy="100" r="90" class="score-progress" id="scoreProgress"/>
-                                </svg>
-                                <div class="score-value">
-                                    <span id="scoreNumber">85</span>%
+                        <h1 class="hero-title">Welcome to the Future of Healthcare</h1>
+                        <p class="hero-subtitle">Your transformation journey starts here</p>
+                        
+                        <!-- Transformation Journey Visual -->
+                        <div class="transformation-journey">
+                            <div class="journey-header">
+                                <h3>Your Be Well Transformation Journey</h3>
+                                <p>See the powerful transformation that awaits you</p>
+                            </div>
+                            
+                            <div class="journey-graph">
+                                <div class="journey-point start-point">
+                                    <div class="point-indicator"></div>
+                                    <div class="point-content">
+                                        <h4>Where You Start</h4>
+                                        <div class="wellness-level low">
+                                            <span class="level-text">Struggling</span>
+                                            <div class="level-bar">
+                                                <div class="level-fill" style="width: 25%"></div>
+                                            </div>
+                                        </div>
+                                        <ul class="symptoms">
+                                            <li>• Chronic fatigue</li>
+                                            <li>• Persistent pain</li>
+                                            <li>• Poor sleep</li>
+                                            <li>• Low energy</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                
+                                <div class="journey-arrow">
+                                    <i class="fas fa-arrow-right"></i>
+                                    <span>Be Well Treatment</span>
+                                </div>
+                                
+                                <div class="journey-point end-point">
+                                    <div class="point-indicator"></div>
+                                    <div class="point-content">
+                                        <h4>Where You'll Be</h4>
+                                        <div class="wellness-level high">
+                                            <span class="level-text">Thriving</span>
+                                            <div class="level-bar">
+                                                <div class="level-fill" style="width: 90%"></div>
+                                            </div>
+                                        </div>
+                                        <ul class="benefits">
+                                            <li>• Abundant energy</li>
+                                            <li>• Pain-free living</li>
+                                            <li>• Restful sleep</li>
+                                            <li>• Optimal wellness</li>
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="score-details">
-                                <div class="detail-item">
-                                    <i class="fas fa-heart"></i>
-                                    <span>Physical Health</span>
-                                    <strong>88%</strong>
-                                </div>
-                                <div class="detail-item">
-                                    <i class="fas fa-brain"></i>
-                                    <span>Mental Wellness</span>
-                                    <strong>82%</strong>
-                                </div>
-                                <div class="detail-item">
-                                    <i class="fas fa-leaf"></i>
-                                    <span>Lifestyle Balance</span>
-                                    <strong>85%</strong>
-                                </div>
+                            
+                            <div class="journey-cta">
+                                <a href="biosync-working.html" class="cta-button">
+                                    <i class="fas fa-rocket"></i>
+                                    Start Your Transformation with Be Well BioSync
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -87,77 +172,56 @@
             <!-- Wellness Plan Section -->
             <section class="wellness-section" id="wellness">
                 <div class="container">
-                    <h2 class="section-title">Your Personalized Wellness Plan</h2>
+                    <h2 class="section-title">Be Well BioSync</h2>
+                    
+                    <div class="biosync-description">
+                        <p class="biosync-intro">
+                            <strong>Your gateway to total transformation.</strong> Whether you're exploring what Be Well can offer or have specific health concerns, BioSync provides comprehensive insights that help us understand your unique needs. From targeted individual treatments to complete lifestyle transformation programs, BioSync ensures you're placed on the optimal path for your wellness journey.
+                        </p>
+                        <p class="biosync-subtitle">BioSync identifies key areas that provide insight into:</p>
+                    </div>
+                    
                     <div class="wellness-grid">
                         <div class="wellness-card">
-                            <div class="card-icon nutrition">
-                                <i class="fas fa-apple-alt"></i>
+                            <div class="card-icon health-assessment">
+                                <i class="fas fa-clipboard-list"></i>
                             </div>
-                            <h3>Nutrition</h3>
-                            <p>Customized meal plans designed for your unique needs</p>
+                            <h3>Comprehensive Health Assessment</h3>
+                            <p>BioSync gathers your complete health picture through detailed questionnaires</p>
                             <ul class="wellness-list">
-                                <li><i class="fas fa-check"></i> Anti-inflammatory foods</li>
-                                <li><i class="fas fa-check"></i> Personalized supplements</li>
-                                <li><i class="fas fa-check"></i> Hydration tracking</li>
+                                <li><i class="fas fa-check"></i> Physical health evaluation</li>
+                                <li><i class="fas fa-check"></i> Psychological wellness review</li>
+                                <li><i class="fas fa-check"></i> Medical history analysis</li>
+                                <li><i class="fas fa-check"></i> Family health patterns</li>
                             </ul>
-                            <button class="btn-primary">View Plan</button>
                         </div>
                         
                         <div class="wellness-card">
-                            <div class="card-icon movement">
-                                <i class="fas fa-running"></i>
+                            <div class="card-icon medical-history">
+                                <i class="fas fa-file-medical"></i>
                             </div>
-                            <h3>Movement</h3>
-                            <p>Exercise routines that energize and strengthen</p>
+                            <h3>Medical History Review</h3>
+                            <p>Complete analysis of your past medical records and diagnostic tests</p>
                             <ul class="wellness-list">
-                                <li><i class="fas fa-check"></i> Daily movement goals</li>
-                                <li><i class="fas fa-check"></i> Yoga & stretching</li>
-                                <li><i class="fas fa-check"></i> Strength training</li>
+                                <li><i class="fas fa-check"></i> MRI and X-ray analysis</li>
+                                <li><i class="fas fa-check"></i> Blood work evaluation</li>
+                                <li><i class="fas fa-check"></i> Previous diagnoses review</li>
+                                <li><i class="fas fa-check"></i> Current medications assessment</li>
                             </ul>
-                            <button class="btn-primary">Start Workout</button>
                         </div>
                         
                         <div class="wellness-card">
-                            <div class="card-icon mindfulness">
-                                <i class="fas fa-spa"></i>
+                            <div class="card-icon personalized-plan">
+                                <i class="fas fa-user-md"></i>
                             </div>
-                            <h3>Mindfulness</h3>
-                            <p>Mental wellness practices for inner peace</p>
+                            <h3>Personalized Recommendations</h3>
+                            <p>Based on your assessment, receive customized suggestions across all wellness areas</p>
                             <ul class="wellness-list">
-                                <li><i class="fas fa-check"></i> Guided meditation</li>
-                                <li><i class="fas fa-check"></i> Breathing exercises</li>
-                                <li><i class="fas fa-check"></i> Sleep optimization</li>
+                                <li><i class="fas fa-check"></i> Exercise protocols</li>
+                                <li><i class="fas fa-check"></i> Nutritional guidance</li>
+                                <li><i class="fas fa-check"></i> Supplement recommendations</li>
+                                <li><i class="fas fa-check"></i> Be Well therapy options</li>
                             </ul>
-                            <button class="btn-primary">Begin Session</button>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Progress Tracking -->
-            <section class="progress-section" id="progress">
-                <div class="container">
-                    <h2 class="section-title">Your Wellness Journey</h2>
-                    <div class="progress-chart">
-                        <canvas id="progressChart"></canvas>
-                    </div>
-                    <div class="milestones">
-                        <h3>Recent Milestones</h3>
-                        <div class="milestone-list">
-                            <div class="milestone-item completed">
-                                <i class="fas fa-trophy"></i>
-                                <div>
-                                    <h4>7-Day Streak</h4>
-                                    <p>Completed daily wellness activities</p>
-                                </div>
-                            </div>
-                            <div class="milestone-item">
-                                <i class="fas fa-star"></i>
-                                <div>
-                                    <h4>Nutrition Goal</h4>
-                                    <p>80% completion this week</p>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -196,10 +260,14 @@
             <section class="cta-section">
                 <div class="container">
                     <div class="cta-content">
-                        <h2>Ready for Your Next Consultation?</h2>
-                        <p>Our wellness experts are here to support your journey</p>
-                        <button class="btn-cta" onclick="scheduleConsultation()">
-                            <i class="fas fa-calendar"></i> Schedule Now
+                        <h2>Ready to Transform Your Health?</h2>
+                        <p>Start with our BioSync™ analysis for personalized recommendations</p>
+                        <a href="biosync.html" class="btn-cta" style="text-decoration: none; display: inline-flex; align-items: center; gap: 10px;">
+                            <i class="fas fa-brain"></i> Get Your BioSync™ Analysis
+                        </a>
+                        <p style="margin-top: 20px; opacity: 0.9;">Or schedule a consultation directly:</p>
+                        <button class="btn-cta" onclick="scheduleConsultation()" style="background: rgba(255,255,255,0.2); margin-top: 10px;">
+                            <i class="fas fa-calendar"></i> Book Appointment
                         </button>
                     </div>
                 </div>
@@ -209,11 +277,20 @@
             <footer class="footer">
                 <div class="container">
                     <div class="footer-content">
-                        <div class="footer-logo">
-                            <i class="fas fa-heartbeat"></i>
-                            <span>Be Well</span>
+                        <div class="footer-info">
+                            <div class="footer-logo">
+                                <img src="logo.svg" alt="Be Well Logo" style="height: 35px; width: auto; filter: brightness(0) invert(1);">
+                                <span>Be Well LifeStyle Centers</span>
+                            </div>
+                            <div class="contact-info">
+                                <p><i class="fas fa-globe"></i> <a href="https://bewelllifestylecenters.com" target="_blank">bewelllifestylecenters.com</a></p>
+                                <p><i class="fas fa-phone"></i> <a href="tel:248-792-6570">248-792-6570</a></p>
+                                <p><i class="fas fa-map-marker-alt"></i> 750 S. Old Woodward Ave., Birmingham, MI 48009</p>
+                            </div>
                         </div>
-                        <p>&copy; 2024 Be Well. Helping every human being on Earth be well.</p>
+                        <div class="footer-bottom">
+                            <p>&copy; 2024 Be Well LifeStyle Centers. Helping every human being on Earth be well.</p>
+                        </div>
                     </div>
                 </div>
             </footer>

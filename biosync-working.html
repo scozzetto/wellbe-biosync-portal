@@ -1,0 +1,1209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Be Well BioSync (Intelligent Health Inquiry)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', Arial, sans-serif;
+            background: #1C2630;
+            color: #f3f4f6;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: #2A3441;
+            padding: 20px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 40px;
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #A47C5B;
+            text-decoration: none;
+        }
+
+        .nav-link {
+            color: #d1d5db;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .nav-link:hover {
+            color: #A47C5B;
+        }
+
+        .form-title {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .form-title h1 {
+            font-size: 2.5rem;
+            color: #f3f4f6;
+            margin-bottom: 20px;
+        }
+
+        .important-notice {
+            background: linear-gradient(135deg, #A47C5B 0%, #5B3A29 100%);
+            padding: 30px;
+            border-radius: 12px;
+            margin-bottom: 40px;
+            color: white;
+        }
+
+        .important-notice h3 {
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .important-notice ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .important-notice li {
+            margin-bottom: 8px;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .important-notice li::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+        }
+
+        .form-container {
+            background: #2A3441;
+            padding: 40px;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .section-title {
+            font-size: 1.75rem;
+            color: #A47C5B;
+            margin: 30px 0 25px 0;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #A47C5B;
+        }
+
+        .section-title:first-child {
+            margin-top: 0;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            color: #f3f4f6;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+        }
+
+        .required {
+            color: #ef4444;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            color: #f3f4f6;
+            font-size: 1rem;
+            font-family: inherit;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #A47C5B;
+            box-shadow: 0 0 0 3px rgba(164, 124, 91, 0.1);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .checkbox-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+            margin-top: 10px;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 12px;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .checkbox-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            margin: 0;
+        }
+
+        .radio-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .radio-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .radio-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .radio-item input[type="radio"] {
+            width: 18px;
+            height: 18px;
+            margin: 0;
+        }
+
+        .file-upload {
+            border: 2px dashed rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+            padding: 30px;
+            text-align: center;
+            margin-top: 10px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .file-upload:hover {
+            border-color: #A47C5B;
+            background: rgba(164, 124, 91, 0.05);
+        }
+
+        .file-upload input[type="file"] {
+            display: none;
+        }
+
+        .file-upload-content {
+            color: #f3f4f6;
+        }
+
+        .file-upload-content i {
+            font-size: 2rem;
+            color: #A47C5B;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .scale-group {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
+
+        .scale-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+            padding: 8px;
+            min-width: 40px;
+        }
+
+        .scale-item input[type="radio"] {
+            width: 20px;
+            height: 20px;
+        }
+
+        .scale-item label {
+            font-size: 0.9rem;
+            margin: 0;
+        }
+
+        .conditional-section {
+            display: none;
+            margin-top: 20px;
+            padding: 20px;
+            background: rgba(164, 124, 91, 0.1);
+            border-radius: 8px;
+            border: 1px solid rgba(164, 124, 91, 0.2);
+        }
+
+        .conditional-section.show {
+            display: block;
+        }
+
+        .consent-section {
+            background: rgba(164, 124, 91, 0.1);
+            padding: 30px;
+            border-radius: 12px;
+            margin: 30px 0;
+            border: 1px solid rgba(164, 124, 91, 0.3);
+        }
+
+        .consent-section h3 {
+            color: #A47C5B;
+            margin-bottom: 15px;
+        }
+
+        .consent-section p {
+            margin-bottom: 15px;
+            line-height: 1.7;
+        }
+
+        .signature-section {
+            background: rgba(255, 255, 255, 0.02);
+            padding: 25px;
+            border-radius: 12px;
+            margin: 25px 0;
+            border: 2px solid #A47C5B;
+        }
+
+        .submit-section {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-submit {
+            background: linear-gradient(135deg, #A47C5B, #5B3A29);
+            color: white;
+            padding: 16px 32px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(164, 124, 91, 0.4);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+
+            .form-container {
+                padding: 25px 20px;
+            }
+
+            .form-title h1 {
+                font-size: 2rem;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .checkbox-group {
+                grid-template-columns: 1fr;
+            }
+
+            .radio-group {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .scale-group {
+                justify-content: center;
+            }
+
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="header-content">
+            <a href="/" class="logo-text">Be Well LifeStyle Centers</a>
+            <a href="/" class="nav-link">← Back to Portal</a>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Form Title -->
+        <div class="form-title">
+            <h1>Be Well BioSync (Intelligent Health Inquiry)</h1>
+            
+            <div class="important-notice">
+                <h3>📌 Please complete all sections of this form.</h3>
+                <p><strong>IMPORTANT:</strong></p>
+                <ul>
+                    <li>We use your answers to build your personalized care plan.</li>
+                    <li>Missing information slows down our ability to assist you.</li>
+                    <li>This may delay or limit your treatment options.</li>
+                    <li>Take your time, be thorough, and don't leave anything blank unless it doesn't apply.</li>
+                    <li>(Yes, we read every word.)</li>
+                </ul>
+                <p><strong>Your results will thank you.</strong></p>
+            </div>
+        </div>
+
+        <!-- Form -->
+        <div class="form-container">
+            <form id="biosyncForm" method="post" action="#" enctype="multipart/form-data">
+                
+                <!-- Basic Information -->
+                <h2 class="section-title">Basic Information</h2>
+                
+                <div class="form-group">
+                    <label for="date">Date <span class="required">*</span></label>
+                    <input type="date" id="date" name="date" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="howDidYouHear">How did you hear about us?</label>
+                    <input type="text" id="howDidYouHear" name="howDidYouHear" placeholder="Please specify">
+                </div>
+
+                <div class="form-group">
+                    <label for="referredBy">Referred By</label>
+                    <input type="text" id="referredBy" name="referredBy" placeholder="Name of person who referred you">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="firstName">First Name <span class="required">*</span></label>
+                        <input type="text" id="firstName" name="firstName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="lastName">Last Name <span class="required">*</span></label>
+                        <input type="text" id="lastName" name="lastName" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="birthDate">Date of Birth <span class="required">*</span></label>
+                        <input type="date" id="birthDate" name="birthDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="genderAtBirth">Gender at Birth <span class="required">*</span></label>
+                        <select id="genderAtBirth" name="genderAtBirth" required>
+                            <option value="">Please select...</option>
+                            <option value="female">Female</option>
+                            <option value="male">Male</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="socialNumber">Social Security Number</label>
+                        <input type="text" id="socialNumber" name="socialNumber" placeholder="###-##-####">
+                    </div>
+                    <div class="form-group">
+                        <label for="mobilePhone">Mobile Phone <span class="required">*</span></label>
+                        <input type="tel" id="mobilePhone" name="mobilePhone" placeholder="###-###-####" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email <span class="required">*</span></label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="address1">Address 1 <span class="required">*</span></label>
+                        <input type="text" id="address1" name="address1" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="address2">Address 2</label>
+                        <input type="text" id="address2" name="address2">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="city">City <span class="required">*</span></label>
+                        <input type="text" id="city" name="city" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="state">State <span class="required">*</span></label>
+                        <input type="text" id="state" name="state" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="zipCode">Zip Code <span class="required">*</span></label>
+                        <input type="text" id="zipCode" name="zipCode" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="emergencyContactName">Emergency Contact Name</label>
+                        <input type="text" id="emergencyContactName" name="emergencyContactName">
+                    </div>
+                    <div class="form-group">
+                        <label for="emergencyContactNumber">Emergency Contact Number</label>
+                        <input type="tel" id="emergencyContactNumber" name="emergencyContactNumber">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="preferredClinicLocation">Preferred Clinic Location</label>
+                    <select id="preferredClinicLocation" name="preferredClinicLocation">
+                        <option value="">Please select...</option>
+                        <option value="birmingham">Birmingham</option>
+                        <option value="berkley">Berkley</option>
+                        <option value="uwm">UWM</option>
+                        <option value="telehealth">Telehealth</option>
+                    </select>
+                </div>
+
+                <!-- Insurance Info -->
+                <h2 class="section-title">Insurance Info (If Applicable)</h2>
+                
+                <div class="form-group">
+                    <label>Upload Insurance Card</label>
+                    <div class="file-upload" onclick="document.getElementById('insuranceCard').click()">
+                        <input type="file" id="insuranceCard" name="insuranceCard" accept="image/*,.pdf" multiple>
+                        <div class="file-upload-content">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <p>Click to upload insurance card (front & back)</p>
+                            <small>PNG, JPG, PDF files accepted</small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Upload License</label>
+                    <div class="file-upload" onclick="document.getElementById('license').click()">
+                        <input type="file" id="license" name="license" accept="image/*,.pdf">
+                        <div class="file-upload-content">
+                            <i class="fas fa-id-card"></i>
+                            <p>Click to upload driver's license</p>
+                            <small>PNG, JPG, PDF files accepted</small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Are You Self Insured or through another Individual?</label>
+                    <div class="radio-group">
+                        <div class="radio-item">
+                            <input type="radio" id="selfInsured" name="insuranceType" value="self-insured">
+                            <label for="selfInsured">Self Insured</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="throughAnother" name="insuranceType" value="through-another">
+                            <label for="throughAnother">Through Another Individual</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="noInsurance" name="insuranceType" value="no-insurance">
+                            <label for="noInsurance">No Insurance</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Conditional Insurance Details -->
+                <div id="insuranceHolderDetails" class="conditional-section">
+                    <h3 style="color: #A47C5B; margin-bottom: 20px;">If Insured through another Individual, Please enter the Following Information</h3>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="insuredFirstName">First Name</label>
+                            <input type="text" id="insuredFirstName" name="insuredFirstName">
+                        </div>
+                        <div class="form-group">
+                            <label for="insuredLastName">Last Name</label>
+                            <input type="text" id="insuredLastName" name="insuredLastName">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="insuredGender">Gender at birth</label>
+                            <select id="insuredGender" name="insuredGender">
+                                <option value="">Please select...</option>
+                                <option value="female">Female</option>
+                                <option value="male">Male</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="relationshipToPatient">Relationship to Patient</label>
+                            <input type="text" id="relationshipToPatient" name="relationshipToPatient" placeholder="e.g., Spouse, Parent, Child">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="insuredDateOfBirth">Date of Birth</label>
+                            <input type="date" id="insuredDateOfBirth" name="insuredDateOfBirth">
+                        </div>
+                        <div class="form-group">
+                            <label for="insuredPhone">Phone Number</label>
+                            <input type="tel" id="insuredPhone" name="insuredPhone" placeholder="###-###-####">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="insuredAddress">Address</label>
+                            <input type="text" id="insuredAddress" name="insuredAddress">
+                        </div>
+                        <div class="form-group">
+                            <label for="insuredEmail">Email</label>
+                            <input type="email" id="insuredEmail" name="insuredEmail">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Health / Services Inquiry -->
+                <h2 class="section-title">Health / Services Inquiry</h2>
+                
+                <div class="form-group">
+                    <label>Which Service(s) are you interested in? (Choose as many as you wish)</label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="chiropractic" name="services[]" value="chiropractic">
+                            <label for="chiropractic">Chiropractic</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="dryNeedling" name="services[]" value="dry-needling">
+                            <label for="dryNeedling">Dry Needling</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="cupping" name="services[]" value="cupping">
+                            <label for="cupping">Cupping</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="compressionTherapy" name="services[]" value="compression-therapy">
+                            <label for="compressionTherapy">Compression Therapy</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="electricStim" name="services[]" value="electric-stim">
+                            <label for="electricStim">Electric Stim / Ultrasound Therapy</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="redLight" name="services[]" value="red-light">
+                            <label for="redLight">Red Light / Laser Pain Treatment</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="massageTherapy" name="services[]" value="massage-therapy">
+                            <label for="massageTherapy">Massage Therapy</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="colonHydrotherapy" name="services[]" value="colon-hydrotherapy">
+                            <label for="colonHydrotherapy">Colon Hydrotherapy</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="ivVitamin" name="services[]" value="iv-vitamin">
+                            <label for="ivVitamin">IV Vitamin Therapy</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="vitaminInjection" name="services[]" value="vitamin-injection">
+                            <label for="vitaminInjection">Vitamin Injection</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="peptideTherapy" name="services[]" value="peptide-therapy">
+                            <label for="peptideTherapy">Peptide Therapy</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="bloodTesting" name="services[]" value="blood-testing">
+                            <label for="bloodTesting">Blood / Urine Testing</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="nutritionAssistance" name="services[]" value="nutrition-assistance">
+                            <label for="nutritionAssistance">Nutrition Assistance</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="totalTransformation" name="services[]" value="total-transformation">
+                            <label for="totalTransformation">Be Well Total Transformation</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="painExperience">Do you currently experience pain or discomfort?<br>(If yes, please describe the location, severity, and duration)</label>
+                    <select id="painLevel" name="painLevel" style="margin-bottom: 15px;">
+                        <option value="">Please select...</option>
+                        <option value="0">0 - No Pain</option>
+                        <option value="1">1 - Very Mild</option>
+                        <option value="2">2 - Mild</option>
+                        <option value="3">3 - Moderate</option>
+                        <option value="4">4 - Moderate-Severe</option>
+                        <option value="5">5 - Severe</option>
+                        <option value="6">6 - Very Severe</option>
+                        <option value="7">7 - Extremely Severe</option>
+                        <option value="8">8 - Unbearable</option>
+                        <option value="9">9 - Excruciating</option>
+                        <option value="10">10 - Maximum Pain</option>
+                    </select>
+                    <textarea id="painDescription" name="painDescription" placeholder="Please describe location, severity, and duration of pain or discomfort"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="holisticTreatmentExperience">Have you experienced Chiropractic, Massage, IV Therapy, Colon therapy or other Holistic Treatment?<br>(If yes, what helped and what didn't?)</label>
+                    <textarea id="holisticTreatmentExperience" name="holisticTreatmentExperience" placeholder="Please describe your previous experiences with holistic treatments"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="inquiryReasons">List All Reason(s) for Your Inquiry?<br>(Type Below as much as you can. Be Specific):</label>
+                    <textarea id="inquiryReasons" name="inquiryReasons" placeholder="Fat Loss, Muscle Gain, Pain Relief, Detox, Increased Energy, Better Sleep, Anti-Aging, Poor Posture, Stress Reduction, Digestive Health, Sexual Health, Athletic Performance, Hormone Balance, Longevity, Other" style="min-height: 120px;"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Are you more drawn to:</label>
+                    <div class="radio-group">
+                        <div class="radio-item">
+                            <input type="radio" id="structuredProgram" name="programPreference" value="structured-program">
+                            <label for="structuredProgram">A structured weekly program with coaching</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="flexiblePlan" name="programPreference" value="flexible-plan">
+                            <label for="flexiblePlan">A flexible plan with simple recommendations</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="mixOfBoth" name="programPreference" value="mix-of-both">
+                            <label for="mixOfBoth">A mix of both</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="goals">What Goals are you looking to reach with us?</label>
+                    <textarea id="goals" name="goals" placeholder="Please describe your health and wellness goals"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Are you interested in the Be Well Total Transformation 12-week system?</label>
+                    <div class="radio-group">
+                        <div class="radio-item">
+                            <input type="radio" id="totalTransformationYes" name="totalTransformationInterest" value="yes">
+                            <label for="totalTransformationYes">Yes</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="totalTransformationNo" name="totalTransformationInterest" value="no">
+                            <label for="totalTransformationNo">No</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="totalTransformationMaybe" name="totalTransformationInterest" value="maybe">
+                            <label for="totalTransformationMaybe">Maybe / Need more information</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="contraindications">Possible contraindications to any of our treatments (Pacemaker, blood thinner, Cancer, Etc.)</label>
+                    <textarea id="contraindications" name="contraindications" placeholder="Please list any medical conditions or devices that might contraindicate treatments"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="healthConcerns">Do you have any health concerns we should be notified about?</label>
+                    <textarea id="healthConcerns" name="healthConcerns" placeholder="Please describe any health concerns or conditions"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="currentMedications">Please List Current Medications (or type NONE)</label>
+                    <textarea id="currentMedications" name="currentMedications" placeholder="List all current medications, dosages, and frequency"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="currentSupplements">Please List Current Supplements (including Peptides) (or type NONE)</label>
+                    <textarea id="currentSupplements" name="currentSupplements" placeholder="List all current supplements, vitamins, and peptides"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="surgeries">Please List Any Surgeries (or type NONE)</label>
+                    <textarea id="surgeries" name="surgeries" placeholder="List all previous surgeries and approximate dates"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Do you drink alcohol?</label>
+                    <div class="radio-group">
+                        <div class="radio-item">
+                            <input type="radio" id="alcoholNever" name="alcoholConsumption" value="never">
+                            <label for="alcoholNever">Never</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="alcoholRarely" name="alcoholConsumption" value="rarely">
+                            <label for="alcoholRarely">Rarely</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="alcoholSocially" name="alcoholConsumption" value="socially">
+                            <label for="alcoholSocially">Socially</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="alcoholRegularly" name="alcoholConsumption" value="regularly">
+                            <label for="alcoholRegularly">Regularly</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Do you take recreational drugs?</label>
+                    <div class="radio-group">
+                        <div class="radio-item">
+                            <input type="radio" id="drugsNo" name="recreationalDrugs" value="no">
+                            <label for="drugsNo">No</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="drugsYes" name="recreationalDrugs" value="yes">
+                            <label for="drugsYes">Yes</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="drugsOccasionally" name="recreationalDrugs" value="occasionally">
+                            <label for="drugsOccasionally">Occasionally</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Are you on a special diet?</label>
+                    <div class="radio-group">
+                        <div class="radio-item">
+                            <input type="radio" id="dietNo" name="specialDiet" value="no">
+                            <label for="dietNo">No</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="dietYes" name="specialDiet" value="yes">
+                            <label for="dietYes">Yes</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="dietDetails" class="conditional-section">
+                    <div class="form-group">
+                        <label for="dietSpecification">Please Specify your Special Diet if applicable</label>
+                        <input type="text" id="dietSpecification" name="dietSpecification" placeholder="e.g., Keto, Vegan, Paleo, Gluten-free, etc.">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Have you had Blood Work within the past 6 months?</label>
+                    <div class="radio-group">
+                        <div class="radio-item">
+                            <input type="radio" id="bloodWorkYes" name="recentBloodWork" value="yes">
+                            <label for="bloodWorkYes">Yes</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="bloodWorkNo" name="recentBloodWork" value="no">
+                            <label for="bloodWorkNo">No</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="bloodWorkUpload" class="conditional-section">
+                    <div class="form-group">
+                        <label>If Yes, please upload Blood Work</label>
+                        <div class="file-upload" onclick="document.getElementById('bloodWorkFiles').click()">
+                            <input type="file" id="bloodWorkFiles" name="bloodWorkFiles" accept="image/*,.pdf" multiple>
+                            <div class="file-upload-content">
+                                <i class="fas fa-file-medical"></i>
+                                <p>Click to upload blood work results</p>
+                                <small>PNG, JPG, PDF files accepted</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Have you had X-rays within the past 6 months?</label>
+                    <div class="radio-group">
+                        <div class="radio-item">
+                            <input type="radio" id="xraysYes" name="recentXrays" value="yes">
+                            <label for="xraysYes">Yes</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="xraysNo" name="recentXrays" value="no">
+                            <label for="xraysNo">No</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="xraysUpload" class="conditional-section">
+                    <div class="form-group">
+                        <label>If Yes, please upload X-Rays</label>
+                        <div class="file-upload" onclick="document.getElementById('xrayFiles').click()">
+                            <input type="file" id="xrayFiles" name="xrayFiles" accept="image/*,.pdf" multiple>
+                            <div class="file-upload-content">
+                                <i class="fas fa-x-ray"></i>
+                                <p>Click to upload X-ray images</p>
+                                <small>PNG, JPG, PDF files accepted</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Have you had an MRI or other scan within the past 6 months?</label>
+                    <div class="radio-group">
+                        <div class="radio-item">
+                            <input type="radio" id="mriYes" name="recentMRI" value="yes">
+                            <label for="mriYes">Yes</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="mriNo" name="recentMRI" value="no">
+                            <label for="mriNo">No</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="mriUpload" class="conditional-section">
+                    <div class="form-group">
+                        <label>If Yes, please upload MRI or other scan</label>
+                        <div class="file-upload" onclick="document.getElementById('mriFiles').click()">
+                            <input type="file" id="mriFiles" name="mriFiles" accept="image/*,.pdf" multiple>
+                            <div class="file-upload-content">
+                                <i class="fas fa-brain"></i>
+                                <p>Click to upload MRI or scan results</p>
+                                <small>PNG, JPG, PDF files accepted</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>On a scale from 1-10, how motivated are you to make changes now?</label>
+                    <div class="scale-group">
+                        <div class="scale-item">
+                            <input type="radio" id="motivation1" name="motivationLevel" value="1">
+                            <label for="motivation1">1</label>
+                        </div>
+                        <div class="scale-item">
+                            <input type="radio" id="motivation2" name="motivationLevel" value="2">
+                            <label for="motivation2">2</label>
+                        </div>
+                        <div class="scale-item">
+                            <input type="radio" id="motivation3" name="motivationLevel" value="3">
+                            <label for="motivation3">3</label>
+                        </div>
+                        <div class="scale-item">
+                            <input type="radio" id="motivation4" name="motivationLevel" value="4">
+                            <label for="motivation4">4</label>
+                        </div>
+                        <div class="scale-item">
+                            <input type="radio" id="motivation5" name="motivationLevel" value="5">
+                            <label for="motivation5">5</label>
+                        </div>
+                        <div class="scale-item">
+                            <input type="radio" id="motivation6" name="motivationLevel" value="6">
+                            <label for="motivation6">6</label>
+                        </div>
+                        <div class="scale-item">
+                            <input type="radio" id="motivation7" name="motivationLevel" value="7">
+                            <label for="motivation7">7</label>
+                        </div>
+                        <div class="scale-item">
+                            <input type="radio" id="motivation8" name="motivationLevel" value="8">
+                            <label for="motivation8">8</label>
+                        </div>
+                        <div class="scale-item">
+                            <input type="radio" id="motivation9" name="motivationLevel" value="9">
+                            <label for="motivation9">9</label>
+                        </div>
+                        <div class="scale-item">
+                            <input type="radio" id="motivation10" name="motivationLevel" value="10">
+                            <label for="motivation10">10</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="obstacles">What's the biggest obstacle that keeps you from reaching your health goals?<br>(e.g., time, money, energy, knowledge, consistency)</label>
+                    <textarea id="obstacles" name="obstacles" placeholder="Please describe the main challenges you face"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Are you more interested in:</label>
+                    <div class="radio-group">
+                        <div class="radio-item">
+                            <input type="radio" id="immediateRelief" name="treatmentFocus" value="immediate-relief">
+                            <label for="immediateRelief">Immediate relief</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="longTermTransformation" name="treatmentFocus" value="long-term-transformation">
+                            <label for="longTermTransformation">Long-term transformation</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="bothFocus" name="treatmentFocus" value="both">
+                            <label for="bothFocus">Both</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="schedulingPreferences">What are your Scheduling Preferences?: Best day/time for an appointment?</label>
+                    <textarea id="schedulingPreferences" name="schedulingPreferences" placeholder="Please specify your preferred days and times for appointments"></textarea>
+                </div>
+
+                <!-- Full Disclosure & Consent -->
+                <h2 class="section-title">FULL DISCLOSURE & CONSENT FOR SERVICES</h2>
+                
+                <div class="consent-section">
+                    <h3>Medical History Disclosure</h3>
+                    <p>I understand that before participating in any service at Be Well Lifestyle Centers or its affiliates—including but not limited to chiropractic adjustments, massage therapy, IV/vitamin/peptide therapy, colon hydrotherapy, cupping, dry needling, compression therapy, vitamin injections, café services, and any other modality—I must fully disclose any and all medical treatments I've had in the past five (5) years that could directly or indirectly affect my safe participation. This includes, but is not limited to, any:</p>
+                    <ul style="margin-left: 20px; margin-bottom: 15px;">
+                        <li>Gastrointestinal evaluations or procedures</li>
+                        <li>Proctology diagnoses or treatments</li>
+                        <li>Scopes and scans with results other than normal findings</li>
+                        <li>Surgeries, medications, or diagnostic tests</li>
+                        <li>Chronic illnesses or conditions</li>
+                    </ul>
+
+                    <h3>Assumption of Risk</h3>
+                    <p>I acknowledge that certain services carry potential risks (e.g., perforation, injury, allergic reaction, discomfort). I accept full responsibility for understanding my own physical limitations and for stopping any procedure immediately if I experience pain, discomfort, or resistance.</p>
+
+                    <h3>Not a Substitute for Medical Care</h3>
+                    <p>I understand that practitioners at Be Well Lifestyle Centers and affiliates are not physicians; they do not diagnose, prescribe, or treat diseases. The services provided are supportive and complementary. It is always advisable to consult a licensed healthcare provider before undergoing any service.</p>
+
+                    <h3>Contraindications</h3>
+                    <p>I certify that I have not been diagnosed with any contraindications for the service(s) I'm consenting to receive. Should any such conditions arise or be disclosed later, I will inform the provider prior to treatment.</p>
+
+                    <h3>Liability Release</h3>
+                    <p>I hereby release Be Well Lifestyle Centers and its affiliates, along with their practitioners and staff, from any liability for harm, injury, or adverse events arising from the services I receive—provided that standard professional protocols are followed.</p>
+
+                    <h3>Marketing Communications Consent</h3>
+                    <p>By signing below, I consent to receive marketing communications from Be Well Lifestyle Centers via email and/or SMS (including updates, promotions, and wellness tips). I understand I may opt out at any time, and that these communications are governed by the company's Mobile Terms & Conditions and Privacy Policy (links available upon request).</p>
+
+                    <h3>Acknowledgment</h3>
+                    <p>I fully understand that withholding relevant medical information may increase my risk of injury and/or limit the effectiveness of the services. I agree that this signed form will be placed in my permanent file, and that all disclosures herein are accurate to the best of my knowledge.</p>
+                </div>
+
+                <div class="signature-section">
+                    <div class="form-group">
+                        <label for="signature">Signature <span class="required">*</span></label>
+                        <input type="text" id="signature" name="signature" placeholder="Type your full legal name" required>
+                        <small style="color: #9ca3af; display: block; margin-top: 5px;">This acts as your electronic signature</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="fullLegalName">Full Legal Name (This acts as your electronic signature) <span class="required">*</span></label>
+                        <input type="text" id="fullLegalName" name="fullLegalName" required>
+                    </div>
+
+                    <div style="margin: 20px 0; padding: 15px; background: rgba(164, 124, 91, 0.1); border-radius: 8px; border: 1px solid rgba(164, 124, 91, 0.2);">
+                        <p style="margin: 0; font-size: 0.9rem; line-height: 1.6;">
+                            By signing with our services, you consent to receive marketing communications from us via email and SMS. These messages may include updates, promotions, and other information relevant to your engagement with us. Your consent is given in accordance with our Mobile Terms and Conditions and Privacy Policy. If you'd like to review these policies, we're happy to provide direct links upon request. Your privacy and preferences are important to us, and you can opt-out of these communications at any time.
+                        </p>
+                    </div>
+
+                    <div class="form-group">
+                        <h3 style="color: #A47C5B; margin-bottom: 15px;">Signature Confirmation Statement</h3>
+                        <div style="display: flex; align-items: flex-start; gap: 15px; margin: 15px 0; padding: 15px; background: rgba(255, 255, 255, 0.02); border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.1);">
+                            <input type="checkbox" id="signatureConfirmation" name="signatureConfirmation" required style="margin-top: 5px; min-width: 18px; width: 18px; height: 18px;">
+                            <label for="signatureConfirmation" style="flex: 1; margin: 0; line-height: 1.6; font-size: 0.95rem;">
+                                I agree that by typing my name above, I am electronically signing this form. I understand that my electronic signature is legally binding and has the same legal effect as a handwritten signature, pursuant to the U.S. Electronic Signatures in Global and National Commerce Act (ESIGN) and applicable state laws.
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="submit-section">
+                    <button type="submit" class="btn-submit">
+                        <i class="fas fa-paper-plane"></i>
+                        Submit Complete BioSync Assessment
+                    </button>
+                    <p style="margin-top: 15px; color: #9ca3af; font-size: 0.9rem;">
+                        This form will be connected to Salesforce Web-to-Lead for automatic processing.
+                    </p>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Set today's date
+        document.getElementById('date').valueAsDate = new Date();
+
+        // Insurance type conditional logic
+        document.querySelectorAll('input[name="insuranceType"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                const detailsSection = document.getElementById('insuranceHolderDetails');
+                if (this.value === 'through-another') {
+                    detailsSection.classList.add('show');
+                } else {
+                    detailsSection.classList.remove('show');
+                }
+            });
+        });
+
+        // File upload feedback
+        document.querySelectorAll('input[type="file"]').forEach(input => {
+            input.addEventListener('change', function() {
+                const uploadDiv = this.parentElement;
+                const textElement = uploadDiv.querySelector('p');
+                
+                if (this.files.length > 0) {
+                    if (this.files.length === 1) {
+                        textElement.textContent = `Selected: ${this.files[0].name}`;
+                    } else {
+                        textElement.textContent = `Selected: ${this.files.length} files`;
+                    }
+                    textElement.style.color = '#A47C5B';
+                } else {
+                    // Reset to original text
+                    if (this.id === 'insuranceCard') {
+                        textElement.textContent = 'Click to upload insurance card (front & back)';
+                    } else if (this.id === 'license') {
+                        textElement.textContent = 'Click to upload driver\'s license';
+                    }
+                    textElement.style.color = '';
+                }
+            });
+        });
+
+        // Special diet conditional logic
+        document.querySelectorAll('input[name="specialDiet"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                const dietDetails = document.getElementById('dietDetails');
+                if (this.value === 'yes') {
+                    dietDetails.classList.add('show');
+                } else {
+                    dietDetails.classList.remove('show');
+                }
+            });
+        });
+
+        // Blood work conditional logic
+        document.querySelectorAll('input[name="recentBloodWork"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                const bloodWorkUpload = document.getElementById('bloodWorkUpload');
+                if (this.value === 'yes') {
+                    bloodWorkUpload.classList.add('show');
+                } else {
+                    bloodWorkUpload.classList.remove('show');
+                }
+            });
+        });
+
+        // X-rays conditional logic
+        document.querySelectorAll('input[name="recentXrays"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                const xraysUpload = document.getElementById('xraysUpload');
+                if (this.value === 'yes') {
+                    xraysUpload.classList.add('show');
+                } else {
+                    xraysUpload.classList.remove('show');
+                }
+            });
+        });
+
+        // MRI conditional logic
+        document.querySelectorAll('input[name="recentMRI"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                const mriUpload = document.getElementById('mriUpload');
+                if (this.value === 'yes') {
+                    mriUpload.classList.add('show');
+                } else {
+                    mriUpload.classList.remove('show');
+                }
+            });
+        });
+
+        // Form submission
+        document.getElementById('biosyncForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Basic validation
+            const requiredFields = this.querySelectorAll('[required]');
+            let allValid = true;
+            
+            requiredFields.forEach(field => {
+                if (!field.value.trim()) {
+                    field.style.borderColor = '#ef4444';
+                    allValid = false;
+                } else {
+                    field.style.borderColor = 'rgba(255, 255, 255, 0.2)';
+                }
+            });
+            
+            if (allValid) {
+                alert('Complete BioSync Assessment submitted successfully! This comprehensive form captures all the information from the original FormAssembly form and is ready to be connected to Salesforce Web-to-Lead.');
+                console.log('Form data:', new FormData(this));
+            } else {
+                alert('Please fill in all required fields marked with *');
+            }
+        });
+    </script>
+</body>
+</html>

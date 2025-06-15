@@ -1,0 +1,366 @@
+/* BioSync Specific Styles */
+
+.biosync-main {
+    min-height: calc(100vh - 200px);
+    padding: 60px 0;
+    background: #f8f9fa;
+}
+
+/* Upload Section */
+.upload-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.upload-card {
+    background: white;
+    border-radius: 16px;
+    padding: 60px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+    max-width: 600px;
+    width: 100%;
+    text-align: center;
+}
+
+.upload-icon {
+    width: 100px;
+    height: 100px;
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 30px;
+    font-size: 48px;
+    color: white;
+}
+
+.upload-card h1 {
+    font-size: 32px;
+    margin-bottom: 10px;
+    color: var(--dark);
+}
+
+.subtitle {
+    font-size: 18px;
+    color: var(--gray);
+    margin-bottom: 40px;
+}
+
+.upload-area {
+    border: 2px dashed #cbd5e0;
+    border-radius: 12px;
+    padding: 60px;
+    margin-bottom: 30px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.upload-area:hover {
+    border-color: var(--primary-color);
+    background: #f0f4ff;
+}
+
+.upload-area.dragover {
+    border-color: var(--primary-color);
+    background: #f0f4ff;
+    transform: scale(1.02);
+}
+
+.upload-prompt i {
+    font-size: 64px;
+    color: var(--primary-color);
+    margin-bottom: 20px;
+}
+
+.upload-prompt p {
+    font-size: 18px;
+    color: var(--gray);
+    margin-bottom: 20px;
+}
+
+.form-link {
+    margin-top: 40px;
+    padding-top: 40px;
+    border-top: 1px solid #e2e8f0;
+}
+
+.form-link p {
+    margin-bottom: 15px;
+    color: var(--gray);
+}
+
+.btn-secondary {
+    background: white;
+    color: var(--primary-color);
+    border: 2px solid var(--primary-color);
+    padding: 12px 30px;
+    border-radius: 25px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.btn-secondary:hover {
+    background: var(--primary-color);
+    color: white;
+}
+
+/* Analysis Section */
+.analysis-section {
+    text-align: center;
+    padding: 60px 0;
+}
+
+.analysis-header h2 {
+    font-size: 28px;
+    margin-bottom: 30px;
+}
+
+.progress-bar {
+    width: 100%;
+    max-width: 500px;
+    height: 8px;
+    background: #e2e8f0;
+    border-radius: 4px;
+    margin: 0 auto 20px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+    width: 0%;
+    transition: width 0.3s ease;
+    border-radius: 4px;
+}
+
+.analysis-status {
+    font-size: 18px;
+    color: var(--gray);
+}
+
+/* Results Section */
+.results-section {
+    background: white;
+    border-radius: 16px;
+    padding: 60px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+}
+
+.results-header {
+    text-align: center;
+    margin-bottom: 40px;
+    padding-bottom: 40px;
+    border-bottom: 2px solid #e2e8f0;
+}
+
+.results-header h1 {
+    font-size: 36px;
+    margin-bottom: 20px;
+}
+
+.client-info {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    font-size: 16px;
+    color: var(--gray);
+}
+
+.client-info strong {
+    color: var(--dark);
+}
+
+/* Recommendations Grid */
+.recommendations-grid {
+    display: grid;
+    gap: 30px;
+    margin-bottom: 50px;
+}
+
+.recommendation-card {
+    background: #f8f9fa;
+    border-radius: 12px;
+    padding: 30px;
+    border-left: 4px solid var(--primary-color);
+}
+
+.recommendation-card h3 {
+    font-size: 20px;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.recommendation-card p {
+    color: var(--gray);
+    margin-bottom: 20px;
+}
+
+.service-list {
+    list-style: none;
+}
+
+.service-list li {
+    padding: 8px 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.service-list li:before {
+    content: "•";
+    color: var(--primary-color);
+    font-weight: bold;
+    font-size: 20px;
+}
+
+/* Next Steps */
+.next-steps {
+    background: linear-gradient(135deg, #f0f4ff, #fff);
+    border-radius: 12px;
+    padding: 40px;
+    margin-bottom: 40px;
+}
+
+.next-steps h2 {
+    font-size: 28px;
+    margin-bottom: 30px;
+}
+
+#nextStepsContent {
+    display: grid;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.step-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+    padding: 15px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.step-item i {
+    color: var(--success-color);
+    font-size: 20px;
+    margin-top: 2px;
+}
+
+/* CTA Section */
+.cta-section {
+    text-align: center;
+    background: white;
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+}
+
+.cta-section h3 {
+    font-size: 24px;
+    margin-bottom: 15px;
+}
+
+.cta-section p {
+    font-size: 18px;
+    color: var(--gray);
+    margin-bottom: 25px;
+}
+
+/* Action Buttons */
+.action-buttons {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 40px;
+    padding-top: 40px;
+    border-top: 1px solid #e2e8f0;
+}
+
+/* File Upload States */
+.file-selected {
+    background: #f0f4ff;
+    border-color: var(--primary-color);
+}
+
+.file-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    margin-top: 20px;
+}
+
+.file-info i {
+    font-size: 24px;
+    color: var(--primary-color);
+}
+
+.file-details {
+    flex: 1;
+    margin: 0 20px;
+    text-align: left;
+}
+
+.file-name {
+    font-weight: 600;
+    color: var(--dark);
+}
+
+.file-size {
+    font-size: 14px;
+    color: var(--gray);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .upload-card,
+    .results-section {
+        padding: 30px 20px;
+    }
+    
+    .upload-area {
+        padding: 40px 20px;
+    }
+    
+    .action-buttons {
+        flex-direction: column;
+    }
+    
+    .action-buttons button {
+        width: 100%;
+    }
+}
+
+/* Print Styles */
+@media print {
+    .header,
+    .footer,
+    .action-buttons,
+    .cta-section button {
+        display: none;
+    }
+    
+    .results-section {
+        box-shadow: none;
+        padding: 20px;
+    }
+    
+    .recommendation-card {
+        break-inside: avoid;
+    }
+}

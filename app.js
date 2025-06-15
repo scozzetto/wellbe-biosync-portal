@@ -228,12 +228,12 @@ function showNotification(message, type = 'info') {
 // Schedule consultation function
 function scheduleConsultation() {
     const patient = getPatientData();
-    const message = `Scheduling consultation for ${patient.name} (ID: ${patient.id})`;
+    const message = `Redirecting to appointment booking...`;
     showNotification(message, 'success');
     
-    // In real implementation, this would trigger API call
+    // Redirect to Be Well booking page
     setTimeout(() => {
-        showNotification('Our team will contact you within 24 hours!', 'success');
+        window.location.href = 'https://bewelllifestylecenters.com/book-an-appointment/';
     }, 1000);
 }
 

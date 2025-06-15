@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Be Well BioSync™ - Personalized Health Analysis</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="biosync-styles.css">
+</head>
+<body>
+    <div id="biosync-app">
+        <!-- Header -->
+        <header class="header">
+            <div class="container">
+                <div class="header-content">
+                    <div class="logo-section">
+                        <img src="logo.svg" alt="Be Well Logo" style="height: 40px; width: auto;">
+                        <span>Be Well BioSync™</span>
+                    </div>
+                    <nav class="nav-menu">
+                        <a href="index.html" class="nav-link">Portal Home</a>
+                        <a href="#" class="nav-link active">BioSync Analysis</a>
+                        <a href="admin.html" class="nav-link">Admin</a>
+                    </nav>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="biosync-main">
+            <div class="container">
+                <!-- Upload Section -->
+                <section class="upload-section" id="uploadSection">
+                    <div class="upload-card">
+                        <div class="upload-icon">
+                            <i class="fas fa-file-upload"></i>
+                        </div>
+                        <h1>Be Well BioSync™ Analysis</h1>
+                        <p class="subtitle">Upload your completed health inquiry form for personalized recommendations</p>
+                        
+                        <div class="upload-area" id="uploadArea">
+                            <input type="file" id="fileInput" accept=".pdf,.csv,.json,.txt" hidden>
+                            <div class="upload-prompt">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                <p>Drag & drop your form here or click to browse</p>
+                                <button class="btn-primary" onclick="document.getElementById('fileInput').click()">
+                                    Select File
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="form-link">
+                            <p>Haven't filled out the form yet?</p>
+                            <a href="https://www.tfaforms.com/5180217" target="_blank" class="btn-secondary">
+                                <i class="fas fa-external-link-alt"></i> Complete Health Inquiry Form
+                            </a>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Analysis Section (Hidden by default) -->
+                <section class="analysis-section hidden" id="analysisSection">
+                    <div class="analysis-header">
+                        <h2>Analyzing Your Health Profile</h2>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progressFill"></div>
+                        </div>
+                        <p class="analysis-status" id="analysisStatus">Processing your information...</p>
+                    </div>
+                </section>
+
+                <!-- Results Section (Hidden by default) -->
+                <section class="results-section hidden" id="resultsSection">
+                    <div class="results-header">
+                        <h1>🧠 Be Well BioSync™ Initial Insight Summary</h1>
+                        <div class="client-info" id="clientInfo"></div>
+                    </div>
+                    
+                    <div class="recommendations-grid" id="recommendationsGrid">
+                        <!-- Recommendations will be dynamically inserted here -->
+                    </div>
+                    
+                    <div class="next-steps">
+                        <h2>✅ Your Personalized Starting Point</h2>
+                        <div id="nextStepsContent"></div>
+                        
+                        <div class="cta-section">
+                            <h3>📝 Next Step for You</h3>
+                            <p>A team member from Be Well will be reaching out shortly via phone or text to guide you through your next steps and provide the intake forms you'll need to get started.</p>
+                            <button class="btn-primary" onclick="scheduleConsultation()">
+                                <i class="fas fa-calendar"></i> Schedule Your Consultation
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="action-buttons">
+                        <button class="btn-secondary" onclick="window.print()">
+                            <i class="fas fa-print"></i> Print Plan
+                        </button>
+                        <button class="btn-secondary" onclick="downloadPlan()">
+                            <i class="fas fa-download"></i> Download PDF
+                        </button>
+                        <button class="btn-primary" onclick="startNewAnalysis()">
+                            <i class="fas fa-redo"></i> New Analysis
+                        </button>
+                    </div>
+                </section>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="container">
+                <div class="footer-content">
+                    <div class="footer-info">
+                        <div class="footer-logo">
+                            <img src="logo.svg" alt="Be Well Logo" style="height: 35px; width: auto; filter: brightness(0) invert(1);">
+                            <span>Be Well LifeStyle Centers</span>
+                        </div>
+                        <div class="contact-info">
+                            <p><i class="fas fa-globe"></i> <a href="https://bewelllifestylecenters.com" target="_blank">bewelllifestylecenters.com</a></p>
+                            <p><i class="fas fa-phone"></i> <a href="tel:248-792-6570">248-792-6570</a></p>
+                            <p><i class="fas fa-map-marker-alt"></i> 750 S. Old Woodward Ave., Birmingham, MI 48009</p>
+                        </div>
+                    </div>
+                    <div class="footer-bottom">
+                        <p>&copy; 2024 Be Well LifeStyle Centers. Helping every human being on Earth be well.</p>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="api-config.js"></script>
+    <script src="biosync.js"></script>
+</body>
+</html>
