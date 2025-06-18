@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cupping Therapy - Be Well LifeStyle Centers</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .service-hero {
+            background: linear-gradient(135deg, rgba(62, 91, 61, 0.95) 0%, rgba(94, 111, 76, 0.95) 100%),
+                        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="1"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+            padding: 100px 0;
+            text-align: center;
+            color: white;
+        }
+
+        .service-hero h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .service-hero p {
+            font-size: 1.25rem;
+            max-width: 600px;
+            margin: 0 auto;
+            opacity: 0.95;
+        }
+
+        .service-content {
+            padding: 80px 0;
+        }
+
+        .service-section {
+            margin-bottom: 60px;
+        }
+
+        .service-section h2 {
+            font-size: 2rem;
+            color: var(--text-color);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .benefits-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin: 40px 0;
+        }
+
+        .benefit-card {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .benefit-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .benefit-card i {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+
+        .benefit-card h3 {
+            font-size: 1.25rem;
+            margin-bottom: 10px;
+            color: var(--text-color);
+        }
+
+        .benefit-card p {
+            color: #9ca3af;
+            line-height: 1.6;
+        }
+
+        .conditions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin: 30px 0;
+        }
+
+        .condition-item {
+            background: rgba(164, 124, 91, 0.1);
+            padding: 15px 20px;
+            border-radius: 8px;
+            border: 1px solid rgba(164, 124, 91, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .condition-item i {
+            color: var(--primary-color);
+        }
+
+        .booking-section {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 60px 40px;
+            text-align: center;
+            margin: 60px 0;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .booking-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+
+        .booking-option {
+            padding: 30px;
+            border-radius: 12px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .booking-option.recommended {
+            border-color: var(--primary-color);
+            background: rgba(164, 124, 91, 0.05);
+        }
+
+        .booking-option h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--text-color);
+        }
+
+        .booking-option p {
+            color: #9ca3af;
+            margin-bottom: 20px;
+        }
+
+        .recommended-badge {
+            background: var(--primary-color);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+
+        .faq-section {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .faq-item {
+            background: var(--card-bg);
+            border-radius: 12px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            overflow: hidden;
+        }
+
+        .faq-question {
+            padding: 25px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.3s ease;
+        }
+
+        .faq-question:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .faq-question h3 {
+            margin: 0;
+            font-size: 1.125rem;
+            color: var(--text-color);
+        }
+
+        .faq-answer {
+            padding: 0 25px 25px;
+            color: #9ca3af;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <!-- Header -->
+        <header class="header">
+            <div class="container">
+                <div class="header-content">
+                    <a href="https://bewelllifestylecenters.com" target="_blank" class="logo-section">
+                        <img src="logo.svg" alt="Be Well Logo" style="height: 40px; width: auto;">
+                        <span>Be Well LifeStyle Centers</span>
+                    </a>
+                    <nav class="nav-menu">
+                        <a href="transformation-hub.html" class="nav-link">← Back to Transformation Hub</a>
+                    </nav>
+                </div>
+            </div>
+        </header>
+
+        <!-- Service Hero -->
+        <section class="service-hero">
+            <div class="container">
+                <h1>Cupping Therapy</h1>
+                <p>Ancient healing technique meets modern wellness to promote circulation, reduce pain, and accelerate your body's natural healing process</p>
+            </div>
+        </section>
+
+        <!-- Service Content -->
+        <section class="service-content">
+            <div class="container">
+                <!-- What is Cupping Therapy -->
+                <div class="service-section">
+                    <h2>What is Cupping Therapy?</h2>
+                    <p style="text-align: center; max-width: 800px; margin: 0 auto; color: #9ca3af; font-size: 1.125rem; line-height: 1.7;">
+                        Cupping therapy is an ancient healing practice that uses suction cups on the skin to promote blood flow, relieve muscle tension, and stimulate healing. This time-tested technique helps release toxins, improve circulation, and provide deep tissue relief without invasive procedures.
+                    </p>
+                </div>
+
+                <!-- Benefits -->
+                <div class="service-section">
+                    <h2>Benefits of Cupping Therapy</h2>
+                    <div class="benefits-list">
+                        <div class="benefit-card">
+                            <i class="fas fa-tint"></i>
+                            <h3>Enhanced Blood Flow</h3>
+                            <p>Increases circulation to treated areas, delivering oxygen and nutrients for faster healing</p>
+                        </div>
+                        <div class="benefit-card">
+                            <i class="fas fa-recycle"></i>
+                            <h3>Toxin Release</h3>
+                            <p>Draws stagnant blood and toxins to the surface for natural elimination</p>
+                        </div>
+                        <div class="benefit-card">
+                            <i class="fas fa-hand-holding-medical"></i>
+                            <h3>Deep Tissue Relief</h3>
+                            <p>Reaches deeper muscle layers than traditional massage for profound relief</p>
+                        </div>
+                        <div class="benefit-card">
+                            <i class="fas fa-fire-alt"></i>
+                            <h3>Reduces Inflammation</h3>
+                            <p>Helps decrease inflammation and speeds up recovery from injuries</p>
+                        </div>
+                        <div class="benefit-card">
+                            <i class="fas fa-lungs"></i>
+                            <h3>Respiratory Health</h3>
+                            <p>Improves breathing and helps clear congestion when applied to the back</p>
+                        </div>
+                        <div class="benefit-card">
+                            <i class="fas fa-battery-full"></i>
+                            <h3>Energy Boost</h3>
+                            <p>Stimulates qi flow and helps restore your body's natural energy balance</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Conditions We Treat -->
+                <div class="service-section">
+                    <h2>Conditions We Address</h2>
+                    <div class="conditions-grid">
+                        <div class="condition-item">
+                            <i class="fas fa-check"></i>
+                            <span>Chronic Back Pain</span>
+                        </div>
+                        <div class="condition-item">
+                            <i class="fas fa-check"></i>
+                            <span>Muscle Knots & Adhesions</span>
+                        </div>
+                        <div class="condition-item">
+                            <i class="fas fa-check"></i>
+                            <span>Sports Recovery</span>
+                        </div>
+                        <div class="condition-item">
+                            <i class="fas fa-check"></i>
+                            <span>Cellulite Reduction</span>
+                        </div>
+                        <div class="condition-item">
+                            <i class="fas fa-check"></i>
+                            <span>Migraines</span>
+                        </div>
+                        <div class="condition-item">
+                            <i class="fas fa-check"></i>
+                            <span>Respiratory Issues</span>
+                        </div>
+                        <div class="condition-item">
+                            <i class="fas fa-check"></i>
+                            <span>Fascial Restrictions</span>
+                        </div>
+                        <div class="condition-item">
+                            <i class="fas fa-check"></i>
+                            <span>Poor Circulation</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Booking Section -->
+                <div class="booking-section">
+                    <h2 style="font-size: 2.5rem; margin-bottom: 15px;">Ready to Experience Ancient Healing?</h2>
+                    <p style="font-size: 1.125rem; color: #9ca3af; margin-bottom: 40px;">
+                        Choose how you'd like to begin your cupping therapy journey at Be Well
+                    </p>
+                    
+                    <div class="booking-options">
+                        <div class="booking-option">
+                            <h3>New Patient?</h3>
+                            <p>First time at Be Well? Our AI assistant will guide you through a comprehensive intake to understand your needs.</p>
+                            <button class="cta-button" onclick="startNewPatientChat('cupping')" style="width: 100%;">
+                                <i class="fas fa-robot"></i>
+                                Start New Patient Intake
+                            </button>
+                        </div>
+                        
+                        <div class="booking-option recommended">
+                            <span class="recommended-badge">RECOMMENDED</span>
+                            <h3>Returning Patient?</h3>
+                            <p>Been here before? Quick booking for cupping therapy - no need to repeat your information.</p>
+                            <a href="https://book.squareup.com/appointments/6pyjoccl1ik8ur/location/101VJFBVK1T29/services/C6PANAC6CP33ITWGU4R566GM" target="_blank" class="cta-button" style="width: 100%;">
+                                <i class="fas fa-calendar-check"></i>
+                                Book Appointment
+                            </a>
+                        </div>
+                    </div>
+
+                    <p style="margin-top: 30px; color: #9ca3af;">
+                        Not sure which option to choose? <a href="biosync-agentforce.html" style="color: var(--primary-color);">Try our BioSync assessment</a> to explore all treatment options.
+                    </p>
+                </div>
+
+                <!-- FAQ Section -->
+                <div class="service-section faq-section">
+                    <h2>Frequently Asked Questions</h2>
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <h3>Does cupping therapy hurt?</h3>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            Cupping therapy should not be painful. Most patients describe a tight, pulling sensation that feels like a deep tissue massage. The intensity can be adjusted to your comfort level. Some people find it deeply relaxing, while others may experience mild discomfort that quickly subsides.
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <h3>Will I have marks after treatment?</h3>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            Yes, cupping often leaves circular marks on the skin that can range from light pink to dark purple. These marks are not bruises but rather a sign of stagnant blood and toxins being drawn to the surface. They typically fade within 3-10 days and are painless.
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <h3>How many sessions will I need?</h3>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            The number of sessions varies based on your condition and treatment goals. Acute conditions may improve after 2-3 sessions, while chronic issues typically require 6-10 sessions. Your practitioner will create a personalized treatment plan and adjust it based on your progress.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="container">
+                <div class="footer-content">
+                    <div class="footer-info">
+                        <div class="footer-logo">
+                            <img src="logo.svg" alt="Be Well Logo" style="height: 35px; width: auto; filter: brightness(0) invert(1);">
+                            <span>Be Well LifeStyle Centers</span>
+                        </div>
+                        <div class="contact-info">
+                            <p><i class="fas fa-globe"></i> <a href="https://bewelllifestylecenters.com" target="_blank">bewelllifestylecenters.com</a></p>
+                            <p><i class="fas fa-phone"></i> <a href="tel:248-792-6570">248-792-6570</a></p>
+                            <p><i class="fas fa-map-marker-alt"></i> 750 S. Old Woodward Ave., Birmingham, MI 48009</p>
+                        </div>
+                    </div>
+                    <div class="footer-bottom">
+                        <p>&copy; 2024 Be Well LifeStyle Centers. Helping every human being on Earth be well. | <a href="privacy-policy.html" style="color: #9ca3af;">Privacy Policy</a> | <a href="terms-of-service.html" style="color: #9ca3af;">Terms of Service</a></p>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Agentforce Chat Container -->
+    <div id="agentforce-chat-container" style="display: none;">
+        <!-- Agentforce will be embedded here -->
+    </div>
+
+    <script>
+        // FAQ Toggle
+        document.querySelectorAll('.faq-question').forEach(question => {
+            question.addEventListener('click', () => {
+                const answer = question.nextElementSibling;
+                const icon = question.querySelector('i');
+                
+                // Toggle answer visibility
+                answer.style.display = answer.style.display === 'block' ? 'none' : 'block';
+                
+                // Rotate icon
+                icon.style.transform = answer.style.display === 'block' ? 'rotate(180deg)' : 'rotate(0)';
+                icon.style.transition = 'transform 0.3s ease';
+            });
+        });
+
+        // Agentforce functions
+        function startNewPatientChat(service) {
+            // Initialize Agentforce with new patient flow
+            console.log('Starting new patient chat for:', service);
+            // TODO: Add Agentforce initialization with service parameter
+            
+            // For now, redirect to BioSync
+            window.location.href = 'biosync-agentforce.html?service=' + service;
+        }
+
+        function startReturningPatientChat(service) {
+            // Initialize Agentforce with returning patient flow
+            console.log('Starting returning patient chat for:', service);
+            // TODO: Add Agentforce initialization for quick booking
+            
+            // Placeholder
+            alert('Returning patient booking for ' + service + ' - Agentforce integration coming soon!');
+        }
+    </script>
+</body>
+</html>

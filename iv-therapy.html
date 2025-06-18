@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IV Nutrition Therapy - Be Well LifeStyle Centers</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .service-hero {
+            background: linear-gradient(135deg, rgba(62, 91, 61, 0.95) 0%, rgba(94, 111, 76, 0.95) 100%),
+                        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="1"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+            padding: 100px 0;
+            text-align: center;
+            color: white;
+        }
+
+        .service-hero h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .service-hero p {
+            font-size: 1.25rem;
+            max-width: 600px;
+            margin: 0 auto;
+            opacity: 0.95;
+        }
+
+        .service-content {
+            padding: 80px 0;
+        }
+
+        .service-section {
+            margin-bottom: 60px;
+        }
+
+        .service-section h2 {
+            font-size: 2rem;
+            color: var(--text-color);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .benefits-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin: 40px 0;
+        }
+
+        .benefit-card {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .benefit-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .benefit-card i {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+
+        .benefit-card h3 {
+            font-size: 1.25rem;
+            margin-bottom: 10px;
+            color: var(--text-color);
+        }
+
+        .benefit-card p {
+            color: #9ca3af;
+            line-height: 1.6;
+        }
+
+        .conditions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin: 30px 0;
+        }
+
+        .condition-item {
+            background: rgba(164, 124, 91, 0.1);
+            padding: 15px 20px;
+            border-radius: 8px;
+            border: 1px solid rgba(164, 124, 91, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .condition-item i {
+            color: var(--primary-color);
+        }
+
+        .booking-section {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 60px 40px;
+            text-align: center;
+            margin: 60px 0;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .booking-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+
+        .booking-option {
+            padding: 30px;
+            border-radius: 12px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .booking-option.recommended {
+            border-color: var(--primary-color);
+            background: rgba(164, 124, 91, 0.05);
+        }
+
+        .booking-option h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--text-color);
+        }
+
+        .booking-option p {
+            color: #9ca3af;
+            margin-bottom: 20px;
+        }
+
+        .recommended-badge {
+            background: var(--primary-color);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+
+        .faq-section {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .faq-item {
+            background: var(--card-bg);
+            border-radius: 12px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            overflow: hidden;
+        }
+
+        .faq-question {
+            padding: 25px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.3s ease;
+        }
+
+        .faq-question:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .faq-question h3 {
+            margin: 0;
+            font-size: 1.125rem;
+            color: var(--text-color);
+        }
+
+        .faq-answer {
+            padding: 0 25px 25px;
+            color: #9ca3af;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <!-- Header -->
+        <header class="header">
+            <div class="container">
+                <div class="header-content">
+                    <a href="https://bewelllifestylecenters.com" target="_blank" class="logo-section">
+                        <img src="logo.svg" alt="Be Well Logo" style="height: 40px; width: auto;">
+                        <span>Be Well LifeStyle Centers</span>
+                    </a>
+                    <nav class="nav-menu">
+                        <a href="transformation-hub.html" class="nav-link">← Back to Transformation Hub</a>
+                    </nav>
+                </div>
+            </div>
+        </header>
+
+        <!-- Service Hero -->
+        <section class="service-hero">
+            <div class="container">
+                <h1>IV Nutrition Therapy</h1>
+                <p>Direct nutrient delivery for optimal cellular function, enhanced immunity, and rapid recovery from illness or fatigue</p>
+            </div>
+        </section>
+
+        <!-- Service Content -->
+        <section class="service-content">
+            <div class="container">
+                <!-- What is IV Nutrition Therapy -->
+                <div class="service-section">
+                    <h2>What is IV Nutrition Therapy?</h2>
+                    <p style="text-align: center; max-width: 800px; margin: 0 auto; color: #9ca3af; font-size: 1.125rem; line-height: 1.7;">
+                        IV Nutrition Therapy delivers essential vitamins, minerals, and nutrients directly into your bloodstream, bypassing the digestive system for 100% absorption. This powerful treatment provides immediate cellular nourishment, supports immune function, and helps your body achieve optimal health more quickly than oral supplements alone.
+                    </p>
+                </div>
+
+                <!-- Benefits -->
+                <div class="service-section">
+                    <h2>Benefits of IV Nutrition Therapy</h2>
+                    <div class="benefits-list">
+                        <div class="benefit-card">
+                            <i class="fas fa-bolt"></i>
+                            <h3>Instant Energy Boost</h3>
+                            <p>Experience immediate energy enhancement through direct B-vitamin delivery</p>
+                        </div>
+                        <div class="benefit-card">
+                            <i class="fas fa-shield-alt"></i>
+                            <h3>Immune System Support</h3>
+                            <p>Strengthen your immune defenses with high-dose vitamin C and zinc</p>
+                        </div>
+                        <div class="benefit-card">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <h3>100% Absorption</h3>
+                            <p>Bypass digestive limitations for complete nutrient utilization</p>
+                        </div>
+                        <div class="benefit-card">
+                            <i class="fas fa-running"></i>
+                            <h3>Faster Recovery</h3>
+                            <p>Accelerate recovery from illness, surgery, or intense physical activity</p>
+                        </div>
+                        <div class="benefit-card">
+                            <i class="fas fa-brain"></i>
+                            <h3>Mental Clarity</h3>
+                            <p>Improve cognitive function and mental sharpness</p>
+                        </div>
+                        <div class="benefit-card">
+                            <i class="fas fa-sparkles"></i>
+                            <h3>Cellular Regeneration</h3>
+                            <p>Support anti-aging and cellular repair processes</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Conditions We Address -->
+                <div class="service-section">
+                    <h2>Conditions We Address</h2>
+                    <div class="conditions-grid">
+                        <div class="condition-item">
+                            <i class="fas fa-check"></i>
+                            <span>Chronic Fatigue</span>
+                        </div>
+                        <div class="condition-item">
+                            <i class="fas fa-check"></i>
+                            <span>Nutrient Deficiencies</span>
+                        </div>
+                        <div class="condition-item">
+                            <i class="fas fa-check"></i>
+                            <span>Frequent Illness</span>
+                        </div>
+                        <div class="condition-item">
+                            <i class="fas fa-check"></i>
+                            <span>Stress & Burnout</span>
+                        </div>
+                        <div class="condition-item">
+                            <i class="fas fa-check"></i>
+                            <span>Post-Surgical Recovery</span>
+                        </div>
+                        <div class="condition-item">
+                            <i class="fas fa-check"></i>
+                            <span>Athletic Performance</span>
+                        </div>
+                        <div class="condition-item">
+                            <i class="fas fa-check"></i>
+                            <span>Hangover Recovery</span>
+                        </div>
+                        <div class="condition-item">
+                            <i class="fas fa-check"></i>
+                            <span>Malabsorption Issues</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Booking Section -->
+                <div class="booking-section">
+                    <h2 style="font-size: 2.5rem; margin-bottom: 15px;">Ready to Supercharge Your Health?</h2>
+                    <p style="font-size: 1.125rem; color: #9ca3af; margin-bottom: 40px;">
+                        Choose how you'd like to begin your IV nutrition therapy journey at Be Well
+                    </p>
+                    
+                    <div class="booking-options">
+                        <div class="booking-option">
+                            <h3>New Patient?</h3>
+                            <p>First time at Be Well? Our AI assistant will guide you through a comprehensive intake to understand your needs.</p>
+                            <button class="cta-button" onclick="startNewPatientChat('iv-therapy')" style="width: 100%;">
+                                <i class="fas fa-robot"></i>
+                                Start New Patient Intake
+                            </button>
+                        </div>
+                        
+                        <div class="booking-option recommended">
+                            <span class="recommended-badge">RECOMMENDED</span>
+                            <h3>Returning Patient?</h3>
+                            <p>Been here before? Quick booking for IV nutrition therapy - no need to repeat your information.</p>
+                            <a href="https://book.squareup.com/appointments/6pyjoccl1ik8ur/location/101VJFBVK1T29/services/LOFQFMLRWBAFB6JLBYNXCU3G" target="_blank" class="cta-button" style="width: 100%;">
+                                <i class="fas fa-calendar-check"></i>
+                                Book Appointment
+                            </a>
+                        </div>
+                    </div>
+
+                    <p style="margin-top: 30px; color: #9ca3af;">
+                        Not sure which option to choose? <a href="biosync-agentforce.html" style="color: var(--primary-color);">Try our BioSync assessment</a> to explore all treatment options.
+                    </p>
+                </div>
+
+                <!-- FAQ Section -->
+                <div class="service-section faq-section">
+                    <h2>Frequently Asked Questions</h2>
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <h3>How long does an IV therapy session take?</h3>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            Most IV therapy sessions take 30-60 minutes, depending on the specific formulation and your individual needs. You can relax in our comfortable treatment rooms, read, work on your laptop, or simply rest while receiving your nutrients. The process is painless and many clients find it quite relaxing.
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <h3>What IV formulations do you offer?</h3>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            We offer customized IV formulations based on your specific health needs, including Myers' Cocktail for general wellness, high-dose vitamin C for immune support, NAD+ for cellular energy and anti-aging, glutathione for detoxification, and specialized blends for athletic performance, stress recovery, and beauty enhancement.
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <h3>How often should I receive IV therapy?</h3>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            The frequency depends on your health goals and current status. For general wellness, monthly sessions work well. For specific health conditions or during times of stress, weekly treatments may be beneficial. For performance enhancement or recovery, sessions may be scheduled around training or events. We'll create a personalized protocol based on your needs.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="container">
+                <div class="footer-content">
+                    <div class="footer-info">
+                        <div class="footer-logo">
+                            <img src="logo.svg" alt="Be Well Logo" style="height: 35px; width: auto; filter: brightness(0) invert(1);">
+                            <span>Be Well LifeStyle Centers</span>
+                        </div>
+                        <div class="contact-info">
+                            <p><i class="fas fa-globe"></i> <a href="https://bewelllifestylecenters.com" target="_blank">bewelllifestylecenters.com</a></p>
+                            <p><i class="fas fa-phone"></i> <a href="tel:248-792-6570">248-792-6570</a></p>
+                            <p><i class="fas fa-map-marker-alt"></i> 750 S. Old Woodward Ave., Birmingham, MI 48009</p>
+                        </div>
+                    </div>
+                    <div class="footer-bottom">
+                        <p>&copy; 2024 Be Well LifeStyle Centers. Helping every human being on Earth be well. | <a href="privacy-policy.html" style="color: #9ca3af;">Privacy Policy</a> | <a href="terms-of-service.html" style="color: #9ca3af;">Terms of Service</a></p>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Agentforce Chat Container -->
+    <div id="agentforce-chat-container" style="display: none;">
+        <!-- Agentforce will be embedded here -->
+    </div>
+
+    <script>
+        // FAQ Toggle
+        document.querySelectorAll('.faq-question').forEach(question => {
+            question.addEventListener('click', () => {
+                const answer = question.nextElementSibling;
+                const icon = question.querySelector('i');
+                
+                // Toggle answer visibility
+                answer.style.display = answer.style.display === 'block' ? 'none' : 'block';
+                
+                // Rotate icon
+                icon.style.transform = answer.style.display === 'block' ? 'rotate(180deg)' : 'rotate(0)';
+                icon.style.transition = 'transform 0.3s ease';
+            });
+        });
+
+        // Agentforce functions
+        function startNewPatientChat(service) {
+            // Initialize Agentforce with new patient flow
+            console.log('Starting new patient chat for:', service);
+            // TODO: Add Agentforce initialization with service parameter
+            
+            // For now, redirect to BioSync
+            window.location.href = 'biosync-agentforce.html?service=' + service;
+        }
+
+        function startReturningPatientChat(service) {
+            // Initialize Agentforce with returning patient flow
+            console.log('Starting returning patient chat for:', service);
+            // TODO: Add Agentforce initialization for quick booking
+            
+            // Placeholder
+            alert('Returning patient booking for ' + service + ' - Agentforce integration coming soon!');
+        }
+    </script>
+</body>
+</html>
