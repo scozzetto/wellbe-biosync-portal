@@ -17,9 +17,9 @@
     
     <style>
         .screening-container {
-            max-width: 600px;
+            max-width: 800px;
             margin: 0 auto;
-            padding: 40px 20px;
+            padding: 60px 20px;
             background: #1a1a1a;
             min-height: 100vh;
             display: flex;
@@ -29,11 +29,13 @@
         
         .screening-card {
             background: linear-gradient(135deg, #2A3441 0%, #1C2630 100%);
-            padding: 40px;
+            padding: 50px 40px;
             border-radius: 16px;
             text-align: center;
             border: 1px solid rgba(164, 124, 91, 0.3);
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: none;
         }
         
         .screening-icon {
@@ -58,21 +60,22 @@
         
         .screening-question {
             background: rgba(164, 124, 91, 0.1);
-            padding: 25px;
+            padding: 35px 30px;
             border-radius: 12px;
-            margin-bottom: 30px;
+            margin-bottom: 40px;
             border: 1px solid rgba(164, 124, 91, 0.2);
         }
         
         .screening-question h3 {
             color: #A47C5B;
-            font-size: 1.25rem;
-            margin-bottom: 20px;
+            font-size: 1.4rem;
+            margin-bottom: 25px;
+            font-weight: 600;
         }
         
         .answer-buttons {
             display: flex;
-            gap: 15px;
+            gap: 20px;
             justify-content: center;
             flex-wrap: wrap;
         }
@@ -80,16 +83,16 @@
         .answer-btn {
             background: linear-gradient(135deg, #A47C5B, #8B6A47);
             color: white;
-            padding: 15px 30px;
+            padding: 18px 35px;
             border: none;
             border-radius: 8px;
-            font-size: 1.1rem;
+            font-size: 1.15rem;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
             text-decoration: none;
             display: inline-block;
-            min-width: 120px;
+            min-width: 160px;
         }
         
         .answer-btn:hover {
@@ -124,6 +127,33 @@
             font-weight: 600;
             display: inline-block;
             margin-bottom: 20px;
+        }
+        
+        @media (max-width: 768px) {
+            .screening-container {
+                padding: 30px 15px;
+            }
+            
+            .screening-card {
+                padding: 30px 25px;
+            }
+            
+            .screening-question {
+                padding: 25px 20px;
+            }
+            
+            .answer-buttons {
+                flex-direction: column;
+                align-items: center;
+                gap: 15px;
+            }
+            
+            .answer-btn {
+                width: 100%;
+                max-width: 280px;
+                padding: 16px 25px;
+                font-size: 1.1rem;
+            }
         }
     </style>
 </head>
