@@ -779,68 +779,56 @@ ul, ol {
     font-size: 1rem !important;
 }
 
-@media (max-width: 768px) {
-    .header {
-        position: relative !important;
-    }
-    
-    .header-content {
+@media screen and (max-width: 768px) {
+    .header .header-content {
         flex-direction: column !important;
         align-items: center !important;
-        gap: 15px !important;
-        position: relative !important;
+        gap: 10px !important;
+        padding: 15px 10px !important;
     }
     
-    .logo-section {
-        flex-direction: row !important;
-        align-items: center !important;
-        gap: 12px !important;
+    .header .header-content .logo-section {
         order: 2 !important;
-    }
-    
-    .logo-section span {
-        font-size: 1rem !important;
-    }
-    
-    .nav-menu {
-        flex-direction: column !important;
-        gap: 12px !important;
-        align-items: center !important;
-        width: 100% !important;
-        order: 1 !important;
-        position: relative !important;
-        top: 0 !important;
-    }
-    
-    .book-now-btn {
-        padding: 16px 24px !important;
-        font-size: 1rem !important;
-        font-weight: 700 !important;
-        margin-left: 0 !important;
-        order: 1 !important;
-        width: 95% !important;
-        max-width: 350px !important;
-        justify-content: center !important;
-        position: relative !important;
-        top: 0 !important;
-        margin-bottom: 8px !important;
-        border-radius: 30px !important;
-        box-shadow: 0 8px 25px rgba(164, 124, 91, 0.5) !important;
-    }
-    
-    .contact-info {
-        order: 2 !important;
-        align-items: center !important;
-        margin-top: 0 !important;
-    }
-    
-    .phone-link {
         font-size: 0.9rem !important;
     }
     
-    .contact-text {
-        font-size: 0.75rem !important;
+    .header .header-content .logo-section img {
+        height: 30px !important;
+    }
+    
+    .header .header-content .nav-menu {
+        order: 1 !important;
+        flex-direction: column !important;
+        gap: 8px !important;
+        align-items: center !important;
+        width: 100% !important;
+    }
+    
+    .header .header-content .nav-menu .book-now-btn {
+        display: block !important;
+        width: 90% !important;
+        max-width: 320px !important;
+        padding: 15px 20px !important;
+        font-size: 1rem !important;
+        font-weight: 700 !important;
+        margin: 0 auto 10px auto !important;
+        border-radius: 25px !important;
         text-align: center !important;
+        box-shadow: 0 6px 20px rgba(164, 124, 91, 0.6) !important;
+        order: 1 !important;
+    }
+    
+    .header .header-content .nav-menu .contact-info {
+        order: 2 !important;
+        text-align: center !important;
+    }
+    
+    .header .header-content .nav-menu .contact-info .phone-link {
+        font-size: 0.85rem !important;
+    }
+    
+    .header .header-content .nav-menu .contact-info .contact-text {
+        font-size: 0.7rem !important;
     }
 }
 
