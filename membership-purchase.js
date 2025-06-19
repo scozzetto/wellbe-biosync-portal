@@ -65,3 +65,8 @@ document.getElementById('membership-form').addEventListener('submit', async (e) 
         document.getElementById('checkout-form').style.display = 'block';
     }
 });
+
+// Chat button functionality
+document.getElementById('chat-button').addEventListener('click', function() {
+    alert('Chat feature coming soon! For immediate assistance, please call (248) 792-6570 or email us at info@bewelllifestylecenters.com');
+});
