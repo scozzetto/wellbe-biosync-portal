@@ -779,56 +779,104 @@ ul, ol {
     font-size: 1rem !important;
 }
 
+/* Floating Mobile Book Now Button */
+.mobile-book-float {
+    display: none;
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+    animation: pulse 2s infinite;
+}
+
+.mobile-book-float a {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: linear-gradient(135deg, #A47C5B, #8B6A47);
+    color: white !important;
+    padding: 16px 20px;
+    border-radius: 30px;
+    font-weight: 700;
+    font-size: 1rem;
+    text-decoration: none !important;
+    box-shadow: 
+        0 8px 25px rgba(164, 124, 91, 0.6),
+        0 0 20px rgba(164, 124, 91, 0.3);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+}
+
+.mobile-book-float a:hover {
+    transform: scale(1.05);
+    box-shadow: 
+        0 12px 30px rgba(164, 124, 91, 0.8),
+        0 0 30px rgba(164, 124, 91, 0.5);
+}
+
+@keyframes pulse {
+    0% { 
+        box-shadow: 0 8px 25px rgba(164, 124, 91, 0.6), 0 0 20px rgba(164, 124, 91, 0.3);
+    }
+    50% { 
+        box-shadow: 0 12px 35px rgba(164, 124, 91, 0.8), 0 0 30px rgba(164, 124, 91, 0.6);
+    }
+    100% { 
+        box-shadow: 0 8px 25px rgba(164, 124, 91, 0.6), 0 0 20px rgba(164, 124, 91, 0.3);
+    }
+}
+
 @media screen and (max-width: 768px) {
+    /* Hide the original header book button on mobile */
+    .header .header-content .nav-menu .book-now-btn {
+        display: none !important;
+    }
+    
+    /* Hide the "Be Well LifeStyle Centers" text on mobile */
+    .header .header-content .logo-section span {
+        display: none !important;
+    }
+    
+    /* Show floating button on mobile */
+    .mobile-book-float {
+        display: block !important;
+    }
+    
+    /* Clean up header */
     .header .header-content {
-        flex-direction: column !important;
+        flex-direction: row !important;
+        justify-content: space-between !important;
         align-items: center !important;
-        gap: 10px !important;
-        padding: 15px 10px !important;
+        padding: 15px 20px !important;
     }
     
     .header .header-content .logo-section {
-        order: 2 !important;
-        font-size: 0.9rem !important;
+        order: 1 !important;
     }
     
     .header .header-content .logo-section img {
-        height: 30px !important;
+        height: 35px !important;
     }
     
     .header .header-content .nav-menu {
-        order: 1 !important;
-        flex-direction: column !important;
-        gap: 8px !important;
+        order: 2 !important;
+        flex-direction: row !important;
+        gap: 0 !important;
         align-items: center !important;
-        width: 100% !important;
-    }
-    
-    .header .header-content .nav-menu .book-now-btn {
-        display: block !important;
-        width: 90% !important;
-        max-width: 320px !important;
-        padding: 15px 20px !important;
-        font-size: 1rem !important;
-        font-weight: 700 !important;
-        margin: 0 auto 10px auto !important;
-        border-radius: 25px !important;
-        text-align: center !important;
-        box-shadow: 0 6px 20px rgba(164, 124, 91, 0.6) !important;
-        order: 1 !important;
+        width: auto !important;
     }
     
     .header .header-content .nav-menu .contact-info {
-        order: 2 !important;
-        text-align: center !important;
+        text-align: right !important;
     }
     
     .header .header-content .nav-menu .contact-info .phone-link {
-        font-size: 0.85rem !important;
+        font-size: 0.9rem !important;
     }
     
     .header .header-content .nav-menu .contact-info .contact-text {
-        font-size: 0.7rem !important;
+        font-size: 0.75rem !important;
     }
 }
 
