@@ -1079,15 +1079,15 @@
                 <div style="text-align: center;">
                     <p style="color: #9ca3af; margin-bottom: 15px; font-size: 0.9rem; font-style: italic;">*Does not include NAD+</p>
                     <p style="color: #e5e7eb; margin-bottom: 20px; font-size: 1rem;">
-                        Ready to join? Purchase your membership now or schedule a consultation to learn more
+                        Ready to join? Purchase your membership now or ask our AI assistant any questions
                     </p>
                     <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
                         <a href="membership-purchase.html" style="background: linear-gradient(135deg, #3E5B3D, #2A4029); padding: 12px 30px; border-radius: 6px; color: white; text-decoration: none; font-weight: 600; transition: all 0.3s ease;">
                             <i class="fas fa-credit-card"></i> Purchase Membership
                         </a>
-                        <a href="booking-screening.html?service=Membership%20Consultation&url=https://book.squareup.com/appointments/6pyjoccl1ik8ur/location/101VJFBVK1T29/services/VM3STNIB3CXEVLNPXTD6IFSR" style="background: linear-gradient(135deg, #A47C5B, #8B6A47); padding: 12px 30px; border-radius: 6px; color: white; text-decoration: none; font-weight: 600; transition: all 0.3s ease;">
-                            <i class="fas fa-calendar-check"></i> Schedule Consultation
-                        </a>
+                        <button id="membership-ai-button" style="background: linear-gradient(135deg, #A47C5B, #8B6A47); padding: 12px 30px; border-radius: 6px; color: white; border: none; font-weight: 600; transition: all 0.3s ease; cursor: pointer;">
+                            <i class="fas fa-robot"></i> Ask AI about Memberships
+                        </button>
                     </div>
                 </div>
             </div>
@@ -1817,6 +1817,11 @@
                     item.classList.toggle('active');
                 });
             });
+        });
+
+        // AI Membership Assistant functionality
+        document.getElementById('membership-ai-button').addEventListener('click', function() {
+            alert('🤖 AI Membership Assistant (Coming Soon!)\n\nOur AI assistant will help answer questions like:\n• Which membership tier is right for me?\n• What services are included?\n• How do banked funds work?\n• Can I use insurance?\n\nFor now, please call (248) 792-6570 or use the chat button for assistance!');
         });
     </script>
     <script src="chat-support.js"></script>
