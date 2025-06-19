@@ -10,7 +10,7 @@ const API_CONFIG = {
     
     // API Key - IMPORTANT: Replace with your actual API key
     // For security, this should ideally be stored in environment variables
-    apiKey: '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',
+    apiKey: 'YOUR_OPENAI_API_KEY_HERE',
     
     // Assistant API Configuration (if using custom GPT)
     useAssistant: false, // Set to true if you have a custom GPT
