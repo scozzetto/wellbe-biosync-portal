@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Be Well Memberships - Purchase</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://js.stripe.com/v3/"></script>
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <div class="logo-section">
+                <img src="logo.svg" alt="Be Well Logo" class="logo">
+            </div>
+        </div>
+    </nav>
+
+    <main class="membership-purchase-container">
+        <h1>Choose Your Be Well Bank™ Membership</h1>
+        
+        <div class="membership-cards">
+            <div class="membership-card" data-membership="restore" data-price="149">
+                <h2>Restore</h2>
+                <div class="price">$149<span>/month</span></div>
+                <ul>
+                    <li>$149 monthly credit</li>
+                    <li>10% discount on services</li>
+                    <li>Priority booking</li>
+                </ul>
+                <button class="select-membership" onclick="selectMembership('restore')">Select Restore</button>
+            </div>
+
+            <div class="membership-card" data-membership="revive" data-price="299">
+                <h2>Revive</h2>
+                <div class="price">$299<span>/month</span></div>
+                <ul>
+                    <li>$299 monthly credit</li>
+                    <li>15% discount on services</li>
+                    <li>Priority booking</li>
+                    <li>Monthly wellness consultation</li>
+                </ul>
+                <button class="select-membership" onclick="selectMembership('revive')">Select Revive</button>
+            </div>
+
+            <div class="membership-card popular" data-membership="renew" data-price="499">
+                <div class="popular-badge">MOST POPULAR</div>
+                <h2>Renew</h2>
+                <div class="price">$499<span>/month</span></div>
+                <ul>
+                    <li>$499 monthly credit</li>
+                    <li>20% discount on services</li>
+                    <li>Priority booking</li>
+                    <li>Monthly wellness consultation</li>
+                    <li>Quarterly lab work</li>
+                </ul>
+                <button class="select-membership" onclick="selectMembership('renew')">Select Renew</button>
+            </div>
+
+            <div class="membership-card" data-membership="total-wellness" data-price="799">
+                <h2>Total Wellness</h2>
+                <div class="price">$799<span>/month</span></div>
+                <ul>
+                    <li>$799 monthly credit</li>
+                    <li>25% discount on services</li>
+                    <li>VIP booking access</li>
+                    <li>Weekly wellness consultations</li>
+                    <li>Monthly lab work</li>
+                    <li>Personalized wellness plan</li>
+                </ul>
+                <button class="select-membership" onclick="selectMembership('total-wellness')">Select Total Wellness</button>
+            </div>
+        </div>
+
+        <div id="checkout-form" style="display: none;">
+            <h2>Complete Your Membership</h2>
+            <form id="membership-form">
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <button type="submit" id="checkout-button" class="btn-primary">
+                    Proceed to Payment
+                </button>
+            </form>
+        </div>
+
+        <div class="loading-spinner" id="loading" style="display: none;">
+            <div class="spinner"></div>
+            <p>Processing...</p>
+        </div>
+    </main>
+
+    <script src="membership-purchase.js"></script>
+</body>
+</html>

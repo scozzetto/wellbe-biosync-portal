@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Successful - Be Well</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <div class="logo-section">
+                <img src="logo.svg" alt="Be Well Logo" class="logo">
+            </div>
+        </div>
+    </nav>
+
+    <main class="success-container" style="text-align: center; padding: 60px 20px;">
+        <div style="max-width: 600px; margin: 0 auto;">
+            <h1 style="color: var(--primary-color); margin-bottom: 30px;">Thank You!</h1>
+            
+            <div id="membership-success" style="display: none;">
+                <h2>Your Membership is Active!</h2>
+                <p>Welcome to the Be Well family! Your membership benefits are now active.</p>
+                <p>You'll receive a confirmation email with:</p>
+                <ul style="list-style: none; padding: 20px 0;">
+                    <li>✓ Your membership details</li>
+                    <li>✓ How to book appointments</li>
+                    <li>✓ Your member benefits guide</li>
+                </ul>
+                <a href="booking-screening.html" class="btn-primary" style="display: inline-block; margin-top: 20px;">Book Your First Appointment</a>
+            </div>
+            
+            <div id="gift-card-success" style="display: none;">
+                <h2>Gift Card Purchased!</h2>
+                <p>Your Be Well gift card has been sent to the recipient.</p>
+                <p>They'll receive an email with:</p>
+                <ul style="list-style: none; padding: 20px 0;">
+                    <li>✓ Their gift card code</li>
+                    <li>✓ Your personal message</li>
+                    <li>✓ Instructions for redemption</li>
+                </ul>
+                <a href="index.html" class="btn-primary" style="display: inline-block; margin-top: 20px;">Return Home</a>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Determine what type of success to show based on URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const sessionId = urlParams.get('session_id');
+        
+        // For now, show membership success by default
+        // In production, you'd verify the session type with your backend
+        document.getElementById('membership-success').style.display = 'block';
+    </script>
+</body>
+</html>

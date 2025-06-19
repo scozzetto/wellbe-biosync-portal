@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chiropractic Care - Be Well LifeStyle Centers</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .service-hero {
+            background: linear-gradient(135deg, rgba(62, 91, 61, 0.95) 0%, rgba(94, 111, 76, 0.95) 100%),
+                        url('https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            padding: 100px 0;
+            text-align: center;
+            color: white;
+        }
+
+        .service-hero h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .service-hero p {
+            font-size: 1.25rem;
+            max-width: 600px;
+            margin: 0 auto;
+            opacity: 0.95;
+        }
+
+        .service-content {
+            padding: 80px 0;
+        }
+
+        .service-section {
+            margin-bottom: 60px;
+        }
+
+        .service-section h2 {
+            font-size: 2rem;
+            color: var(--text-color);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .benefits-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin: 40px 0;
+        }
+
+        .benefit-card {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .benefit-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .benefit-card i {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+
+        .benefit-card h3 {
+            font-size: 1.25rem;
+            margin-bottom: 10px;
+            color: var(--text-color);
+        }
+
+        .benefit-card p {
+            color: #9ca3af;
+            line-height: 1.6;
+        }
+
+        .conditions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin: 30px 0;
+        }
+
+        .condition-item {
+            background: rgba(164, 124, 91, 0.1);
+            padding: 15px 20px;
+            border-radius: 8px;
+            border: 1px solid rgba(164, 124, 91, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .condition-item i {
+            color: var(--primary-color);
+        }
+
+        .booking-section {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 60px 40px;
+            text-align: center;
+            margin: 60px 0;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .booking-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+
+        .booking-option {
+            padding: 30px;
+            border-radius: 12px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .booking-option.recommended {
+            border-color: var(--primary-color);
+            background: rgba(164, 124, 91, 0.05);
+        }
+
+        .booking-option h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--text-color);
+        }
+
+        .booking-option p {
+            color: #9ca3af;
+            margin-bottom: 20px;
+        }
+
+        .recommended-badge {
+            background: var(--primary-color);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+
+        .faq-section {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .faq-item {
+            background: var(--card-bg);
+            border-radius: 12px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            overflow: hidden;
+        }
+
+        .faq-question {
+            padding: 25px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.3s ease;
+        }
+
+        .faq-question:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .faq-question h3 {
+            margin: 0;
+            font-size: 1.125rem;
+            color: var(--text-color);
+        }
+
+        .faq-answer {
+            padding: 0 25px 25px;
+            color: #9ca3af;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <!-- Header -->
+        <header class="header">
+            <div class="container">
+                <div class="header-content">
+                    <a href="https://bewelllifestylecenters.com" target="_blank" class="logo-section">
+                        <img src="logo.svg" alt="Be Well Logo" style="height: 40px; width: auto;">
+                        <span>Be Well LifeStyle Centers</span>
+                    </a>
+                    <nav class="nav-menu">
+                        <a href="index.html" class="nav-link">← Back to Portal</a>
+                    </nav>
+                </div>
+            </div>
+        </header>
+
+        <!-- Service Hero -->
+        <section class="service-hero">
+            <div class="container">
+                <h1>Chiropractic Care</h1>
+                <p>Restore your body's natural alignment and unlock your full potential for health and wellness</p>
+            </div>
+        </section>
+
+        <!-- Service Content -->
+        <section class="service-content">
+            <div class="container">
+                <!-- What is Chiropractic -->
+                <div class="service-section">
+                    <h2>What is Chiropractic Care?</h2>
+                    <p style="text-align: center; max-width: 800px; margin: 0 auto; color: #9ca3af; font-size: 1.125rem; line-height: 1.7;">
+                        Chiropractic care focuses on diagnosing and treating neuromuscular disorders through manual adjustment and manipulation of the spine. Our expert chiropractors help restore proper alignment, reduce pain, and improve your body's overall function.
+                    </p>
+                    
+                    <!-- Image Gallery -->
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin: 40px 0;">
+                        <div style="border-radius: 12px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.3);">
+                            <img src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" 
+                                 alt="Female chiropractor performing spinal adjustment" 
+                                 style="width: 100%; height: 200px; object-fit: cover;">
+                        </div>
+                        <div style="border-radius: 12px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.3);">
+                            <img src="https://images.unsplash.com/photo-1544161515-4ab6ce6db874?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" 
+                                 alt="Chiropractor helping patient with stretching exercises" 
+                                 style="width: 100%; height: 200px; object-fit: cover;">
+                        </div>
+                        <div style="border-radius: 12px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.3);">
+                            <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" 
+                                 alt="Posture exercises and spinal rehabilitation" 
+                                 style="width: 100%; height: 200px; object-fit: cover;">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Benefits -->
+                <div class="service-section">
+                    <h2>Benefits of Chiropractic Care</h2>
+                    <div class="benefits-list">
+                        <div class="benefit-card">
+                            <i class="fas fa-check-circle"></i>
+                            <h3>Pain Relief</h3>
+                            <p>Effective treatment for back pain, neck pain, headaches, and joint discomfort without medication</p>
+                        </div>
+                        <div class="benefit-card">
+                            <i class="fas fa-arrows-alt"></i>
+                            <h3>Improved Mobility</h3>
+                            <p>Restore range of motion and flexibility through targeted adjustments and therapeutic techniques</p>
+                        </div>
+                        <div class="benefit-card">
+                            <i class="fas fa-brain"></i>
+                            <h3>Enhanced Nervous System</h3>
+                            <p>Optimize nerve function and communication between your brain and body</p>
+                        </div>
+                        <div class="benefit-card">
+                            <i class="fas fa-shield-alt"></i>
+                            <h3>Injury Prevention</h3>
+                            <p>Strengthen your body's natural defenses and reduce risk of future injuries</p>
+                        </div>
+                        <div class="benefit-card">
+                            <i class="fas fa-bolt"></i>
+                            <h3>Increased Energy</h3>
+                            <p>Feel more energized as your body functions more efficiently</p>
+                        </div>
+                        <div class="benefit-card">
+                            <i class="fas fa-bed"></i>
+                            <h3>Better Sleep</h3>
+                            <p>Improve sleep quality by reducing pain and promoting relaxation</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Conditions We Treat -->
+                <div class="service-section">
+                    <h2>Conditions We Treat</h2>
+                    <div class="conditions-grid">
+                        <div class="condition-item">
+                            <i class="fas fa-check"></i>
+                            <span>Lower Back Pain</span>
+                        </div>
+                        <div class="condition-item">
+                            <i class="fas fa-check"></i>
+                            <span>Neck Pain</span>
+                        </div>
+                        <div class="condition-item">
+                            <i class="fas fa-check"></i>
+                            <span>Headaches & Migraines</span>
+                        </div>
+                        <div class="condition-item">
+                            <i class="fas fa-check"></i>
+                            <span>Sciatica</span>
+                        </div>
+                        <div class="condition-item">
+                            <i class="fas fa-check"></i>
+                            <span>Herniated Discs</span>
+                        </div>
+                        <div class="condition-item">
+                            <i class="fas fa-check"></i>
+                            <span>Whiplash</span>
+                        </div>
+                        <div class="condition-item">
+                            <i class="fas fa-check"></i>
+                            <span>Sports Injuries</span>
+                        </div>
+                        <div class="condition-item">
+                            <i class="fas fa-check"></i>
+                            <span>Arthritis</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Booking Section -->
+                <div class="booking-section">
+                    <h2 style="font-size: 2.5rem; margin-bottom: 15px;">Ready to Start Your Healing Journey?</h2>
+                    <p style="font-size: 1.125rem; color: #9ca3af; margin-bottom: 40px;">
+                        Choose how you'd like to begin your chiropractic care at Be Well
+                    </p>
+                    
+                    <div class="booking-options">
+                        <div class="booking-option">
+                            <h3>New Patient?</h3>
+                            <p>First time at Be Well? Our AI assistant will guide you through a comprehensive intake to understand your needs.</p>
+                            <button class="cta-button" onclick="startNewPatientChat('chiropractic')" style="width: 100%;">
+                                <i class="fas fa-robot"></i>
+                                Start New Patient Intake
+                            </button>
+                        </div>
+                        
+                        <div class="booking-option recommended">
+                            <span class="recommended-badge">RECOMMENDED</span>
+                            <h3>Returning Patient?</h3>
+                            <p>Been here before? Quick booking for chiropractic care - no need to repeat your information.</p>
+                            <a href="https://book.squareup.com/appointments/6pyjoccl1ik8ur/location/101VJFBVK1T29/services/X5LKHPIBWOJUAHZHAINTAMZG" target="_blank" class="cta-button" style="width: 100%;">
+                                <i class="fas fa-calendar-check"></i>
+                                Book Appointment
+                            </a>
+                        </div>
+                    </div>
+
+                    <p style="margin-top: 30px; color: #9ca3af;">
+                        Not sure which option to choose? <a href="biosync-agentforce.html" style="color: var(--primary-color);">Try our BioSync assessment</a> to explore all treatment options.
+                    </p>
+                </div>
+
+                <!-- FAQ Section -->
+                <div class="service-section faq-section">
+                    <h2>Frequently Asked Questions</h2>
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <h3>Is chiropractic care safe?</h3>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            Yes, chiropractic care is a safe, non-invasive treatment option when performed by licensed professionals. Our chiropractors are highly trained and use gentle, precise techniques tailored to each patient's needs.
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <h3>How many sessions will I need?</h3>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            The number of sessions varies based on your condition, health goals, and response to treatment. After your initial assessment, we'll create a personalized treatment plan and discuss the recommended frequency of visits.
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <h3>Does insurance cover chiropractic care?</h3>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            Many insurance plans cover chiropractic care. We'll verify your benefits during the intake process and help you understand your coverage options.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="container">
+                <div class="footer-content">
+                    <div class="footer-info">
+                        <div class="footer-logo">
+                            <img src="logo.svg" alt="Be Well Logo" style="height: 35px; width: auto; filter: brightness(0) invert(1);">
+                            <span>Be Well LifeStyle Centers</span>
+                        </div>
+                        <div class="contact-info">
+                            <p><i class="fas fa-globe"></i> <a href="https://bewelllifestylecenters.com" target="_blank">bewelllifestylecenters.com</a></p>
+                            <p><i class="fas fa-phone"></i> <a href="tel:248-792-6570">248-792-6570</a></p>
+                            <p><i class="fas fa-map-marker-alt"></i> 750 S. Old Woodward Ave., Birmingham, MI 48009</p>
+                        </div>
+                    </div>
+                    <div class="footer-bottom">
+                        <p>&copy; 2024 Be Well LifeStyle Centers. Helping every human being on Earth be well. | <a href="privacy-policy.html" style="color: #9ca3af;">Privacy Policy</a> | <a href="terms-of-service.html" style="color: #9ca3af;">Terms of Service</a></p>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Agentforce Chat Container -->
+    <div id="agentforce-chat-container" style="display: none;">
+        <!-- Agentforce will be embedded here -->
+    </div>
+
+    <script>
+        // FAQ Toggle
+        document.querySelectorAll('.faq-question').forEach(question => {
+            question.addEventListener('click', () => {
+                const answer = question.nextElementSibling;
+                const icon = question.querySelector('i');
+                
+                // Toggle answer visibility
+                answer.style.display = answer.style.display === 'block' ? 'none' : 'block';
+                
+                // Rotate icon
+                icon.style.transform = answer.style.display === 'block' ? 'rotate(180deg)' : 'rotate(0)';
+                icon.style.transition = 'transform 0.3s ease';
+            });
+        });
+
+        // Agentforce functions
+        function startNewPatientChat(service) {
+            // Initialize Agentforce with new patient flow
+            console.log('Starting new patient chat for:', service);
+            // TODO: Add Agentforce initialization with service parameter
+            
+            // For now, redirect to BioSync
+            window.location.href = 'biosync-agentforce.html?service=' + service;
+        }
+
+        function startReturningPatientChat(service) {
+            // Initialize Agentforce with returning patient flow
+            console.log('Starting returning patient chat for:', service);
+            // TODO: Add Agentforce initialization for quick booking
+            
+            // Placeholder
+            alert('Returning patient booking for ' + service + ' - Agentforce integration coming soon!');
+        }
+    </script>
+</body>
+</html>

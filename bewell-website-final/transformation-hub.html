@@ -1,0 +1,1719 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Be Well LifeStyle Centers - Your Transformation Starts Here | Chiropractic, IV Therapy, Wellness</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Transform your health at Be Well LifeStyle Centers in Birmingham, MI. Expert chiropractic care, IV therapy, massage, colon hydrotherapy, and personalized wellness programs. Book your BioSync assessment or individual services today.">
+    <meta name="keywords" content="chiropractic Birmingham MI, IV therapy, wellness center, massage therapy, colon hydrotherapy, NAD+ therapy, peptide therapy, health transformation, holistic health, vitamin injections">
+    <meta name="author" content="Be Well LifeStyle Centers">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Open Graph Tags for Social Media -->
+    <meta property="og:title" content="Be Well LifeStyle Centers - Your Transformation Starts Here">
+    <meta property="og:description" content="Transform your health with expert chiropractic care, IV therapy, massage, and personalized wellness programs in Birmingham, MI.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://bewell-portal.netlify.app">
+    <meta property="og:image" content="https://bewell-portal.netlify.app/logo.svg">
+    <meta property="og:site_name" content="Be Well LifeStyle Centers">
+    <meta property="og:locale" content="en_US">
+    
+    <!-- Twitter Card Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Be Well LifeStyle Centers - Your Transformation Starts Here">
+    <meta name="twitter:description" content="Transform your health with expert chiropractic care, IV therapy, massage, and personalized wellness programs in Birmingham, MI.">
+    <meta name="twitter:image" content="https://bewell-portal.netlify.app/logo.svg">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    
+    <!-- Local Business Schema -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "MedicalBusiness",
+      "name": "Be Well LifeStyle Centers",
+      "image": "https://bewell-portal.netlify.app/logo.svg",
+      "description": "Comprehensive wellness center offering chiropractic care, IV therapy, massage, and personalized health transformation programs.",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "750 S. Old Woodward Ave.",
+        "addressLocality": "Birmingham",
+        "addressRegion": "MI",
+        "postalCode": "48009",
+        "addressCountry": "US"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": "42.5467",
+        "longitude": "-83.2113"
+      },
+      "telephone": "+1-248-792-6570",
+      "email": "info@bewelllifestylecenters.com",
+      "url": "https://bewelllifestylecenters.com",
+      "openingHours": [
+        "Mo-Fr 09:00-18:00",
+        "Sa 10:00-16:00"
+      ],
+      "priceRange": "$$",
+      "servedCuisine": [],
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Wellness Services",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Chiropractic Care"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "IV Nutrition Therapy"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Massage Therapy"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Colon Hydrotherapy"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Total Transformation Program"
+            }
+          }
+        ]
+      }
+    }
+    </script>
+    
+    <!-- Google Analytics (Replace YOUR_GA_ID with your actual Google Analytics ID) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=YOUR_GA_ID"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'YOUR_GA_ID');
+    </script>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .hero-section {
+            padding: 120px 0;
+            text-align: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+            background: #1C2630;
+        }
+        
+        /* Video Background */
+        .video-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+        }
+        
+        .video-background video {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            transform: translate(-50%, -50%);
+            object-fit: cover;
+        }
+        
+        /* Video Overlay */
+        .video-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(28, 38, 48, 0.4);
+            z-index: 1;
+        }
+
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="1"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+            opacity: 0.3;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .hero-subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 40px;
+            opacity: 0.95;
+        }
+
+        .path-selection {
+            padding: 80px 0;
+        }
+
+        .paths-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .path-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 50px 40px;
+            text-align: center;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .path-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            border-color: var(--primary-color);
+        }
+
+        .path-card.recommended::before {
+            content: 'MOST POPULAR';
+            position: absolute;
+            top: 20px;
+            right: -30px;
+            background: var(--primary-color);
+            color: white;
+            padding: 5px 40px;
+            transform: rotate(45deg);
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .path-icon {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 30px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: white;
+        }
+
+        .path-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--text-color);
+        }
+
+        .path-description {
+            font-size: 1.125rem;
+            color: #9ca3af;
+            margin-bottom: 30px;
+            line-height: 1.7;
+        }
+
+        .path-examples {
+            text-align: left;
+            margin: 30px 0;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 20px;
+            border-radius: 12px;
+        }
+
+        .path-examples h4 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+
+        .path-examples ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .path-examples li {
+            padding: 8px 0;
+            padding-left: 25px;
+            position: relative;
+            color: #9ca3af;
+        }
+
+        .path-examples li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: var(--primary-color);
+        }
+
+        .cta-button {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 18px 36px;
+            border-radius: 50px;
+            font-size: 1.125rem;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(164, 124, 91, 0.3);
+        }
+
+        .services-quick-access {
+            padding: 60px 0;
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            max-width: 1000px;
+            margin: 40px auto 0;
+        }
+
+        .service-quick-link {
+            background: var(--card-bg);
+            padding: 25px;
+            border-radius: 12px;
+            text-align: center;
+            text-decoration: none;
+            color: var(--text-color);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .service-quick-link:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary-color);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .service-quick-link i {
+            font-size: 2rem;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .testimonial-section {
+            padding: 80px 0;
+            text-align: center;
+        }
+
+        .testimonial-card {
+            max-width: 800px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            padding: 40px;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .testimonial-text {
+            font-size: 1.25rem;
+            font-style: italic;
+            color: var(--text-color);
+            margin-bottom: 20px;
+            line-height: 1.7;
+        }
+
+        .testimonial-author {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        
+        /* Mobile Video Optimization */
+        @media (max-width: 768px) {
+            .hero-section {
+                padding: 80px 0;
+            }
+            
+            .video-background video {
+                min-width: 100%;
+                min-height: 100%;
+                width: auto;
+                height: auto;
+            }
+            
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.25rem;
+            }
+        }
+
+        /* Health & Wellness Section */
+        .wellness-section {
+            padding: 100px 0;
+            background: linear-gradient(135deg, rgba(164, 124, 91, 0.05) 0%, rgba(128, 96, 68, 0.05) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .wellness-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .wellness-text h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--text-color);
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .wellness-text h2 span {
+            color: var(--primary-color);
+        }
+
+        .wellness-text p {
+            font-size: 1.125rem;
+            color: #9ca3af;
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+
+        .wellness-features {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .wellness-feature {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .wellness-feature i {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            width: 40px;
+            height: 40px;
+            background: rgba(164, 124, 91, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .wellness-visual {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .wellness-visual-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            max-width: 400px;
+        }
+
+        .wellness-visual-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 30px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .wellness-visual-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .wellness-visual-card i {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+
+        .wellness-visual-card h4 {
+            font-size: 1.125rem;
+            color: var(--text-color);
+            margin-bottom: 10px;
+        }
+
+        .wellness-visual-card p {
+            font-size: 0.875rem;
+            color: #9ca3af;
+        }
+
+        /* Photo Gallery Section */
+        .gallery-section {
+            padding: 80px 0;
+            background: var(--bg-color);
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 40px;
+        }
+
+        .gallery-item {
+            position: relative;
+            border-radius: 16px;
+            overflow: hidden;
+            height: 250px;
+            background: var(--card-bg);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+
+        .gallery-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 100%);
+            padding: 20px;
+            color: white;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+        }
+
+        .gallery-item:hover .gallery-overlay {
+            transform: translateY(0);
+        }
+
+        .gallery-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            font-size: 3rem;
+        }
+
+        /* Enhanced Testimonials Section */
+        .testimonials-enhanced {
+            padding: 80px 0;
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .testimonial-enhanced {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .testimonial-enhanced:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .testimonial-rating {
+            color: #FFD700;
+            margin-bottom: 15px;
+        }
+
+        .testimonial-content {
+            font-size: 1.0625rem;
+            line-height: 1.7;
+            color: var(--text-color);
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+
+        .testimonial-author-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .testimonial-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 1.25rem;
+        }
+
+        .testimonial-author-details h4 {
+            color: var(--primary-color);
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .testimonial-author-details p {
+            color: #9ca3af;
+            font-size: 0.875rem;
+        }
+
+        /* FAQ Section */
+        .faq-section {
+            padding: 80px 0;
+        }
+
+        .faq-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .faq-category {
+            margin-bottom: 40px;
+        }
+
+        .faq-category h3 {
+            color: var(--primary-color);
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            padding-left: 30px;
+            position: relative;
+        }
+
+        .faq-category h3::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 20px;
+            height: 2px;
+            background: var(--primary-color);
+        }
+
+        .faq-item {
+            background: var(--card-bg);
+            border-radius: 12px;
+            margin-bottom: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .faq-item:hover {
+            border-color: var(--primary-color);
+        }
+
+        .faq-question {
+            padding: 20px 25px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 500;
+            color: var(--text-color);
+            transition: all 0.3s ease;
+        }
+
+        .faq-question:hover {
+            color: var(--primary-color);
+        }
+
+        .faq-question i {
+            transition: transform 0.3s ease;
+            color: var(--primary-color);
+        }
+
+        .faq-item.active .faq-question i {
+            transform: rotate(180deg);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .faq-answer-content {
+            padding: 0 25px 20px;
+            color: #9ca3af;
+            line-height: 1.7;
+        }
+
+        .faq-item.active .faq-answer {
+            max-height: 500px;
+        }
+
+        /* Enhanced Footer */
+        .footer-enhanced {
+            background: #0f0f0f;
+            padding: 60px 0 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-column h3 {
+            color: var(--primary-color);
+            font-size: 1.25rem;
+            margin-bottom: 20px;
+        }
+
+        .footer-column p,
+        .footer-column a {
+            color: #9ca3af;
+            line-height: 1.7;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-column a:hover {
+            color: var(--primary-color);
+        }
+
+        .footer-hours {
+            margin-top: 15px;
+        }
+
+        .footer-hours-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .footer-social a {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #9ca3af;
+            transition: all 0.3s ease;
+        }
+
+        .footer-social a:hover {
+            background: var(--primary-color);
+            color: white;
+            transform: translateY(-3px);
+        }
+
+        /* Mobile Responsive Styles */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1.25rem;
+            }
+
+            .paths-container {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+
+            .wellness-content {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .wellness-features {
+                grid-template-columns: 1fr;
+            }
+
+            .wellness-visual-grid {
+                grid-template-columns: 1fr;
+                max-width: 300px;
+            }
+
+            .gallery-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .testimonials-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+
+            .services-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-title {
+                font-size: 2rem;
+            }
+
+            .wellness-text h2 {
+                font-size: 2rem;
+            }
+
+            .path-card {
+                padding: 30px 20px;
+            }
+
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Welcome Screen -->
+    <div class="welcome-screen" id="welcomeScreen">
+        <!-- Floating Particles -->
+        <div class="particles">
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+        </div>
+        
+        <div class="logo-animation">
+            <div class="pulse-ring"></div>
+            <div class="pulse-ring"></div>
+            <div class="pulse-ring"></div>
+            <div class="logo">
+                <img src="logo.svg" alt="Be Well Logo">
+            </div>
+        </div>
+        <h1 class="welcome-title">Be Well</h1>
+        <p class="welcome-subtitle">Your Personalized Wellness Journey Begins</p>
+    </div>
+
+    <div id="app" style="display: none;">
+        <!-- Header -->
+        <header class="header">
+            <div class="container">
+                <div class="header-content">
+                    <a href="https://bewelllifestylecenters.com" target="_blank" class="logo-section">
+                        <img src="logo.svg" alt="Be Well Logo" style="height: 40px; width: auto;">
+                        <span>Be Well LifeStyle Centers</span>
+                    </a>
+                    <nav class="nav-menu">
+                        <a href="tel:248-792-6570" class="nav-link">
+                            <i class="fas fa-phone"></i> 248-792-6570
+                        </a>
+                    </nav>
+                </div>
+            </div>
+        </header>
+
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <!-- Video Background -->
+            <div class="video-background">
+                <video autoplay muted loop playsinline>
+                    <source src="https://bewelllifestylecenters.com/wp-content/uploads/2024/07/Be_Well_Lifestyle-header_vid.webm" type="video/webm">
+                    <source src="https://bewelllifestylecenters.com/wp-content/uploads/2024/07/Be_Well_Lifestyle-header_vid.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+            
+            <!-- Video Overlay -->
+            <div class="video-overlay"></div>
+            
+            <div class="container hero-content">
+                <h1 class="hero-title">Ready to Transform Your Life?</h1>
+                <p class="hero-subtitle">Choose your path to wellness at Be Well LifeStyle Centers</p>
+            </div>
+        </section>
+
+        <!-- Health & Wellness Section -->
+        <section class="wellness-section">
+            <div class="container">
+                <div class="wellness-content">
+                    <div class="wellness-text">
+                        <h2>Health & Wellness <span>From The Inside Out</span></h2>
+                        <p>
+                            At Be Well LifeStyle Centers, we believe true wellness begins from within. Our integrated approach combines cutting-edge treatments with holistic care to address the root causes of your health concerns, not just the symptoms.
+                        </p>
+                        <p>
+                            Whether you're seeking pain relief, optimizing your nutrition, or transforming your entire lifestyle, our expert team creates personalized treatment plans that work with your body's natural healing abilities.
+                        </p>
+                        <div class="wellness-features">
+                            <div class="wellness-feature">
+                                <i class="fas fa-leaf"></i>
+                                <span>Natural Healing</span>
+                            </div>
+                            <div class="wellness-feature">
+                                <i class="fas fa-user-md"></i>
+                                <span>Expert Practitioners</span>
+                            </div>
+                            <div class="wellness-feature">
+                                <i class="fas fa-chart-line"></i>
+                                <span>Measurable Results</span>
+                            </div>
+                            <div class="wellness-feature">
+                                <i class="fas fa-heart"></i>
+                                <span>Whole-Body Approach</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="wellness-visual">
+                        <div class="wellness-visual-grid">
+                            <div class="wellness-visual-card">
+                                <i class="fas fa-dna"></i>
+                                <h4>Cellular Health</h4>
+                                <p>Optimize at the molecular level</p>
+                            </div>
+                            <div class="wellness-visual-card">
+                                <i class="fas fa-brain"></i>
+                                <h4>Mental Clarity</h4>
+                                <p>Sharp mind, clear focus</p>
+                            </div>
+                            <div class="wellness-visual-card">
+                                <i class="fas fa-running"></i>
+                                <h4>Physical Vitality</h4>
+                                <p>Energy that lasts all day</p>
+                            </div>
+                            <div class="wellness-visual-card">
+                                <i class="fas fa-balance-scale"></i>
+                                <h4>Life Balance</h4>
+                                <p>Harmony in all aspects</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Path Selection -->
+        <section class="path-selection">
+            <div class="container">
+                <h2 class="section-title" style="text-align: center; margin-bottom: 60px;">
+                    How Can We Help You Today?
+                </h2>
+                
+                <div class="paths-container">
+                    <!-- BioSync Path - FIRST -->
+                    <div class="path-card">
+                        <div class="path-icon">
+                            <i class="fas fa-compass"></i>
+                        </div>
+                        <h3 class="path-title">How Can We Help You? Let Us Guide You!</h3>
+                        <p class="path-description">
+                            Not sure where to start? Let our intelligent BioSync assessment guide you to the perfect treatments for your unique needs.
+                        </p>
+                        <div class="path-examples">
+                            <h4>Perfect if you:</h4>
+                            <ul>
+                                <li>Want to explore all our services</li>
+                                <li>Have multiple health concerns</li>
+                                <li>Aren't sure what would help most</li>
+                                <li>Want personalized recommendations</li>
+                                <li>Like to understand all your options</li>
+                                <li>Prefer expert guidance</li>
+                            </ul>
+                        </div>
+                        <a href="biosync-agentforce.html" class="cta-button">
+                            <i class="fas fa-stethoscope"></i>
+                            Guide Me with BioSync
+                        </a>
+                    </div>
+
+                    <!-- À la Carte Path - SECOND -->
+                    <div class="path-card">
+                        <div class="path-icon">
+                            <i class="fas fa-list-ul"></i>
+                        </div>
+                        <h3 class="path-title">I Know What I Want - Book À la Carte Services</h3>
+                        <p class="path-description">
+                            Already know which specific service you want? Book your individual treatment directly with our à la carte options.
+                        </p>
+                        <div class="path-examples">
+                            <h4>Direct booking for:</h4>
+                            <ul>
+                                <li>Chiropractic</li>
+                                <li>Massage Therapy</li>
+                                <li>Cupping</li>
+                                <li>Dry Needling</li>
+                                <li>Colon Hydrotherapy</li>
+                                <li>IV Nutrition</li>
+                                <li>NAD+ IV Infusion</li>
+                                <li>Vitamin Injections</li>
+                                <li>Peptide Therapy</li>
+                                <li>Blood and Urine</li>
+                            </ul>
+                        </div>
+                        <a href="#services" class="cta-button" onclick="scrollToServices()">
+                            <i class="fas fa-calendar-check"></i>
+                            Book Individual Service
+                        </a>
+                    </div>
+
+                    <!-- Total Transformation Path - THIRD -->
+                    <div class="path-card recommended">
+                        <div class="path-icon">
+                            <i class="fas fa-rocket"></i>
+                        </div>
+                        <h3 class="path-title">Total Life Transformation</h3>
+                        <p class="path-description">
+                            Our exclusive 12-Week Total Transformation Program is designed for those ready to completely revolutionize their health and lifestyle.
+                        </p>
+                        <div class="path-examples">
+                            <h4>Your journey includes:</h4>
+                            <ul>
+                                <li>Comprehensive BioSync baseline assessment</li>
+                                <li>Personalized 12-week transformation plan</li>
+                                <li>Weekly progress monitoring & adjustments</li>
+                                <li>Full-body wellness optimization</li>
+                                <li>Nutrition & lifestyle coaching</li>
+                                <li>Complete mind-body transformation</li>
+                            </ul>
+                        </div>
+                        <a href="biosync-agentforce.html" class="cta-button">
+                            <i class="fas fa-star"></i>
+                            Start with BioSync Assessment
+                        </a>
+                        <p style="margin-top: 15px; font-size: 0.9rem; color: #9ca3af;">
+                            <em>Your transformation begins with understanding where you are now</em>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Photo Gallery Section -->
+        <section class="gallery-section">
+            <div class="container">
+                <h2 class="section-title" style="text-align: center; margin-bottom: 20px;">
+                    Experience Our Healing Environment
+                </h2>
+                <p style="text-align: center; color: #9ca3af; margin-bottom: 40px;">
+                    Step inside our state-of-the-art facility designed for your comfort and healing
+                </p>
+                
+                <div class="gallery-grid">
+                    <div class="gallery-item">
+                        <div class="gallery-placeholder">
+                            <i class="fas fa-spa"></i>
+                        </div>
+                        <div class="gallery-overlay">
+                            <h4>Relaxing Treatment Rooms</h4>
+                            <p>Designed for your comfort and healing</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item">
+                        <div class="gallery-placeholder">
+                            <i class="fas fa-stethoscope"></i>
+                        </div>
+                        <div class="gallery-overlay">
+                            <h4>Advanced Chiropractic Suite</h4>
+                            <p>State-of-the-art equipment for precise adjustments</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item">
+                        <div class="gallery-placeholder">
+                            <i class="fas fa-syringe"></i>
+                        </div>
+                        <div class="gallery-overlay">
+                            <h4>IV Therapy Lounge</h4>
+                            <p>Comfortable seating for nutrient infusions</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item">
+                        <div class="gallery-placeholder">
+                            <i class="fas fa-water"></i>
+                        </div>
+                        <div class="gallery-overlay">
+                            <h4>Hydrotherapy Suite</h4>
+                            <p>Private and pristine treatment areas</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item">
+                        <div class="gallery-placeholder">
+                            <i class="fas fa-leaf"></i>
+                        </div>
+                        <div class="gallery-overlay">
+                            <h4>Wellness Reception</h4>
+                            <p>Welcoming space to begin your journey</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item">
+                        <div class="gallery-placeholder">
+                            <i class="fas fa-microscope"></i>
+                        </div>
+                        <div class="gallery-overlay">
+                            <h4>Diagnostic Center</h4>
+                            <p>Advanced lab analysis capabilities</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Quick Service Access -->
+        <section id="services" class="services-quick-access">
+            <div class="container">
+                <h2 class="section-title" style="text-align: center; margin-bottom: 20px;">
+                    Individual Services (À la Carte)
+                </h2>
+                <p style="text-align: center; color: #9ca3af; margin-bottom: 40px;">
+                    Book your specific service directly. Click any service below to schedule your appointment.
+                </p>
+                
+                <div class="services-grid">
+                    <a href="https://book.squareup.com/appointments/6pyjoccl1ik8ur/location/101VJFBVK1T29/services/X5LKHPIBWOJUAHZHAINTAMZG" target="_blank" class="service-quick-link">
+                        <svg width="40" height="40" viewBox="0 0 80 160" fill="currentColor" style="color: #A47C5B;">
+                            <!-- Cervical vertebrae (neck) -->
+                            <circle cx="40" cy="15" r="6" fill="currentColor"/>
+                            <circle cx="40" cy="25" r="6" fill="currentColor"/>
+                            <circle cx="40" cy="35" r="6" fill="currentColor"/>
+                            <circle cx="40" cy="45" r="6" fill="currentColor"/>
+                            <circle cx="40" cy="55" r="6" fill="currentColor"/>
+                            
+                            <!-- Thoracic vertebrae (upper back) - larger -->
+                            <circle cx="40" cy="70" r="8" fill="currentColor"/>
+                            <circle cx="40" cy="85" r="8" fill="currentColor"/>
+                            <circle cx="40" cy="100" r="8" fill="currentColor"/>
+                            <circle cx="40" cy="115" r="8" fill="currentColor"/>
+                            
+                            <!-- Lumbar vertebrae (lower back) - largest -->
+                            <circle cx="40" cy="130" r="10" fill="currentColor"/>
+                            <circle cx="40" cy="145" r="10" fill="currentColor"/>
+                            
+                            <!-- Sacrum -->
+                            <ellipse cx="40" cy="155" rx="12" ry="6" fill="currentColor"/>
+                        </svg>
+                        <h4>Chiropractic</h4>
+                    </a>
+                    <a href="https://book.squareup.com/appointments/6pyjoccl1ik8ur/location/101VJFBVK1T29/services/2ESJVZCHRDFGRLNW4IAGC4ZG" target="_blank" class="service-quick-link">
+                        <i class="fas fa-spa"></i>
+                        <h4>Massage Therapy</h4>
+                    </a>
+                    <a href="https://book.squareup.com/appointments/6pyjoccl1ik8ur/location/101VJFBVK1T29/services/C6PANAC6CP33ITWGU4R566GM" target="_blank" class="service-quick-link">
+                        <i class="fas fa-circle-notch"></i>
+                        <h4>Cupping</h4>
+                    </a>
+                    <a href="https://book.squareup.com/appointments/6pyjoccl1ik8ur/location/101VJFBVK1T29/services/DNJQYRCFEIY3PG6T63MAKN7R" target="_blank" class="service-quick-link">
+                        <i class="fas fa-thumbtack"></i>
+                        <h4>Dry Needling</h4>
+                    </a>
+                    <a href="https://book.squareup.com/appointments/6pyjoccl1ik8ur/location/101VJFBVK1T29/services/RTYBPPZR446LN3J4YT6MZBSK" target="_blank" class="service-quick-link">
+                        <i class="fas fa-water"></i>
+                        <h4>Colon Hydrotherapy</h4>
+                    </a>
+                    <a href="https://book.squareup.com/appointments/6pyjoccl1ik8ur/location/101VJFBVK1T29/services/LOFQFMLRWBAFB6JLBYNXCU3G" target="_blank" class="service-quick-link">
+                        <i class="fas fa-syringe"></i>
+                        <h4>IV Nutrition</h4>
+                    </a>
+                    <a href="https://book.squareup.com/appointments/6pyjoccl1ik8ur/location/101VJFBVK1T29/services/CUHIZIBVXXXKW2VETBLSZ4G4" target="_blank" class="service-quick-link">
+                        <i class="fas fa-dna"></i>
+                        <h4>NAD+ IV Infusion</h4>
+                    </a>
+                    <a href="https://book.squareup.com/appointments/6pyjoccl1ik8ur/location/101VJFBVK1T29/services/NOJ7EEYPNQ6323OFOLNJWCMU" target="_blank" class="service-quick-link">
+                        <i class="fas fa-vial"></i>
+                        <h4>Vitamin Injections</h4>
+                    </a>
+                    <a href="https://book.squareup.com/appointments/6pyjoccl1ik8ur/location/101VJFBVK1T29/services/I3PF3QC6H2QJJM6H3VQU5RL3" target="_blank" class="service-quick-link">
+                        <i class="fas fa-dna"></i>
+                        <h4>Peptide Therapy</h4>
+                    </a>
+                    <a href="https://book.squareup.com/appointments/6pyjoccl1ik8ur/location/101VJFBVK1T29/services/N26CBGXQADUJUUSA2MTB6QXR" target="_blank" class="service-quick-link">
+                        <i class="fas fa-microscope"></i>
+                        <h4>Blood and Urine</h4>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Enhanced Testimonials Section -->
+        <section class="testimonials-enhanced">
+            <div class="container">
+                <h2 class="section-title" style="text-align: center; margin-bottom: 20px;">
+                    Real Stories, Real Transformations
+                </h2>
+                <p style="text-align: center; color: #9ca3af; margin-bottom: 40px;">
+                    Hear from our patients who've experienced life-changing results
+                </p>
+                
+                <div class="testimonials-grid">
+                    <div class="testimonial-enhanced">
+                        <div class="testimonial-rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <p class="testimonial-content">
+                            "After years of chronic back pain, I finally found relief at Be Well. The combination of chiropractic care and IV therapy has given me my life back. I can play with my kids again!"
+                        </p>
+                        <div class="testimonial-author-info">
+                            <div class="testimonial-avatar">MR</div>
+                            <div class="testimonial-author-details">
+                                <h4>Michael R.</h4>
+                                <p>Chronic Pain Relief</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="testimonial-enhanced">
+                        <div class="testimonial-rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <p class="testimonial-content">
+                            "The Total Transformation program changed everything for me. I lost 45 pounds, my energy is through the roof, and my digestive issues are completely resolved. Best investment I've ever made!"
+                        </p>
+                        <div class="testimonial-author-info">
+                            <div class="testimonial-avatar">JT</div>
+                            <div class="testimonial-author-details">
+                                <h4>Jennifer T.</h4>
+                                <p>Total Transformation Graduate</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="testimonial-enhanced">
+                        <div class="testimonial-rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <p class="testimonial-content">
+                            "NAD+ IV therapy has been a game-changer for my brain fog and fatigue. I feel 10 years younger and my productivity at work has skyrocketed. The staff here truly cares about your wellness."
+                        </p>
+                        <div class="testimonial-author-info">
+                            <div class="testimonial-avatar">DC</div>
+                            <div class="testimonial-author-details">
+                                <h4>David C.</h4>
+                                <p>NAD+ Therapy Patient</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="testimonial-enhanced">
+                        <div class="testimonial-rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <p class="testimonial-content">
+                            "As someone with IBS, colon hydrotherapy at Be Well has been life-changing. Combined with their nutrition guidance, I'm finally free from the constant discomfort I lived with for years."
+                        </p>
+                        <div class="testimonial-author-info">
+                            <div class="testimonial-avatar">AL</div>
+                            <div class="testimonial-author-details">
+                                <h4>Amanda L.</h4>
+                                <p>Digestive Health Success</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="testimonial-enhanced">
+                        <div class="testimonial-rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <p class="testimonial-content">
+                            "The peptide therapy helped me recover from my sports injury faster than I ever imagined. The comprehensive approach here addresses everything - not just symptoms but root causes."
+                        </p>
+                        <div class="testimonial-author-info">
+                            <div class="testimonial-avatar">RS</div>
+                            <div class="testimonial-author-details">
+                                <h4>Ryan S.</h4>
+                                <p>Athletic Recovery</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="testimonial-enhanced">
+                        <div class="testimonial-rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <p class="testimonial-content">
+                            "My migraines are gone! After trying everything, the combination of chiropractic adjustments and dry needling finally gave me relief. I can't thank the Be Well team enough."
+                        </p>
+                        <div class="testimonial-author-info">
+                            <div class="testimonial-avatar">KM</div>
+                            <div class="testimonial-author-details">
+                                <h4>Karen M.</h4>
+                                <p>Migraine Relief</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonial -->
+        <section class="testimonial-section">
+            <div class="container">
+                <h2 class="section-title">Why Choose Be Well?</h2>
+                <div class="testimonial-card">
+                    <p class="testimonial-text">
+                        "Be Well isn't just a clinic - it's a complete transformation center. Whether you come in for a specific issue or decide to overhaul your entire lifestyle, their integrated approach and cutting-edge treatments deliver real results."
+                    </p>
+                    <p class="testimonial-author">- Sarah M., Total Transformation Graduate</p>
+                </div>
+                
+                <div style="margin-top: 40px;">
+                    <p style="font-size: 1.25rem; color: var(--primary-color); font-weight: 600;">
+                        Not sure which path is right for you?
+                    </p>
+                    <p style="color: #9ca3af; margin: 20px 0;">
+                        Start with our BioSync assessment - it's free and will recommend the perfect treatment plan for your needs.
+                    </p>
+                    <a href="biosync-agentforce.html" class="cta-button" style="max-width: 400px; margin: 0 auto;">
+                        <i class="fas fa-compass"></i>
+                        Let BioSync Guide You
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ Section -->
+        <section class="faq-section">
+            <div class="container">
+                <h2 class="section-title" style="text-align: center; margin-bottom: 40px;">
+                    Frequently Asked Questions
+                </h2>
+                
+                <div class="faq-container">
+                    <!-- Getting Started FAQs -->
+                    <div class="faq-category">
+                        <h3>Getting Started</h3>
+                        
+                        <div class="faq-item">
+                            <div class="faq-question">
+                                <span>How do I know which service is right for me?</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="faq-answer">
+                                <div class="faq-answer-content">
+                                    We recommend starting with our free BioSync assessment. This intelligent tool analyzes your symptoms and health goals to recommend the most appropriate treatment plan. Alternatively, you can schedule a consultation where our experts will create a personalized wellness plan based on your specific needs.
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="faq-item">
+                            <div class="faq-question">
+                                <span>Do I need a referral to visit Be Well?</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="faq-answer">
+                                <div class="faq-answer-content">
+                                    No referral is needed! We accept self-referrals and welcome anyone seeking to improve their health and wellness. Simply book your appointment online or call us directly.
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="faq-item">
+                            <div class="faq-question">
+                                <span>What should I expect during my first visit?</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="faq-answer">
+                                <div class="faq-answer-content">
+                                    Your first visit includes a comprehensive health assessment, discussion of your wellness goals, and creation of a personalized treatment plan. We'll review your medical history, perform any necessary examinations, and explain all recommended treatments. Plan for about 60-90 minutes for your initial consultation.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Services & Treatments FAQs -->
+                    <div class="faq-category">
+                        <h3>Services & Treatments</h3>
+                        
+                        <div class="faq-item">
+                            <div class="faq-question">
+                                <span>What is the Total Transformation program?</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="faq-answer">
+                                <div class="faq-answer-content">
+                                    Our Total Transformation program is a comprehensive wellness journey that addresses every aspect of your health. It includes personalized nutrition planning, targeted treatments (chiropractic, IV therapy, etc.), fitness guidance, stress management, and ongoing support. The program typically runs 12-16 weeks and is customized to your specific goals, whether that's weight loss, pain relief, energy optimization, or complete lifestyle change.
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="faq-item">
+                            <div class="faq-question">
+                                <span>How often will I need treatments?</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="faq-answer">
+                                <div class="faq-answer-content">
+                                    Treatment frequency varies based on your condition and goals. Initially, you may need 2-3 visits per week, gradually decreasing as you improve. Some services like IV therapy might be weekly or monthly, while others like chiropractic care may start more frequently then transition to maintenance visits. We'll create a schedule that fits your needs and lifestyle.
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="faq-item">
+                            <div class="faq-question">
+                                <span>Are your treatments safe?</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="faq-answer">
+                                <div class="faq-answer-content">
+                                    Absolutely. All our treatments are performed by licensed, experienced practitioners using FDA-approved equipment and protocols. We thoroughly review your medical history and current medications to ensure all treatments are safe for you. Our integrated approach means all your providers communicate to ensure coordinated, safe care.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Insurance & Payment FAQs -->
+                    <div class="faq-category">
+                        <h3>Insurance & Payment</h3>
+                        
+                        <div class="faq-item">
+                            <div class="faq-question">
+                                <span>Do you accept insurance?</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="faq-answer">
+                                <div class="faq-answer-content">
+                                    We accept many major insurance plans for covered services like chiropractic care and physiotherapy. However, some services like IV therapy and peptides may not be covered. We'll verify your benefits before treatment and provide transparent pricing for all services. We also offer flexible payment plans and package discounts.
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="faq-item">
+                            <div class="faq-question">
+                                <span>What payment options do you offer?</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="faq-answer">
+                                <div class="faq-answer-content">
+                                    We accept cash, all major credit cards, HSA/FSA cards, and offer financing through CareCredit. We also have membership programs and package deals that provide significant savings for multiple treatments. Our team will work with you to find a payment solution that fits your budget.
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="faq-item">
+                            <div class="faq-question">
+                                <span>Can I use my HSA or FSA?</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="faq-answer">
+                                <div class="faq-answer-content">
+                                    Yes! Most of our services qualify for HSA/FSA payment, including chiropractic care, physiotherapy, lab testing, and many other treatments. We can provide detailed receipts with appropriate coding for reimbursement or direct payment.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Results & Expectations FAQs -->
+                    <div class="faq-category">
+                        <h3>Results & Expectations</h3>
+                        
+                        <div class="faq-item">
+                            <div class="faq-question">
+                                <span>How quickly will I see results?</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="faq-answer">
+                                <div class="faq-answer-content">
+                                    Results vary by individual and treatment type. Some patients experience immediate relief after chiropractic adjustments or IV therapy, while others may need several sessions. Typically, you'll notice improvements within 2-4 weeks of consistent treatment. Our Total Transformation program shows significant results within 4-6 weeks, with full transformation achieved in 12-16 weeks.
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="faq-item">
+                            <div class="faq-question">
+                                <span>What if the treatment doesn't work for me?</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="faq-answer">
+                                <div class="faq-answer-content">
+                                    We're committed to your success. If you're not seeing expected results, we'll reassess your treatment plan and make adjustments. Our integrated approach means we have many tools available - if one treatment isn't optimal, we can try complementary approaches. We also offer satisfaction guarantees on certain programs.
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="faq-item">
+                            <div class="faq-question">
+                                <span>Do you provide ongoing support?</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="faq-answer">
+                                <div class="faq-answer-content">
+                                    Absolutely! We believe in long-term wellness, not quick fixes. After your initial treatment phase, we offer maintenance programs, regular check-ins, and ongoing support. Many patients join our wellness membership for continued access to treatments and resources at discounted rates.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="text-align: center; margin-top: 50px;">
+                    <p style="font-size: 1.125rem; color: var(--primary-color); margin-bottom: 20px;">
+                        Still have questions?
+                    </p>
+                    <a href="tel:248-792-6570" class="cta-button" style="max-width: 300px; margin: 0 auto;">
+                        <i class="fas fa-phone"></i>
+                        Call or Text:<br>248-792-6570
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Enhanced Footer -->
+        <footer class="footer-enhanced">
+            <div class="container">
+                <div class="footer-grid">
+                    <!-- About Column -->
+                    <div class="footer-column">
+                        <div class="footer-logo" style="margin-bottom: 20px;">
+                            <img src="logo.svg" alt="Be Well Logo" style="height: 40px; width: auto; filter: brightness(0) invert(1);">
+                        </div>
+                        <p style="margin-bottom: 20px;">
+                            Be Well LifeStyle Centers is Birmingham's premier destination for integrated wellness and natural healing. Our mission is helping every human being on Earth be well.
+                        </p>
+                        <div class="footer-social">
+                            <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                            <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                            <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                            <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                        </div>
+                    </div>
+                    
+                    <!-- Quick Links Column -->
+                    <div class="footer-column">
+                        <h3>Quick Links</h3>
+                        <p><a href="biosync-agentforce.html">BioSync Assessment</a></p>
+                        <p><a href="#services">Our Services</a></p>
+                        <p><a href="#testimonials">Patient Stories</a></p>
+                        <p><a href="#faq">FAQs</a></p>
+                        <p><a href="https://bewelllifestylecenters.com" target="_blank">Main Website</a></p>
+                    </div>
+                    
+                    <!-- Services Column -->
+                    <div class="footer-column">
+                        <h3>Popular Services</h3>
+                        <p><a href="chiropractic.html">Chiropractic Care</a></p>
+                        <p><a href="iv-therapy.html">IV Therapy</a></p>
+                        <p><a href="massage.html">Massage Therapy</a></p>
+                        <p><a href="colon-hydrotherapy.html">Colon Hydrotherapy</a></p>
+                        <p><a href="peptides.html">Peptide Therapy</a></p>
+                    </div>
+                    
+                    <!-- Contact & Hours Column -->
+                    <div class="footer-column">
+                        <h3>Contact & Hours</h3>
+                        <p style="margin-bottom: 15px;">
+                            <i class="fas fa-map-marker-alt" style="margin-right: 10px; color: var(--primary-color);"></i>
+                            750 S. Old Woodward Ave.<br>
+                            <span style="margin-left: 25px;">Birmingham, MI 48009</span>
+                        </p>
+                        <p style="margin-bottom: 15px;">
+                            <i class="fas fa-phone" style="margin-right: 10px; color: var(--primary-color);"></i>
+                            <a href="tel:248-792-6570">248-792-6570</a>
+                        </p>
+                        <p style="margin-bottom: 20px;">
+                            <i class="fas fa-envelope" style="margin-right: 10px; color: var(--primary-color);"></i>
+                            <a href="mailto:info@bewelllifestylecenters.com">info@bewelllifestylecenters.com</a>
+                        </p>
+                        
+                        <div class="footer-hours">
+                            <h4 style="font-size: 1rem; margin-bottom: 10px; color: var(--primary-color);">Hours of Operation</h4>
+                            <div class="footer-hours-row">
+                                <span>Monday - Friday</span>
+                                <span>9:00 AM - 6:00 PM</span>
+                            </div>
+                            <div class="footer-hours-row">
+                                <span>Saturday</span>
+                                <span>10:00 AM - 4:00 PM</span>
+                            </div>
+                            <div class="footer-hours-row">
+                                <span>Sunday</span>
+                                <span>Closed</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="footer-bottom" style="text-align: center; padding-top: 40px; margin-top: 40px; border-top: 1px solid rgba(255, 255, 255, 0.1);">
+                    <p style="color: #9ca3af;">&copy; 2024 Be Well LifeStyle Centers. All rights reserved. | <a href="privacy-policy.html" style="color: #9ca3af;">Privacy Policy</a> | <a href="terms-of-service.html" style="color: #9ca3af;">Terms of Service</a></p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Show welcome screen for 3 seconds, then fade to main content
+        // Only show on initial viewing, not on back navigation
+        window.addEventListener('load', function() {
+            // Check if splash screen has already been shown in this session
+            if (sessionStorage.getItem('splashShown') === 'true') {
+                // Skip splash screen - show main content immediately
+                document.getElementById('welcomeScreen').style.display = 'none';
+                document.getElementById('app').style.display = 'block';
+                document.getElementById('app').style.opacity = '1';
+            } else {
+                // Show splash screen and mark as shown
+                sessionStorage.setItem('splashShown', 'true');
+                setTimeout(function() {
+                    const welcomeScreen = document.getElementById('welcomeScreen');
+                    const app = document.getElementById('app');
+                    
+                    welcomeScreen.style.opacity = '0';
+                    welcomeScreen.style.transition = 'opacity 0.8s ease';
+                    
+                    setTimeout(function() {
+                        welcomeScreen.style.display = 'none';
+                        app.style.display = 'block';
+                        app.style.opacity = '0';
+                        app.style.transition = 'opacity 0.8s ease';
+                        setTimeout(() => app.style.opacity = '1', 50);
+                    }, 800);
+                }, 3000);
+            }
+        });
+
+        function scrollToServices() {
+            document.getElementById('services').scrollIntoView({ 
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+
+        // FAQ Accordion functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const faqItems = document.querySelectorAll('.faq-item');
+            
+            faqItems.forEach(item => {
+                const question = item.querySelector('.faq-question');
+                
+                question.addEventListener('click', function() {
+                    // Close all other FAQ items
+                    faqItems.forEach(otherItem => {
+                        if (otherItem !== item && otherItem.classList.contains('active')) {
+                            otherItem.classList.remove('active');
+                        }
+                    });
+                    
+                    // Toggle current item
+                    item.classList.toggle('active');
+                });
+            });
+        });
+    </script>
+</body>
+</html>

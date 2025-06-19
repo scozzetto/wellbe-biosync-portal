@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Be Well BioSync (Intelligent Health Inquiry)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', Arial, sans-serif;
+            background: #1C2630;
+            color: #f3f4f6;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: #2A3441;
+            padding: 20px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 40px;
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #717C7D;
+            text-decoration: none;
+        }
+
+        .nav-link {
+            color: #d1d5db;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .nav-link:hover {
+            color: #A47C5B;
+        }
+
+        .form-title {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .form-title h1 {
+            font-size: 2.5rem;
+            color: #f3f4f6;
+            margin-bottom: 20px;
+        }
+
+        .important-notice {
+            background: linear-gradient(135deg, #A47C5B 0%, #5B3A29 100%);
+            padding: 30px;
+            border-radius: 12px;
+            margin-bottom: 40px;
+            color: white;
+        }
+
+        .important-notice h3 {
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .important-notice ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .important-notice li {
+            margin-bottom: 8px;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .important-notice li::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+        }
+
+        .agentforce-container {
+            background: #2A3441;
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+        }
+
+        .agentforce-intro {
+            margin-bottom: 30px;
+        }
+
+        .agentforce-intro h2 {
+            font-size: 2rem;
+            color: #f3f4f6;
+            margin-bottom: 20px;
+        }
+
+        .agentforce-intro p {
+            font-size: 1.125rem;
+            color: #9ca3af;
+            line-height: 1.7;
+            margin-bottom: 15px;
+        }
+
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .benefit-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .benefit-item i {
+            font-size: 2rem;
+            color: #A47C5B;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .benefit-item h3 {
+            font-size: 1.125rem;
+            margin-bottom: 10px;
+            color: #f3f4f6;
+        }
+
+        .benefit-item p {
+            color: #9ca3af;
+            font-size: 0.95rem;
+        }
+
+        .cta-button {
+            background: linear-gradient(135deg, #A47C5B, #5B3A29);
+            color: white;
+            padding: 18px 36px;
+            border-radius: 50px;
+            font-size: 1.125rem;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            margin: 20px 0;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(164, 124, 91, 0.3);
+        }
+
+        .alternative-options {
+            margin-top: 40px;
+            padding-top: 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .alternative-options h3 {
+            color: #f3f4f6;
+            margin-bottom: 15px;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .option-link {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 8px;
+            text-decoration: none;
+            color: #9ca3af;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .option-link:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: #A47C5B;
+            transform: translateX(5px);
+        }
+
+        /* Embedded Agentforce Chat */
+        .agentforce-chat-wrapper {
+            margin: 40px 0;
+            min-height: 600px;
+            background: #1a1f2a;
+            border-radius: 16px;
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        #agentforce-chat {
+            width: 100%;
+            height: 600px;
+            border: none;
+            border-radius: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <a href="https://bewelllifestylecenters.com" target="_blank" class="logo-text">
+                    <img src="logo.svg" alt="Be Well Logo" style="height: 40px; width: auto; filter: brightness(0) invert(1); margin-right: 10px;">
+                    Be Well LifeStyle Centers
+                </a>
+                <nav>
+                    <a href="index.html" class="nav-link">← Back to Portal</a>
+                </nav>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <div class="container">
+            <!-- Title -->
+            <div class="form-title">
+                <h1>Be Well BioSync (Intelligent Health Inquiry)</h1>
+            </div>
+
+            <!-- Important Notice -->
+            <div class="important-notice">
+                <h3>📌 Welcome to Your Personalized Health Journey</h3>
+                <p><strong>What is BioSync?</strong></p>
+                <ul>
+                    <li>Your comprehensive health assessment that helps us understand your unique needs</li>
+                    <li>A conversation, not a form - our AI assistant will guide you through everything</li>
+                    <li>Takes about 10-15 minutes to complete</li>
+                    <li>Helps us create your personalized treatment plan</li>
+                    <li>Your gateway to discovering all Be Well services that can help you</li>
+                </ul>
+                <p><strong>Ready to transform your health? Let's begin!</strong></p>
+            </div>
+
+            <!-- Agentforce Integration -->
+            <div class="agentforce-container">
+                <div class="agentforce-intro">
+                    <h2>Meet Your Be Well Health Assistant</h2>
+                    <p>Our AI-powered assistant will have a conversation with you about your health goals, concerns, and needs. No complicated forms - just a friendly chat!</p>
+                </div>
+
+                <div class="benefits-grid">
+                    <div class="benefit-item">
+                        <i class="fas fa-comments"></i>
+                        <h3>Natural Conversation</h3>
+                        <p>Talk naturally - no forms to fill out</p>
+                    </div>
+                    <div class="benefit-item">
+                        <i class="fas fa-brain"></i>
+                        <h3>Smart Understanding</h3>
+                        <p>Our AI understands your needs and asks relevant questions</p>
+                    </div>
+                    <div class="benefit-item">
+                        <i class="fas fa-clock"></i>
+                        <h3>Save Time</h3>
+                        <p>Complete your assessment in 10-15 minutes</p>
+                    </div>
+                    <div class="benefit-item">
+                        <i class="fas fa-shield-alt"></i>
+                        <h3>Secure & Private</h3>
+                        <p>Your information is protected and confidential</p>
+                    </div>
+                </div>
+
+                <button class="cta-button" onclick="startAgentforceChat()">
+                    <i class="fas fa-robot"></i>
+                    Start Your BioSync Assessment
+                </button>
+
+                <!-- Agentforce Chat Container -->
+                <div id="agentforce-chat-wrapper" class="agentforce-chat-wrapper" style="display: none;">
+                    <!-- Agentforce chat will be embedded here -->
+                    <div id="agentforce-chat"></div>
+                </div>
+
+                <div class="alternative-options">
+                    <h3>Other Options</h3>
+                    <p style="color: #9ca3af; margin-bottom: 20px;">Know exactly what service you need? Skip BioSync and go directly to:</p>
+                    <div class="options-grid">
+                        <a href="chiropractic.html" class="option-link">
+                            <i class="fas fa-spine"></i> Chiropractic Care
+                        </a>
+                        <a href="massage.html" class="option-link">
+                            <i class="fas fa-hands"></i> Massage Therapy
+                        </a>
+                        <a href="iv-therapy.html" class="option-link">
+                            <i class="fas fa-syringe"></i> IV & Injection Therapy
+                        </a>
+                        <a href="colon-hydrotherapy.html" class="option-link">
+                            <i class="fas fa-water"></i> Colon Hydrotherapy
+                        </a>
+                    </div>
+                    <p style="margin-top: 20px; color: #9ca3af;">
+                        <small>Prefer traditional forms? <a href="biosync-working.html" style="color: #A47C5B;">Click here</a></small>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function startAgentforceChat() {
+            // Show the chat container
+            document.getElementById('agentforce-chat-wrapper').style.display = 'block';
+            
+            // Scroll to chat
+            document.getElementById('agentforce-chat-wrapper').scrollIntoView({ 
+                behavior: 'smooth', 
+                block: 'center' 
+            });
+
+            // Initialize Agentforce Chat
+            // This is where you'll add the Salesforce Agentforce embed code
+            if (window.embeddedservice) {
+                // Agentforce is already loaded
+                embeddedservice.showChat();
+            } else {
+                // Load Agentforce script
+                initializeAgentforce();
+            }
+        }
+
+        function initializeAgentforce() {
+            // TODO: Add your Agentforce initialization code here
+            // This will be provided by Salesforce when you set up Agentforce
+            
+            // Example structure:
+            /*
+            var initESW = function(gslbBaseURL) {
+                embedded_svc.settings.displayHelpButton = true;
+                embedded_svc.settings.language = 'en';
+                embedded_svc.settings.enabledFeatures = ['LiveAgent'];
+                embedded_svc.settings.entryFeature = 'LiveAgent';
+                
+                embedded_svc.init(
+                    'YOUR_SALESFORCE_ORG_URL',
+                    'YOUR_DEPLOYMENT_ID',
+                    'YOUR_BUTTON_ID',
+                    {
+                        baseLiveAgentContentURL: 'YOUR_CONTENT_URL',
+                        deploymentId: 'YOUR_DEPLOYMENT_ID',
+                        buttonId: 'YOUR_BUTTON_ID',
+                        baseLiveAgentURL: 'YOUR_LIVEAGENT_URL',
+                        eswLiveAgentDevName: 'YOUR_CHAT_BUTTON_NAME'
+                    }
+                );
+            };
+            */
+            
+            // For now, show a placeholder
+            document.getElementById('agentforce-chat').innerHTML = `
+                <div style="text-align: center; padding: 50px; color: #9ca3af;">
+                    <i class="fas fa-robot" style="font-size: 3rem; color: #A47C5B; margin-bottom: 20px;"></i>
+                    <h3 style="color: #f3f4f6;">Agentforce Chat Will Load Here</h3>
+                    <p>Add your Salesforce Agentforce embed code to enable the chat</p>
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html>

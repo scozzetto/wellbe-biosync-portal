@@ -16,5 +16,9 @@
   "bugs": {
     "url": "https://github.com/followthewhiterabbitneo/wellbe/issues"
   },
-  "homepage": "https://github.com/followthewhiterabbitneo/wellbe#readme"
+  "homepage": "https://github.com/followthewhiterabbitneo/wellbe#readme",
+  "dependencies": {
+    "dotenv": "^16.5.0",
+    "stripe": "^18.2.1"
+  }
 }

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Be Well Gift Cards</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://js.stripe.com/v3/"></script>
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <div class="logo-section">
+                <img src="logo.svg" alt="Be Well Logo" class="logo">
+            </div>
+        </div>
+    </nav>
+
+    <main class="gift-cards-container">
+        <h1>Be Well Gift Cards</h1>
+        <p class="subtitle">Give the gift of wellness to someone special</p>
+        
+        <div class="gift-card-selector">
+            <h2>Select Amount</h2>
+            <div class="amount-options">
+                <button class="amount-btn" onclick="selectAmount(50)">$50</button>
+                <button class="amount-btn" onclick="selectAmount(100)">$100</button>
+                <button class="amount-btn" onclick="selectAmount(150)">$150</button>
+                <button class="amount-btn" onclick="selectAmount(200)">$200</button>
+                <button class="amount-btn" onclick="selectAmount(250)">$250</button>
+                <button class="amount-btn" onclick="selectAmount(500)">$500</button>
+            </div>
+            
+            <div class="custom-amount">
+                <label for="custom-amount">Or enter custom amount:</label>
+                <input type="number" id="custom-amount" min="25" max="5000" placeholder="Enter amount">
+                <button onclick="selectCustomAmount()">Use Custom Amount</button>
+            </div>
+        </div>
+
+        <div id="gift-card-form" style="display: none;">
+            <h2>Gift Card Details</h2>
+            <form id="gift-form">
+                <div class="selected-amount">
+                    <h3>Gift Card Amount: $<span id="selected-amount">0</span></h3>
+                </div>
+                
+                <h3>Recipient Information</h3>
+                <div class="form-group">
+                    <label for="recipient-name">Recipient Name</label>
+                    <input type="text" id="recipient-name" name="recipientName" required>
+                </div>
+                <div class="form-group">
+                    <label for="recipient-email">Recipient Email</label>
+                    <input type="email" id="recipient-email" name="recipientEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="message">Personal Message (Optional)</label>
+                    <textarea id="message" name="message" rows="3" placeholder="Write a personal message..."></textarea>
+                </div>
+                
+                <h3>Your Information</h3>
+                <div class="form-group">
+                    <label for="sender-name">Your Name</label>
+                    <input type="text" id="sender-name" name="senderName" required>
+                </div>
+                <div class="form-group">
+                    <label for="sender-email">Your Email</label>
+                    <input type="email" id="sender-email" name="senderEmail" required>
+                </div>
+                
+                <button type="submit" class="btn-primary">Purchase Gift Card</button>
+            </form>
+        </div>
+
+        <div class="loading-spinner" id="loading" style="display: none;">
+            <div class="spinner"></div>
+            <p>Processing...</p>
+        </div>
+        
+        <div class="gift-card-preview">
+            <h3>How Be Well Gift Cards Work</h3>
+            <ul>
+                <li>Gift cards can be used for any Be Well service</li>
+                <li>No expiration date</li>
+                <li>Delivered instantly via email</li>
+                <li>Can be combined with membership discounts</li>
+            </ul>
+        </div>
+    </main>
+
+    <script src="gift-cards.js"></script>
+</body>
+</html>
