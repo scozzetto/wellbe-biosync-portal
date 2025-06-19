@@ -24,10 +24,12 @@ When you type "wellbe", you're working on the Be Well BioSync Portal System loca
 - **Auto-deployment**: Connected (pushes to main branch trigger deployment)
 
 ## Recent Changes (Last Session)
-- Replaced consultation scheduling with practical membership info button
-- Changed "Ask AI about Memberships" to "Questions about Memberships?"
-- Connected button to existing chat system (chat-support.js)
-- Added fallback contact information for when chat isn't available
+- Added luxurious The Kitchen café section with premium positioning
+- Integrated direct Square ordering link: https://be-well-lifestyle-centers.square.site/
+- Moved café section to prominent position after wellness section
+- Enhanced design with backdrop filters, gradient text, and elegant styling
+- Added Visit Location (Google Maps) and Café Info buttons
+- Featured Boogie Burgers, smoothies, and premium beverages
 - Committed and pushed changes successfully
 - Site is live and auto-deploying from GitHub
 
