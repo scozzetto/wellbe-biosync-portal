@@ -157,6 +157,25 @@
                 </div>
             </div>
             
+            <div id="location-selection" style="display: none;">
+                <div style="background: rgba(164, 124, 91, 0.1); padding: 20px; border-radius: 12px; margin-top: 20px; border: 1px solid rgba(164, 124, 91, 0.2);">
+                    <h4 style="color: #A47C5B; margin-bottom: 15px;">
+                        <i class="fas fa-map-marker-alt"></i> Select Your Preferred Location
+                    </h4>
+                    <p style="color: #e5e7eb; margin-bottom: 20px;">
+                        This service is available at both of our locations. Please choose where you'd like to receive your treatment:
+                    </p>
+                    <div class="answer-buttons" style="margin-bottom: 0;">
+                        <button class="answer-btn" onclick="selectLocation('birmingham')">
+                            <i class="fas fa-building"></i> Birmingham
+                        </button>
+                        <button class="answer-btn secondary" onclick="selectLocation('berkley')">
+                            <i class="fas fa-building"></i> Berkley
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
             <div id="new-patient-info" style="display: none;">
                 <div style="background: rgba(164, 124, 91, 0.1); padding: 20px; border-radius: 12px; margin-top: 20px; border: 1px solid rgba(164, 124, 91, 0.2);">
                     <h4 style="color: #A47C5B; margin-bottom: 15px;">
@@ -184,21 +203,58 @@
         const urlParams = new URLSearchParams(window.location.search);
         const service = urlParams.get('service') || 'Service Booking';
         const bookingUrl = urlParams.get('url') || '#';
+        let selectedLocation = '';
         
         // Update service name
         document.getElementById('service-name').textContent = service;
         
+        // Check if service needs location selection
+        const needsLocation = service.includes('Chiropractic') || service.includes('Massage');
+        
         function returningPatient() {
-            // Direct to booking for returning patients
-            window.open(bookingUrl, '_blank');
+            if (needsLocation) {
+                // Show location selection for returning patients
+                document.getElementById('location-selection').style.display = 'block';
+            } else {
+                // Direct to booking for services without location choice
+                window.open(bookingUrl, '_blank');
+            }
         }
         
         function newPatient() {
+            if (needsLocation) {
+                // Show location selection first for new patients
+                document.getElementById('location-selection').style.display = 'block';
+            } else {
+                // Show new patient info directly
+                showNewPatientInfo();
+            }
+        }
+        
+        function selectLocation(location) {
+            selectedLocation = location;
+            // Hide location selection
+            document.getElementById('location-selection').style.display = 'none';
+            
+            // Check if they clicked "new patient" before
+            const urlParams = new URLSearchParams(window.location.search);
+            if (document.getElementById('new-patient-info').style.display === 'none' && 
+                !document.querySelector('.answer-btn').disabled) {
+                // They're a returning patient, go straight to booking
+                // Note: In real implementation, you'd have different booking URLs for each location
+                window.open(bookingUrl, '_blank');
+            } else {
+                // They're a new patient, show the info
+                showNewPatientInfo();
+            }
+        }
+        
+        function showNewPatientInfo() {
             // Show new patient info and booking link
             document.getElementById('new-patient-info').style.display = 'block';
             document.getElementById('booking-link-container').innerHTML = `
                 <a href="${bookingUrl}" target="_blank" class="answer-btn" style="margin-top: 10px;">
-                    <i class="fas fa-calendar-plus"></i> Book My Appointment
+                    <i class="fas fa-calendar-plus"></i> Book My Appointment ${selectedLocation ? '- ' + selectedLocation.charAt(0).toUpperCase() + selectedLocation.slice(1) : ''}
                 </a>
                 <p style="color: #9ca3af; margin-top: 15px; font-size: 0.9rem;">
                     You'll receive intake forms via email after booking
