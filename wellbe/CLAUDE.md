@@ -24,8 +24,10 @@ When you type "wellbe", you're working on the Be Well BioSync Portal System loca
 - **Auto-deployment**: Connected (pushes to main branch trigger deployment)
 
 ## Recent Changes (Last Session)
-- Added AI membership assistant button to transformation-hub.html
-- Replaced "Schedule Consultation" with "Ask AI about Memberships" 
+- Replaced consultation scheduling with practical membership info button
+- Changed "Ask AI about Memberships" to "Questions about Memberships?"
+- Connected button to existing chat system (chat-support.js)
+- Added fallback contact information for when chat isn't available
 - Committed and pushed changes successfully
 - Site is live and auto-deploying from GitHub
 
