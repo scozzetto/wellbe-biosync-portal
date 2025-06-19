@@ -38,6 +38,13 @@ body {
     overflow-x: hidden;
 }
 
+/* Global list styling - remove all bullets */
+ul, ol {
+    list-style: none !important;
+    padding-left: 0 !important;
+    margin-left: 0 !important;
+}
+
 .container {
     max-width: 1200px;
     margin: 0 auto;
