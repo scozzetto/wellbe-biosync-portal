@@ -1935,21 +1935,42 @@
                         <p><a href="peptides.html">Peptide Therapy</a></p>
                     </div>
                     
+                    <!-- Locations Column -->
+                    <div class="footer-column">
+                        <h3>Our Locations</h3>
+                        <p style="margin-bottom: 12px;">
+                            <strong style="color: var(--primary-color);">Birmingham (Main)</strong><br>
+                            <span style="font-size: 0.9em; color: #9ca3af;">750 S. Old Woodward Ave.<br>Birmingham, MI 48009</span>
+                        </p>
+                        <p style="margin-bottom: 12px;">
+                            <strong style="color: var(--primary-color);">Berkeley</strong><br>
+                            <span style="font-size: 0.9em; color: #9ca3af;">2959 Twelve Mile Road<br>Berkley, MI</span>
+                        </p>
+                        <p style="margin-bottom: 12px;">
+                            <strong style="color: var(--primary-color);">UWM Campus</strong><br>
+                            <span style="font-size: 0.9em; color: #9ca3af;">Employees Only<br>Pontiac, MI</span>
+                        </p>
+                        <p style="margin-top: 15px;">
+                            <i class="fas fa-phone" style="margin-right: 8px; color: var(--primary-color);"></i>
+                            <a href="tel:248-792-6570">248-792-6570</a>
+                        </p>
+                    </div>
+                    
                     <!-- Contact & Hours Column -->
                     <div class="footer-column">
                         <h3>Contact & Hours</h3>
                         <p style="margin-bottom: 15px;">
-                            <i class="fas fa-map-marker-alt" style="margin-right: 10px; color: var(--primary-color);"></i>
-                            750 S. Old Woodward Ave.<br>
-                            <span style="margin-left: 25px;">Birmingham, MI 48009</span>
+                            <i class="fas fa-clock" style="margin-right: 10px; color: var(--primary-color);"></i>
+                            Monday - Friday<br>
+                            <span style="margin-left: 25px; color: #9ca3af;">8:00 AM - 6:00 PM</span>
                         </p>
                         <p style="margin-bottom: 15px;">
-                            <i class="fas fa-phone" style="margin-right: 10px; color: var(--primary-color);"></i>
-                            <a href="tel:248-792-6570">248-792-6570</a>
-                        </p>
-                        <p style="margin-bottom: 20px;">
                             <i class="fas fa-envelope" style="margin-right: 10px; color: var(--primary-color);"></i>
                             <a href="mailto:info@bewelllifestylecenters.com">info@bewelllifestylecenters.com</a>
+                        </p>
+                        <p style="margin-bottom: 15px;">
+                            <i class="fas fa-utensils" style="margin-right: 10px; color: var(--primary-color);"></i>
+                            <a href="https://be-well-lifestyle-centers.square.site/" target="_blank">Order from The Kitchen</a>
                         </p>
                         
                         <div class="footer-hours">
@@ -2015,25 +2036,33 @@
             });
         }
 
-        // FAQ Accordion functionality
-        document.addEventListener('DOMContentLoaded', function() {
-            const faqItems = document.querySelectorAll('.faq-item');
-            
-            faqItems.forEach(item => {
-                const question = item.querySelector('.faq-question');
+        // FAQ Accordion functionality - Wait for everything to load
+        window.addEventListener('load', function() {
+            // Small delay to ensure all elements are ready
+            setTimeout(function() {
+                const faqItems = document.querySelectorAll('.faq-item');
+                console.log('FAQ items found:', faqItems.length); // Debug log
                 
-                question.addEventListener('click', function() {
-                    // Close all other FAQ items
-                    faqItems.forEach(otherItem => {
-                        if (otherItem !== item && otherItem.classList.contains('active')) {
-                            otherItem.classList.remove('active');
-                        }
-                    });
+                faqItems.forEach(item => {
+                    const question = item.querySelector('.faq-question');
                     
-                    // Toggle current item
-                    item.classList.toggle('active');
+                    if (question) {
+                        question.addEventListener('click', function() {
+                            console.log('FAQ clicked!'); // Debug log
+                            
+                            // Close all other FAQ items
+                            faqItems.forEach(otherItem => {
+                                if (otherItem !== item && otherItem.classList.contains('active')) {
+                                    otherItem.classList.remove('active');
+                                }
+                            });
+                            
+                            // Toggle current item
+                            item.classList.toggle('active');
+                        });
+                    }
                 });
-            });
+            }, 100);
         });
 
         // Membership Info Button functionality
