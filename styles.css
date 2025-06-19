@@ -780,21 +780,42 @@ ul, ol {
 }
 
 @media (max-width: 768px) {
+    .header-content {
+        flex-direction: column !important;
+        align-items: center !important;
+        gap: 20px !important;
+    }
+    
+    .logo-section {
+        flex-direction: column !important;
+        align-items: center !important;
+        gap: 8px !important;
+    }
+    
+    .logo-section span {
+        font-size: 1.1rem !important;
+    }
+    
     .nav-menu {
-        flex-direction: column;
-        gap: 15px;
-        align-items: flex-end;
+        flex-direction: column !important;
+        gap: 15px !important;
+        align-items: center !important;
+        width: 100% !important;
     }
     
     .book-now-btn {
-        padding: 10px 18px !important;
-        font-size: 0.9rem !important;
+        padding: 12px 20px !important;
+        font-size: 0.95rem !important;
         margin-left: 0 !important;
-        order: 2;
+        order: 1 !important;
+        width: 100% !important;
+        max-width: 280px !important;
+        justify-content: center !important;
     }
     
     .contact-info {
-        order: 1;
+        order: 2 !important;
+        align-items: center !important;
     }
     
     .phone-link {
@@ -803,6 +824,7 @@ ul, ol {
     
     .contact-text {
         font-size: 0.8rem !important;
+        text-align: center !important;
     }
 }
 
