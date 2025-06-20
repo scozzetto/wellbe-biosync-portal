@@ -2388,7 +2388,7 @@
             const mainApp = document.getElementById('app');
             const splashVideo = document.getElementById('splash-video');
             
-            // Show splash screen for 4 seconds
+            // Show splash screen for 3 seconds
             setTimeout(function() {
                 // Add fade out class
                 splashScreen.classList.add('splash-fade-out');
@@ -2398,7 +2398,7 @@
                     splashScreen.style.display = 'none';
                     mainApp.classList.remove('hidden');
                 }, 500);
-            }, 4000);
+            }, 3000);
             
             // Also hide splash when video ends (if shorter than 3 seconds)
             splashVideo.addEventListener('ended', function() {
