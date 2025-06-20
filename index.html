@@ -1030,6 +1030,60 @@
             opacity: 0;
             transition: opacity 0.5s ease-out;
         }
+
+        /* Luxury Header Styles */
+        .header {
+            background: rgba(0, 0, 0, 0.2) !important;
+            backdrop-filter: blur(15px) !important;
+            -webkit-backdrop-filter: blur(15px) !important;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+            padding: 20px 0;
+        }
+
+        .header-content {
+            display: flex !important;
+            justify-content: space-between !important;
+            align-items: center !important;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo-section img {
+            filter: brightness(0) invert(1);
+        }
+
+        .nav-menu {
+            display: flex !important;
+            align-items: center !important;
+            gap: 30px !important;
+        }
+
+        .nav-btn {
+            color: white !important;
+            text-decoration: none !important;
+            font-weight: 400 !important;
+            font-size: 0.95rem !important;
+            transition: opacity 0.3s ease !important;
+            text-transform: uppercase !important;
+            letter-spacing: 0.05em !important;
+            border: 1px solid transparent !important;
+            padding: 8px 20px !important;
+            border-radius: 0 !important;
+        }
+
+        .nav-btn:hover {
+            opacity: 0.8 !important;
+            border-color: rgba(255, 255, 255, 0.3) !important;
+        }
+
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none !important;
+            }
+        }
     </style>
 </head>
 <body>
@@ -1058,19 +1112,18 @@
             <div class="container">
                 <div class="header-content">
                     <a href="index.html" class="logo-section">
-                        <img src="logo.svg" alt="Be Well Logo" style="height: 40px; width: auto;">
-                        <span>Be Well LifeStyle Centers</span>
+                        <img src="logo.svg" alt="Be Well Logo" style="height: 50px; width: auto;">
                     </a>
                     <nav class="nav-menu">
-                        <a href="https://book.squareup.com/appointments/6pyjoccl1ik8ur/location/101VJFBVK1T29/services" target="_blank" class="book-now-btn">
-                            <i class="fas fa-calendar-check"></i> Book an Appointment Now
+                        <a href="https://book.squareup.com/appointments/6pyjoccl1ik8ur/location/101VJFBVK1T29/services" target="_blank" class="nav-btn">
+                            Book an Appointment
                         </a>
-                        <div class="contact-info">
-                            <a href="tel:248-792-6570" class="phone-link">
-                                <i class="fas fa-phone"></i> (248) 792-6570
-                            </a>
-                            <span class="contact-text">Call or Text</span>
-                        </div>
+                        <a href="https://be-well-lifestyle-centers.square.site/" target="_blank" class="nav-btn">
+                            Order from our Café
+                        </a>
+                        <a href="tel:248-792-6570" class="nav-btn">
+                            (248) 792-6570
+                        </a>
                     </nav>
                 </div>
             </div>
@@ -1102,7 +1155,7 @@
                     <div class="wellness-text">
                         <h2>Health & Wellness<br><span>From The Inside Out</span></h2>
                         <p>
-                            At Be Well LifeStyle Centers in Birmingham, Berkley, and UWM Campus, we believe true wellness begins from within. Our integrated approach combines cutting-edge <a href="chiropractic.html" style="color: #A47C5B; text-decoration: underline;">chiropractic care</a>, <a href="iv-therapy.html" style="color: #A47C5B; text-decoration: underline;">IV therapy</a>, and <a href="massage.html" style="color: #A47C5B; text-decoration: underline;">massage treatments</a> with holistic care to address the root causes of your health concerns, not just the symptoms.
+                            At Be Well LifeStyle Centers, we are committed to the belief that true wellness begins from within. Our integrated approach combines cutting-edge <a href="chiropractic.html" style="color: #A47C5B; text-decoration: underline;">chiropractic care</a>, <a href="iv-therapy.html" style="color: #A47C5B; text-decoration: underline;">IV therapy</a>, and <a href="massage.html" style="color: #A47C5B; text-decoration: underline;">massage treatments</a> with holistic care to address the root causes of your health concerns, not just the symptoms.
                         </p>
                         <p>
                             Whether you're seeking pain relief, optimizing your nutrition, or transforming your entire lifestyle, our expert team creates personalized treatment plans that work with your body's natural healing abilities.
