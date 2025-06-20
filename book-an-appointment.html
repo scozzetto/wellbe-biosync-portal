@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book an Appointment - Be Well LifeStyle Centers</title>
+    <meta name="description" content="Book your appointment at Be Well LifeStyle Centers - Birmingham, Berkley & UWM locations. Expert chiropractic care, IV therapy, massage, and wellness services.">
+    
+    <!-- Instant redirect to Square booking -->
+    <meta http-equiv="refresh" content="0; url=https://book.squareup.com/appointments/6pyjoccl1ik8ur/location/101VJFBVK1T29/services">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    
+    <style>
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #1C2630, #2A3441);
+            color: white;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+        
+        .redirect-container {
+            max-width: 500px;
+            padding: 40px;
+        }
+        
+        .logo {
+            width: 80px;
+            height: auto;
+            margin-bottom: 20px;
+            filter: brightness(0) invert(1);
+        }
+        
+        h1 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #A47C5B;
+        }
+        
+        p {
+            font-size: 1rem;
+            opacity: 0.8;
+            margin-bottom: 25px;
+        }
+        
+        .spinner {
+            border: 3px solid rgba(164, 124, 91, 0.3);
+            border-top: 3px solid #A47C5B;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .backup-link {
+            display: inline-block;
+            background: linear-gradient(135deg, #A47C5B, #8B6A47);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: transform 0.3s ease;
+        }
+        
+        .backup-link:hover {
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <div class="redirect-container">
+        <img src="/logo.svg" alt="Be Well Logo" class="logo">
+        <h1>Redirecting to Book Appointment</h1>
+        <div class="spinner"></div>
+        <p>Taking you to our booking system...</p>
+        <a href="https://book.squareup.com/appointments/6pyjoccl1ik8ur/location/101VJFBVK1T29/services" class="backup-link">
+            Click here if not redirected automatically
+        </a>
+    </div>
+
+    <script>
+        // JavaScript backup redirect in case meta refresh fails
+        setTimeout(function() {
+            window.location.href = 'https://book.squareup.com/appointments/6pyjoccl1ik8ur/location/101VJFBVK1T29/services';
+        }, 1000);
+    </script>
+</body>
+</html>

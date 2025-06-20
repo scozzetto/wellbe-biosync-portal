@@ -1,0 +1,6 @@
+# QR Code Booking Redirect
+/book-an-appointment/ /book-an-appointment.html 200
+/book-an-appointment /book-an-appointment.html 200
+
+# Backup direct redirect (in case HTML doesn't load)
+/book/ https://book.squareup.com/appointments/6pyjoccl1ik8ur/location/101VJFBVK1T29/services 302
