@@ -929,39 +929,7 @@
     </style>
 </head>
 <body>
-    <!-- Welcome Screen -->
-    <div class="welcome-screen" id="welcomeScreen">
-        <!-- Floating Particles -->
-        <div class="particles">
-            <div class="particle"></div>
-            <div class="particle"></div>
-            <div class="particle"></div>
-            <div class="particle"></div>
-            <div class="particle"></div>
-            <div class="particle"></div>
-            <div class="particle"></div>
-            <div class="particle"></div>
-            <div class="particle"></div>
-        </div>
-        
-        <div class="logo-animation">
-            <div class="pulse-ring"></div>
-            <div class="pulse-ring"></div>
-            <div class="pulse-ring"></div>
-            <div class="logo">
-                <img src="logo.svg" alt="Be Well Logo">
-            </div>
-        </div>
-        <h1 class="welcome-title">Be Well</h1>
-        <div style="text-align: center; margin-top: 30px;">
-            <div style="background: linear-gradient(135deg, #A47C5B, #8B6A47); padding: 15px 35px; border-radius: 50px; display: inline-block; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(164, 124, 91, 0.4); border: 2px solid rgba(255, 255, 255, 0.2);">
-                <span style="color: white; font-weight: 700; font-size: 1.1rem; letter-spacing: 2px; text-transform: uppercase;">✨ Transformation Awaits ✨</span>
-            </div>
-        </div>
-        <p class="welcome-subtitle">Luxury Wellness • Premium Care • Life-Changing Results</p>
-    </div>
-
-    <div id="app" style="display: none;">
+    <div id="app">
         <!-- Header -->
         <header class="header">
             <div class="container">
@@ -2141,35 +2109,7 @@
     </div>
 
     <script>
-        // Show welcome screen for 3 seconds, then fade to main content
-        // Only show on initial viewing, not on back navigation
-        window.addEventListener('load', function() {
-            // Check if splash screen has already been shown in this session
-            if (sessionStorage.getItem('splashShown') === 'true') {
-                // Skip splash screen - show main content immediately
-                document.getElementById('welcomeScreen').style.display = 'none';
-                document.getElementById('app').style.display = 'block';
-                document.getElementById('app').style.opacity = '1';
-            } else {
-                // Show splash screen and mark as shown
-                sessionStorage.setItem('splashShown', 'true');
-                setTimeout(function() {
-                    const welcomeScreen = document.getElementById('welcomeScreen');
-                    const app = document.getElementById('app');
-                    
-                    welcomeScreen.style.opacity = '0';
-                    welcomeScreen.style.transition = 'opacity 0.8s ease';
-                    
-                    setTimeout(function() {
-                        welcomeScreen.style.display = 'none';
-                        app.style.display = 'block';
-                        app.style.opacity = '0';
-                        app.style.transition = 'opacity 0.8s ease';
-                        setTimeout(() => app.style.opacity = '1', 50);
-                    }, 800);
-                }, 3000);
-            }
-        });
+        // No splash screen - go straight to main content
 
         function scrollToServices() {
             document.getElementById('services').scrollIntoView({ 
