@@ -42,6 +42,7 @@ grep "WELLBE-BIOSYNC-2025" CLAUDE.md  # Should return this unique ID
 - Test on bewelllifestylecenters.com after pushing
 - Videos must be in /videos/ folder
 - Run lint/typecheck if available
+- **ALWAYS ASK "Should I push these changes?" after committing**
 
 ---
 If you see this file, you're in the RIGHT place!
