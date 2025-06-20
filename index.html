@@ -1092,53 +1092,38 @@
             letter-spacing: 0.03em !important;
         }
 
-        /* Mobile Bottom Navigation */
-        .mobile-bottom-nav {
+        /* Mobile Navigation in Header */
+        .mobile-nav {
             display: none;
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: rgba(0, 0, 0, 0.9);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            padding: 10px 0;
-            z-index: 999;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            gap: 8px;
         }
 
-        .mobile-nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+        .mobile-nav-btn {
             color: white !important;
             text-decoration: none !important;
-            flex: 1;
-            padding: 5px;
-            transition: opacity 0.3s ease;
+            font-size: 0.8rem !important;
+            font-weight: 400 !important;
+            text-transform: uppercase !important;
+            letter-spacing: 0.05em !important;
+            padding: 6px 10px !important;
+            border: 1px solid rgba(255, 255, 255, 0.3) !important;
+            border-radius: 4px !important;
+            transition: all 0.3s ease !important;
+            background: rgba(255, 255, 255, 0.1) !important;
         }
 
-        .mobile-nav-item i {
-            font-size: 1.2rem;
-            margin-bottom: 4px;
-        }
-
-        .mobile-nav-item span {
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 0.03em;
-        }
-
-        .mobile-nav-item:active {
-            opacity: 0.7;
+        .mobile-nav-btn:hover,
+        .mobile-nav-btn:active {
+            opacity: 0.8 !important;
+            background: rgba(255, 255, 255, 0.2) !important;
         }
 
         @media (max-width: 768px) {
-            .nav-menu {
+            .desktop-nav {
                 display: none !important;
             }
 
-            .mobile-bottom-nav {
+            .mobile-nav {
                 display: flex !important;
             }
 
@@ -1178,10 +1163,6 @@
                 font-size: 2.5rem !important;
             }
 
-            /* Add padding to bottom of content for mobile nav */
-            body {
-                padding-bottom: 70px;
-            }
         }
     </style>
 </head>
@@ -1213,7 +1194,7 @@
                     <a href="index.html" class="logo-section">
                         <img src="logo.svg" alt="Be Well Logo" style="height: 65px; width: auto;">
                     </a>
-                    <nav class="nav-menu">
+                    <nav class="nav-menu desktop-nav">
                         <a href="https://book.squareup.com/appointments/6pyjoccl1ik8ur/location/101VJFBVK1T29/services" target="_blank" class="nav-btn">
                             Book an Appointment
                         </a>
@@ -1222,6 +1203,19 @@
                         </a>
                         <a href="tel:248-792-6570" class="nav-btn phone-btn">
                             (248) 792-6570 <span class="call-text">Text or Call</span>
+                        </a>
+                    </nav>
+                    
+                    <!-- Mobile Navigation -->
+                    <nav class="mobile-nav">
+                        <a href="https://book.squareup.com/appointments/6pyjoccl1ik8ur/location/101VJFBVK1T29/services" target="_blank" class="mobile-nav-btn">
+                            Book
+                        </a>
+                        <a href="https://be-well-lifestyle-centers.square.site/" target="_blank" class="mobile-nav-btn">
+                            Café
+                        </a>
+                        <a href="tel:248-792-6570" class="mobile-nav-btn">
+                            Call
                         </a>
                     </nav>
                 </div>
@@ -2457,21 +2451,6 @@
             }
         });
     </script>
-    <!-- Mobile Bottom Navigation -->
-    <div class="mobile-bottom-nav">
-        <a href="https://book.squareup.com/appointments/6pyjoccl1ik8ur/location/101VJFBVK1T29/services" target="_blank" class="mobile-nav-item">
-            <i class="fas fa-calendar-check"></i>
-            <span>Book Now</span>
-        </a>
-        <a href="https://be-well-lifestyle-centers.square.site/" target="_blank" class="mobile-nav-item">
-            <i class="fas fa-utensils"></i>
-            <span>Order Café</span>
-        </a>
-        <a href="tel:248-792-6570" class="mobile-nav-item">
-            <i class="fas fa-phone"></i>
-            <span>Call/Text</span>
-        </a>
-    </div>
 
     <script src="chat-support.js"></script>
     
