@@ -968,6 +968,7 @@
         .splash-logo-container {
             position: relative;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
         }
@@ -981,11 +982,33 @@
             animation: pulse-circle 2s infinite;
         }
 
-        .splash-logo {
-            width: 120px;
-            height: auto;
+        .splash-logo-disc {
+            width: 150px;
+            height: 150px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             z-index: 1;
-            filter: brightness(1.2);
+            margin-bottom: 20px;
+            padding: 20px;
+        }
+
+        .splash-logo {
+            width: 100%;
+            height: auto;
+            max-width: 100px;
+        }
+
+        .splash-tagline {
+            font-family: 'Inter', sans-serif;
+            font-size: 1.25rem;
+            color: white;
+            margin: 0;
+            font-weight: 300;
+            letter-spacing: 0.05em;
+            text-align: center;
         }
 
         @keyframes pulse-circle {
@@ -1021,7 +1044,10 @@
         <div class="splash-overlay">
             <div class="splash-logo-container">
                 <div class="splash-circle"></div>
-                <img src="logo.svg" alt="Be Well LifeStyle Centers" class="splash-logo">
+                <div class="splash-logo-disc">
+                    <img src="logo.svg" alt="Be Well Logo" class="splash-logo">
+                </div>
+                <p class="splash-tagline">It's time to transform your life</p>
             </div>
         </div>
     </div>
@@ -2296,7 +2322,7 @@
             const mainApp = document.getElementById('app');
             const splashVideo = document.getElementById('splash-video');
             
-            // Show splash screen for 3 seconds
+            // Show splash screen for 4 seconds
             setTimeout(function() {
                 // Add fade out class
                 splashScreen.classList.add('splash-fade-out');
@@ -2306,7 +2332,7 @@
                     splashScreen.style.display = 'none';
                     mainApp.classList.remove('hidden');
                 }, 500);
-            }, 3000);
+            }, 4000);
             
             // Also hide splash when video ends (if shorter than 3 seconds)
             splashVideo.addEventListener('ended', function() {
