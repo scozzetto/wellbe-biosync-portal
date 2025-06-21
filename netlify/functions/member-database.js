@@ -21,6 +21,24 @@ function loadDatabase() {
     // Default database structure
     return {
         members: {
+        'support@bewelllifestylecenters.com': {
+            id: 'cus_SXNDq3xQgYfaWS',
+            name: 'Support Account',
+            email: 'support@bewelllifestylecenters.com',
+            membershipType: 'restore',
+            reserveCredits: 14.90,
+            servicesUsedThisMonth: 0,
+            servicesAllowed: 1,
+            cafeItemsUsed: 0,
+            cafeItemsAllowed: 1,
+            memberSince: 'June 2025',
+            nextBilling: 'July 21, 2025',
+            status: 'active',
+            stripeCustomerId: 'cus_SXNDq3xQgYfaWS',
+            stripeSubscriptionId: 'sub_active',
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString()
+        },
         'sjc543@gmail.com': {
             id: 'cus_SXMvZ4TzM9ara1',
             name: 'SJC Member',
