@@ -3,9 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Be Well Memberships - Purchase</title>
+    <title>Be Well Reserve™ Memberships - Be Well LifeStyle Centers</title>
     <link rel="stylesheet" href="styles.css">
     <script src="https://js.stripe.com/v3/"></script>
+    <style>
+        .reserve-explanation {
+            background: var(--card-bg);
+            border: 1px solid rgba(164, 124, 91, 0.3);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+        
+        .reserve-explanation h3 {
+            color: var(--primary-color);
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+        
+        .reserve-explanation p {
+            color: var(--text-color);
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+        
+        .reserve-explanation em {
+            color: #9ca3af;
+            font-size: 0.9rem;
+        }
+    </style>
 </head>
 <body>
     <nav>
@@ -19,14 +47,21 @@
     <main class="membership-purchase-container">
         <h1>Choose Your Be Well Reserve™ Membership</h1>
         
+        <div class="reserve-explanation">
+            <h3>How Be Well Reserve™ Works</h3>
+            <p>Earn 10% cashback on your membership fee every month as <strong>Be Well Reserve credits</strong>. Use these credits like cash toward any of our services. Plus get your monthly service allowances and café perks!</p>
+            <p><em>Reserve credits expire after 6 months • Non-transferable • Cannot be redeemed for cash</em></p>
+        </div>
+        
         <div class="membership-cards">
             <div class="membership-card" data-membership="restore" data-price="149">
                 <h2>Restore</h2>
                 <div class="price">$149<span>/month</span></div>
                 <ul>
-                    <li>$149 reserve credits</li>
-                    <li>10% discount on services</li>
-                    <li>Priority booking</li>
+                    <li>$14.90 Be Well Reserve credits earned monthly</li>
+                    <li>10% off all services</li>
+                    <li>Pick ONE free service per month</li>
+                    <li>1 free café item monthly</li>
                 </ul>
                 <button class="select-membership" onclick="selectMembership('restore')">Select Restore</button>
             </div>
@@ -35,10 +70,10 @@
                 <h2>Revive</h2>
                 <div class="price">$299<span>/month</span></div>
                 <ul>
-                    <li>$299 reserve credits</li>
-                    <li>15% discount on services</li>
-                    <li>Priority booking</li>
-                    <li>Monthly wellness consultation</li>
+                    <li>$29.90 Be Well Reserve credits earned monthly</li>
+                    <li>10% off all services</li>
+                    <li>Pick TWO free services per month</li>
+                    <li>1 free café item monthly</li>
                 </ul>
                 <button class="select-membership" onclick="selectMembership('revive')">Select Revive</button>
             </div>
@@ -48,11 +83,10 @@
                 <h2>Renew</h2>
                 <div class="price">$499<span>/month</span></div>
                 <ul>
-                    <li>$499 reserve credits</li>
-                    <li>20% discount on services</li>
-                    <li>Priority booking</li>
-                    <li>Monthly wellness consultation</li>
-                    <li>Quarterly lab work</li>
+                    <li>$49.90 Be Well Reserve credits earned monthly</li>
+                    <li>10% off all services</li>
+                    <li>Pick THREE free services per month</li>
+                    <li>2 free café items monthly</li>
                 </ul>
                 <button class="select-membership" onclick="selectMembership('renew')">Select Renew</button>
             </div>
@@ -61,12 +95,10 @@
                 <h2>Total Wellness</h2>
                 <div class="price">$799<span>/month</span></div>
                 <ul>
-                    <li>$799 reserve credits</li>
-                    <li>25% discount on services</li>
-                    <li>VIP booking access</li>
-                    <li>Weekly wellness consultations</li>
-                    <li>Monthly lab work</li>
-                    <li>Personalized wellness plan</li>
+                    <li>$79.90 Be Well Reserve credits earned monthly</li>
+                    <li>10% off all services</li>
+                    <li>Pick FIVE free services per month</li>
+                    <li>1 free café item weekly</li>
                 </ul>
                 <button class="select-membership" onclick="selectMembership('total-wellness')">Select Total Wellness</button>
             </div>
