@@ -170,10 +170,91 @@
             cursor: pointer;
             font-size: 0.9rem;
         }
+        .auth-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: var(--bg-color);
+        }
+        
+        .auth-box {
+            background: var(--card-bg);
+            padding: 40px;
+            border-radius: 12px;
+            border: 1px solid rgba(164, 124, 91, 0.3);
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+        }
+        
+        .auth-box h2 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        
+        .form-group label {
+            color: var(--text-color);
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid rgba(164, 124, 91, 0.3);
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-color);
+            font-size: 1rem;
+        }
+        
+        .auth-btn {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            width: 100%;
+        }
+        
+        .auth-btn:hover {
+            transform: translateY(-2px);
+        }
     </style>
 </head>
 <body>
-    <div class="admin-container">
+    <!-- Authentication Section -->
+    <div id="auth-section" class="auth-container">
+        <div class="auth-box">
+            <img src="logo.svg" alt="Be Well Logo" style="height: 50px; width: auto; margin-bottom: 20px; filter: brightness(0) invert(1);">
+            <h2>Admin Dashboard</h2>
+            <p style="color: #9ca3af; margin-bottom: 25px;">Enter admin password to access</p>
+            
+            <form id="auth-form">
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" required>
+                </div>
+                <button type="submit" class="auth-btn">Access Dashboard</button>
+            </form>
+            
+            <div id="auth-error" style="color: #ff6b6b; margin-top: 15px; display: none;">
+                Incorrect password. Please try again.
+            </div>
+        </div>
+    </div>
+
+    <div class="admin-container" id="admin-dashboard" style="display: none;">
         <button class="logout-btn" onclick="logout()">
             <i class="fas fa-sign-out-alt"></i> Logout
         </button>
@@ -260,6 +341,30 @@
     </div>
 
     <script>
+        // Password protection
+        const ADMIN_PASSWORD = "BeWellAdmin2025"; // Change this password as needed
+        
+        document.getElementById('auth-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const password = document.getElementById('password').value;
+            
+            if (password === ADMIN_PASSWORD) {
+                document.getElementById('auth-section').style.display = 'none';
+                document.getElementById('admin-dashboard').style.display = 'block';
+                sessionStorage.setItem('adminAuthenticated', 'true');
+                loadDashboard();
+            } else {
+                document.getElementById('auth-error').style.display = 'block';
+                document.getElementById('password').value = '';
+            }
+        });
+        
+        // Check if already authenticated
+        if (sessionStorage.getItem('adminAuthenticated') === 'true') {
+            document.getElementById('auth-section').style.display = 'none';
+            document.getElementById('admin-dashboard').style.display = 'block';
+        }
+
         // Demo member data
         const demoMembers = [
             {
@@ -450,7 +555,10 @@
 
         function logout() {
             if (confirm('Are you sure you want to logout?')) {
-                window.location.href = 'index.html';
+                sessionStorage.removeItem('adminAuthenticated');
+                document.getElementById('auth-section').style.display = 'flex';
+                document.getElementById('admin-dashboard').style.display = 'none';
+                document.getElementById('password').value = '';
             }
         }
     </script>
