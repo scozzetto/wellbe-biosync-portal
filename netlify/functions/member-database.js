@@ -3,6 +3,24 @@
 
 let memberDatabase = {
     members: {
+        'sjc543@gmail.com': {
+            id: 'cus_SXMvZ4TzM9ara1',
+            name: 'SJC Member',
+            email: 'sjc543@gmail.com',
+            membershipType: 'restore',
+            reserveCredits: 14.90,
+            servicesUsedThisMonth: 0,
+            servicesAllowed: 1,
+            cafeItemsUsed: 0,
+            cafeItemsAllowed: 1,
+            memberSince: 'June 2025',
+            nextBilling: 'July 20, 2025',
+            status: 'active',
+            stripeCustomerId: 'cus_SXMvZ4TzM9ara1',
+            stripeSubscriptionId: 'sub_active',
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString()
+        },
         'cozzetto@infinitymgtsys.com': {
             id: 'member_real',
             name: 'Silvio Cozzetto',

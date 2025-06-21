@@ -154,9 +154,28 @@ async function handleCheckoutCompleted(session) {
         console.log('Checkout session completed:', session.id);
         console.log('Customer email:', session.customer_details?.email);
         
-        // Don't create member here - wait for subscription.created event
-        // Just log for now
-        console.log('Checkout completed - waiting for subscription creation');
+        // Get customer details from session
+        const customerEmail = session.customer_details?.email;
+        const customerName = session.customer_details?.name || customerEmail;
+        
+        if (customerEmail && session.customer) {
+            // Create member immediately with real email
+            const customerData = {
+                id: session.customer,
+                email: customerEmail,
+                name: customerName
+            };
+            
+            // Get subscription details from session metadata or line items
+            const subscriptionData = {
+                id: session.subscription || 'pending',
+                priceId: session.line_items?.data?.[0]?.price?.id || 'unknown'
+            };
+            
+            console.log('Creating member with real email:', customerEmail);
+            const newMember = await memberDB.createMember(customerData, subscriptionData);
+            console.log('Created member:', newMember);
+        }
         
     } catch (error) {
         console.error('Error handling checkout completion:', error);
