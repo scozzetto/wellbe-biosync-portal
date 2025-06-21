@@ -431,6 +431,15 @@
             document.querySelector('.stat-card:nth-child(3) .stat-number').textContent = 
                 `${memberData.cafeItemsUsed || 0} of ${memberData.cafeItemsAllowed}`;
             
+            // Fix the "remaining" text
+            const servicesRemaining = (memberData.servicesAllowed || 0) - (memberData.servicesUsedThisMonth || 0);
+            const cafeItemsRemaining = (memberData.cafeItemsAllowed || 0) - (memberData.cafeItemsUsed || 0);
+            
+            document.querySelector('.stat-card:nth-child(2) p').textContent = 
+                `${servicesRemaining} service${servicesRemaining !== 1 ? 's' : ''} remaining`;
+            document.querySelector('.stat-card:nth-child(3) p').textContent = 
+                `${cafeItemsRemaining} item${cafeItemsRemaining !== 1 ? 's' : ''} remaining`;
+            
             // Fix expiring credits message
             const expiringCredits = memberData.reserveCredits > 0 ? (memberData.reserveCredits * 0.2).toFixed(2) : '0.00';
             document.querySelector('.stat-card:nth-child(1) p').textContent = 
