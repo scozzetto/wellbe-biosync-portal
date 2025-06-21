@@ -360,8 +360,12 @@
         // Look up member by email
         async function simulateMagicLink(email) {
             try {
+                console.log('Looking up member:', email);
                 const controller = new AbortController();
-                const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+                const timeoutId = setTimeout(() => {
+                    console.log('Request timed out after 5 seconds');
+                    controller.abort();
+                }, 5000); // 5 second timeout
                 
                 const response = await fetch('/.netlify/functions/member-lookup', {
                     method: 'POST',
@@ -373,17 +377,21 @@
                 });
                 
                 clearTimeout(timeoutId);
+                console.log('Response status:', response.status);
 
                 if (response.ok) {
                     const data = await response.json();
+                    console.log('Member data received:', data);
                     // Store member data for dashboard
                     localStorage.setItem('memberData', JSON.stringify(data.member));
                     return Promise.resolve();
                 } else {
                     const error = await response.json();
+                    console.log('Error response:', error);
                     return Promise.reject(new Error(error.error || 'Member not found. Please check your email or call us at (248) 792-6570.'));
                 }
             } catch (error) {
+                console.log('Catch block error:', error);
                 if (error.name === 'AbortError') {
                     return Promise.reject(new Error('Request timed out. Please try again or call us at (248) 792-6570.'));
                 }
