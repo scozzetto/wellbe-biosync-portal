@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Member Portal - Be Well LifeStyle Centers</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .portal-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: var(--bg-color);
+            padding: 20px;
+        }
+        
+        .portal-box {
+            background: var(--card-bg);
+            padding: 40px;
+            border-radius: 12px;
+            border: 1px solid rgba(164, 124, 91, 0.3);
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+        }
+        
+        .portal-box h2 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            font-size: 2rem;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        
+        .form-group label {
+            color: var(--text-color);
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid rgba(164, 124, 91, 0.3);
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-color);
+            font-size: 1rem;
+        }
+        
+        .portal-btn {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            width: 100%;
+            margin-bottom: 15px;
+        }
+        
+        .portal-btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        .portal-btn.secondary {
+            background: transparent;
+            border: 1px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+        
+        .member-dashboard {
+            display: none;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            background: var(--bg-color);
+            color: var(--text-color);
+            min-height: 100vh;
+        }
+        
+        .dashboard-header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--primary-color);
+        }
+        
+        .dashboard-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        
+        .stat-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            border: 1px solid rgba(164, 124, 91, 0.2);
+            padding: 25px;
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 5px;
+        }
+        
+        .stat-label {
+            color: #9ca3af;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .dashboard-section {
+            background: var(--card-bg);
+            border-radius: 12px;
+            border: 1px solid rgba(164, 124, 91, 0.2);
+            margin-bottom: 25px;
+            overflow: hidden;
+        }
+        
+        .section-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 15px 20px;
+            font-weight: 600;
+            font-size: 1.2rem;
+        }
+        
+        .section-content {
+            padding: 25px;
+        }
+        
+        .service-allowance {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background: rgba(164, 124, 91, 0.05);
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+        
+        .service-allowance.used {
+            opacity: 0.6;
+            background: rgba(164, 124, 91, 0.1);
+        }
+        
+        .transaction-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(164, 124, 91, 0.1);
+        }
+        
+        .transaction-row:last-child {
+            border-bottom: none;
+        }
+        
+        .transaction-date {
+            color: #9ca3af;
+            font-size: 0.9rem;
+        }
+        
+        .transaction-amount {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        
+        .logout-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--danger-color);
+            color: white;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+        
+        .coming-soon {
+            text-align: center;
+            padding: 60px 20px;
+            background: rgba(164, 124, 91, 0.05);
+            border-radius: 12px;
+            margin: 20px 0;
+        }
+        
+        .coming-soon h3 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+        
+        .coming-soon p {
+            color: #9ca3af;
+            margin-bottom: 25px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Section -->
+    <div id="login-section" class="portal-container">
+        <div class="portal-box">
+            <img src="logo.svg" alt="Be Well Logo" style="height: 50px; width: auto; margin-bottom: 20px; filter: brightness(0) invert(1);">
+            <h2>Member Portal</h2>
+            <p style="color: #9ca3af; margin-bottom: 25px;">Access your Be Well Reserve™ account</p>
+            
+            <div class="coming-soon">
+                <h3><i class="fas fa-tools"></i> Coming Soon</h3>
+                <p>We're building your personalized member portal to track your:</p>
+                <ul style="text-align: left; color: #9ca3af; margin-bottom: 20px;">
+                    <li>Be Well Reserve credit balance</li>
+                    <li>Monthly service allowances</li>
+                    <li>Transaction history</li>
+                    <li>Membership benefits</li>
+                    <li>Appointment booking</li>
+                </ul>
+                <p><strong>In the meantime:</strong></p>
+                <button class="portal-btn" onclick="window.open('https://book.squareup.com/appointments/6pyjoccl1ik8ur/location/101VJFBVK1T29/services', '_blank')">
+                    <i class="fas fa-calendar-check"></i> Book Appointment
+                </button>
+                <button class="portal-btn secondary" onclick="window.open('tel:248-792-6570')">
+                    <i class="fas fa-phone"></i> Call for Account Info: (248) 792-6570
+                </button>
+            </div>
+            
+            <!-- Future Login Form (Currently Hidden) -->
+            <form id="member-login-form" style="display: none;">
+                <div class="form-group">
+                    <label for="email">Email Address:</label>
+                    <input type="email" id="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Phone Number:</label>
+                    <input type="tel" id="phone" required>
+                </div>
+                <button type="submit" class="portal-btn">Access My Account</button>
+            </form>
+            
+            <div id="login-error" style="color: #ff6b6b; margin-top: 15px; display: none;">
+                Account not found. Please check your information or call us at (248) 792-6570.
+            </div>
+            
+            <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid rgba(164, 124, 91, 0.2);">
+                <p style="color: #9ca3af; font-size: 0.9rem; margin-bottom: 15px;">Don't have a membership yet?</p>
+                <button class="portal-btn secondary" onclick="window.location.href='membership-purchase.html'">
+                    <i class="fas fa-credit-card"></i> Join Be Well Reserve™
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Member Dashboard (Hidden - For Future Use) -->
+    <div id="member-dashboard" class="member-dashboard">
+        <button class="logout-btn" onclick="logout()">
+            <i class="fas fa-sign-out-alt"></i> Logout
+        </button>
+        
+        <div class="dashboard-header">
+            <h1><i class="fas fa-user-circle"></i> Welcome back, [Member Name]</h1>
+            <p style="color: #9ca3af; font-size: 1.1rem;">Renew Membership - Next billing: March 15, 2025</p>
+        </div>
+
+        <div class="dashboard-stats">
+            <div class="stat-card">
+                <div class="stat-number">$127.45</div>
+                <div class="stat-label">Reserve Credits Available</div>
+                <p style="color: #9ca3af; font-size: 0.8rem; margin-top: 5px;">$23.45 expiring March 1</p>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-number">2 of 3</div>
+                <div class="stat-label">Services Used This Month</div>
+                <p style="color: #9ca3af; font-size: 0.8rem; margin-top: 5px;">1 service remaining</p>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-number">1 of 2</div>
+                <div class="stat-label">Café Items Used</div>
+                <p style="color: #9ca3af; font-size: 0.8rem; margin-top: 5px;">1 item remaining</p>
+            </div>
+        </div>
+
+        <div class="dashboard-section">
+            <div class="section-header">
+                <i class="fas fa-calendar-check"></i> This Month's Service Allowances
+            </div>
+            <div class="section-content">
+                <div class="service-allowance used">
+                    <div>
+                        <strong>60min Massage</strong><br>
+                        <span style="color: #9ca3af; font-size: 0.9rem;">Used Feb 5, 2025</span>
+                    </div>
+                    <span style="color: #3E5B3D;"><i class="fas fa-check-circle"></i> Used</span>
+                </div>
+                
+                <div class="service-allowance used">
+                    <div>
+                        <strong>Chiropractic Care</strong><br>
+                        <span style="color: #9ca3af; font-size: 0.9rem;">Used Feb 12, 2025</span>
+                    </div>
+                    <span style="color: #3E5B3D;"><i class="fas fa-check-circle"></i> Used</span>
+                </div>
+                
+                <div class="service-allowance">
+                    <div>
+                        <strong>Available Service</strong><br>
+                        <span style="color: #9ca3af; font-size: 0.9rem;">Choose any service</span>
+                    </div>
+                    <button class="portal-btn" style="width: auto; margin: 0; padding: 8px 16px;">Book Now</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="dashboard-section">
+            <div class="section-header">
+                <i class="fas fa-coins"></i> Reserve Credits History
+            </div>
+            <div class="section-content">
+                <div class="transaction-row">
+                    <div>
+                        <strong>Monthly Credit Earn</strong><br>
+                        <span class="transaction-date">Feb 1, 2025</span>
+                    </div>
+                    <span class="transaction-amount">+$49.90</span>
+                </div>
+                
+                <div class="transaction-row">
+                    <div>
+                        <strong>IV Therapy Upgrade</strong><br>
+                        <span class="transaction-date">Jan 28, 2025</span>
+                    </div>
+                    <span class="transaction-amount">-$85.00</span>
+                </div>
+                
+                <div class="transaction-row">
+                    <div>
+                        <strong>Monthly Credit Earn</strong><br>
+                        <span class="transaction-date">Jan 1, 2025</span>
+                    </div>
+                    <span class="transaction-amount">+$49.90</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Future login functionality (currently disabled)
+        document.getElementById('member-login-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            // This will connect to Salesforce/Stripe in the future
+            document.getElementById('login-error').style.display = 'block';
+        });
+        
+        function logout() {
+            document.getElementById('login-section').style.display = 'flex';
+            document.getElementById('member-dashboard').style.display = 'none';
+        }
+        
+        // Staff access function (for future use)
+        function staffLookupMember(memberId) {
+            // This will allow staff to look up member accounts
+            console.log('Staff looking up member:', memberId);
+        }
+    </script>
+</body>
+</html>

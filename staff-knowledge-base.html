@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Staff Knowledge Base - Be Well LifeStyle Centers</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .auth-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: var(--bg-color);
+        }
+        
+        .auth-box {
+            background: var(--card-bg);
+            padding: 40px;
+            border-radius: 12px;
+            border: 1px solid rgba(164, 124, 91, 0.3);
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+        }
+        
+        .auth-box h2 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        
+        .form-group label {
+            color: var(--text-color);
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid rgba(164, 124, 91, 0.3);
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-color);
+            font-size: 1rem;
+        }
+        
+        .auth-btn {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            width: 100%;
+        }
+        
+        .auth-btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        .knowledge-base {
+            display: none;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            background: var(--bg-color);
+            color: var(--text-color);
+            min-height: 100vh;
+        }
+        
+        .kb-header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--primary-color);
+        }
+        
+        .kb-header h1 {
+            color: var(--primary-color);
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .kb-section {
+            background: var(--card-bg);
+            border-radius: 12px;
+            border: 1px solid rgba(164, 124, 91, 0.2);
+            margin-bottom: 25px;
+            overflow: hidden;
+        }
+        
+        .kb-section-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 15px 20px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+        
+        .kb-section-header:hover {
+            background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
+        }
+        
+        .kb-section-header h3 {
+            margin: 0;
+            font-size: 1.3rem;
+        }
+        
+        .kb-section-content {
+            padding: 25px;
+            display: none;
+        }
+        
+        .kb-section.open .kb-section-content {
+            display: block;
+        }
+        
+        .kb-section.open .kb-section-header .fas {
+            transform: rotate(180deg);
+        }
+        
+        .value-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: rgba(164, 124, 91, 0.05);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .value-table th,
+        .value-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid rgba(164, 124, 91, 0.2);
+        }
+        
+        .value-table th {
+            background: var(--primary-color);
+            color: white;
+            font-weight: 600;
+        }
+        
+        .value-table td {
+            color: var(--text-color);
+        }
+        
+        .script-box {
+            background: rgba(62, 91, 61, 0.1);
+            border-left: 4px solid #3E5B3D;
+            padding: 15px 20px;
+            margin: 15px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .script-box h4 {
+            color: #3E5B3D;
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+        
+        .script-box p {
+            margin: 5px 0;
+            line-height: 1.6;
+        }
+        
+        .highlight {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+        
+        .logout-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--danger-color);
+            color: white;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Authentication Section -->
+    <div id="auth-section" class="auth-container">
+        <div class="auth-box">
+            <img src="logo.svg" alt="Be Well Logo" style="height: 50px; width: auto; margin-bottom: 20px; filter: brightness(0) invert(1);">
+            <h2>Staff Knowledge Base</h2>
+            <p style="color: #9ca3af; margin-bottom: 25px;">Enter staff password to access</p>
+            
+            <form id="auth-form">
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" required>
+                </div>
+                <button type="submit" class="auth-btn">Access Knowledge Base</button>
+            </form>
+            
+            <div id="auth-error" style="color: #ff6b6b; margin-top: 15px; display: none;">
+                Incorrect password. Please try again.
+            </div>
+        </div>
+    </div>
+
+    <!-- Knowledge Base Content -->
+    <div id="knowledge-base" class="knowledge-base">
+        <button class="logout-btn" onclick="logout()">
+            <i class="fas fa-sign-out-alt"></i> Logout
+        </button>
+        
+        <div class="kb-header">
+            <h1><i class="fas fa-book-open"></i> Staff Knowledge Base</h1>
+            <p style="color: #9ca3af; font-size: 1.1rem;">Everything you need to know about Be Well services, memberships, and patient interactions</p>
+        </div>
+
+        <!-- Membership Benefits Section -->
+        <div class="kb-section">
+            <div class="kb-section-header" onclick="toggleSection(this)">
+                <h3><i class="fas fa-credit-card"></i> Membership Benefits & Value Explanations</h3>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="kb-section-content">
+                <h4>Quick Value Explanations for Patients:</h4>
+                
+                <div class="script-box">
+                    <h4>Restore - $149/mo</h4>
+                    <p><strong>Script:</strong> "If you get even <span class="highlight">ONE massage per month</span>, you save money. A regular massage costs $115, but with Restore it's included PLUS you earn $15 in credits. You basically get your massage for $100 AND build credits for other services."</p>
+                </div>
+                
+                <div class="script-box">
+                    <h4>Revive - $299/mo</h4>
+                    <p><strong>Script:</strong> "Perfect for <span class="highlight">bi-weekly massage clients</span>. Two massages normally cost $230/month. With Revive, both are included for $299. You pay only $70 more but get $30 in credits PLUS 10% off everything else. Net cost: only $40 more for tons of extra benefits."</p>
+                </div>
+                
+                <div class="script-box">
+                    <h4>Renew - $499/mo (MOST POPULAR)</h4>
+                    <p><strong>Script:</strong> "Great for people who get <span class="highlight">multiple services</span>. A massage + IV + chiro normally costs $425. With Renew, all three are included for $499. You pay $75 more but get $50 in credits PLUS 10% off PLUS café perks. Essentially break-even with massive extra benefits."</p>
+                </div>
+                
+                <div class="script-box">
+                    <h4>Total Wellness - $799/mo</h4>
+                    <p><strong>Script:</strong> "For our <span class="highlight">wellness enthusiasts</span>. Five services could easily be $700+. With Total Wellness, all are included for $799 PLUS you get $80 in credits monthly PLUS weekly café items. Perfect for comprehensive wellness."</p>
+                </div>
+
+                <h4>Key Talking Points:</h4>
+                <ul style="color: var(--text-color); line-height: 1.8;">
+                    <li><strong>"Think about what you already spend here monthly"</strong></li>
+                    <li><strong>"The credits build up - it's like earning cash back"</strong></li>
+                    <li><strong>"10% off applies to EVERYTHING, including future add-ons"</strong></li>
+                    <li><strong>"The more services you use, the more you save"</strong></li>
+                    <li><strong>"Credits expire in 6 months, so use them for extras you want to try"</strong></li>
+                </ul>
+
+                <table class="value-table">
+                    <thead>
+                        <tr>
+                            <th>Membership</th>
+                            <th>Monthly Fee</th>
+                            <th>Services Included</th>
+                            <th>Credits Earned</th>
+                            <th>Best For</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Restore</td>
+                            <td>$149</td>
+                            <td>Pick 1 service</td>
+                            <td>$14.90</td>
+                            <td>Monthly massage clients</td>
+                        </tr>
+                        <tr>
+                            <td>Revive</td>
+                            <td>$299</td>
+                            <td>Pick 2 services</td>
+                            <td>$29.90</td>
+                            <td>Bi-weekly massage clients</td>
+                        </tr>
+                        <tr>
+                            <td>Renew</td>
+                            <td>$499</td>
+                            <td>Pick 3 services</td>
+                            <td>$49.90</td>
+                            <td>Multi-service users</td>
+                        </tr>
+                        <tr>
+                            <td>Total Wellness</td>
+                            <td>$799</td>
+                            <td>Pick 5 services</td>
+                            <td>$79.90</td>
+                            <td>Wellness enthusiasts</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Service Pricing Section -->
+        <div class="kb-section">
+            <div class="kb-section-header" onclick="toggleSection(this)">
+                <h3><i class="fas fa-dollar-sign"></i> Service Pricing Reference</h3>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="kb-section-content">
+                <table class="value-table">
+                    <thead>
+                        <tr>
+                            <th>Service</th>
+                            <th>Duration</th>
+                            <th>Cash Price</th>
+                            <th>Member Price (10% off)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Chiropractic</td>
+                            <td>Varies</td>
+                            <td>$85-90</td>
+                            <td>$76.50-81</td>
+                        </tr>
+                        <tr>
+                            <td>Massage - 60min</td>
+                            <td>1 hour</td>
+                            <td>$115</td>
+                            <td>$103.50</td>
+                        </tr>
+                        <tr>
+                            <td>Massage - 90min</td>
+                            <td>1.5 hours</td>
+                            <td>$170</td>
+                            <td>$153</td>
+                        </tr>
+                        <tr>
+                            <td>Colon Hydrotherapy</td>
+                            <td>1 hour</td>
+                            <td>$120-125</td>
+                            <td>$108-112.50</td>
+                        </tr>
+                        <tr>
+                            <td>IV Therapy (Basic)</td>
+                            <td>30-60 mins</td>
+                            <td>$190-255</td>
+                            <td>$171-229.50</td>
+                        </tr>
+                        <tr>
+                            <td>NAD+ IV</td>
+                            <td>2-3 hours</td>
+                            <td>$350-500</td>
+                            <td>$315-450</td>
+                        </tr>
+                        <tr>
+                            <td>Vitamin Shots</td>
+                            <td>5 mins</td>
+                            <td>$30-65</td>
+                            <td>$27-58.50</td>
+                        </tr>
+                        <tr>
+                            <td>Cupping</td>
+                            <td>15-30 mins</td>
+                            <td>$80</td>
+                            <td>$72</td>
+                        </tr>
+                        <tr>
+                            <td>Dry Needling</td>
+                            <td>20 mins</td>
+                            <td>$60-80</td>
+                            <td>$54-72</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Common Questions Section -->
+        <div class="kb-section">
+            <div class="kb-section-header" onclick="toggleSection(this)">
+                <h3><i class="fas fa-question-circle"></i> Common Patient Questions</h3>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="kb-section-content">
+                <div class="script-box">
+                    <h4>"What happens to my credits if I cancel?"</h4>
+                    <p><strong>Answer:</strong> "Reserve credits are non-refundable if you cancel your membership. However, credits do carry over month to month and you have 6 months to use them, so you have plenty of time to enjoy the benefits before they expire."</p>
+                </div>
+                
+                <div class="script-box">
+                    <h4>"Can I change my membership level?"</h4>
+                    <p><strong>Answer:</strong> "Absolutely! You can upgrade or downgrade at any time. Changes take effect with your next billing cycle. Any unused service allowances don't carry over, but your Reserve credits stay with you."</p>
+                </div>
+                
+                <div class="script-box">
+                    <h4>"What if I don't use all my services in a month?"</h4>
+                    <p><strong>Answer:</strong> "Service allowances reset each month - they don't roll over. However, you're earning Reserve credits every month that you can use anytime for additional services. Think of the service allowances as your base benefits, and credits as your bonus savings."</p>
+                </div>
+                
+                <div class="script-box">
+                    <h4>"Can I share my membership with family?"</h4>
+                    <p><strong>Answer:</strong> "Memberships are individual accounts. However, you can use your Reserve credits to pay for family members' services, and they'll still get the 10% member discount when you pay."</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contact Information Section -->
+        <div class="kb-section">
+            <div class="kb-section-header" onclick="toggleSection(this)">
+                <h3><i class="fas fa-phone"></i> Important Contacts & Resources</h3>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="kb-section-content">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
+                    <div style="background: rgba(164, 124, 91, 0.1); padding: 20px; border-radius: 8px;">
+                        <h4 style="color: var(--primary-color);">Emergency Contacts</h4>
+                        <p>Main Line: (248) 792-6570</p>
+                        <p>Manager: [Add contact]</p>
+                        <p>Owner: [Add contact]</p>
+                    </div>
+                    
+                    <div style="background: rgba(164, 124, 91, 0.1); padding: 20px; border-radius: 8px;">
+                        <h4 style="color: var(--primary-color);">Quick Links</h4>
+                        <p><a href="https://book.squareup.com/appointments/6pyjoccl1ik8ur/location/101VJFBVK1T29/services" target="_blank" style="color: var(--primary-color);">Booking System</a></p>
+                        <p><a href="https://be-well-lifestyle-centers.square.site/" target="_blank" style="color: var(--primary-color);">Café Ordering</a></p>
+                        <p><a href="membership-purchase.html" target="_blank" style="color: var(--primary-color);">Membership Purchase</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // Password protection
+        const STAFF_PASSWORD = "BeWellStaff2025"; // Change this password as needed
+        
+        document.getElementById('auth-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const password = document.getElementById('password').value;
+            
+            if (password === STAFF_PASSWORD) {
+                document.getElementById('auth-section').style.display = 'none';
+                document.getElementById('knowledge-base').style.display = 'block';
+                sessionStorage.setItem('staffAuthenticated', 'true');
+            } else {
+                document.getElementById('auth-error').style.display = 'block';
+                document.getElementById('password').value = '';
+            }
+        });
+        
+        // Check if already authenticated
+        if (sessionStorage.getItem('staffAuthenticated') === 'true') {
+            document.getElementById('auth-section').style.display = 'none';
+            document.getElementById('knowledge-base').style.display = 'block';
+        }
+        
+        // Logout function
+        function logout() {
+            sessionStorage.removeItem('staffAuthenticated');
+            document.getElementById('auth-section').style.display = 'flex';
+            document.getElementById('knowledge-base').style.display = 'none';
+            document.getElementById('password').value = '';
+        }
+        
+        // Toggle sections
+        function toggleSection(header) {
+            const section = header.parentElement;
+            section.classList.toggle('open');
+        }
+        
+        // Auto-logout after 4 hours of inactivity
+        let inactivityTimer;
+        function resetInactivityTimer() {
+            clearTimeout(inactivityTimer);
+            inactivityTimer = setTimeout(logout, 4 * 60 * 60 * 1000); // 4 hours
+        }
+        
+        document.addEventListener('click', resetInactivityTimer);
+        document.addEventListener('keypress', resetInactivityTimer);
+        resetInactivityTimer();
+    </script>
+</body>
+</html>
