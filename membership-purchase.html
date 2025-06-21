@@ -222,36 +222,35 @@
             document.getElementById('loading').style.display = 'flex';
             
             try {
-                // Redirect to Stripe Checkout
-                const { error } = await stripe.redirectToCheckout({
-                    lineItems: [{
-                        price: priceId,
-                        quantity: 1,
-                    }],
-                    mode: 'subscription',
-                    successUrl: window.location.origin + '/membership-success.html?session_id={CHECKOUT_SESSION_ID}',
-                    cancelUrl: window.location.origin + '/membership-purchase.html',
-                    customerEmail: null, // Let customer enter their email
-                    collectTaxIds: false,
-                    allowPromotionCodes: true,
-                    billingAddressCollection: 'required',
-                    metadata: {
-                        'membership_type': membershipType,
-                        'source': 'website'
-                    }
-                });
+                // Create the checkout URL directly
+                const checkoutUrl = `https://buy.stripe.com/test_XXXX?price=${priceId}`;
                 
-                if (error) {
-                    console.error('Stripe error:', error);
-                    alert('Error processing payment. Please try again.');
-                }
+                // For now, redirect to Stripe's payment link directly
+                // You'll need to create payment links in Stripe dashboard for each membership
+                redirectToStripePaymentLink(membershipType);
+                
             } catch (error) {
                 console.error('Checkout error:', error);
                 alert('Error processing payment. Please try again.');
+                document.getElementById('loading').style.display = 'none';
             }
+        }
+        
+        // Redirect to Stripe Payment Links (simpler approach)
+        function redirectToStripePaymentLink(membershipType) {
+            // For now, redirect to Square booking as fallback
+            // You can create Stripe Payment Links in your dashboard for each membership
+            const fallbackUrl = 'https://book.squareup.com/appointments/6pyjoccl1ik8ur/location/101VJFBVK1T29/services';
             
-            // Hide loading
+            // Show message about setting up payment links
             document.getElementById('loading').style.display = 'none';
+            
+            if (confirm(`Payment integration is being set up. Would you like to call us to sign up for the ${membershipType} membership?\n\nPhone: (248) 792-6570`)) {
+                window.open('tel:248-792-6570');
+            } else {
+                // Redirect to booking as alternative
+                window.open(fallbackUrl, '_blank');
+            }
         }
     </script>
     
