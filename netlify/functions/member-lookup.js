@@ -66,7 +66,7 @@ exports.handler = async (event, context) => {
                     'Access-Control-Allow-Origin': '*',
                     'Access-Control-Allow-Headers': 'Content-Type'
                 },
-                body: JSON.stringify({ error: 'Member not found' })
+                body: JSON.stringify({ error: 'Member not found. Please check your email or call us at (248) 792-6570.' })
             };
         }
 
