@@ -3,24 +3,6 @@
 
 let memberDatabase = {
     members: {
-        'silvio@bewelllifestylecenters.com': {
-            id: 'cus_SXMPgeV91f8BCg',
-            name: 'Silvio Cozzetto',
-            email: 'silvio@bewelllifestylecenters.com',
-            membershipType: 'restore',
-            reserveCredits: 14.90,
-            servicesUsedThisMonth: 0,
-            servicesAllowed: 1,
-            cafeItemsUsed: 0,
-            cafeItemsAllowed: 1,
-            memberSince: 'June 2025',
-            nextBilling: 'July 20, 2025',
-            status: 'active',
-            stripeCustomerId: 'cus_SXMPgeV91f8BCg',
-            stripeSubscriptionId: null,
-            createdAt: new Date().toISOString(),
-            updatedAt: new Date().toISOString()
-        },
         'cozzetto@infinitymgtsys.com': {
             id: 'member_real',
             name: 'Silvio Cozzetto',
