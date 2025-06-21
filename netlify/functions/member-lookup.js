@@ -19,21 +19,6 @@ exports.handler = async (event, context) => {
 
         // Simple member database - in production, this would query your actual database
         const members = {
-            // Add your actual email here so you can test
-            [email.toLowerCase()]: {
-                id: 'member_' + Date.now(),
-                name: 'New Member',
-                email: email,
-                membershipType: 'renew',
-                reserveCredits: 127.45,
-                servicesUsedThisMonth: 2,
-                servicesAllowed: 3,
-                cafeItemsUsed: 1,
-                cafeItemsAllowed: 2,
-                memberSince: 'June 2025',
-                nextBilling: 'July 21, 2025',
-                status: 'active'
-            },
             'test@bewell.com': {
                 id: 'demo_member',
                 name: 'Demo Member',
@@ -48,6 +33,7 @@ exports.handler = async (event, context) => {
                 nextBilling: 'March 15, 2025',
                 status: 'active'
             }
+            // TODO: Add real members from Stripe webhooks
         };
 
         const member = members[email.toLowerCase()];

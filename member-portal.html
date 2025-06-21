@@ -226,7 +226,7 @@
                     <input type="email" id="email" required placeholder="Enter your email address">
                 </div>
                 <button type="submit" class="portal-btn" id="send-magic-link-btn">
-                    <i class="fas fa-envelope"></i> Send Secure Login Link
+                    <i class="fas fa-sign-in-alt"></i> Access My Account
                 </button>
                 
                 <div id="magic-link-sent" style="display: none; background: rgba(62, 91, 61, 0.1); border: 1px solid #3E5B3D; border-radius: 6px; padding: 15px; margin-top: 15px;">
@@ -368,12 +368,15 @@
             btn.disabled = true;
             
             try {
-                // For now, simulate the magic link process
-                // In production, this would call your serverless function
+                // Look up member and auto-login if found
                 await simulateMagicLink(email);
                 
-                document.getElementById('magic-link-sent').style.display = 'block';
-                document.getElementById('login-error').style.display = 'none';
+                // If successful, automatically show dashboard
+                const memberData = getDemoMemberData();
+                showMemberDashboard(memberData);
+                
+                // Hide the login form
+                document.getElementById('login-section').style.display = 'none';
                 
             } catch (error) {
                 document.getElementById('login-error').textContent = error.message;
