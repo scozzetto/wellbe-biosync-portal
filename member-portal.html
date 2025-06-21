@@ -286,28 +286,8 @@
                 <i class="fas fa-calendar-check"></i> This Month's Service Allowances
             </div>
             <div class="section-content">
-                <div class="service-allowance used">
-                    <div>
-                        <strong>60min Massage</strong><br>
-                        <span style="color: #9ca3af; font-size: 0.9rem;">Used Feb 5, 2025</span>
-                    </div>
-                    <span style="color: #3E5B3D;"><i class="fas fa-check-circle"></i> Used</span>
-                </div>
-                
-                <div class="service-allowance used">
-                    <div>
-                        <strong>Chiropractic Care</strong><br>
-                        <span style="color: #9ca3af; font-size: 0.9rem;">Used Feb 12, 2025</span>
-                    </div>
-                    <span style="color: #3E5B3D;"><i class="fas fa-check-circle"></i> Used</span>
-                </div>
-                
-                <div class="service-allowance">
-                    <div>
-                        <strong>Available Service</strong><br>
-                        <span style="color: #9ca3af; font-size: 0.9rem;">Choose any service</span>
-                    </div>
-                    <button class="portal-btn" style="width: auto; margin: 0; padding: 8px 16px;" onclick="window.open('https://book.squareup.com/appointments/6pyjoccl1ik8ur/location/101VJFBVK1T29/services', '_blank')">Book Now</button>
+                <div id="service-allowances-container">
+                    <!-- Service allowances will be populated by JavaScript -->
                 </div>
             </div>
         </div>
@@ -317,28 +297,8 @@
                 <i class="fas fa-coins"></i> Reserve Credits History
             </div>
             <div class="section-content">
-                <div class="transaction-row">
-                    <div>
-                        <strong>Monthly Credit Earn</strong><br>
-                        <span class="transaction-date">Feb 1, 2025</span>
-                    </div>
-                    <span class="transaction-amount">+$49.90</span>
-                </div>
-                
-                <div class="transaction-row">
-                    <div>
-                        <strong>IV Therapy Upgrade</strong><br>
-                        <span class="transaction-date">Jan 28, 2025</span>
-                    </div>
-                    <span class="transaction-amount">-$85.00</span>
-                </div>
-                
-                <div class="transaction-row">
-                    <div>
-                        <strong>Monthly Credit Earn</strong><br>
-                        <span class="transaction-date">Jan 1, 2025</span>
-                    </div>
-                    <span class="transaction-amount">+$49.90</span>
+                <div id="transaction-history-container">
+                    <!-- Transaction history will be populated by JavaScript -->
                 </div>
             </div>
         </div>
@@ -467,9 +427,91 @@
             // Update stats
             document.querySelector('.stat-card:nth-child(1) .stat-number').textContent = `$${memberData.reserveCredits}`;
             document.querySelector('.stat-card:nth-child(2) .stat-number').textContent = 
-                `${memberData.servicesUsedThisMonth} of ${memberData.servicesAllowed}`;
+                `${memberData.servicesUsedThisMonth || 0} of ${memberData.servicesAllowed}`;
             document.querySelector('.stat-card:nth-child(3) .stat-number').textContent = 
-                `${memberData.cafeItemsUsed} of ${memberData.cafeItemsAllowed}`;
+                `${memberData.cafeItemsUsed || 0} of ${memberData.cafeItemsAllowed}`;
+            
+            // Fix expiring credits message
+            const expiringCredits = memberData.reserveCredits > 0 ? (memberData.reserveCredits * 0.2).toFixed(2) : '0.00';
+            document.querySelector('.stat-card:nth-child(1) p').textContent = 
+                `$${expiringCredits} expiring in 6 months`;
+            
+            // Update service allowances
+            populateServiceAllowances(memberData);
+            
+            // Update transaction history
+            populateTransactionHistory(memberData);
+        }
+        
+        function populateServiceAllowances(memberData) {
+            const container = document.getElementById('service-allowances-container');
+            const servicesUsed = memberData.servicesUsedThisMonth || 0;
+            const servicesAllowed = memberData.servicesAllowed || 0;
+            
+            let html = '';
+            
+            // Show available services
+            for (let i = 0; i < servicesAllowed; i++) {
+                if (i < servicesUsed) {
+                    // Service already used (placeholder data)
+                    html += `
+                        <div class="service-allowance used">
+                            <div>
+                                <strong>Service Used</strong><br>
+                                <span style="color: #9ca3af; font-size: 0.9rem;">Contact office for details</span>
+                            </div>
+                            <span style="color: #3E5B3D;"><i class="fas fa-check-circle"></i> Used</span>
+                        </div>
+                    `;
+                } else {
+                    // Available service
+                    html += `
+                        <div class="service-allowance">
+                            <div>
+                                <strong>Available Service ${i + 1}</strong><br>
+                                <span style="color: #9ca3af; font-size: 0.9rem;">Choose any service</span>
+                            </div>
+                            <button class="portal-btn" style="width: auto; margin: 0; padding: 8px 16px;" onclick="window.open('https://book.squareup.com/appointments/6pyjoccl1ik8ur/location/101VJFBVK1T29/services', '_blank')">Book Now</button>
+                        </div>
+                    `;
+                }
+            }
+            
+            container.innerHTML = html;
+        }
+        
+        function populateTransactionHistory(memberData) {
+            const container = document.getElementById('transaction-history-container');
+            const currentDate = new Date();
+            const membershipStart = new Date(memberData.memberSince + ' 1, 2025');
+            
+            let html = '';
+            
+            // If they have credits, show the initial credit earning
+            if (memberData.reserveCredits > 0) {
+                html += `
+                    <div class="transaction-row">
+                        <div>
+                            <strong>Initial Membership Credit</strong><br>
+                            <span class="transaction-date">${memberData.memberSince}</span>
+                        </div>
+                        <span class="transaction-amount">+$${memberData.reserveCredits}</span>
+                    </div>
+                `;
+            }
+            
+            // If no transactions, show welcome message
+            if (html === '') {
+                html = `
+                    <div style="text-align: center; color: #9ca3af; padding: 40px;">
+                        <i class="fas fa-coins" style="font-size: 2rem; margin-bottom: 15px; opacity: 0.5;"></i>
+                        <h4>Welcome to Be Well Reserve!</h4>
+                        <p>Your credit history will appear here as you use services and earn monthly credits.</p>
+                    </div>
+                `;
+            }
+            
+            container.innerHTML = html;
         }
         
         function logout() {
