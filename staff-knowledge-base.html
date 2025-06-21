@@ -222,9 +222,14 @@
 
     <!-- Knowledge Base Content -->
     <div id="knowledge-base" class="knowledge-base">
-        <button class="logout-btn" onclick="logout()">
-            <i class="fas fa-sign-out-alt"></i> Logout
-        </button>
+        <div style="position: fixed; top: 20px; right: 20px; display: flex; gap: 10px;">
+            <button class="logout-btn" onclick="window.location.href='index.html'" style="background: var(--primary-color);">
+                <i class="fas fa-home"></i> Home
+            </button>
+            <button class="logout-btn" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </button>
+        </div>
         
         <div class="kb-header">
             <h1><i class="fas fa-book-open"></i> Staff Knowledge Base</h1>

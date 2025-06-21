@@ -255,9 +255,14 @@
     </div>
 
     <div class="admin-container" id="admin-dashboard" style="display: none;">
-        <button class="logout-btn" onclick="logout()">
-            <i class="fas fa-sign-out-alt"></i> Logout
-        </button>
+        <div style="position: fixed; top: 20px; right: 20px; display: flex; gap: 10px;">
+            <button class="logout-btn" onclick="window.location.href='index.html'" style="background: var(--primary-color);">
+                <i class="fas fa-home"></i> Home
+            </button>
+            <button class="logout-btn" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </button>
+        </div>
         
         <div class="admin-header">
             <h1><i class="fas fa-chart-pie"></i> Be Well Admin Dashboard</h1>
