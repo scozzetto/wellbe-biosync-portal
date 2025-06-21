@@ -19,6 +19,20 @@ exports.handler = async (event, context) => {
 
         // Simple member database - in production, this would query your actual database
         const members = {
+            'silvio@bewelllifestylecenters.com': {
+                id: 'cus_SXMPgeV91f8BCg', // Real Stripe customer ID
+                name: 'Silvio Cozzetto',
+                email: 'silvio@bewelllifestylecenters.com',
+                membershipType: 'restore', // $149 Restore membership
+                reserveCredits: 14.90, // 10% of $149
+                servicesUsedThisMonth: 0,
+                servicesAllowed: 1, // Restore gets 1 service
+                cafeItemsUsed: 0,
+                cafeItemsAllowed: 1, // Restore gets 1 café item
+                memberSince: 'June 2025',
+                nextBilling: 'July 20, 2025', // Matches Stripe billing date
+                status: 'active'
+            },
             'cozzetto@infinitymgtsys.com': {
                 id: 'member_real',
                 name: 'Silvio Cozzetto',
