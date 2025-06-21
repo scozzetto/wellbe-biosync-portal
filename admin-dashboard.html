@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Be Well LifeStyle Centers</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .admin-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            background: var(--bg-color);
+            color: var(--text-color);
+            min-height: 100vh;
+        }
+        
+        .admin-header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--primary-color);
+        }
+        
+        .admin-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        
+        .stat-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            border: 1px solid rgba(164, 124, 91, 0.2);
+            padding: 25px;
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 5px;
+        }
+        
+        .stat-label {
+            color: #9ca3af;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .admin-section {
+            background: var(--card-bg);
+            border-radius: 12px;
+            border: 1px solid rgba(164, 124, 91, 0.2);
+            margin-bottom: 25px;
+            overflow: hidden;
+        }
+        
+        .section-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 15px 20px;
+            font-weight: 600;
+            font-size: 1.2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .section-content {
+            padding: 25px;
+        }
+        
+        .member-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        
+        .member-table th,
+        .member-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid rgba(164, 124, 91, 0.2);
+        }
+        
+        .member-table th {
+            background: rgba(164, 124, 91, 0.1);
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        
+        .member-table td {
+            color: var(--text-color);
+        }
+        
+        .member-search {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid rgba(164, 124, 91, 0.3);
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-color);
+            font-size: 1rem;
+            margin-bottom: 20px;
+        }
+        
+        .credit-controls {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        
+        .credit-input {
+            width: 80px;
+            padding: 6px;
+            border: 1px solid rgba(164, 124, 91, 0.3);
+            border-radius: 4px;
+            text-align: center;
+        }
+        
+        .btn-small {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+        
+        .btn-small:hover {
+            transform: translateY(-1px);
+        }
+        
+        .btn-add {
+            background: #3E5B3D;
+            color: white;
+        }
+        
+        .btn-subtract {
+            background: #B91C1C;
+            color: white;
+        }
+        
+        .membership-badge {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .badge-restore { background: #FEF3C7; color: #92400E; }
+        .badge-revive { background: #DBEAFE; color: #1E40AF; }
+        .badge-renew { background: #D1FAE5; color: #065F46; }
+        .badge-total-wellness { background: #E0E7FF; color: #3730A3; }
+        
+        .logout-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--danger-color);
+            color: white;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-container">
+        <button class="logout-btn" onclick="logout()">
+            <i class="fas fa-sign-out-alt"></i> Logout
+        </button>
+        
+        <div class="admin-header">
+            <h1><i class="fas fa-chart-pie"></i> Be Well Admin Dashboard</h1>
+            <p style="color: #9ca3af; font-size: 1.1rem;">Member Management & Analytics</p>
+        </div>
+
+        <div class="admin-stats">
+            <div class="stat-card">
+                <div class="stat-number" id="total-members">0</div>
+                <div class="stat-label">Active Members</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-number" id="monthly-revenue">$0</div>
+                <div class="stat-label">Monthly Revenue</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-number" id="total-credits">$0</div>
+                <div class="stat-label">Reserve Credits Issued</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-number" id="new-members">0</div>
+                <div class="stat-label">New This Month</div>
+            </div>
+        </div>
+
+        <div class="admin-section">
+            <div class="section-header">
+                <h3><i class="fas fa-users"></i> Member Management</h3>
+                <button class="btn btn-small btn-add" onclick="refreshMembers()">
+                    <i class="fas fa-sync-alt"></i> Refresh
+                </button>
+            </div>
+            <div class="section-content">
+                <input type="text" id="member-search" class="member-search" placeholder="Search members by name, email, or membership type...">
+                
+                <table class="member-table" id="members-table">
+                    <thead>
+                        <tr>
+                            <th>Member</th>
+                            <th>Membership</th>
+                            <th>Reserve Credits</th>
+                            <th>Services Used</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="members-tbody">
+                        <!-- Members will be loaded here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="admin-section">
+            <div class="section-header">
+                <h3><i class="fas fa-chart-line"></i> Quick Actions</h3>
+            </div>
+            <div class="section-content">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
+                    <button class="btn btn-primary" onclick="exportMemberData()">
+                        <i class="fas fa-download"></i> Export Member Data
+                    </button>
+                    
+                    <button class="btn btn-primary" onclick="viewStripeSettings()">
+                        <i class="fas fa-credit-card"></i> Stripe Dashboard
+                    </button>
+                    
+                    <button class="btn btn-primary" onclick="addCreditsToAll()">
+                        <i class="fas fa-coins"></i> Process Monthly Credits
+                    </button>
+                    
+                    <button class="btn btn-primary" onclick="sendMemberEmails()">
+                        <i class="fas fa-envelope"></i> Send Member Newsletter
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Demo member data
+        const demoMembers = [
+            {
+                id: 'cus_demo1',
+                name: 'Sarah Johnson',
+                email: 'sarah@example.com',
+                membershipType: 'renew',
+                reserveCredits: 127.45,
+                servicesUsed: 2,
+                servicesAllowed: 3,
+                status: 'active',
+                joinDate: '2025-01-15'
+            },
+            {
+                id: 'cus_demo2',
+                name: 'Mike Chen',
+                email: 'mike@example.com',
+                membershipType: 'restore',
+                reserveCredits: 89.20,
+                servicesUsed: 1,
+                servicesAllowed: 1,
+                status: 'active',
+                joinDate: '2025-02-01'
+            },
+            {
+                id: 'cus_demo3',
+                name: 'Jennifer Smith',
+                email: 'jennifer@example.com',
+                membershipType: 'total-wellness',
+                reserveCredits: 234.80,
+                servicesUsed: 4,
+                servicesAllowed: 5,
+                status: 'active',
+                joinDate: '2024-12-10'
+            }
+        ];
+
+        // Load dashboard on page load
+        window.addEventListener('load', function() {
+            loadDashboard();
+        });
+
+        function loadDashboard() {
+            updateStats();
+            loadMembers();
+            setupSearch();
+        }
+
+        function updateStats() {
+            document.getElementById('total-members').textContent = demoMembers.length;
+            
+            const monthlyRevenue = demoMembers.reduce((sum, member) => {
+                const rates = { restore: 149, revive: 299, renew: 499, 'total-wellness': 799 };
+                return sum + (rates[member.membershipType] || 0);
+            }, 0);
+            document.getElementById('monthly-revenue').textContent = `$${monthlyRevenue.toLocaleString()}`;
+            
+            const totalCredits = demoMembers.reduce((sum, member) => sum + member.reserveCredits, 0);
+            document.getElementById('total-credits').textContent = `$${totalCredits.toFixed(2)}`;
+            
+            document.getElementById('new-members').textContent = '2';
+        }
+
+        function loadMembers() {
+            const tbody = document.getElementById('members-tbody');
+            tbody.innerHTML = '';
+
+            demoMembers.forEach(member => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>
+                        <div><strong>${member.name}</strong></div>
+                        <div style="color: #9ca3af; font-size: 0.8rem;">${member.email}</div>
+                    </td>
+                    <td>
+                        <span class="membership-badge badge-${member.membershipType}">
+                            ${member.membershipType.replace('-', ' ')}
+                        </span>
+                    </td>
+                    <td>
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <strong>$${member.reserveCredits.toFixed(2)}</strong>
+                            <div class="credit-controls">
+                                <input type="number" class="credit-input" value="10" min="0" step="0.01">
+                                <button class="btn-small btn-add" onclick="addCredits('${member.id}', this.previousElementSibling.value)">+</button>
+                                <button class="btn-small btn-subtract" onclick="subtractCredits('${member.id}', this.previousElementSibling.previousElementSibling.value)">-</button>
+                            </div>
+                        </div>
+                    </td>
+                    <td>${member.servicesUsed} / ${member.servicesAllowed}</td>
+                    <td>
+                        <span style="color: #3E5B3D; font-weight: 600;">
+                            <i class="fas fa-circle" style="font-size: 0.5rem;"></i> ${member.status}
+                        </span>
+                    </td>
+                    <td>
+                        <button class="btn-small btn-primary" onclick="viewMember('${member.id}')">View</button>
+                        <button class="btn-small btn-secondary" onclick="sendMagicLink('${member.email}')">Login Link</button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        function setupSearch() {
+            document.getElementById('member-search').addEventListener('input', function(e) {
+                const searchTerm = e.target.value.toLowerCase();
+                const rows = document.querySelectorAll('#members-tbody tr');
+                
+                rows.forEach(row => {
+                    const text = row.textContent.toLowerCase();
+                    row.style.display = text.includes(searchTerm) ? '' : 'none';
+                });
+            });
+        }
+
+        function addCredits(memberId, amount) {
+            const member = demoMembers.find(m => m.id === memberId);
+            if (member) {
+                member.reserveCredits += parseFloat(amount);
+                loadMembers();
+                updateStats();
+                alert(`Added $${amount} credits to ${member.name}`);
+            }
+        }
+
+        function subtractCredits(memberId, amount) {
+            const member = demoMembers.find(m => m.id === memberId);
+            if (member) {
+                member.reserveCredits = Math.max(0, member.reserveCredits - parseFloat(amount));
+                loadMembers();
+                updateStats();
+                alert(`Removed $${amount} credits from ${member.name}`);
+            }
+        }
+
+        function viewMember(memberId) {
+            const member = demoMembers.find(m => m.id === memberId);
+            if (member) {
+                alert(`Member Details:\n\nName: ${member.name}\nEmail: ${member.email}\nMembership: ${member.membershipType}\nCredits: $${member.reserveCredits}\nJoined: ${member.joinDate}`);
+            }
+        }
+
+        function sendMagicLink(email) {
+            alert(`Magic login link sent to ${email}`);
+        }
+
+        function refreshMembers() {
+            loadDashboard();
+            alert('Member data refreshed');
+        }
+
+        function exportMemberData() {
+            const csv = [
+                ['Name', 'Email', 'Membership', 'Credits', 'Services Used', 'Status', 'Join Date'],
+                ...demoMembers.map(m => [m.name, m.email, m.membershipType, m.reserveCredits, `${m.servicesUsed}/${m.servicesAllowed}`, m.status, m.joinDate])
+            ].map(row => row.join(',')).join('\n');
+            
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'bewell-members.csv';
+            a.click();
+            window.URL.revokeObjectURL(url);
+        }
+
+        function viewStripeSettings() {
+            window.open('https://dashboard.stripe.com', '_blank');
+        }
+
+        function addCreditsToAll() {
+            if (confirm('Process monthly credits for all active members?')) {
+                demoMembers.forEach(member => {
+                    const rates = { restore: 14.90, revive: 29.90, renew: 49.90, 'total-wellness': 79.90 };
+                    member.reserveCredits += rates[member.membershipType] || 0;
+                    member.servicesUsed = 0; // Reset monthly services
+                });
+                loadMembers();
+                updateStats();
+                alert('Monthly credits processed for all members!');
+            }
+        }
+
+        function sendMemberEmails() {
+            alert('Member newsletter feature coming soon!');
+        }
+
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                window.location.href = 'index.html';
+            }
+        }
+    </script>
+</body>
+</html>

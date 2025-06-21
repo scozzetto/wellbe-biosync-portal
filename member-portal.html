@@ -219,36 +219,22 @@
             <h2>Member Portal</h2>
             <p style="color: #9ca3af; margin-bottom: 25px;">Access your Be Well Reserve™ account</p>
             
-            <div class="coming-soon">
-                <h3><i class="fas fa-tools"></i> Coming Soon</h3>
-                <p>We're building your personalized member portal to track your:</p>
-                <ul style="text-align: left; color: #9ca3af; margin-bottom: 20px;">
-                    <li>Be Well Reserve credit balance</li>
-                    <li>Monthly service allowances</li>
-                    <li>Transaction history</li>
-                    <li>Membership benefits</li>
-                    <li>Appointment booking</li>
-                </ul>
-                <p><strong>In the meantime:</strong></p>
-                <button class="portal-btn" onclick="window.open('https://book.squareup.com/appointments/6pyjoccl1ik8ur/location/101VJFBVK1T29/services', '_blank')">
-                    <i class="fas fa-calendar-check"></i> Book Appointment
-                </button>
-                <button class="portal-btn secondary" onclick="window.open('tel:248-792-6570')">
-                    <i class="fas fa-phone"></i> Call for Account Info: (248) 792-6570
-                </button>
-            </div>
-            
-            <!-- Future Login Form (Currently Hidden) -->
-            <form id="member-login-form" style="display: none;">
+            <!-- Magic Link Login Form -->
+            <form id="member-login-form">
                 <div class="form-group">
                     <label for="email">Email Address:</label>
-                    <input type="email" id="email" required>
+                    <input type="email" id="email" required placeholder="Enter your email address">
                 </div>
-                <div class="form-group">
-                    <label for="phone">Phone Number:</label>
-                    <input type="tel" id="phone" required>
+                <button type="submit" class="portal-btn" id="send-magic-link-btn">
+                    <i class="fas fa-envelope"></i> Send Secure Login Link
+                </button>
+                
+                <div id="magic-link-sent" style="display: none; background: rgba(62, 91, 61, 0.1); border: 1px solid #3E5B3D; border-radius: 6px; padding: 15px; margin-top: 15px;">
+                    <p style="color: #3E5B3D; margin: 0;">
+                        <i class="fas fa-check-circle"></i> 
+                        A secure login link has been sent to your email address. Click the link to access your account.
+                    </p>
                 </div>
-                <button type="submit" class="portal-btn">Access My Account</button>
             </form>
             
             <div id="login-error" style="color: #ff6b6b; margin-top: 15px; display: none;">
@@ -359,23 +345,134 @@
     </div>
 
     <script>
-        // Future login functionality (currently disabled)
-        document.getElementById('member-login-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            // This will connect to Salesforce/Stripe in the future
-            document.getElementById('login-error').style.display = 'block';
+        // Check for magic link token on page load
+        window.addEventListener('load', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const token = urlParams.get('token');
+            
+            if (token) {
+                verifyMagicLink(token);
+            }
         });
+
+        // Magic link login form submission
+        document.getElementById('member-login-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const btn = document.getElementById('send-magic-link-btn');
+            const originalText = btn.innerHTML;
+            
+            // Show loading
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+            btn.disabled = true;
+            
+            try {
+                // For now, simulate the magic link process
+                // In production, this would call your serverless function
+                await simulateMagicLink(email);
+                
+                document.getElementById('magic-link-sent').style.display = 'block';
+                document.getElementById('login-error').style.display = 'none';
+                
+            } catch (error) {
+                document.getElementById('login-error').textContent = error.message;
+                document.getElementById('login-error').style.display = 'block';
+                document.getElementById('magic-link-sent').style.display = 'none';
+            }
+            
+            // Reset button
+            btn.innerHTML = originalText;
+            btn.disabled = false;
+        });
+
+        // Simulate magic link for demo (replace with actual API call)
+        async function simulateMagicLink(email) {
+            return new Promise((resolve, reject) => {
+                setTimeout(() => {
+                    // Simulate checking if member exists
+                    const validEmails = ['test@bewell.com', 'member@example.com'];
+                    if (validEmails.includes(email.toLowerCase())) {
+                        resolve();
+                    } else {
+                        reject(new Error('Member not found. Please check your email or call us at (248) 792-6570.'));
+                    }
+                }, 1500);
+            });
+        }
+
+        // Verify magic link token
+        async function verifyMagicLink(token) {
+            try {
+                // For demo purposes, simulate successful login
+                // In production, this would verify the token with your API
+                if (token === 'demo-token') {
+                    showMemberDashboard(getDemoMemberData());
+                } else {
+                    document.getElementById('login-error').textContent = 'Invalid or expired login link.';
+                    document.getElementById('login-error').style.display = 'block';
+                }
+            } catch (error) {
+                document.getElementById('login-error').textContent = 'Error verifying login link.';
+                document.getElementById('login-error').style.display = 'block';
+            }
+        }
+
+        // Get demo member data
+        function getDemoMemberData() {
+            return {
+                name: 'Demo Member',
+                email: 'demo@bewell.com',
+                membershipType: 'renew',
+                reserveCredits: 127.45,
+                servicesUsedThisMonth: 2,
+                servicesAllowed: 3,
+                cafeItemsUsed: 1,
+                cafeItemsAllowed: 2,
+                memberSince: 'January 2025',
+                nextBilling: 'March 15, 2025'
+            };
+        }
+
+        // Show member dashboard
+        function showMemberDashboard(memberData) {
+            document.getElementById('login-section').style.display = 'none';
+            document.getElementById('member-dashboard').style.display = 'block';
+            
+            // Update dashboard with member data
+            document.querySelector('.dashboard-header h1').innerHTML = 
+                `<i class="fas fa-user-circle"></i> Welcome back, ${memberData.name}`;
+            document.querySelector('.dashboard-header p').textContent = 
+                `${memberData.membershipType.charAt(0).toUpperCase() + memberData.membershipType.slice(1)} Membership - Next billing: ${memberData.nextBilling}`;
+            
+            // Update stats
+            document.querySelector('.stat-card:nth-child(1) .stat-number').textContent = `$${memberData.reserveCredits}`;
+            document.querySelector('.stat-card:nth-child(2) .stat-number').textContent = 
+                `${memberData.servicesUsedThisMonth} of ${memberData.servicesAllowed}`;
+            document.querySelector('.stat-card:nth-child(3) .stat-number').textContent = 
+                `${memberData.cafeItemsUsed} of ${memberData.cafeItemsAllowed}`;
+        }
         
         function logout() {
             document.getElementById('login-section').style.display = 'flex';
             document.getElementById('member-dashboard').style.display = 'none';
+            
+            // Clear URL parameters
+            window.history.replaceState({}, document.title, window.location.pathname);
         }
         
-        // Staff access function (for future use)
-        function staffLookupMember(memberId) {
-            // This will allow staff to look up member accounts
-            console.log('Staff looking up member:', memberId);
+        // Demo login link for testing
+        function testLogin() {
+            window.location.href = window.location.pathname + '?token=demo-token';
         }
+        
+        // Add demo link for testing
+        setTimeout(() => {
+            const demoLink = document.createElement('p');
+            demoLink.innerHTML = '<a href="#" onclick="testLogin()" style="color: #9ca3af; font-size: 0.8rem;">Demo Login (for testing)</a>';
+            demoLink.style.marginTop = '20px';
+            document.querySelector('.portal-box').appendChild(demoLink);
+        }, 1000);
     </script>
 </body>
 </html>

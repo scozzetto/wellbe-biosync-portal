@@ -1,0 +1,9 @@
+{
+  "members": {},
+  "transactions": {},
+  "settings": {
+    "creditExpirationMonths": 6,
+    "creditEarnRate": 0.10,
+    "lastUpdated": "2025-06-21"
+  }
+}
