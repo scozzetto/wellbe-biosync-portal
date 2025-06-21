@@ -52,6 +52,20 @@ exports.handler = async (event, context) => {
                 memberSince: 'January 2025',
                 nextBilling: 'March 15, 2025',
                 status: 'active'
+            },
+            'test321@stripetest.ca': {
+                id: 'cus_SXcQvdP0K4HQKV',
+                name: 'Test Client',
+                email: 'test321@stripetest.ca',
+                membershipType: 'restore',
+                reserveCredits: 14.90,
+                servicesUsedThisMonth: 0,
+                servicesAllowed: 1,
+                cafeItemsUsed: 0,
+                cafeItemsAllowed: 1,
+                memberSince: 'June 2025',
+                nextBilling: 'July 21, 2025',
+                status: 'active'
             }
             // TODO: Add real members from Stripe webhooks
         };
