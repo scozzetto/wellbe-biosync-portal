@@ -37,15 +37,16 @@ exports.handler = async (event, context) => {
                 id: 'member_real',
                 name: 'Silvio Cozzetto',
                 email: 'cozzetto@infinitymgtsys.com',
-                membershipType: 'restore', // Correct - $149 Restore membership
-                reserveCredits: 14.90, // Correct - 10% of $149
+                membershipType: 'restore',
+                reserveCredits: 14.90, // Preserved for records
                 servicesUsedThisMonth: 0,
-                servicesAllowed: 1, // Correct - Restore gets 1 service
+                servicesAllowed: 0, // No services when cancelled
                 cafeItemsUsed: 0,
-                cafeItemsAllowed: 1, // Correct - Restore gets 1 café item
+                cafeItemsAllowed: 0, // No café items when cancelled
                 memberSince: 'June 2025',
-                nextBilling: 'July 21, 2025',
-                status: 'active'
+                nextBilling: 'Cancelled',
+                status: 'cancelled', // Changed from active
+                cancelledDate: 'June 21, 2025'
             },
             'test@bewell.com': {
                 id: 'demo_member',
@@ -74,6 +75,22 @@ exports.handler = async (event, context) => {
                     'Access-Control-Allow-Headers': 'Content-Type'
                 },
                 body: JSON.stringify({ error: 'Member not found' })
+            };
+        }
+
+        // Block cancelled members from accessing portal
+        if (member.status === 'cancelled') {
+            return {
+                statusCode: 403,
+                headers: {
+                    'Access-Control-Allow-Origin': '*',
+                    'Access-Control-Allow-Headers': 'Content-Type'
+                },
+                body: JSON.stringify({ 
+                    error: 'Membership has been cancelled. Please contact us at (248) 792-6570 to reactivate your account.',
+                    status: 'cancelled',
+                    cancelledDate: member.cancelledDate
+                })
             };
         }
 

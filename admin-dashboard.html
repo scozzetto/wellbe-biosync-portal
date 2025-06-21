@@ -382,9 +382,10 @@
                 membershipType: 'restore',
                 reserveCredits: 14.90,
                 servicesUsed: 0,
-                servicesAllowed: 1,
-                status: 'active',
-                joinDate: '2025-06-21'
+                servicesAllowed: 0,
+                status: 'cancelled',
+                joinDate: '2025-06-21',
+                cancelledDate: '2025-06-21'
             },
             {
                 id: 'cus_demo1',
@@ -475,9 +476,10 @@
                     </td>
                     <td>${member.servicesUsed} / ${member.servicesAllowed}</td>
                     <td>
-                        <span style="color: #3E5B3D; font-weight: 600;">
+                        <span style="color: ${member.status === 'cancelled' ? '#B91C1C' : '#3E5B3D'}; font-weight: 600;">
                             <i class="fas fa-circle" style="font-size: 0.5rem;"></i> ${member.status}
                         </span>
+                        ${member.status === 'cancelled' ? `<br><small style="color: #9ca3af;">Cancelled: ${member.cancelledDate || 'Unknown'}</small>` : ''}
                     </td>
                     <td>
                         <button class="btn-small btn-primary" onclick="viewMember('${member.id}')">View</button>
