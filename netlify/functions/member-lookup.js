@@ -23,12 +23,12 @@ exports.handler = async (event, context) => {
                 id: 'member_real',
                 name: 'Silvio Cozzetto',
                 email: 'cozzetto@infinitymgtsys.com',
-                membershipType: 'renew', // Assuming you got the Renew membership
-                reserveCredits: 49.90, // First month credits
+                membershipType: 'restore', // Correct - $149 Restore membership
+                reserveCredits: 14.90, // Correct - 10% of $149
                 servicesUsedThisMonth: 0,
-                servicesAllowed: 3,
+                servicesAllowed: 1, // Correct - Restore gets 1 service
                 cafeItemsUsed: 0,
-                cafeItemsAllowed: 2,
+                cafeItemsAllowed: 1, // Correct - Restore gets 1 café item
                 memberSince: 'June 2025',
                 nextBilling: 'July 21, 2025',
                 status: 'active'
