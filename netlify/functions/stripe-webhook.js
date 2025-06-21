@@ -1,5 +1,6 @@
 // Netlify Function to handle Stripe webhooks
 const memberDB = require('./member-database');
+const salesforce = require('./salesforce-sync');
 
 // Simple member database operations
 const loadMembers = async () => {
@@ -175,6 +176,14 @@ async function handleCheckoutCompleted(session) {
             console.log('Creating member with real email:', customerEmail);
             const newMember = await memberDB.createMember(customerData, subscriptionData);
             console.log('Created member:', newMember);
+            
+            // Sync to Salesforce
+            try {
+                await salesforce.upsertContact(customerData, subscriptionData);
+                console.log('Synced to Salesforce:', customerEmail);
+            } catch (error) {
+                console.error('Salesforce sync failed:', error);
+            }
         }
         
     } catch (error) {
@@ -254,6 +263,14 @@ async function handleSubscriptionDeleted(subscription) {
         // Update member status to cancelled
         await memberDB.updateMemberStatus(subscription.customer, 'cancelled');
         console.log('Member status updated to cancelled');
+        
+        // Update Salesforce
+        try {
+            await salesforce.updateContactStatus(subscription.customer, 'cancelled');
+            console.log('Updated Salesforce contact to cancelled');
+        } catch (error) {
+            console.error('Salesforce update failed:', error);
+        }
         
     } catch (error) {
         console.error('Error handling subscription deletion:', error);

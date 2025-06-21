@@ -19,6 +19,7 @@
   "homepage": "https://github.com/followthewhiterabbitneo/wellbe#readme",
   "dependencies": {
     "dotenv": "^16.5.0",
-    "stripe": "^18.2.1"
+    "stripe": "^18.2.1",
+    "jsforce": "^1.11.1"
   }
 }
