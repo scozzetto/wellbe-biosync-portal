@@ -29,6 +29,8 @@ grep "WELLBE-BIOSYNC-2025" CLAUDE.md  # Should return this unique ID
 - "Check CLAUDE.md first"
 - "Verify WELLBE-BIOSYNC-2025"
 - "This is the wellBe project with the splash video"
+- **"Find everything you need to know about the Be Well LifeStyle Centers webpage and catch yourself back up to speed"**
+- **"Go into the wellbe directory and read CLAUDE.md and SYSTEM_STATUS.md to get up to speed"**
 
 ## 🚀 CURRENT STATE (Last Updated: June 21, 2025 - 4:15 PM)
 - Splash screen: 4-second video with white disc logo
