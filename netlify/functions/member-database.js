@@ -1,28 +1,11 @@
 // Simple member database for Netlify Functions
-// Using JSON file storage for persistence across function calls
+// Using a JSON structure that persists in memory for each deployment
 
-const fs = require('fs');
-const path = require('path');
-
-// Database file path
-const dbPath = path.join('/tmp', 'member-database.json');
-
-// Load database from file or create default
-function loadDatabase() {
-    try {
-        if (fs.existsSync(dbPath)) {
-            const data = fs.readFileSync(dbPath, 'utf8');
-            return JSON.parse(data);
-        }
-    } catch (error) {
-        console.log('Creating new database file');
-    }
-    
-    // Default database structure
-    return {
-        members: {
+// Initialize member database with default members
+const memberDatabase = {
+    members: {
         'support@bewelllifestylecenters.com': {
-            id: 'cus_SXNDq3xQgYfaWS',
+            id: 'cus_SXTZCwKEIbrTnZ',
             name: 'Support Account',
             email: 'support@bewelllifestylecenters.com',
             membershipType: 'revive',
@@ -36,7 +19,7 @@ function loadDatabase() {
             status: 'cancelled',
             cancelledDate: 'June 21, 2025',
             stripeCustomerId: 'cus_SXTZCwKEIbrTnZ',
-            stripeSubscriptionId: 'sub_active',
+            stripeSubscriptionId: 'sub_cancelled',
             createdAt: new Date().toISOString(),
             updatedAt: new Date().toISOString()
         },
@@ -92,23 +75,9 @@ function loadDatabase() {
             createdAt: new Date().toISOString(),
             updatedAt: new Date().toISOString()
         }
-        },
-        transactions: {}
-    };
-}
-
-// Save database to file
-function saveDatabase(database) {
-    try {
-        fs.writeFileSync(dbPath, JSON.stringify(database, null, 2));
-        console.log('Database saved successfully');
-    } catch (error) {
-        console.error('Error saving database:', error);
-    }
-}
-
-// Get current database
-let memberDatabase = loadDatabase();
+    },
+    transactions: {}
+};
 
 // Helper function to get membership details by type
 function getMembershipDetails(membershipType) {
@@ -170,7 +139,6 @@ const memberDB = {
             };
 
             memberDatabase.members[customerData.email.toLowerCase()] = member;
-            saveDatabase(memberDatabase);
             console.log('Created new member:', member.email);
             return member;
         } catch (error) {
@@ -194,7 +162,6 @@ const memberDB = {
                     member.cafeItemsAllowed = 0;
                 }
                 
-                saveDatabase(memberDatabase);
                 console.log('Updated member status:', member.email, 'to', status);
                 return member;
             }
@@ -216,7 +183,6 @@ const memberDB = {
                 member.cafeItemsUsed = 0;
                 member.updatedAt = new Date().toISOString();
                 
-                saveDatabase(memberDatabase);
                 console.log('Added monthly credits to:', member.email, 'Amount:', membershipDetails.credits);
                 return member;
             }
