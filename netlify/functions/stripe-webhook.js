@@ -72,6 +72,18 @@ const addMember = async (stripeCustomer, subscriptionData) => {
 };
 
 exports.handler = async (event, context) => {
+    // Handle CORS preflight
+    if (event.httpMethod === 'OPTIONS') {
+        return {
+            statusCode: 200,
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Headers': 'Content-Type, stripe-signature',
+                'Access-Control-Allow-Methods': 'POST, OPTIONS'
+            }
+        };
+    }
+
     // Only handle POST requests
     if (event.httpMethod !== 'POST') {
         return {
@@ -81,23 +93,31 @@ exports.handler = async (event, context) => {
     }
 
     try {
-        const sig = event.headers['stripe-signature'];
-        const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
-
-        // For now, we'll accept the webhook without signature verification
-        // In production, you should verify the signature
-        const body = JSON.parse(event.body);
-        const stripeEvent = body;
-
-        console.log('Webhook received:', stripeEvent.type);
+        // Parse the event
+        const stripeEvent = JSON.parse(event.body);
+        
+        console.log('Stripe webhook received:', stripeEvent.type);
+        console.log('Event data:', JSON.stringify(stripeEvent.data, null, 2));
 
         switch (stripeEvent.type) {
+            case 'checkout.session.completed':
+                await handleCheckoutCompleted(stripeEvent.data.object);
+                break;
+                
             case 'customer.subscription.created':
                 await handleSubscriptionCreated(stripeEvent.data.object);
                 break;
             
             case 'invoice.payment_succeeded':
                 await handlePaymentSucceeded(stripeEvent.data.object);
+                break;
+            
+            case 'customer.subscription.updated':
+                await handleSubscriptionUpdated(stripeEvent.data.object);
+                break;
+                
+            case 'customer.subscription.deleted':
+                await handleSubscriptionDeleted(stripeEvent.data.object);
                 break;
             
             default:
@@ -111,33 +131,58 @@ exports.handler = async (event, context) => {
                 'Access-Control-Allow-Headers': 'Content-Type',
                 'Access-Control-Allow-Methods': 'POST, OPTIONS'
             },
-            body: JSON.stringify({ received: true })
+            body: JSON.stringify({ received: true, type: stripeEvent.type })
         };
 
     } catch (error) {
         console.error('Webhook handler error:', error);
         return {
             statusCode: 500,
-            body: JSON.stringify({ error: 'Webhook handler failed' })
+            headers: {
+                'Access-Control-Allow-Origin': '*'
+            },
+            body: JSON.stringify({ 
+                error: 'Webhook handler failed',
+                message: error.message 
+            })
         };
     }
 };
+
+// Handle checkout session completed
+async function handleCheckoutCompleted(session) {
+    try {
+        console.log('Checkout session completed:', session.id);
+        console.log('Customer email:', session.customer_details?.email);
+        
+        // This is where we would create the member record
+        const memberData = {
+            stripeCustomerId: session.customer,
+            email: session.customer_details?.email,
+            sessionId: session.id,
+            amount: session.amount_total / 100, // Convert from cents
+            subscriptionId: session.subscription
+        };
+        
+        console.log('New member data:', memberData);
+        
+    } catch (error) {
+        console.error('Error handling checkout completion:', error);
+    }
+}
 
 // Handle new subscription creation
 async function handleSubscriptionCreated(subscription) {
     try {
         console.log('New subscription created:', subscription.id);
+        console.log('Customer:', subscription.customer);
         
-        // Create a demo member record
-        const member = {
-            id: subscription.customer,
-            email: 'new-member@stripe.com', // We'd get this from Stripe customer object
-            membershipType: 'renew',
-            status: 'active',
-            createdAt: new Date().toISOString()
-        };
-
-        console.log('Member would be created:', member);
+        // Determine membership type from price
+        const priceId = subscription.items.data[0]?.price?.id;
+        const membershipType = getMembershipTypeFromPriceId(priceId);
+        
+        console.log('Membership type:', membershipType);
+        console.log('Price ID:', priceId);
         
     } catch (error) {
         console.error('Error handling subscription creation:', error);
@@ -147,11 +192,49 @@ async function handleSubscriptionCreated(subscription) {
 // Handle successful payment
 async function handlePaymentSucceeded(invoice) {
     try {
+        console.log('Payment succeeded for customer:', invoice.customer);
+        
         if (invoice.billing_reason === 'subscription_cycle') {
-            console.log('Monthly renewal processed for customer:', invoice.customer);
-            // Here we would add monthly credits
+            console.log('Monthly renewal - should add credits');
+        } else {
+            console.log('Initial payment or one-time charge');
         }
+        
     } catch (error) {
         console.error('Error handling payment success:', error);
     }
+}
+
+// Handle subscription updates
+async function handleSubscriptionUpdated(subscription) {
+    try {
+        console.log('Subscription updated:', subscription.id);
+        console.log('Status:', subscription.status);
+        
+    } catch (error) {
+        console.error('Error handling subscription update:', error);
+    }
+}
+
+// Handle subscription deletion
+async function handleSubscriptionDeleted(subscription) {
+    try {
+        console.log('Subscription deleted:', subscription.id);
+        console.log('Customer:', subscription.customer);
+        
+    } catch (error) {
+        console.error('Error handling subscription deletion:', error);
+    }
+}
+
+// Helper function to determine membership type from Stripe Price ID
+function getMembershipTypeFromPriceId(priceId) {
+    const priceMapping = {
+        'price_1RcG9kLeFHoi9neBS2g9QaLb': 'restore',
+        'price_1RcGDWLeFHoi9neBqZ7MrZDy': 'revive',
+        'price_1RcGECLeFHoi9neBBTJKdYSH': 'renew',
+        'price_1RcGEsLeFHoi9neBWeGknCVv': 'total-wellness'
+    };
+    
+    return priceMapping[priceId] || 'unknown';
 }
