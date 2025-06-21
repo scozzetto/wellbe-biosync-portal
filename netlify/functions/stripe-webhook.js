@@ -290,15 +290,9 @@ async function handleCheckoutCompleted(session) {
             console.error('✗ Database creation failed:', dbError);
         }
         
-        // Sync to Salesforce
-        console.log('=== SYNCING TO SALESFORCE ===');
-        try {
-            const salesforceResult = await salesforce.upsertContact(customerData, subscriptionData);
-            console.log('✓ Salesforce sync result:', salesforceResult);
-        } catch (sfError) {
-            console.error('✗ Salesforce sync failed:', sfError);
-            console.error('Salesforce error stack:', sfError.stack);
-        }
+        // Salesforce sync handled by native Stripe for Salesforce Platform app
+        console.log('=== SALESFORCE SYNC HANDLED BY NATIVE APP ===');
+        console.log('✓ Stripe for Salesforce Platform will handle contact creation automatically');
         
         console.log('=== CHECKOUT HANDLING COMPLETE ===');
         
@@ -384,15 +378,8 @@ async function handleSubscriptionDeleted(subscription) {
         await memberDB.updateMemberStatus(subscription.customer, 'cancelled');
         console.log('✓ Member status updated to cancelled');
         
-        // Update Salesforce
-        console.log('Updating Salesforce contact...');
-        try {
-            await salesforce.updateContactStatus(subscription.customer, 'cancelled');
-            console.log('✓ Updated Salesforce contact to cancelled');
-        } catch (error) {
-            console.error('✗ Salesforce update failed:', error);
-            console.error('Salesforce error stack:', error.stack);
-        }
+        // Salesforce update handled by native app
+        console.log('✓ Salesforce cancellation handled by native Stripe for Salesforce Platform app');
         
     } catch (error) {
         console.error('=== SUBSCRIPTION DELETION ERROR ===');
