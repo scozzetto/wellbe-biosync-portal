@@ -236,20 +236,25 @@
             }
         }
         
-        // Redirect to Stripe Payment Links (simpler approach)
+        // Redirect to Stripe Payment Links
         function redirectToStripePaymentLink(membershipType) {
-            // For now, redirect to Square booking as fallback
-            // You can create Stripe Payment Links in your dashboard for each membership
-            const fallbackUrl = 'https://book.squareup.com/appointments/6pyjoccl1ik8ur/location/101VJFBVK1T29/services';
+            const paymentLinks = {
+                'restore': 'https://buy.stripe.com/eVq6oI3KEbHrais8DtgQE01',
+                'revive': 'https://buy.stripe.com/14A8wQepi5j362c7zpgQE02',
+                'renew': 'https://buy.stripe.com/bJe9AU2GAeTD8akbPFgQE03',
+                'total-wellness': 'https://buy.stripe.com/fZu8wQ80U6n776gf1RgQE04'
+            };
             
-            // Show message about setting up payment links
-            document.getElementById('loading').style.display = 'none';
+            const paymentUrl = paymentLinks[membershipType];
             
-            if (confirm(`Payment integration is being set up. Would you like to call us to sign up for the ${membershipType} membership?\n\nPhone: (248) 792-6570`)) {
-                window.open('tel:248-792-6570');
+            if (paymentUrl) {
+                // Hide loading and redirect to Stripe
+                document.getElementById('loading').style.display = 'none';
+                window.location.href = paymentUrl;
             } else {
-                // Redirect to booking as alternative
-                window.open(fallbackUrl, '_blank');
+                // Fallback if something goes wrong
+                document.getElementById('loading').style.display = 'none';
+                alert('Error: Please call us at (248) 792-6570 to sign up.');
             }
         }
     </script>
