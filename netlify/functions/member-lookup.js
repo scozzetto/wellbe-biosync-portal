@@ -19,6 +19,20 @@ exports.handler = async (event, context) => {
 
         // Simple member database - in production, this would query your actual database
         const members = {
+            'cozzetto@infinitymgtsys.com': {
+                id: 'member_real',
+                name: 'Silvio Cozzetto',
+                email: 'cozzetto@infinitymgtsys.com',
+                membershipType: 'renew', // Assuming you got the Renew membership
+                reserveCredits: 49.90, // First month credits
+                servicesUsedThisMonth: 0,
+                servicesAllowed: 3,
+                cafeItemsUsed: 0,
+                cafeItemsAllowed: 2,
+                memberSince: 'June 2025',
+                nextBilling: 'July 21, 2025',
+                status: 'active'
+            },
             'test@bewell.com': {
                 id: 'demo_member',
                 name: 'Demo Member',
