@@ -23,6 +23,9 @@ grep "WELLBE-BIOSYNC-2025" CLAUDE.md  # Should return this unique ID
 ```
 
 ## 💡 MAGIC PHRASES TO TELL CLAUDE
+**ANY mention of "Be Well Lifestyle Centers" should trigger full project context loading!**
+
+### Primary Triggers:
 - "Check the Be Well website files"
 - "This is the main Be Well website"
 - "Be Well website project"
@@ -31,6 +34,21 @@ grep "WELLBE-BIOSYNC-2025" CLAUDE.md  # Should return this unique ID
 - "This is the wellBe project with the splash video"
 - **"Find everything you need to know about the Be Well LifeStyle Centers webpage and catch yourself back up to speed"**
 - **"Go into the wellbe directory and read CLAUDE.md and SYSTEM_STATUS.md to get up to speed"**
+
+### Alternative Triggers (all should work):
+- "Update yourself with the Be Well Lifestyle Centers website"
+- "Familiarize yourself with Be Well Lifestyle Centers"
+- "We're working on the Be Well Lifestyle Centers"
+- "Be Well Lifestyle Centers project"
+- "BeWell website"
+- "wellBe project"
+- Any variation of "Be Well" + "website/project/centers"
+
+### What These Phrases Should Do:
+1. `cd /Users/silviomac/wellbe`
+2. `grep "WELLBE-BIOSYNC-2025" CLAUDE.md` (verify correct project)
+3. Read `CLAUDE.md` and `SYSTEM_STATUS.md`
+4. Load full project context and current system status
 
 ## 🚀 CURRENT STATE (Last Updated: June 21, 2025 - 4:15 PM)
 - Splash screen: 4-second video with white disc logo
