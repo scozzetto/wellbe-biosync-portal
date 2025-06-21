@@ -1,6 +1,10 @@
 // Netlify Function to handle Stripe webhooks
 const memberDB = require('./member-database');
 const salesforce = require('./salesforce-sync');
+const crypto = require('crypto');
+
+// Stripe webhook endpoint secret - add this to your Netlify environment variables
+const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
 
 // Simple member database operations
 const loadMembers = async () => {
@@ -72,8 +76,14 @@ const addMember = async (stripeCustomer, subscriptionData) => {
 };
 
 exports.handler = async (event, context) => {
+    console.log('=== WEBHOOK START ===');
+    console.log('HTTP Method:', event.httpMethod);
+    console.log('Headers:', JSON.stringify(event.headers, null, 2));
+    console.log('Body length:', event.body ? event.body.length : 0);
+    
     // Handle CORS preflight
     if (event.httpMethod === 'OPTIONS') {
+        console.log('Handling CORS preflight');
         return {
             statusCode: 200,
             headers: {
@@ -86,6 +96,7 @@ exports.handler = async (event, context) => {
 
     // Only handle POST requests
     if (event.httpMethod !== 'POST') {
+        console.log('Method not allowed:', event.httpMethod);
         return {
             statusCode: 405,
             body: JSON.stringify({ error: 'Method Not Allowed' })
@@ -93,11 +104,40 @@ exports.handler = async (event, context) => {
     }
 
     try {
-        // Parse the event
-        const stripeEvent = JSON.parse(event.body);
+        // Get the signature from Stripe
+        const stripeSignature = event.headers['stripe-signature'] || event.headers['Stripe-Signature'];
+        console.log('Stripe signature present:', !!stripeSignature);
         
-        console.log('Stripe webhook received:', stripeEvent.type);
-        console.log('Event data:', JSON.stringify(stripeEvent.data, null, 2));
+        if (!stripeSignature) {
+            console.error('No Stripe signature found');
+            return {
+                statusCode: 400,
+                body: JSON.stringify({ error: 'No Stripe signature found' })
+            };
+        }
+        
+        // Verify the webhook signature
+        let stripeEvent;
+        try {
+            console.log('Verifying webhook signature...');
+            stripeEvent = verifyStripeSignature(event.body, stripeSignature, endpointSecret);
+            console.log('Signature verification successful');
+        } catch (err) {
+            console.error('Signature verification failed:', err.message);
+            return {
+                statusCode: 400,
+                body: JSON.stringify({ error: 'Invalid signature' })
+            };
+        }
+        
+        console.log('Event type:', stripeEvent.type);
+        console.log('Event ID:', stripeEvent.id);
+        
+        // Log full event data for debugging
+        console.log('=== FULL EVENT DATA ===');
+        console.log(JSON.stringify(stripeEvent, null, 2));
+        console.log('=== END EVENT DATA ===');
+        
 
         switch (stripeEvent.type) {
             case 'checkout.session.completed':
@@ -135,7 +175,10 @@ exports.handler = async (event, context) => {
         };
 
     } catch (error) {
-        console.error('Webhook handler error:', error);
+        console.error('=== WEBHOOK ERROR ===');
+        console.error('Error:', error);
+        console.error('Stack:', error.stack);
+        console.error('=== END ERROR ===');
         return {
             statusCode: 500,
             headers: {
@@ -149,45 +192,120 @@ exports.handler = async (event, context) => {
     }
 };
 
+// Verify Stripe webhook signature
+function verifyStripeSignature(payload, signature, secret) {
+    if (!secret) {
+        throw new Error('Webhook secret not configured');
+    }
+    
+    const elements = signature.split(',');
+    const signatureElements = {};
+    
+    for (const element of elements) {
+        const [key, value] = element.split('=');
+        signatureElements[key] = value;
+    }
+    
+    if (!signatureElements.t || !signatureElements.v1) {
+        throw new Error('Invalid signature format');
+    }
+    
+    const timestamp = signatureElements.t;
+    const expectedSignature = signatureElements.v1;
+    
+    // Create expected signature
+    const signedPayload = timestamp + '.' + payload;
+    const computedSignature = crypto
+        .createHmac('sha256', secret)
+        .update(signedPayload, 'utf8')
+        .digest('hex');
+    
+    // Compare signatures
+    if (computedSignature !== expectedSignature) {
+        throw new Error('Signature mismatch');
+    }
+    
+    // Check timestamp (5 minutes tolerance)
+    const now = Math.floor(Date.now() / 1000);
+    if (now - parseInt(timestamp) > 300) {
+        throw new Error('Timestamp too old');
+    }
+    
+    return JSON.parse(payload);
+}
+
 // Handle checkout session completed
 async function handleCheckoutCompleted(session) {
+    console.log('=== CHECKOUT SESSION COMPLETED ===');
+    console.log('Session ID:', session.id);
+    console.log('Customer ID:', session.customer);
+    console.log('Customer Details:', JSON.stringify(session.customer_details, null, 2));
+    console.log('Subscription ID:', session.subscription);
+    
     try {
-        console.log('Checkout session completed:', session.id);
-        console.log('Customer email:', session.customer_details?.email);
-        
-        // Get customer details from session
+        // Extract customer information
         const customerEmail = session.customer_details?.email;
         const customerName = session.customer_details?.name || customerEmail;
         
-        if (customerEmail && session.customer) {
-            // Create member immediately with real email
-            const customerData = {
-                id: session.customer,
-                email: customerEmail,
-                name: customerName
-            };
-            
-            // Get subscription details from session metadata or line items
-            const subscriptionData = {
-                id: session.subscription || 'pending',
-                priceId: session.line_items?.data?.[0]?.price?.id || 'unknown'
-            };
-            
-            console.log('Creating member with real email:', customerEmail);
-            const newMember = await memberDB.createMember(customerData, subscriptionData);
-            console.log('Created member:', newMember);
-            
-            // Sync to Salesforce
-            try {
-                await salesforce.upsertContact(customerData, subscriptionData);
-                console.log('Synced to Salesforce:', customerEmail);
-            } catch (error) {
-                console.error('Salesforce sync failed:', error);
-            }
+        console.log('Extracted email:', customerEmail);
+        console.log('Extracted name:', customerName);
+        
+        if (!customerEmail) {
+            console.error('No customer email found in session');
+            return;
         }
         
+        if (!session.customer) {
+            console.error('No customer ID found in session');
+            return;
+        }
+        
+        // Create customer data object
+        const customerData = {
+            id: session.customer,
+            email: customerEmail,
+            name: customerName
+        };
+        
+        // Get line items to extract price information
+        console.log('Line items:', JSON.stringify(session.line_items, null, 2));
+        
+        // Create subscription data
+        const subscriptionData = {
+            id: session.subscription || 'pending',
+            status: 'active',
+            priceId: session.line_items?.data?.[0]?.price?.id || 'unknown',
+            amount: session.amount_total
+        };
+        
+        console.log('Customer data:', JSON.stringify(customerData, null, 2));
+        console.log('Subscription data:', JSON.stringify(subscriptionData, null, 2));
+        
+        // Create member in local database
+        console.log('=== CREATING MEMBER IN DATABASE ===');
+        try {
+            const newMember = await memberDB.createMember(customerData, subscriptionData);
+            console.log('✓ Created member:', JSON.stringify(newMember, null, 2));
+        } catch (dbError) {
+            console.error('✗ Database creation failed:', dbError);
+        }
+        
+        // Sync to Salesforce
+        console.log('=== SYNCING TO SALESFORCE ===');
+        try {
+            const salesforceResult = await salesforce.upsertContact(customerData, subscriptionData);
+            console.log('✓ Salesforce sync result:', salesforceResult);
+        } catch (sfError) {
+            console.error('✗ Salesforce sync failed:', sfError);
+            console.error('Salesforce error stack:', sfError.stack);
+        }
+        
+        console.log('=== CHECKOUT HANDLING COMPLETE ===');
+        
     } catch (error) {
-        console.error('Error handling checkout completion:', error);
+        console.error('=== CHECKOUT HANDLING ERROR ===');
+        console.error('Error:', error);
+        console.error('Stack:', error.stack);
     }
 }
 
@@ -256,24 +374,30 @@ async function handleSubscriptionUpdated(subscription) {
 
 // Handle subscription deletion
 async function handleSubscriptionDeleted(subscription) {
+    console.log('=== SUBSCRIPTION DELETED ===');
+    console.log('Subscription ID:', subscription.id);
+    console.log('Customer ID:', subscription.customer);
+    
     try {
-        console.log('Subscription deleted:', subscription.id);
-        console.log('Customer:', subscription.customer);
-        
         // Update member status to cancelled
+        console.log('Updating member status to cancelled...');
         await memberDB.updateMemberStatus(subscription.customer, 'cancelled');
-        console.log('Member status updated to cancelled');
+        console.log('✓ Member status updated to cancelled');
         
         // Update Salesforce
+        console.log('Updating Salesforce contact...');
         try {
             await salesforce.updateContactStatus(subscription.customer, 'cancelled');
-            console.log('Updated Salesforce contact to cancelled');
+            console.log('✓ Updated Salesforce contact to cancelled');
         } catch (error) {
-            console.error('Salesforce update failed:', error);
+            console.error('✗ Salesforce update failed:', error);
+            console.error('Salesforce error stack:', error.stack);
         }
         
     } catch (error) {
-        console.error('Error handling subscription deletion:', error);
+        console.error('=== SUBSCRIPTION DELETION ERROR ===');
+        console.error('Error:', error);
+        console.error('Stack:', error.stack);
     }
 }
 
