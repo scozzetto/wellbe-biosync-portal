@@ -1,6 +1,5 @@
 // Netlify Function to handle Stripe webhooks
-const fs = require('fs').promises;
-const path = require('path');
+const memberDB = require('./member-database');
 
 // Simple member database operations
 const loadMembers = async () => {
@@ -155,16 +154,9 @@ async function handleCheckoutCompleted(session) {
         console.log('Checkout session completed:', session.id);
         console.log('Customer email:', session.customer_details?.email);
         
-        // This is where we would create the member record
-        const memberData = {
-            stripeCustomerId: session.customer,
-            email: session.customer_details?.email,
-            sessionId: session.id,
-            amount: session.amount_total / 100, // Convert from cents
-            subscriptionId: session.subscription
-        };
-        
-        console.log('New member data:', memberData);
+        // Don't create member here - wait for subscription.created event
+        // Just log for now
+        console.log('Checkout completed - waiting for subscription creation');
         
     } catch (error) {
         console.error('Error handling checkout completion:', error);
@@ -177,12 +169,29 @@ async function handleSubscriptionCreated(subscription) {
         console.log('New subscription created:', subscription.id);
         console.log('Customer:', subscription.customer);
         
-        // Determine membership type from price
+        // Get price ID and determine membership type
         const priceId = subscription.items.data[0]?.price?.id;
         const membershipType = getMembershipTypeFromPriceId(priceId);
         
         console.log('Membership type:', membershipType);
         console.log('Price ID:', priceId);
+        
+        // We need customer details to create the member
+        // For now, we'll create a placeholder member that can be updated later
+        const customerData = {
+            id: subscription.customer,
+            email: `customer-${subscription.customer}@stripe.temp`, // Placeholder
+            name: 'New Member'
+        };
+        
+        const subscriptionData = {
+            id: subscription.id,
+            priceId: priceId
+        };
+        
+        // Create member in database
+        const newMember = await memberDB.createMember(customerData, subscriptionData);
+        console.log('Created member:', newMember);
         
     } catch (error) {
         console.error('Error handling subscription creation:', error);
@@ -195,9 +204,10 @@ async function handlePaymentSucceeded(invoice) {
         console.log('Payment succeeded for customer:', invoice.customer);
         
         if (invoice.billing_reason === 'subscription_cycle') {
-            console.log('Monthly renewal - should add credits');
+            console.log('Monthly renewal - adding credits');
+            await memberDB.addMonthlyCredits(invoice.customer);
         } else {
-            console.log('Initial payment or one-time charge');
+            console.log('Initial payment - first month credits will be added on first renewal');
         }
         
     } catch (error) {
@@ -221,6 +231,10 @@ async function handleSubscriptionDeleted(subscription) {
     try {
         console.log('Subscription deleted:', subscription.id);
         console.log('Customer:', subscription.customer);
+        
+        // Update member status to cancelled
+        await memberDB.updateMemberStatus(subscription.customer, 'cancelled');
+        console.log('Member status updated to cancelled');
         
     } catch (error) {
         console.error('Error handling subscription deletion:', error);

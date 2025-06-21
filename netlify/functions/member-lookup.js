@@ -1,4 +1,6 @@
 // Netlify Function to look up members by email
+const memberDB = require('./member-database');
+
 exports.handler = async (event, context) => {
     if (event.httpMethod !== 'POST') {
         return {
@@ -17,8 +19,11 @@ exports.handler = async (event, context) => {
             };
         }
 
-        // Simple member database - in production, this would query your actual database
-        const members = {
+        // Get member from database
+        const member = memberDB.getMemberByEmail(email);
+
+        // Legacy hardcoded members for backward compatibility
+        const legacyMembers = {
             'silvio@bewelllifestylecenters.com': {
                 id: 'cus_SXMPgeV91f8BCg', // Real Stripe customer ID
                 name: 'Silvio Cozzetto',
@@ -65,9 +70,10 @@ exports.handler = async (event, context) => {
             // TODO: Add real members from Stripe webhooks
         };
 
-        const member = members[email.toLowerCase()];
+        // Try database first, then fall back to legacy members
+        const foundMember = member || legacyMembers[email.toLowerCase()];
 
-        if (!member) {
+        if (!foundMember) {
             return {
                 statusCode: 404,
                 headers: {
@@ -79,7 +85,7 @@ exports.handler = async (event, context) => {
         }
 
         // Block cancelled members from accessing portal
-        if (member.status === 'cancelled') {
+        if (foundMember.status === 'cancelled') {
             return {
                 statusCode: 403,
                 headers: {
@@ -89,7 +95,7 @@ exports.handler = async (event, context) => {
                 body: JSON.stringify({ 
                     error: 'Membership has been cancelled. Please contact us at (248) 792-6570 to reactivate your account.',
                     status: 'cancelled',
-                    cancelledDate: member.cancelledDate
+                    cancelledDate: foundMember.cancelledDate
                 })
             };
         }
@@ -100,7 +106,7 @@ exports.handler = async (event, context) => {
                 'Access-Control-Allow-Origin': '*',
                 'Access-Control-Allow-Headers': 'Content-Type'
             },
-            body: JSON.stringify({ member })
+            body: JSON.stringify({ member: foundMember })
         };
 
     } catch (error) {
