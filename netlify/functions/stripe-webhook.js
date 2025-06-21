@@ -411,4 +411,4 @@ function getMembershipTypeFromPriceId(priceId) {
     };
     
     return priceMapping[priceId] || 'unknown';
-}# Force function restart - Sat Jun 21 15:22:28 EDT 2025
+}
