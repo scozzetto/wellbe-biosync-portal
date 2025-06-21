@@ -30,12 +30,22 @@ grep "WELLBE-BIOSYNC-2025" CLAUDE.md  # Should return this unique ID
 - "Verify WELLBE-BIOSYNC-2025"
 - "This is the wellBe project with the splash video"
 
-## 🚀 CURRENT STATE (Last Updated: June 20, 2025)
+## 🚀 CURRENT STATE (Last Updated: June 21, 2025)
 - Splash screen: 4-second video with white disc logo
 - Header: Transparent luxury design with white text
 - Hero: "It's Time to Transform"
 - All services have header images
 - Square booking and café integration active
+- **STRIPE PAYMENTS LIVE:** All 4 membership tiers connected to Stripe Payment Links
+- Member portal with magic link authentication
+- Staff knowledge base with password protection
+- Admin dashboard for member management
+
+## 💳 STRIPE PAYMENT LINKS
+- **Restore ($149):** https://buy.stripe.com/eVq6oI3KEbHrais8DtgQE01
+- **Revive ($299):** https://buy.stripe.com/14A8wQepi5j362c7zpgQE02
+- **Renew ($499):** https://buy.stripe.com/bJe9AU2GAeTD8akbPFgQE03
+- **Total Wellness ($799):** https://buy.stripe.com/fZu8wQ80U6n776gf1RgQE04
 
 ## 🛠️ COMMON TASKS
 - Always commit and push changes
