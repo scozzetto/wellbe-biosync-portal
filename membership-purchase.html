@@ -67,9 +67,9 @@
             display: none !important;
         }
         
-        /* Ensure clean background */
+        /* Restore original background */
         body {
-            background: #0a0a0a !important;
+            background: inherit !important;
         }
         
         /* Remove any radial gradients that might create dots */
@@ -78,12 +78,62 @@
             background-image: none !important;
         }
         
-        /* Hide the spinning white dot (loading spinner) */
+        /* Hide ALL possible white dots/circles */
         .spinner,
-        .loading-spinner {
+        .loading-spinner,
+        canvas,
+        .particle,
+        .glow,
+        .orb,
+        .floating-element,
+        *[class*="dot"],
+        *[class*="circle"],
+        *[class*="ball"],
+        *[class*="particle"] {
             display: none !important;
         }
+        
+        /* Force hide any absolute positioned white elements */
+        div[style*="position: absolute"],
+        div[style*="position: fixed"] {
+            background: transparent !important;
+        }
     </style>
+    
+    <script>
+        // Aggressively hunt for the white dot
+        function killWhiteDot() {
+            // Find all elements with white backgrounds or borders
+            const allElements = document.querySelectorAll('*');
+            allElements.forEach(el => {
+                const style = window.getComputedStyle(el);
+                
+                // Check for white/light colored elements
+                if (style.backgroundColor.includes('white') || 
+                    style.backgroundColor.includes('rgb(255') ||
+                    style.borderColor.includes('white') ||
+                    style.borderColor.includes('rgb(255') ||
+                    style.color.includes('white') ||
+                    el.style.background?.includes('white') ||
+                    el.style.backgroundColor?.includes('white')) {
+                    
+                    // If it's small and round, hide it
+                    const rect = el.getBoundingClientRect();
+                    if (rect.width < 100 && rect.height < 100 && 
+                        Math.abs(rect.width - rect.height) < 10) {
+                        console.log('Hiding potential white dot:', el);
+                        el.style.display = 'none';
+                    }
+                }
+            });
+        }
+        
+        // Run immediately and on page load
+        killWhiteDot();
+        document.addEventListener('DOMContentLoaded', killWhiteDot);
+        setTimeout(killWhiteDot, 1000);
+        setTimeout(killWhiteDot, 3000);
+    </script>
     <nav>
         <div class="nav-container">
             <a href="index.html" class="logo-section">
