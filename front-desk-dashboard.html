@@ -351,6 +351,9 @@
                 <span id="currentUser">front desk bham</span>
                 <span id="refreshStatus" style="color: #22c55e; font-size: 0.9rem;">●</span>
                 <button class="refresh-btn" onclick="loadCheckins()">Refresh</button>
+                <button class="refresh-btn" onclick="testLocalStorage()" style="background: #ef4444;">Debug</button>
+                <button class="refresh-btn" onclick="addTestCheckin()" style="background: #22c55e;">Add Test</button>
+                <button class="refresh-btn" onclick="clearAllData()" style="background: #f59e0b;">Clear All</button>
             </div>
         </div>
         
@@ -625,6 +628,66 @@
             loadCheckins();
         }
         
+        // Test localStorage contents
+        function testLocalStorage() {
+            try {
+                const localData = localStorage.getItem('patientCheckins');
+                const today = new Date().toISOString().split('T')[0];
+                
+                let debugInfo = `DEBUG INFO:\n`;
+                debugInfo += `Today: ${today}\n`;
+                debugInfo += `LocalStorage: ${localData ? 'HAS DATA' : 'EMPTY'}\n`;
+                
+                if (localData) {
+                    const parsed = JSON.parse(localData);
+                    debugInfo += `Items: ${parsed.length}\n\n`;
+                    parsed.forEach((item, index) => {
+                        debugInfo += `${index + 1}. ${item.name} (${item.dateIn})\n`;
+                    });
+                }
+                
+                alert(debugInfo);
+            } catch (e) {
+                alert('Debug error: ' + e.message);
+            }
+        }
+        
+        // Add test check-in for debugging
+        function addTestCheckin() {
+            const testCheckin = {
+                name: 'Test Patient',
+                phone: '(248) 555-0123',
+                firstVisit: 'NO',
+                reason: 'Massage',
+                subReason: 'Massage',
+                dateIn: new Date().toISOString().split('T')[0],
+                timeIn: new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }),
+                source: 'Dashboard Test',
+                ackTime: '',
+                ackBy: '',
+                outTime: '',
+                outBy: '',
+                comment: 'Test check-in from dashboard',
+                status: 'waiting',
+                id: Date.now().toString(),
+                timestamp: new Date().toISOString()
+            };
+            
+            let checkins = JSON.parse(localStorage.getItem('patientCheckins') || '[]');
+            checkins.push(testCheckin);
+            localStorage.setItem('patientCheckins', JSON.stringify(checkins));
+            
+            alert('Test check-in added!');
+            loadCheckins();
+        }
+        
+        // Clear all data
+        function clearAllData() {
+            localStorage.removeItem('patientCheckins');
+            sessionStorage.removeItem('patientCheckins');
+            alert('All check-in data cleared!');
+            loadCheckins();
+        }
         
         // Close modal when clicking outside
         window.onclick = function(event) {
