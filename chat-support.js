@@ -137,7 +137,7 @@ function initChatSupport() {
                     <p><strong>Ready to transform your health?</strong></p>
                     <p>📞 Call: (248) 792-6570</p>
                     <p>📧 Email: info@bewelllifestylecenters.com</p>
-                    <a href="#memberships" class="join-btn" onclick="document.getElementById('membership-modal').style.display='none'; document.getElementById('memberships').scrollIntoView({behavior: 'smooth'}); return false;">Join Now</a>
+                    <a href="https://bewelllifestylecenters.com/membership-purchase.html" class="join-btn" onclick="document.getElementById('membership-modal').style.display='none';">Join Now</a>
                 </div>
             </div>
         </div>
@@ -198,7 +198,12 @@ function initChatSupport() {
         
         .membership-info ul {
             margin-left: 20px;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+        
+        .membership-info li {
+            margin-bottom: 5px;
         }
         
         .membership-benefits {
@@ -215,7 +220,14 @@ function initChatSupport() {
         
         .contact-info {
             text-align: center;
-            margin-top: 20px;
+            margin-top: 30px;
+            padding: 20px 0;
+            border-top: 1px solid #A47C5B;
+        }
+        
+        .contact-info p {
+            margin: 15px 0;
+            white-space: nowrap;
         }
         
         .join-btn {
