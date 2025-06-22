@@ -454,9 +454,12 @@
         
         // Load and display check-ins
         function loadCheckins() {
+            console.log('Loading check-ins...'); // Debug log
             const checkins = JSON.parse(localStorage.getItem('patientCheckins') || '[]');
+            console.log('All checkins:', checkins); // Debug log
             const today = new Date().toISOString().split('T')[0];
             const todayCheckins = checkins.filter(c => c.dateIn === today);
+            console.log('Today checkins:', todayCheckins); // Debug log
             
             const tbody = document.getElementById('checkinsTableBody');
             tbody.innerHTML = '';
