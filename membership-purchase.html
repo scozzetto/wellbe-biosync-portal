@@ -195,6 +195,27 @@
             overflow: hidden;
             z-index: 1;
         }
+        
+        /* Mobile-specific nuclear option */
+        @media (max-width: 768px) {
+            /* On mobile, hide ALL circular elements regardless of class */
+            *[style*="border-radius: 50%"],
+            *[style*="border-radius:50%"] {
+                display: none !important;
+                visibility: hidden !important;
+                opacity: 0 !important;
+            }
+            
+            /* Force remove any element that could be creating the mobile white dot */
+            div, span, button, img, canvas, svg {
+                border-radius: 0 !important;
+            }
+            
+            div[style*="position: fixed"],
+            div[style*="position: absolute"] {
+                border-radius: 0 !important;
+            }
+        }
     </style>
     
     <script>
@@ -302,9 +323,47 @@
             });
         }
         
+        // Mobile-specific element detection
+        function detectMobileBlockingElement() {
+            const isMobile = window.innerWidth <= 768;
+            
+            if (isMobile) {
+                // On mobile, look for elements that could be blocking text
+                document.querySelectorAll('*').forEach(el => {
+                    const rect = el.getBoundingClientRect();
+                    const style = getComputedStyle(el);
+                    
+                    // Check if element is in the area where "Complete Wellness" text should be
+                    const explanationSection = document.querySelector('.reserve-explanation');
+                    if (explanationSection) {
+                        const textRect = explanationSection.getBoundingClientRect();
+                        
+                        // If element overlaps with the text area and is circular or white
+                        if (rect.left < textRect.right && rect.right > textRect.left &&
+                            rect.top < textRect.bottom && rect.bottom > textRect.top) {
+                            
+                            if (style.borderRadius.includes('50%') || 
+                                style.backgroundColor.includes('white') ||
+                                style.background.includes('white') ||
+                                (rect.width < 100 && rect.height < 100 && Math.abs(rect.width - rect.height) < 20)) {
+                                
+                                console.log('MOBILE BLOCKING ELEMENT DETECTED:', el);
+                                console.log('Element position:', rect);
+                                console.log('Element styles:', style.position, style.zIndex, style.backgroundColor, style.borderRadius);
+                                el.style.display = 'none !important';
+                                el.style.visibility = 'hidden !important';
+                                el.style.opacity = '0 !important';
+                            }
+                        }
+                    }
+                });
+            }
+        }
+        
         // Run very frequently to catch dynamic elements
         setInterval(hideBlockingElements, 100);
         setInterval(killGlowingBall, 200);
+        setInterval(detectMobileBlockingElement, 50); // Mobile-specific detection
     </script>
     <nav>
         <div class="nav-container">
@@ -312,7 +371,7 @@
                 <img src="logo.svg" alt="Be Well Logo" class="logo">
             </a>
         </div>
-        <button style="position: fixed; top: 20px; right: 20px; background: var(--primary-color); color: white; padding: 8px 16px; border: none; border-radius: 6px; cursor: pointer; font-size: 0.9rem; z-index: 1000;" onclick="window.location.href='index.html'">
+        <button style="position: fixed; top: 20px; right: 20px; background: var(--primary-color); color: white; padding: 8px 16px; border: none; border-radius: 0px; cursor: pointer; font-size: 0.9rem; z-index: 1000;" onclick="window.location.href='index.html'">
             <i class="fas fa-home"></i> Home
         </button>
     </nav>
