@@ -553,7 +553,7 @@
         
         // Acknowledge patient (check them in)
         function acknowledgePatient(id) {
-            const checkins = JSON.parse(localStorage.getItem('patientCheckins') || '[]');
+            const checkins = JSON.parse(localStorage.getItem('allCheckins') || '[]');
             const checkinIndex = checkins.findIndex(c => c.id === id);
             
             if (checkinIndex !== -1) {
@@ -564,14 +564,14 @@
                 });
                 checkins[checkinIndex].ackBy = document.getElementById('currentUser').textContent;
                 
-                localStorage.setItem('patientCheckins', JSON.stringify(checkins));
+                localStorage.setItem('allCheckins', JSON.stringify(checkins));
                 loadCheckins();
             }
         }
         
         // Check out patient
         function checkoutPatient(id) {
-            const checkins = JSON.parse(localStorage.getItem('patientCheckins') || '[]');
+            const checkins = JSON.parse(localStorage.getItem('allCheckins') || '[]');
             const checkinIndex = checkins.findIndex(c => c.id === id);
             
             if (checkinIndex !== -1) {
@@ -582,7 +582,7 @@
                 });
                 checkins[checkinIndex].outBy = document.getElementById('currentUser').textContent;
                 
-                localStorage.setItem('patientCheckins', JSON.stringify(checkins));
+                localStorage.setItem('allCheckins', JSON.stringify(checkins));
                 loadCheckins();
             }
         }
@@ -593,7 +593,7 @@
             document.getElementById('commentModal').style.display = 'block';
             
             // Load existing comment
-            const checkins = JSON.parse(localStorage.getItem('patientCheckins') || '[]');
+            const checkins = JSON.parse(localStorage.getItem('allCheckins') || '[]');
             const checkin = checkins.find(c => c.id === id);
             if (checkin && checkin.comment) {
                 document.getElementById('commentText').value = checkin.comment;
@@ -610,12 +610,12 @@
         function saveComment() {
             if (!currentCommentId) return;
             
-            const checkins = JSON.parse(localStorage.getItem('patientCheckins') || '[]');
+            const checkins = JSON.parse(localStorage.getItem('allCheckins') || '[]');
             const checkinIndex = checkins.findIndex(c => c.id === currentCommentId);
             
             if (checkinIndex !== -1) {
                 checkins[checkinIndex].comment = document.getElementById('commentText').value;
-                localStorage.setItem('patientCheckins', JSON.stringify(checkins));
+                localStorage.setItem('allCheckins', JSON.stringify(checkins));
                 loadCheckins();
                 closeCommentModal();
             }
@@ -712,35 +712,9 @@
             }
         });
         
-        // Also check for individual checkins every few seconds
+        // Simple function to check for new checkins
         function checkForNewCheckins() {
-            const keys = Object.keys(localStorage);
-            const checkinKeys = keys.filter(key => key.startsWith('lastCheckin_'));
-            
-            if (checkinKeys.length > 0) {
-                // Found individual checkins, add them to main list
-                let checkins = JSON.parse(localStorage.getItem('patientCheckins') || '[]');
-                let newCheckins = 0;
-                
-                checkinKeys.forEach(key => {
-                    const checkinData = JSON.parse(localStorage.getItem(key));
-                    
-                    // Check if we already have this checkin
-                    if (!checkins.find(c => c.id === checkinData.id)) {
-                        checkins.push(checkinData);
-                        newCheckins++;
-                    }
-                    
-                    // Remove the individual key
-                    localStorage.removeItem(key);
-                });
-                
-                if (newCheckins > 0) {
-                    localStorage.setItem('patientCheckins', JSON.stringify(checkins));
-                    loadCheckins();
-                    console.log('Found and added', newCheckins, 'new checkins');
-                }
-            }
+            loadCheckins(); // Just refresh
         }
         
         // Initialize
