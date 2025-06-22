@@ -600,10 +600,36 @@
                 timestamp: new Date().toISOString()
             };
             
-            // Store in localStorage
+            // Store in multiple ways to ensure it works
             let checkins = JSON.parse(localStorage.getItem('patientCheckins') || '[]');
             checkins.push(checkinData);
+            
+            // Save to localStorage
             localStorage.setItem('patientCheckins', JSON.stringify(checkins));
+            
+            // Save to sessionStorage 
+            sessionStorage.setItem('patientCheckins', JSON.stringify(checkins));
+            
+            // Also save individual checkin
+            localStorage.setItem('lastCheckin_' + checkinData.id, JSON.stringify(checkinData));
+            
+            // Try to send to dashboard if it's open
+            try {
+                if (window.opener && !window.opener.closed) {
+                    window.opener.postMessage({
+                        type: 'NEW_CHECKIN',
+                        data: checkinData
+                    }, '*');
+                }
+            } catch (e) {
+                console.log('Could not send to dashboard:', e);
+            }
+            
+            // Debug logging
+            console.log('CHECK-IN SAVED:', checkinData);
+            console.log('Total checkins now:', checkins.length);
+            console.log('All checkins:', checkins);
+            console.log('Current URL when saving:', window.location.href);
             
             // Show success screen
             document.getElementById('wizardContainer').style.display = 'none';
@@ -625,6 +651,13 @@
         
         // Initialize
         updateProgress();
+        
+        // Test localStorage on load
+        window.addEventListener('load', function() {
+            console.log('PATIENT CHECK-IN PAGE LOADED');
+            console.log('Current URL:', window.location.href);
+            console.log('LocalStorage test:', localStorage.getItem('patientCheckins') ? 'HAS DATA' : 'EMPTY');
+        });
         
         // Allow keyboard touches but prevent zoom on double tap
         let lastTouchEnd = 0;

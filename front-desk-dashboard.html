@@ -351,6 +351,9 @@
                 <span id="currentUser">front desk bham</span>
                 <span id="refreshStatus" style="color: #22c55e; font-size: 0.9rem;">●</span>
                 <button class="refresh-btn" onclick="refreshDashboard()">Refresh</button>
+                <button class="refresh-btn" onclick="testLocalStorage()" style="background: #ef4444;">Debug</button>
+                <button class="refresh-btn" onclick="addTestCheckin()" style="background: #22c55e;">Add Test</button>
+                <button class="refresh-btn" onclick="clearAllData()" style="background: #f59e0b;">Clear All</button>
             </div>
         </div>
         
@@ -460,16 +463,48 @@
             refreshStatus.style.color = '#f59e0b';
             refreshStatus.textContent = '⟳';
             
-            console.log('Loading check-ins...'); // Debug log
-            const checkins = JSON.parse(localStorage.getItem('patientCheckins') || '[]');
-            console.log('All checkins:', checkins); // Debug log
+            console.log('=== LOADING CHECK-INS ===');
+            console.log('Current URL:', window.location.href);
+            
+            // Check both localStorage and sessionStorage
+            const localCheckins = JSON.parse(localStorage.getItem('patientCheckins') || '[]');
+            const sessionCheckins = JSON.parse(sessionStorage.getItem('patientCheckins') || '[]');
+            const lastCheckin = sessionStorage.getItem('lastCheckin');
+            
+            console.log('LocalStorage checkins:', localCheckins.length);
+            console.log('SessionStorage checkins:', sessionCheckins.length);
+            console.log('Last checkin from session:', lastCheckin ? 'EXISTS' : 'NONE');
+            
+            // Use the one with more data
+            const checkins = localCheckins.length >= sessionCheckins.length ? localCheckins : sessionCheckins;
+            console.log('Using checkins array with:', checkins.length, 'items');
+            
             const today = new Date().toISOString().split('T')[0];
-            console.log('Today date:', today); // Debug log
+            console.log('Today date for filtering:', today);
+            
+            // Log each checkin's date for comparison
+            checkins.forEach((checkin, index) => {
+                console.log(`Checkin ${index}: ${checkin.name} - Date: "${checkin.dateIn}" (matches today: ${checkin.dateIn === today})`);
+            });
+            
             const todayCheckins = checkins.filter(c => c.dateIn === today);
-            console.log('Today checkins:', todayCheckins); // Debug log
+            console.log('Filtered today checkins:', todayCheckins.length);
+            console.log('Today checkins data:', todayCheckins);
             
             const tbody = document.getElementById('checkinsTableBody');
             tbody.innerHTML = '';
+            
+            // Show message if no check-ins
+            if (todayCheckins.length === 0) {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td colspan="11" style="text-align: center; padding: 40px; color: #9ca3af; font-style: italic;">
+                        ${checkins.length === 0 ? 'No check-ins recorded yet today' : 'No check-ins for today\'s date (' + today + ')'}
+                        <br><small>Total check-ins in system: ${checkins.length}</small>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            }
             
             // Stats
             let waitingCount = 0;
@@ -609,6 +644,92 @@
             loadCheckins();
         }
         
+        // Test localStorage contents
+        function testLocalStorage() {
+            const localData = localStorage.getItem('patientCheckins');
+            const sessionData = sessionStorage.getItem('patientCheckins');
+            const lastCheckin = sessionStorage.getItem('lastCheckin');
+            const today = new Date().toISOString().split('T')[0];
+            
+            let debugInfo = `COMPLETE DEBUG INFO:\n`;
+            debugInfo += `Current URL: ${window.location.href}\n`;
+            debugInfo += `Today's Date: ${today}\n\n`;
+            
+            debugInfo += `LOCAL STORAGE:\n`;
+            if (localData) {
+                const parsed = JSON.parse(localData);
+                debugInfo += `  Has ${parsed.length} items\n`;
+                parsed.forEach((item, index) => {
+                    debugInfo += `  ${index + 1}. ${item.name} (${item.dateIn})\n`;
+                });
+            } else {
+                debugInfo += `  EMPTY\n`;
+            }
+            
+            debugInfo += `\nSESSION STORAGE:\n`;
+            if (sessionData) {
+                const parsed = JSON.parse(sessionData);
+                debugInfo += `  Has ${parsed.length} items\n`;
+            } else {
+                debugInfo += `  EMPTY\n`;
+            }
+            
+            debugInfo += `\nLAST CHECK-IN:\n`;
+            debugInfo += lastCheckin ? `  EXISTS` : `  NONE`;
+            
+            alert(debugInfo);
+            
+            console.log('=== ENHANCED DEBUG INFO ===');
+            console.log('Today:', today);
+            console.log('Raw localStorage:', localData);
+            console.log('Raw sessionStorage:', sessionData);
+            if (localData) {
+                const parsed = JSON.parse(localData);
+                console.log('Parsed localStorage data:', parsed);
+                parsed.forEach((item, index) => {
+                    console.log(`Item ${index}:`, item);
+                    console.log(`Date match: ${item.dateIn} === ${today} = ${item.dateIn === today}`);
+                });
+            }
+        }
+        
+        // Add test check-in for debugging
+        function addTestCheckin() {
+            const testCheckin = {
+                name: 'Test Patient',
+                phone: '(248) 555-0123',
+                firstVisit: 'NO',
+                reason: 'Massage',
+                subReason: 'Massage',
+                dateIn: new Date().toISOString().split('T')[0],
+                timeIn: new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }),
+                source: 'Dashboard Test',
+                ackTime: '',
+                ackBy: '',
+                outTime: '',
+                outBy: '',
+                comment: 'Test check-in from dashboard',
+                status: 'waiting',
+                id: Date.now().toString(),
+                timestamp: new Date().toISOString()
+            };
+            
+            let checkins = JSON.parse(localStorage.getItem('patientCheckins') || '[]');
+            checkins.push(testCheckin);
+            localStorage.setItem('patientCheckins', JSON.stringify(checkins));
+            
+            alert('Test check-in added!');
+            loadCheckins();
+        }
+        
+        // Clear all data
+        function clearAllData() {
+            localStorage.removeItem('patientCheckins');
+            sessionStorage.removeItem('patientCheckins');
+            alert('All check-in data cleared!');
+            loadCheckins();
+        }
+        
         // Close modal when clicking outside
         window.onclick = function(event) {
             const modal = document.getElementById('commentModal');
@@ -617,11 +738,60 @@
             }
         }
         
+        // Listen for messages from check-in page
+        window.addEventListener('message', function(event) {
+            if (event.data && event.data.type === 'NEW_CHECKIN') {
+                console.log('Received new check-in from kiosk:', event.data.data);
+                
+                // Add to our localStorage
+                let checkins = JSON.parse(localStorage.getItem('patientCheckins') || '[]');
+                checkins.push(event.data.data);
+                localStorage.setItem('patientCheckins', JSON.stringify(checkins));
+                
+                // Refresh dashboard immediately
+                loadCheckins();
+                
+                alert('New check-in received: ' + event.data.data.name);
+            }
+        });
+        
+        // Also check for individual checkins every few seconds
+        function checkForNewCheckins() {
+            const keys = Object.keys(localStorage);
+            const checkinKeys = keys.filter(key => key.startsWith('lastCheckin_'));
+            
+            if (checkinKeys.length > 0) {
+                // Found individual checkins, add them to main list
+                let checkins = JSON.parse(localStorage.getItem('patientCheckins') || '[]');
+                let newCheckins = 0;
+                
+                checkinKeys.forEach(key => {
+                    const checkinData = JSON.parse(localStorage.getItem(key));
+                    
+                    // Check if we already have this checkin
+                    if (!checkins.find(c => c.id === checkinData.id)) {
+                        checkins.push(checkinData);
+                        newCheckins++;
+                    }
+                    
+                    // Remove the individual key
+                    localStorage.removeItem(key);
+                });
+                
+                if (newCheckins > 0) {
+                    localStorage.setItem('patientCheckins', JSON.stringify(checkins));
+                    loadCheckins();
+                    console.log('Found and added', newCheckins, 'new checkins');
+                }
+            }
+        }
+        
         // Initialize
         updateTime();
         setInterval(updateTime, 60000); // Update time every minute
         loadCheckins();
         setInterval(loadCheckins, 5000); // Auto-refresh every 5 seconds
+        setInterval(checkForNewCheckins, 2000); // Check for new checkins every 2 seconds
     </script>
 </body>
 </html>
