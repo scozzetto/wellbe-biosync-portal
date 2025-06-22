@@ -9,6 +9,7 @@
     <meta name="theme-color" content="#1C2630">
     <title>Be Well Check-In</title>
     <link rel="apple-touch-icon" href="logo.svg">
+    <script src="checkin-bridge.js"></script>
     <style>
         * {
             margin: 0;
@@ -600,18 +601,8 @@
                 timestamp: new Date().toISOString()
             };
             
-            // Store in multiple ways to ensure it works
-            let checkins = JSON.parse(localStorage.getItem('patientCheckins') || '[]');
-            checkins.push(checkinData);
-            
-            // Save to localStorage
-            localStorage.setItem('patientCheckins', JSON.stringify(checkins));
-            
-            // Save to sessionStorage 
-            sessionStorage.setItem('patientCheckins', JSON.stringify(checkins));
-            
-            // Also save individual checkin
-            localStorage.setItem('lastCheckin_' + checkinData.id, JSON.stringify(checkinData));
+            // Use the bridge to save
+            const saved = window.CheckinBridge.saveCheckin(checkinData);
             
             // Try to send to dashboard if it's open
             try {
@@ -626,13 +617,14 @@
             }
             
             // Debug logging
+            const allCheckins = window.CheckinBridge.getAllCheckins();
             console.log('CHECK-IN SAVED:', checkinData);
-            console.log('Total checkins now:', checkins.length);
-            console.log('All checkins:', checkins);
-            console.log('Current URL when saving:', window.location.href);
+            console.log('Total checkins now:', allCheckins.length);
+            console.log('All checkins:', allCheckins);
+            console.log('Bridge save result:', saved);
             
             // Force an alert to confirm saving
-            alert('Check-in saved for: ' + checkinData.name + '\nTotal check-ins: ' + checkins.length);
+            alert('Check-in saved for: ' + checkinData.name + '\nTotal check-ins: ' + allCheckins.length + '\nSaved: ' + (saved ? 'YES' : 'NO'));
             
             // Show success screen
             document.getElementById('wizardContainer').style.display = 'none';
