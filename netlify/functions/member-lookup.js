@@ -66,6 +66,20 @@ exports.handler = async (event, context) => {
                 memberSince: 'June 2025',
                 nextBilling: 'July 21, 2025',
                 status: 'active'
+            },
+            'silvio@bewelllifestylecenters.com': {
+                id: 'cus_SXh8VRN3tD7uAd',
+                name: 'Silvio Cozzetto',
+                email: 'silvio@bewelllifestylecenters.com',
+                membershipType: 'restore',
+                reserveCredits: 149.00,
+                servicesUsedThisMonth: 0,
+                servicesAllowed: 1,
+                cafeItemsUsed: 0,
+                cafeItemsAllowed: 1,
+                memberSince: 'June 2025',
+                nextBilling: 'July 21, 2025',
+                status: 'active'
             }
             // TODO: Add real members from Stripe webhooks
         };
