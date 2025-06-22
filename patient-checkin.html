@@ -564,6 +564,7 @@
         
         function selectSecondaryService(service) {
             formData.secondaryService = service === 'None' ? '' : service;
+            console.log('🎯 About to call submitCheckIn for:', formData.name);
             submitCheckIn();
         }
         
@@ -599,6 +600,10 @@
         
         // Submit check-in
         function submitCheckIn() {
+            console.log('🛎️ submitCheckIn fired for:', formData);
+            const debugEl = document.getElementById('checkinDebug');
+            if (debugEl) debugEl.textContent = '🔔 submit fired for: ' + (formData.name || '[no name]');
+            
             const checkinData = {
                 name: formData.name,
                 phone: formData.phone,
@@ -622,27 +627,47 @@
             let checkins = JSON.parse(localStorage.getItem('allCheckins') || '[]');
             checkins.push(checkinData);
             
-            // Save to primary key
-            localStorage.setItem('allCheckins', JSON.stringify(checkins));
+            // Save to primary key with error handling
+            try {
+                localStorage.setItem('allCheckins', JSON.stringify(checkins));
+                if (debugEl) debugEl.textContent += '\n✅ saved to allCheckins';
+            } catch (err) {
+                if (debugEl) debugEl.textContent += '\n❌ save error: ' + err.message;
+                console.error('localStorage save error:', err);
+            }
             
             // Also save to backup key
-            localStorage.setItem('patientCheckins', JSON.stringify(checkins));
+            try {
+                localStorage.setItem('patientCheckins', JSON.stringify(checkins));
+                if (debugEl) debugEl.textContent += '\n✅ saved to patientCheckins';
+            } catch (err) {
+                if (debugEl) debugEl.textContent += '\n❌ patientCheckins error: ' + err.message;
+            }
             
             // Save individual record for cross-domain sync
-            localStorage.setItem('checkin_' + checkinData.id, JSON.stringify(checkinData));
+            try {
+                localStorage.setItem('checkin_' + checkinData.id, JSON.stringify(checkinData));
+                if (debugEl) debugEl.textContent += '\n✅ saved individual key';
+            } catch (err) {
+                if (debugEl) debugEl.textContent += '\n❌ individual key error: ' + err.message;
+            }
             
             // CRITICAL: Also save to a simple storage format for dashboard
-            localStorage.setItem('latest_checkin', JSON.stringify({
-                ...checkinData,
-                saveTime: Date.now()
-            }));
+            try {
+                localStorage.setItem('latest_checkin', JSON.stringify({
+                    ...checkinData,
+                    saveTime: Date.now()
+                }));
+                if (debugEl) debugEl.textContent += '\n✅ saved latest_checkin';
+            } catch (err) {
+                if (debugEl) debugEl.textContent += '\n❌ latest_checkin error: ' + err.message;
+            }
             
-            // Update debug overlay immediately
-            const debugEl = document.getElementById('checkinDebug');
+            // Update debug overlay with final count
             if (debugEl) {
                 const saved = JSON.parse(localStorage.getItem('allCheckins') || '[]');
-                debugEl.textContent = 
-                    `Saved items: ${saved.length}\n` +
+                debugEl.textContent += 
+                    `\n📊 Final count: ${saved.length}\n` +
                     saved.map((c,i)=>`${i+1}. ${c.name}`).join('\n');
             }
             
@@ -668,6 +693,7 @@
             }
             
             // Send to server for cross-domain sync
+            if (debugEl) debugEl.textContent += '\n🌐 sending to server...';
             try {
                 fetch('/.netlify/functions/checkin-sync', {
                     method: 'POST',
@@ -681,13 +707,18 @@
                     console.log('Server sync result:', result);
                     if (result.success) {
                         console.log('✅ Check-in synced to server successfully');
+                        if (debugEl) debugEl.textContent += '\n✅ server sync success';
+                    } else {
+                        if (debugEl) debugEl.textContent += '\n❌ server sync failed';
                     }
                 })
                 .catch(error => {
                     console.warn('Server sync failed (fallback to localStorage):', error);
+                    if (debugEl) debugEl.textContent += '\n❌ server error: ' + error.message;
                 });
             } catch (e) {
                 console.log('Could not sync to server:', e);
+                if (debugEl) debugEl.textContent += '\n❌ fetch error: ' + e.message;
             }
             
             // Try to send to dashboard if it's open
