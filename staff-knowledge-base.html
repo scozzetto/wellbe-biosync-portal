@@ -494,32 +494,133 @@
     </div>
 
     <script>
-        // Password protection
-        const STAFF_PASSWORD = "$Be7926570!"; // Staff password
+        // Individual staff login system
+        let staffData = JSON.parse(localStorage.getItem('staffData')) || [];
+        let currentUser = null;
+        
+        // Initialize with default staff if empty
+        if (staffData.length === 0) {
+            staffData = [
+                {
+                    id: 'admin-001',
+                    name: 'System Administrator',
+                    email: 'admin@bewelllifestylecenters.com',
+                    position: 'Administrator',
+                    location: 'All',
+                    accessLevel: 'admin',
+                    password: '$Be7926570!ADMIN',
+                    active: true
+                },
+                {
+                    id: 'staff-001',
+                    name: 'General Staff',
+                    email: 'staff@bewelllifestylecenters.com',
+                    position: 'Staff Member',
+                    location: 'All',
+                    accessLevel: 'staff',
+                    password: '$Be7926570!',
+                    active: true
+                }
+            ];
+            localStorage.setItem('staffData', JSON.stringify(staffData));
+        }
         
         document.getElementById('auth-form').addEventListener('submit', function(e) {
             e.preventDefault();
             const password = document.getElementById('password').value;
             
-            if (password === STAFF_PASSWORD) {
+            // Find staff member by password
+            const staff = staffData.find(s => s.password === password && s.active);
+            
+            if (staff) {
+                currentUser = staff;
                 document.getElementById('auth-section').style.display = 'none';
                 document.getElementById('knowledge-base').style.display = 'block';
                 sessionStorage.setItem('staffAuthenticated', 'true');
+                sessionStorage.setItem('currentUser', JSON.stringify(staff));
+                
+                // Update welcome message
+                document.querySelector('.kb-header p').innerHTML = `Welcome back, <strong>${staff.name}</strong> (${staff.position}) - ${staff.location} Location`;
+                
+                // Show/hide sections based on access level
+                updateAccessPermissions(staff.accessLevel);
             } else {
                 document.getElementById('auth-error').style.display = 'block';
                 document.getElementById('password').value = '';
             }
         });
         
+        // Access permissions based on staff level
+        function updateAccessPermissions(accessLevel) {
+            const quickAccess = document.querySelector('.kb-section').style;
+            const adminButton = document.querySelector('a[onclick="openAdminDashboard(); return false;"]');
+            
+            // Show/hide admin functions
+            if (accessLevel === 'admin') {
+                // Admins see everything
+                if (adminButton) adminButton.style.display = 'block';
+                
+                // Add admin dashboard button
+                const adminLink = document.createElement('a');
+                adminLink.href = '#';
+                adminLink.onclick = function() { openStaffAdmin(); return false; };
+                adminLink.style.cssText = 'background: #dc3545; color: white; padding: 15px 20px; border-radius: 8px; text-decoration: none; display: block; text-align: center; transition: transform 0.3s; cursor: pointer;';
+                adminLink.innerHTML = `
+                    <i class="fas fa-user-shield" style="font-size: 1.5rem; margin-bottom: 8px; display: block;"></i>
+                    <strong>Staff Admin</strong>
+                    <small style="display: block; margin-top: 5px; opacity: 0.9;">Manage staff accounts & permissions</small>
+                `;
+                
+                const quickAccessGrid = document.querySelector('.kb-section .kb-section-content div[style*="grid"]');
+                if (quickAccessGrid && !document.querySelector('a[onclick*="openStaffAdmin"]')) {
+                    quickAccessGrid.appendChild(adminLink);
+                }
+            } else if (accessLevel === 'cafe') {
+                // Café staff only see café-related systems
+                const allLinks = document.querySelectorAll('.kb-section a');
+                allLinks.forEach(link => {
+                    if (link.href.includes('cafe-operations') || 
+                        link.href.includes('inventory-management') || 
+                        link.href.includes('recipe-inventory')) {
+                        link.style.display = 'block';
+                    } else if (link.onclick && (link.onclick.toString().includes('Dashboard') || 
+                              link.onclick.toString().includes('Admin'))) {
+                        link.style.display = 'none';
+                    }
+                });
+            }
+            
+            // Hide certain sections for café-only staff
+            if (accessLevel === 'cafe') {
+                const knowledgeSections = document.querySelectorAll('.kb-section');
+                knowledgeSections.forEach((section, index) => {
+                    if (index > 0) { // Keep first section (Quick Access) but hide others for café staff
+                        const header = section.querySelector('.kb-section-header');
+                        if (header && !header.textContent.includes('Café')) {
+                            section.style.display = 'none';
+                        }
+                    }
+                });
+            }
+        }
+        
         // Check if already authenticated
         if (sessionStorage.getItem('staffAuthenticated') === 'true') {
-            document.getElementById('auth-section').style.display = 'none';
-            document.getElementById('knowledge-base').style.display = 'block';
+            const storedUser = JSON.parse(sessionStorage.getItem('currentUser') || '{}');
+            if (storedUser.name) {
+                currentUser = storedUser;
+                document.getElementById('auth-section').style.display = 'none';
+                document.getElementById('knowledge-base').style.display = 'block';
+                document.querySelector('.kb-header p').innerHTML = `Welcome back, <strong>${storedUser.name}</strong> (${storedUser.position}) - ${storedUser.location} Location`;
+                updateAccessPermissions(storedUser.accessLevel);
+            }
         }
         
         // Logout function
         function logout() {
             sessionStorage.removeItem('staffAuthenticated');
+            sessionStorage.removeItem('currentUser');
+            currentUser = null;
             document.getElementById('auth-section').style.display = 'flex';
             document.getElementById('knowledge-base').style.display = 'none';
             document.getElementById('password').value = '';
@@ -533,6 +634,11 @@
         // Open admin dashboard in new window
         function openAdminDashboard() {
             window.open('admin-dashboard.html', '_blank');
+        }
+        
+        // Open staff admin dashboard in new window
+        function openStaffAdmin() {
+            window.open('staff-admin-dashboard.html', '_blank');
         }
         
         // Toggle sections

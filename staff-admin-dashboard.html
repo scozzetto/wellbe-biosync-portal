@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Staff Admin Dashboard - Be Well LifeStyle Centers</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .admin-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: var(--bg-color);
+            color: var(--text-color);
+            min-height: 100vh;
+        }
+        
+        .admin-header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--primary-color);
+        }
+        
+        .admin-header h1 {
+            color: var(--primary-color);
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .admin-section {
+            background: var(--card-bg);
+            border-radius: 12px;
+            border: 1px solid rgba(164, 124, 91, 0.2);
+            margin-bottom: 25px;
+            padding: 25px;
+        }
+        
+        .admin-section h3 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+        }
+        
+        .staff-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .staff-card {
+            background: rgba(164, 124, 91, 0.1);
+            border: 1px solid rgba(164, 124, 91, 0.3);
+            border-radius: 8px;
+            padding: 20px;
+            position: relative;
+        }
+        
+        .staff-card h4 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+        
+        .staff-info {
+            margin-bottom: 15px;
+        }
+        
+        .staff-info p {
+            margin: 5px 0;
+            color: var(--text-color);
+        }
+        
+        .access-level {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .access-admin {
+            background: #e74c3c;
+            color: white;
+        }
+        
+        .access-manager {
+            background: #f39c12;
+            color: white;
+        }
+        
+        .access-staff {
+            background: #27ae60;
+            color: white;
+        }
+        
+        .access-cafe {
+            background: #3498db;
+            color: white;
+        }
+        
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .btn {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: transform 0.3s ease;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        .btn-edit {
+            background: var(--primary-color);
+            color: white;
+        }
+        
+        .btn-delete {
+            background: #e74c3c;
+            color: white;
+        }
+        
+        .btn-reset {
+            background: #f39c12;
+            color: white;
+        }
+        
+        .add-staff-form {
+            background: rgba(62, 91, 61, 0.1);
+            border: 2px solid #3E5B3D;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .form-group label {
+            color: var(--text-color);
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+        
+        .form-group input,
+        .form-group select {
+            padding: 10px;
+            border: 1px solid rgba(164, 124, 91, 0.3);
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-color);
+        }
+        
+        .btn-add {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        
+        .logout-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--danger-color);
+            color: white;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+        
+        .modal-content {
+            background-color: var(--card-bg);
+            margin: 5% auto;
+            padding: 30px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 500px;
+            position: relative;
+        }
+        
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            position: absolute;
+            top: 15px;
+            right: 20px;
+        }
+        
+        .close:hover {
+            color: var(--primary-color);
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-container">
+        <div style="position: fixed; top: 20px; right: 20px; display: flex; gap: 10px;">
+            <button class="logout-btn" onclick="window.location.href='index.html'" style="background: var(--primary-color);">
+                <i class="fas fa-home"></i> Home
+            </button>
+            <button class="logout-btn" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </button>
+        </div>
+        
+        <div class="admin-header">
+            <h1><i class="fas fa-users-cog"></i> Staff Administration Dashboard</h1>
+            <p style="color: #9ca3af; font-size: 1.1rem;">Manage staff accounts, permissions, and access levels</p>
+        </div>
+        
+        <!-- Statistics -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number" id="total-staff">0</div>
+                <div>Total Staff</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="active-staff">0</div>
+                <div>Active Users</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="admin-count">0</div>
+                <div>Administrators</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="cafe-staff">0</div>
+                <div>Café Staff</div>
+            </div>
+        </div>
+        
+        <!-- Add New Staff -->
+        <div class="admin-section">
+            <h3><i class="fas fa-user-plus"></i> Add New Staff Member</h3>
+            <div class="add-staff-form">
+                <form id="add-staff-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="staff-name">Full Name:</label>
+                            <input type="text" id="staff-name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="staff-email">Email:</label>
+                            <input type="email" id="staff-email" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="staff-position">Position:</label>
+                            <input type="text" id="staff-position" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="staff-location">Location:</label>
+                            <select id="staff-location" required>
+                                <option value="">Select Location</option>
+                                <option value="Birmingham">Birmingham</option>
+                                <option value="UWM">UWM</option>
+                                <option value="Berkeley">Berkeley</option>
+                                <option value="All">All Locations</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="access-level">Access Level:</label>
+                            <select id="access-level" required>
+                                <option value="">Select Access Level</option>
+                                <option value="admin">Administrator</option>
+                                <option value="manager">Manager</option>
+                                <option value="staff">Staff</option>
+                                <option value="cafe">Café Only</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="staff-password">Initial Password:</label>
+                            <input type="text" id="staff-password" placeholder="Auto-generated if empty">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn-add">
+                        <i class="fas fa-user-plus"></i> Add Staff Member
+                    </button>
+                </form>
+            </div>
+        </div>
+        
+        <!-- Current Staff -->
+        <div class="admin-section">
+            <h3><i class="fas fa-users"></i> Current Staff Members</h3>
+            <div class="staff-grid" id="staff-grid">
+                <!-- Staff cards will be dynamically populated -->
+            </div>
+        </div>
+    </div>
+    
+    <!-- Edit Staff Modal -->
+    <div id="edit-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h3 style="color: var(--primary-color); margin-bottom: 20px;">Edit Staff Member</h3>
+            <form id="edit-staff-form">
+                <input type="hidden" id="edit-staff-id">
+                <div class="form-group" style="margin-bottom: 15px;">
+                    <label for="edit-name">Full Name:</label>
+                    <input type="text" id="edit-name" required>
+                </div>
+                <div class="form-group" style="margin-bottom: 15px;">
+                    <label for="edit-email">Email:</label>
+                    <input type="email" id="edit-email" required>
+                </div>
+                <div class="form-group" style="margin-bottom: 15px;">
+                    <label for="edit-position">Position:</label>
+                    <input type="text" id="edit-position" required>
+                </div>
+                <div class="form-group" style="margin-bottom: 15px;">
+                    <label for="edit-location">Location:</label>
+                    <select id="edit-location" required>
+                        <option value="Birmingham">Birmingham</option>
+                        <option value="UWM">UWM</option>
+                        <option value="Berkeley">Berkeley</option>
+                        <option value="All">All Locations</option>
+                    </select>
+                </div>
+                <div class="form-group" style="margin-bottom: 15px;">
+                    <label for="edit-access">Access Level:</label>
+                    <select id="edit-access" required>
+                        <option value="admin">Administrator</option>
+                        <option value="manager">Manager</option>
+                        <option value="staff">Staff</option>
+                        <option value="cafe">Café Only</option>
+                    </select>
+                </div>
+                <div class="form-group" style="margin-bottom: 20px;">
+                    <label for="edit-password">New Password (leave empty to keep current):</label>
+                    <input type="text" id="edit-password">
+                </div>
+                <div style="display: flex; gap: 10px; justify-content: flex-end;">
+                    <button type="button" onclick="closeModal()" style="background: #6c757d; color: white; padding: 10px 20px; border: none; border-radius: 6px; cursor: pointer;">Cancel</button>
+                    <button type="submit" style="background: var(--primary-color); color: white; padding: 10px 20px; border: none; border-radius: 6px; cursor: pointer;">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Check admin authentication
+        const ADMIN_PASSWORD = "$Be7926570!ADMIN";
+        
+        if (!sessionStorage.getItem('adminAuthenticated')) {
+            const password = prompt('Enter Admin Password:');
+            if (password !== ADMIN_PASSWORD) {
+                alert('Access Denied');
+                window.location.href = 'index.html';
+            } else {
+                sessionStorage.setItem('adminAuthenticated', 'true');
+            }
+        }
+        
+        // Staff management system
+        let staffData = JSON.parse(localStorage.getItem('staffData')) || [];
+        
+        // Initialize with default admin if empty
+        if (staffData.length === 0) {
+            staffData = [
+                {
+                    id: 'admin-001',
+                    name: 'System Administrator',
+                    email: 'admin@bewelllifestylecenters.com',
+                    position: 'Administrator',
+                    location: 'All',
+                    accessLevel: 'admin',
+                    password: '$Be7926570!ADMIN',
+                    active: true,
+                    created: new Date().toISOString()
+                }
+            ];
+            localStorage.setItem('staffData', JSON.stringify(staffData));
+        }
+        
+        // Generate random password
+        function generatePassword() {
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$';
+            let password = '';
+            for (let i = 0; i < 12; i++) {
+                password += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            return password;
+        }
+        
+        // Add new staff member
+        document.getElementById('add-staff-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('staff-name').value;
+            const email = document.getElementById('staff-email').value;
+            const position = document.getElementById('staff-position').value;
+            const location = document.getElementById('staff-location').value;
+            const accessLevel = document.getElementById('access-level').value;
+            let password = document.getElementById('staff-password').value;
+            
+            if (!password) {
+                password = generatePassword();
+            }
+            
+            const newStaff = {
+                id: 'staff-' + Date.now(),
+                name,
+                email,
+                position,
+                location,
+                accessLevel,
+                password,
+                active: true,
+                created: new Date().toISOString()
+            };
+            
+            staffData.push(newStaff);
+            localStorage.setItem('staffData', JSON.stringify(staffData));
+            
+            alert(`Staff member added successfully!\nName: ${name}\nEmail: ${email}\nPassword: ${password}\n\nMake sure to share the password securely with the staff member.`);
+            
+            document.getElementById('add-staff-form').reset();
+            renderStaffGrid();
+            updateStats();
+        });
+        
+        // Render staff grid
+        function renderStaffGrid() {
+            const grid = document.getElementById('staff-grid');
+            grid.innerHTML = '';
+            
+            staffData.forEach(staff => {
+                const card = document.createElement('div');
+                card.className = 'staff-card';
+                card.innerHTML = `
+                    <h4>${staff.name}</h4>
+                    <div class="staff-info">
+                        <p><strong>Email:</strong> ${staff.email}</p>
+                        <p><strong>Position:</strong> ${staff.position}</p>
+                        <p><strong>Location:</strong> ${staff.location}</p>
+                        <p><strong>Password:</strong> <code style="background: rgba(0,0,0,0.2); padding: 2px 4px; border-radius: 3px;">${staff.password}</code></p>
+                        <p><strong>Access:</strong> <span class="access-level access-${staff.accessLevel}">${staff.accessLevel}</span></p>
+                        <p><strong>Status:</strong> ${staff.active ? '✅ Active' : '❌ Inactive'}</p>
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn btn-edit" onclick="editStaff('${staff.id}')">
+                            <i class="fas fa-edit"></i> Edit
+                        </button>
+                        <button class="btn btn-reset" onclick="resetPassword('${staff.id}')">
+                            <i class="fas fa-key"></i> Reset Password
+                        </button>
+                        <button class="btn btn-delete" onclick="deleteStaff('${staff.id}')">
+                            <i class="fas fa-trash"></i> Delete
+                        </button>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+        
+        // Update statistics
+        function updateStats() {
+            document.getElementById('total-staff').textContent = staffData.length;
+            document.getElementById('active-staff').textContent = staffData.filter(s => s.active).length;
+            document.getElementById('admin-count').textContent = staffData.filter(s => s.accessLevel === 'admin').length;
+            document.getElementById('cafe-staff').textContent = staffData.filter(s => s.accessLevel === 'cafe').length;
+        }
+        
+        // Edit staff member
+        function editStaff(id) {
+            const staff = staffData.find(s => s.id === id);
+            if (!staff) return;
+            
+            document.getElementById('edit-staff-id').value = staff.id;
+            document.getElementById('edit-name').value = staff.name;
+            document.getElementById('edit-email').value = staff.email;
+            document.getElementById('edit-position').value = staff.position;
+            document.getElementById('edit-location').value = staff.location;
+            document.getElementById('edit-access').value = staff.accessLevel;
+            document.getElementById('edit-password').value = '';
+            
+            document.getElementById('edit-modal').style.display = 'block';
+        }
+        
+        // Save staff edits
+        document.getElementById('edit-staff-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const id = document.getElementById('edit-staff-id').value;
+            const staffIndex = staffData.findIndex(s => s.id === id);
+            
+            if (staffIndex === -1) return;
+            
+            staffData[staffIndex].name = document.getElementById('edit-name').value;
+            staffData[staffIndex].email = document.getElementById('edit-email').value;
+            staffData[staffIndex].position = document.getElementById('edit-position').value;
+            staffData[staffIndex].location = document.getElementById('edit-location').value;
+            staffData[staffIndex].accessLevel = document.getElementById('edit-access').value;
+            
+            const newPassword = document.getElementById('edit-password').value;
+            if (newPassword) {
+                staffData[staffIndex].password = newPassword;
+            }
+            
+            localStorage.setItem('staffData', JSON.stringify(staffData));
+            closeModal();
+            renderStaffGrid();
+            updateStats();
+            
+            alert('Staff member updated successfully!');
+        });
+        
+        // Reset password
+        function resetPassword(id) {
+            const staff = staffData.find(s => s.id === id);
+            if (!staff) return;
+            
+            const newPassword = generatePassword();
+            staff.password = newPassword;
+            
+            localStorage.setItem('staffData', JSON.stringify(staffData));
+            renderStaffGrid();
+            
+            alert(`Password reset for ${staff.name}\nNew Password: ${newPassword}\n\nMake sure to share the new password securely.`);
+        }
+        
+        // Delete staff member
+        function deleteStaff(id) {
+            const staff = staffData.find(s => s.id === id);
+            if (!staff) return;
+            
+            if (confirm(`Are you sure you want to delete ${staff.name}? This action cannot be undone.`)) {
+                staffData = staffData.filter(s => s.id !== id);
+                localStorage.setItem('staffData', JSON.stringify(staffData));
+                renderStaffGrid();
+                updateStats();
+            }
+        }
+        
+        // Close modal
+        function closeModal() {
+            document.getElementById('edit-modal').style.display = 'none';
+        }
+        
+        // Logout
+        function logout() {
+            sessionStorage.removeItem('adminAuthenticated');
+            window.location.href = 'index.html';
+        }
+        
+        // Initialize
+        renderStaffGrid();
+        updateStats();
+        
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('edit-modal');
+            if (event.target == modal) {
+                closeModal();
+            }
+        }
+    </script>
+    
+    <!-- Font Awesome -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
+</body>
+</html>
