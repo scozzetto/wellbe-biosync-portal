@@ -154,7 +154,8 @@ function initChatSupport() {
             width: 100%;
             height: 100%;
             background-color: rgba(0,0,0,0.5);
-            overflow: auto;
+            overflow-y: auto;
+            overflow-x: hidden;
         }
         
         .chat-modal-content {
@@ -232,14 +233,23 @@ function initChatSupport() {
             font-size: 16px;
         }
         
-        @media (max-width: 600px) {
+        @media (max-width: 768px) {
             .contact-info p {
                 white-space: normal;
                 font-size: 14px;
             }
             .chat-modal-content {
-                padding: 25px;
+                padding: 20px;
                 width: 95%;
+                max-width: 95%;
+                min-width: auto;
+                margin: 10px auto;
+            }
+            .membership-info h3 {
+                font-size: 18px;
+            }
+            .membership-info ul {
+                margin-left: 15px;
             }
         }
         
