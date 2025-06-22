@@ -134,8 +134,8 @@ function initChatSupport() {
                 </div>
                 
                 <div class="contact-info">
-                    <p>📞 Call: (248) 792-6570</p>
-                    <p>📧 Email: info@bewelllifestylecenters.com</p>
+                    <p>📞 Call: <a href="tel:+12487926570" style="color: #A47C5B; text-decoration: none;">(248) 792-6570</a></p>
+                    <p>📧 Email: <a href="mailto:info@bewelllifestylecenters.com" style="color: #A47C5B; text-decoration: none;">info@bewelllifestylecenters.com</a></p>
                     <a href="https://bewelllifestylecenters.com/membership-purchase.html" class="join-btn" onclick="document.getElementById('membership-modal').style.display='none';">Join Now</a>
                 </div>
             </div>
