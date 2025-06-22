@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient Check-In - Be Well LifeStyle Centers</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .checkin-container {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            background: var(--bg-color);
+        }
+        
+        .checkin-form {
+            background: var(--card-bg);
+            padding: 40px;
+            border-radius: 16px;
+            border: 1px solid rgba(164, 124, 91, 0.3);
+            max-width: 600px;
+            width: 100%;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        .checkin-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .checkin-header h1 {
+            color: var(--primary-color);
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .checkin-header p {
+            color: var(--text-color);
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .form-section {
+            margin-bottom: 30px;
+        }
+        
+        .form-section h3 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            color: var(--text-color);
+            margin-bottom: 8px;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid rgba(164, 124, 91, 0.3);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-color);
+            font-size: 1.1rem;
+            transition: var(--transition);
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            background: rgba(255, 255, 255, 0.08);
+        }
+        
+        .radio-group {
+            display: flex;
+            gap: 30px;
+            margin-top: 10px;
+        }
+        
+        .radio-group label {
+            display: flex;
+            align-items: center;
+            font-weight: normal;
+            cursor: pointer;
+        }
+        
+        .radio-group input[type="radio"] {
+            width: auto;
+            margin-right: 8px;
+        }
+        
+        .submit-btn {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            padding: 16px 40px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 30px;
+            transition: var(--transition);
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(164, 124, 91, 0.3);
+        }
+        
+        .success-message {
+            display: none;
+            text-align: center;
+            padding: 40px;
+        }
+        
+        .success-message h2 {
+            color: var(--primary-color);
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+        
+        .success-message p {
+            color: var(--text-color);
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+        }
+        
+        .check-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+            background: var(--primary-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: white;
+        }
+        
+        .new-checkin-btn {
+            background: var(--primary-color);
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: var(--transition);
+        }
+        
+        .new-checkin-btn:hover {
+            transform: translateY(-2px);
+            background: var(--secondary-color);
+        }
+        
+        /* Tablet optimized */
+        @media (max-width: 768px) {
+            .checkin-form {
+                padding: 30px;
+            }
+            
+            .checkin-header h1 {
+                font-size: 2rem;
+            }
+            
+            .form-group input,
+            .form-group select {
+                font-size: 16px; /* Prevents zoom on iOS */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="checkin-container">
+        <div class="checkin-form" id="checkinForm">
+            <div class="checkin-header">
+                <h1>Welcome to Be Well</h1>
+                <p>Please check in for your appointment</p>
+            </div>
+            
+            <form id="patientCheckinForm">
+                <div class="form-section">
+                    <h3>Your Information</h3>
+                    
+                    <div class="form-group">
+                        <label for="name">Full Name *</label>
+                        <input type="text" id="name" name="name" required placeholder="John Doe">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="phone">Phone Number *</label>
+                        <input type="tel" id="phone" name="phone" required placeholder="(248) 555-1234">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Is this your first visit? *</label>
+                        <div class="radio-group">
+                            <label>
+                                <input type="radio" name="firstVisit" value="YES" required>
+                                Yes
+                            </label>
+                            <label>
+                                <input type="radio" name="firstVisit" value="NO" required>
+                                No
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-section">
+                    <h3>Appointment Details</h3>
+                    
+                    <div class="form-group">
+                        <label for="reason">What service are you here for? *</label>
+                        <select id="reason" name="reason" required>
+                            <option value="">Select a service</option>
+                            <option value="Chiropractic">Chiropractic</option>
+                            <option value="Massage">Massage</option>
+                            <option value="Colon Hydrotherapy">Colon Hydrotherapy</option>
+                            <option value="IV Therapy">IV Therapy</option>
+                            <option value="Injections">Injections</option>
+                            <option value="Consultation">Consultation</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group" id="subReasonGroup" style="display: none;">
+                        <label for="subReason">Service Details</label>
+                        <select id="subReason" name="subReason">
+                            <option value="">Select details</option>
+                            <!-- Options populated dynamically -->
+                        </select>
+                    </div>
+                </div>
+                
+                <button type="submit" class="submit-btn">Check In</button>
+            </form>
+        </div>
+        
+        <div class="success-message" id="successMessage">
+            <div class="check-icon">✓</div>
+            <h2>Thank You!</h2>
+            <p>You've been checked in successfully.<br>Please have a seat and we'll call you shortly.</p>
+            <button class="new-checkin-btn" onclick="location.reload()">New Check-In</button>
+        </div>
+    </div>
+    
+    <script>
+        // Sub-reason options based on main reason
+        const subReasonOptions = {
+            'Chiropractic': [
+                'Chiropractic Only',
+                'Chiro with Massage',
+                'Chiro with Other Service'
+            ],
+            'Massage': [
+                'Massage Only',
+                'Massage with Chiropractic',
+                'Massage with Other Service'
+            ],
+            'Colon Hydrotherapy': [
+                'Colon Hydrotherapy Only',
+                'Colon Hydrotherapy with Other Service'
+            ],
+            'IV Therapy': [
+                'NAD+',
+                'Myers Cocktail',
+                'Immunity Boost',
+                'Hydration',
+                'Other IV Service'
+            ]
+        };
+        
+        // Show/hide sub-reason based on main reason selection
+        document.getElementById('reason').addEventListener('change', function() {
+            const subReasonGroup = document.getElementById('subReasonGroup');
+            const subReasonSelect = document.getElementById('subReason');
+            
+            if (this.value && subReasonOptions[this.value]) {
+                // Clear existing options
+                subReasonSelect.innerHTML = '<option value="">Select details</option>';
+                
+                // Add new options
+                subReasonOptions[this.value].forEach(option => {
+                    const opt = document.createElement('option');
+                    opt.value = option;
+                    opt.textContent = option;
+                    subReasonSelect.appendChild(opt);
+                });
+                
+                subReasonGroup.style.display = 'block';
+            } else {
+                subReasonGroup.style.display = 'none';
+                subReasonSelect.value = '';
+            }
+        });
+        
+        // Format phone number as user types
+        document.getElementById('phone').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length > 0) {
+                if (value.length <= 3) {
+                    value = `(${value}`;
+                } else if (value.length <= 6) {
+                    value = `(${value.slice(0, 3)}) ${value.slice(3)}`;
+                } else {
+                    value = `(${value.slice(0, 3)}) ${value.slice(3, 6)}-${value.slice(6, 10)}`;
+                }
+            }
+            e.target.value = value;
+        });
+        
+        // Handle form submission
+        document.getElementById('patientCheckinForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get form data
+            const formData = {
+                name: document.getElementById('name').value,
+                phone: document.getElementById('phone').value,
+                firstVisit: document.querySelector('input[name="firstVisit"]:checked').value,
+                reason: document.getElementById('reason').value,
+                subReason: document.getElementById('subReason').value || '',
+                dateIn: new Date().toISOString().split('T')[0],
+                timeIn: new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }),
+                source: 'Kiosk',
+                ackTime: '',
+                ackBy: '',
+                outTime: '',
+                outBy: '',
+                comment: '',
+                status: 'waiting'
+            };
+            
+            // Store in localStorage for now (will send to Salesforce later)
+            let checkins = JSON.parse(localStorage.getItem('patientCheckins') || '[]');
+            checkins.push({
+                ...formData,
+                id: Date.now().toString(),
+                timestamp: new Date().toISOString()
+            });
+            localStorage.setItem('patientCheckins', JSON.stringify(checkins));
+            
+            // Show success message
+            document.getElementById('checkinForm').style.display = 'none';
+            document.getElementById('successMessage').style.display = 'block';
+            
+            // Auto-reload after 10 seconds for next patient
+            setTimeout(() => {
+                location.reload();
+            }, 10000);
+        });
+    </script>
+</body>
+</html>
