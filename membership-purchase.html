@@ -414,8 +414,8 @@
             </form>
         </div>
 
-        <div class="loading-spinner" id="loading" style="display: none !important;">
-            <div class="spinner"></div>
+        <div class="loading-spinner" id="loading" style="display: none !important; visibility: hidden !important; opacity: 0 !important;">
+            <div class="spinner" style="display: none !important;"></div>
             <p>Processing...</p>
         </div>
 
@@ -450,8 +450,8 @@
                 return;
             }
             
-            // Show loading
-            document.getElementById('loading').style.display = 'flex';
+            // Show loading (disabled to prevent white ball)
+            // document.getElementById('loading').style.display = 'flex';
             
             try {
                 // Create the checkout URL directly
@@ -464,7 +464,7 @@
             } catch (error) {
                 console.error('Checkout error:', error);
                 alert('Error processing payment. Please try again.');
-                document.getElementById('loading').style.display = 'none';
+                // document.getElementById('loading').style.display = 'none'; // Loading disabled
             }
         }
         
@@ -480,12 +480,12 @@
             const paymentUrl = paymentLinks[membershipType];
             
             if (paymentUrl) {
-                // Hide loading and redirect to Stripe
-                document.getElementById('loading').style.display = 'none';
+                // Hide loading and redirect to Stripe (already disabled)
+                // document.getElementById('loading').style.display = 'none';
                 window.location.href = paymentUrl;
             } else {
-                // Fallback if something goes wrong
-                document.getElementById('loading').style.display = 'none';
+                // Fallback if something goes wrong (loading already disabled)
+                // document.getElementById('loading').style.display = 'none';
                 alert('Error: Please call us at (248) 792-6570 to sign up.');
             }
         }
@@ -513,6 +513,9 @@
         }
         
         .spinner {
+            display: none !important;
+            visibility: hidden !important;
+            opacity: 0 !important;
             width: 50px;
             height: 50px;
             border: 4px solid #f3f3f3;
