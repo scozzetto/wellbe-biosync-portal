@@ -401,10 +401,9 @@
         <div class="step hidden" id="step3">
             <div class="question-area">
                 <h1>Is this your first visit?</h1>
-                <p>Have you been to Be Well before?</p>
                 <div class="yes-no-container">
                     <button class="yes-no-btn yes" onclick="setFirstVisit('YES')">YES<br><small>First Time</small></button>
-                    <button class="yes-no-btn no" onclick="setFirstVisit('NO')">NO<br><small>Been Here</small></button>
+                    <button class="yes-no-btn no" onclick="setFirstVisit('NO')">NO<br><small>Been Here Before</small></button>
                 </div>
             </div>
         </div>
@@ -447,7 +446,7 @@
         <div class="checkmark">✓</div>
         <h1>You're all checked in!</h1>
         <p>Please have a seat and we'll call you shortly.</p>
-        <p style="font-size: 1.2rem; opacity: 0.6;">This screen will reset in <span id="countdown">10</span> seconds...</p>
+        <p style="font-size: 1.2rem; opacity: 0.6;">This screen will reset in <span id="countdown">5</span> seconds...</p>
     </div>
     
     <script>
@@ -710,7 +709,7 @@
             document.getElementById('backBtn').style.display = 'none';
             
             // Countdown and reset
-            let countdown = 10;
+            let countdown = 5;
             const countdownInterval = setInterval(() => {
                 countdown--;
                 document.getElementById('countdown').textContent = countdown;
