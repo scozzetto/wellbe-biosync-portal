@@ -196,24 +196,14 @@
             z-index: 1;
         }
         
-        /* Mobile-specific nuclear option */
+        /* Mobile-specific targeting (removed border-radius override that caused squares) */
         @media (max-width: 768px) {
-            /* On mobile, hide ALL circular elements regardless of class */
+            /* On mobile, hide circular elements only */
             *[style*="border-radius: 50%"],
             *[style*="border-radius:50%"] {
                 display: none !important;
                 visibility: hidden !important;
                 opacity: 0 !important;
-            }
-            
-            /* Force remove any element that could be creating the mobile white dot */
-            div, span, button, img, canvas, svg {
-                border-radius: 0 !important;
-            }
-            
-            div[style*="position: fixed"],
-            div[style*="position: absolute"] {
-                border-radius: 0 !important;
             }
         }
     </style>
@@ -371,7 +361,7 @@
                 <img src="logo.svg" alt="Be Well Logo" class="logo">
             </a>
         </div>
-        <button style="display: none !important; visibility: hidden !important; opacity: 0 !important;" onclick="window.location.href='index.html'">
+        <button style="position: fixed; top: 20px; right: 20px; background: var(--primary-color); color: white; padding: 8px 16px; border: none; border-radius: 6px; cursor: pointer; font-size: 0.9rem; z-index: 1000;" onclick="window.location.href='index.html'">
             <i class="fas fa-home"></i> Home
         </button>
     </nav>
