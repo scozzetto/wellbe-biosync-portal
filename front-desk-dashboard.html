@@ -461,8 +461,32 @@
                 refreshStatus.style.color = '#f59e0b';
                 refreshStatus.textContent = '⟳';
                 
-                // Get check-ins from localStorage
-                const checkins = JSON.parse(localStorage.getItem('patientCheckins') || '[]');
+                // Get check-ins from ALL storage sources
+                let checkins = JSON.parse(localStorage.getItem('patientCheckins') || '[]');
+                
+                // Also check sessionStorage
+                const sessionCheckins = JSON.parse(sessionStorage.getItem('patientCheckins') || '[]');
+                
+                // Also check for individual checkin keys
+                const allKeys = Object.keys(localStorage);
+                const individualCheckins = allKeys
+                    .filter(key => key.startsWith('lastCheckin_'))
+                    .map(key => JSON.parse(localStorage.getItem(key)));
+                
+                // Merge all sources
+                const allSources = [...checkins, ...sessionCheckins, ...individualCheckins];
+                
+                // Remove duplicates by ID
+                const uniqueCheckins = [];
+                const seenIds = new Set();
+                allSources.forEach(checkin => {
+                    if (!seenIds.has(checkin.id)) {
+                        seenIds.add(checkin.id);
+                        uniqueCheckins.push(checkin);
+                    }
+                });
+                
+                checkins = uniqueCheckins;
                 const today = new Date().toISOString().split('T')[0];
                 const todayCheckins = checkins.filter(c => c.dateIn === today);
                 
