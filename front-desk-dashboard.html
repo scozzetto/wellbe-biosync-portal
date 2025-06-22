@@ -357,24 +357,6 @@
             </div>
         </div>
         
-        <!-- Dashboard debug overlay -->
-        <div id="dashboardDebug" 
-             style="
-               position: fixed;
-               top: 10px; 
-               left: 10px; 
-               background: rgba(0,0,0,0.8); 
-               color: #fff; 
-               padding: 10px; 
-               font-size: 0.8rem; 
-               max-width: 250px;
-               max-height: 200px;
-               overflow-y: auto;
-               z-index: 9999;
-               border-radius: 4px;
-             ">
-          Dashboard Debug: Loading...
-        </div>
         
         <div class="stats-bar">
             <div class="stat-card">
@@ -588,18 +570,6 @@
                 
                 console.log('Refresh complete - displayed', todayCheckins.length, 'check-ins');
                 
-                // Update dashboard debug overlay
-                const dashboardDebugEl = document.getElementById('dashboardDebug');
-                if (dashboardDebugEl) {
-                    dashboardDebugEl.textContent = 
-                        `Dashboard Debug:\n` +
-                        `Total in allCheckins: ${checkins.length}\n` +
-                        `Today's checkins: ${todayCheckins.length}\n` +
-                        `Waiting: ${waitingCount}\n` +
-                        `Active: ${activeCount}\n` +
-                        `Completed: ${completedCount}\n` +
-                        `Last refresh: ${new Date().toLocaleTimeString()}`;
-                }
             } catch (e) {
                 console.error('Error processing checkins:', e);
                 alert('Error processing check-ins: ' + e.message);
