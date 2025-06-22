@@ -349,6 +349,7 @@
             <div class="header-info">
                 <span id="currentTime"></span>
                 <span id="currentUser">front desk bham</span>
+                <span id="refreshStatus" style="color: #22c55e; font-size: 0.9rem;">●</span>
                 <button class="refresh-btn" onclick="refreshDashboard()">Refresh</button>
             </div>
         </div>
@@ -454,10 +455,16 @@
         
         // Load and display check-ins
         function loadCheckins() {
+            // Show refresh indicator
+            const refreshStatus = document.getElementById('refreshStatus');
+            refreshStatus.style.color = '#f59e0b';
+            refreshStatus.textContent = '⟳';
+            
             console.log('Loading check-ins...'); // Debug log
             const checkins = JSON.parse(localStorage.getItem('patientCheckins') || '[]');
             console.log('All checkins:', checkins); // Debug log
             const today = new Date().toISOString().split('T')[0];
+            console.log('Today date:', today); // Debug log
             const todayCheckins = checkins.filter(c => c.dateIn === today);
             console.log('Today checkins:', todayCheckins); // Debug log
             
@@ -518,6 +525,13 @@
             document.getElementById('completedCount').textContent = completedCount;
             document.getElementById('avgWaitTime').textContent = waitingPatients > 0 ? 
                 Math.round(totalWaitTime / waitingPatients) : 0;
+            
+            // Show refresh complete
+            const refreshStatus = document.getElementById('refreshStatus');
+            refreshStatus.style.color = '#22c55e';
+            refreshStatus.textContent = '●';
+            
+            console.log('Refresh complete - displayed', todayCheckins.length, 'check-ins');
         }
         
         // Acknowledge patient (check them in)
@@ -607,7 +621,7 @@
         updateTime();
         setInterval(updateTime, 60000); // Update time every minute
         loadCheckins();
-        setInterval(loadCheckins, 30000); // Auto-refresh every 30 seconds
+        setInterval(loadCheckins, 5000); // Auto-refresh every 5 seconds
     </script>
 </body>
 </html>
