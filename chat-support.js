@@ -137,7 +137,7 @@ function initChatSupport() {
                     <p><strong>Ready to transform your health?</strong></p>
                     <p>📞 Call: (248) 792-6570</p>
                     <p>📧 Email: info@bewelllifestylecenters.com</p>
-                    <a href="#memberships" class="join-btn">Join Now</a>
+                    <a href="#memberships" class="join-btn" onclick="document.getElementById('membership-modal').style.display='none'; document.getElementById('memberships').scrollIntoView({behavior: 'smooth'}); return false;">Join Now</a>
                 </div>
             </div>
         </div>
@@ -158,10 +158,11 @@ function initChatSupport() {
         }
         
         .chat-modal-content {
-            background-color: #fefefe;
+            background-color: #1a1a1a;
+            color: #ffffff;
             margin: 5% auto;
             padding: 30px;
-            border: 1px solid #888;
+            border: 1px solid #A47C5B;
             width: 90%;
             max-width: 600px;
             border-radius: 10px;
@@ -169,8 +170,16 @@ function initChatSupport() {
             overflow-y: auto;
         }
         
+        .chat-modal-content h2, .chat-modal-content h3 {
+            color: #A47C5B;
+        }
+        
+        .chat-modal-content p, .chat-modal-content li {
+            color: #ffffff;
+        }
+        
         .close-modal {
-            color: #aaa;
+            color: #A47C5B;
             float: right;
             font-size: 28px;
             font-weight: bold;
@@ -179,7 +188,7 @@ function initChatSupport() {
         
         .close-modal:hover,
         .close-modal:focus {
-            color: #000;
+            color: #ffffff;
         }
         
         .membership-info h3 {
@@ -193,7 +202,8 @@ function initChatSupport() {
         }
         
         .membership-benefits {
-            background-color: #f9f9f9;
+            background-color: rgba(164, 124, 91, 0.1);
+            border: 1px solid #A47C5B;
             padding: 20px;
             border-radius: 8px;
             margin: 20px 0;
