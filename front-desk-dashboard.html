@@ -631,19 +631,27 @@
         // Test localStorage contents
         function testLocalStorage() {
             try {
-                const localData = localStorage.getItem('allCheckins');
+                const allCheckinsData = localStorage.getItem('allCheckins');
+                const patientCheckinsData = localStorage.getItem('patientCheckins');
                 const today = new Date().toISOString().split('T')[0];
                 
-                let debugInfo = `DEBUG INFO:\n`;
+                let debugInfo = `COMPLETE DEBUG INFO:\n`;
                 debugInfo += `Today: ${today}\n`;
-                debugInfo += `LocalStorage: ${localData ? 'HAS DATA' : 'EMPTY'}\n`;
+                debugInfo += `URL: ${window.location.href}\n\n`;
                 
-                if (localData) {
-                    const parsed = JSON.parse(localData);
-                    debugInfo += `Items: ${parsed.length}\n\n`;
+                debugInfo += `allCheckins key: ${allCheckinsData ? 'HAS DATA' : 'EMPTY'}\n`;
+                if (allCheckinsData) {
+                    const parsed = JSON.parse(allCheckinsData);
+                    debugInfo += `  Items: ${parsed.length}\n`;
                     parsed.forEach((item, index) => {
-                        debugInfo += `${index + 1}. ${item.name} (${item.dateIn})\n`;
+                        debugInfo += `  ${index + 1}. ${item.name} (${item.dateIn})\n`;
                     });
+                }
+                
+                debugInfo += `\npatientCheckins key: ${patientCheckinsData ? 'HAS DATA' : 'EMPTY'}\n`;
+                if (patientCheckinsData) {
+                    const parsed = JSON.parse(patientCheckinsData);
+                    debugInfo += `  Items: ${parsed.length}\n`;
                 }
                 
                 alert(debugInfo);
@@ -675,9 +683,11 @@
             
             let checkins = JSON.parse(localStorage.getItem('allCheckins') || '[]');
             checkins.push(testCheckin);
-            localStorage.setItem('patientCheckins', JSON.stringify(checkins));
+            localStorage.setItem('allCheckins', JSON.stringify(checkins));
             
-            alert('Test check-in added!');
+            console.log('Test checkin added:', testCheckin);
+            console.log('Total checkins now:', checkins.length);
+            alert('Test check-in added! Total: ' + checkins.length);
             loadCheckins();
         }
         
