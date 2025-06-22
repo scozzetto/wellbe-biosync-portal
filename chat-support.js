@@ -134,7 +134,6 @@ function initChatSupport() {
                 </div>
                 
                 <div class="contact-info">
-                    <p><strong>Ready to transform your health?</strong></p>
                     <p>📞 Call: (248) 792-6570</p>
                     <p>📧 Email: info@bewelllifestylecenters.com</p>
                     <a href="https://bewelllifestylecenters.com/membership-purchase.html" class="join-btn" onclick="document.getElementById('membership-modal').style.display='none';">Join Now</a>
@@ -161,14 +160,14 @@ function initChatSupport() {
         .chat-modal-content {
             background-color: #1a1a1a;
             color: #ffffff;
-            margin: 5% auto;
+            margin: 3% auto;
             padding: 40px;
             border: 1px solid #A47C5B;
             width: 90%;
             max-width: 700px;
             min-width: 350px;
             border-radius: 10px;
-            max-height: 80vh;
+            max-height: 90vh;
             overflow-y: auto;
         }
         
