@@ -350,10 +350,10 @@
                 <span id="currentTime"></span>
                 <span id="currentUser">front desk bham</span>
                 <span id="refreshStatus" style="color: #22c55e; font-size: 0.9rem;">●</span>
-                <button class="refresh-btn" onclick="refreshDashboard()">Refresh</button>
-                <button class="refresh-btn" onclick="testLocalStorage()" style="background: #ef4444;">Debug</button>
-                <button class="refresh-btn" onclick="addTestCheckin()" style="background: #22c55e;">Add Test</button>
-                <button class="refresh-btn" onclick="clearAllData()" style="background: #f59e0b;">Clear All</button>
+                <button class="refresh-btn" onclick="alert('Refresh clicked')">Refresh</button>
+                <button class="refresh-btn" onclick="alert('Debug clicked')" style="background: #ef4444;">Debug</button>
+                <button class="refresh-btn" onclick="alert('Add Test clicked')" style="background: #22c55e;">Add Test</button>
+                <button class="refresh-btn" onclick="alert('Clear clicked')" style="background: #f59e0b;">Clear All</button>
             </div>
         </div>
         
@@ -458,41 +458,22 @@
         
         // Load and display check-ins
         function loadCheckins() {
-            // Show refresh indicator
-            const refreshStatus = document.getElementById('refreshStatus');
-            refreshStatus.style.color = '#f59e0b';
-            refreshStatus.textContent = '⟳';
-            
-            console.log('=== LOADING CHECK-INS ===');
-            console.log('Current URL:', window.location.href);
-            
-            // Check both localStorage and sessionStorage
-            const localCheckins = JSON.parse(localStorage.getItem('patientCheckins') || '[]');
-            const sessionCheckins = JSON.parse(sessionStorage.getItem('patientCheckins') || '[]');
-            const lastCheckin = sessionStorage.getItem('lastCheckin');
-            
-            console.log('LocalStorage checkins:', localCheckins.length);
-            console.log('SessionStorage checkins:', sessionCheckins.length);
-            console.log('Last checkin from session:', lastCheckin ? 'EXISTS' : 'NONE');
-            
-            // Use the one with more data
-            const checkins = localCheckins.length >= sessionCheckins.length ? localCheckins : sessionCheckins;
-            console.log('Using checkins array with:', checkins.length, 'items');
-            
-            const today = new Date().toISOString().split('T')[0];
-            console.log('Today date for filtering:', today);
-            
-            // Log each checkin's date for comparison
-            checkins.forEach((checkin, index) => {
-                console.log(`Checkin ${index}: ${checkin.name} - Date: "${checkin.dateIn}" (matches today: ${checkin.dateIn === today})`);
-            });
-            
-            const todayCheckins = checkins.filter(c => c.dateIn === today);
-            console.log('Filtered today checkins:', todayCheckins.length);
-            console.log('Today checkins data:', todayCheckins);
-            
-            const tbody = document.getElementById('checkinsTableBody');
-            tbody.innerHTML = '';
+            try {
+                // Show refresh indicator
+                const refreshStatus = document.getElementById('refreshStatus');
+                refreshStatus.style.color = '#f59e0b';
+                refreshStatus.textContent = '⟳';
+                
+                // Get check-ins from localStorage
+                const checkins = JSON.parse(localStorage.getItem('patientCheckins') || '[]');
+                const today = new Date().toISOString().split('T')[0];
+                const todayCheckins = checkins.filter(c => c.dateIn === today);
+                
+                console.log('Total checkins:', checkins.length);
+                console.log('Today checkins:', todayCheckins.length);
+                
+                const tbody = document.getElementById('checkinsTableBody');
+                tbody.innerHTML = '';
             
             // Show message if no check-ins
             if (todayCheckins.length === 0) {
@@ -561,12 +542,15 @@
             document.getElementById('avgWaitTime').textContent = waitingPatients > 0 ? 
                 Math.round(totalWaitTime / waitingPatients) : 0;
             
-            // Show refresh complete
-            const refreshStatus = document.getElementById('refreshStatus');
-            refreshStatus.style.color = '#22c55e';
-            refreshStatus.textContent = '●';
-            
-            console.log('Refresh complete - displayed', todayCheckins.length, 'check-ins');
+                // Show refresh complete
+                refreshStatus.style.color = '#22c55e';
+                refreshStatus.textContent = '●';
+                
+                console.log('Refresh complete - displayed', todayCheckins.length, 'check-ins');
+            } catch (e) {
+                console.error('Error loading checkins:', e);
+                alert('Error loading check-ins: ' + e.message);
+            }
         }
         
         // Acknowledge patient (check them in)
@@ -646,50 +630,25 @@
         
         // Test localStorage contents
         function testLocalStorage() {
-            const localData = localStorage.getItem('patientCheckins');
-            const sessionData = sessionStorage.getItem('patientCheckins');
-            const lastCheckin = sessionStorage.getItem('lastCheckin');
-            const today = new Date().toISOString().split('T')[0];
-            
-            let debugInfo = `COMPLETE DEBUG INFO:\n`;
-            debugInfo += `Current URL: ${window.location.href}\n`;
-            debugInfo += `Today's Date: ${today}\n\n`;
-            
-            debugInfo += `LOCAL STORAGE:\n`;
-            if (localData) {
-                const parsed = JSON.parse(localData);
-                debugInfo += `  Has ${parsed.length} items\n`;
-                parsed.forEach((item, index) => {
-                    debugInfo += `  ${index + 1}. ${item.name} (${item.dateIn})\n`;
-                });
-            } else {
-                debugInfo += `  EMPTY\n`;
-            }
-            
-            debugInfo += `\nSESSION STORAGE:\n`;
-            if (sessionData) {
-                const parsed = JSON.parse(sessionData);
-                debugInfo += `  Has ${parsed.length} items\n`;
-            } else {
-                debugInfo += `  EMPTY\n`;
-            }
-            
-            debugInfo += `\nLAST CHECK-IN:\n`;
-            debugInfo += lastCheckin ? `  EXISTS` : `  NONE`;
-            
-            alert(debugInfo);
-            
-            console.log('=== ENHANCED DEBUG INFO ===');
-            console.log('Today:', today);
-            console.log('Raw localStorage:', localData);
-            console.log('Raw sessionStorage:', sessionData);
-            if (localData) {
-                const parsed = JSON.parse(localData);
-                console.log('Parsed localStorage data:', parsed);
-                parsed.forEach((item, index) => {
-                    console.log(`Item ${index}:`, item);
-                    console.log(`Date match: ${item.dateIn} === ${today} = ${item.dateIn === today}`);
-                });
+            try {
+                const localData = localStorage.getItem('patientCheckins');
+                const today = new Date().toISOString().split('T')[0];
+                
+                let debugInfo = `DEBUG INFO:\n`;
+                debugInfo += `Today: ${today}\n`;
+                debugInfo += `LocalStorage: ${localData ? 'HAS DATA' : 'EMPTY'}\n`;
+                
+                if (localData) {
+                    const parsed = JSON.parse(localData);
+                    debugInfo += `Items: ${parsed.length}\n\n`;
+                    parsed.forEach((item, index) => {
+                        debugInfo += `${index + 1}. ${item.name} (${item.dateIn})\n`;
+                    });
+                }
+                
+                alert(debugInfo);
+            } catch (e) {
+                alert('Debug error: ' + e.message);
             }
         }
         
