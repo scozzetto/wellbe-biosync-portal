@@ -462,9 +462,10 @@
                 refreshStatus.style.color = '#f59e0b';
                 refreshStatus.textContent = '⟳';
                 
-                // Use bridge to get all check-ins
-                const checkins = window.CheckinBridge.getAllCheckins();
-                const todayCheckins = window.CheckinBridge.getTodayCheckins();
+                // Get check-ins from simple localStorage
+                const checkins = JSON.parse(localStorage.getItem('allCheckins') || '[]');
+                const today = new Date().toISOString().split('T')[0];
+                const todayCheckins = checkins.filter(c => c.dateIn === today);
                 
                 console.log('Total checkins:', checkins.length);
                 console.log('Today checkins:', todayCheckins.length);

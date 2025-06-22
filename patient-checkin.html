@@ -601,8 +601,10 @@
                 timestamp: new Date().toISOString()
             };
             
-            // Use the bridge to save
-            const saved = window.CheckinBridge.saveCheckin(checkinData);
+            // Save directly to localStorage - simple approach
+            let allCheckins = JSON.parse(localStorage.getItem('allCheckins') || '[]');
+            allCheckins.push(checkinData);
+            localStorage.setItem('allCheckins', JSON.stringify(allCheckins));
             
             // Try to send to dashboard if it's open
             try {
@@ -617,14 +619,11 @@
             }
             
             // Debug logging
-            const allCheckins = window.CheckinBridge.getAllCheckins();
             console.log('CHECK-IN SAVED:', checkinData);
             console.log('Total checkins now:', allCheckins.length);
-            console.log('All checkins:', allCheckins);
-            console.log('Bridge save result:', saved);
             
             // Force an alert to confirm saving
-            alert('Check-in saved for: ' + checkinData.name + '\nTotal check-ins: ' + allCheckins.length + '\nSaved: ' + (saved ? 'YES' : 'NO'));
+            alert('Check-in saved for: ' + checkinData.name + '\nTotal check-ins: ' + allCheckins.length);
             
             // Show success screen
             document.getElementById('wizardContainer').style.display = 'none';
