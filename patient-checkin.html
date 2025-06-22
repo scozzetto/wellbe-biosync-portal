@@ -2,27 +2,76 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Patient Check-In - Be Well LifeStyle Centers</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#1C2630">
+    <title>Be Well Check-In</title>
+    <link rel="apple-touch-icon" href="logo.svg">
     <link rel="stylesheet" href="styles.css">
     <style>
+        /* Full app-like styling */
+        * {
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+        
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background: #0f1419;
+            position: fixed;
+            width: 100%;
+            height: 100%;
+        }
+        
         .checkin-container {
             min-height: 100vh;
+            min-height: -webkit-fill-available;
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 20px;
-            background: var(--bg-color);
+            padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+            background: linear-gradient(135deg, #0f1419 0%, #1a1f2a 100%);
+            position: relative;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        /* Animated background */
+        .checkin-container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 30% 30%, rgba(164, 124, 91, 0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 70% 70%, rgba(164, 124, 91, 0.05) 0%, transparent 50%);
+            animation: float 20s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            50% { transform: translate(-30px, -30px) rotate(180deg); }
         }
         
         .checkin-form {
-            background: var(--card-bg);
+            background: rgba(26, 31, 42, 0.95);
+            backdrop-filter: blur(20px);
             padding: 40px;
-            border-radius: 16px;
+            border-radius: 24px;
             border: 1px solid rgba(164, 124, 91, 0.3);
             max-width: 600px;
             width: 100%;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5),
+                        0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+            position: relative;
+            z-index: 1;
         }
         
         .checkin-header {
@@ -124,6 +173,16 @@
             display: none;
             text-align: center;
             padding: 40px;
+            background: rgba(26, 31, 42, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            border: 1px solid rgba(164, 124, 91, 0.3);
+            max-width: 600px;
+            width: 100%;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5),
+                        0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+            position: relative;
+            z-index: 1;
         }
         
         .success-message h2 {
@@ -190,6 +249,7 @@
     <div class="checkin-container">
         <div class="checkin-form" id="checkinForm">
             <div class="checkin-header">
+                <img src="logo.svg" alt="Be Well" style="height: 60px; width: auto; margin-bottom: 20px; filter: brightness(0) invert(1); opacity: 0.9;">
                 <h1>Welcome to Be Well</h1>
                 <p>Please check in for your appointment</p>
             </div>
@@ -262,6 +322,38 @@
     </div>
     
     <script>
+        // Full-screen mode for iPad
+        function enterFullScreen() {
+            const elem = document.documentElement;
+            if (elem.requestFullscreen) {
+                elem.requestFullscreen();
+            } else if (elem.webkitRequestFullscreen) {
+                elem.webkitRequestFullscreen();
+            } else if (elem.msRequestFullscreen) {
+                elem.msRequestFullscreen();
+            }
+        }
+        
+        // Prompt for full-screen on first touch
+        document.addEventListener('touchstart', function() {
+            enterFullScreen();
+        }, { once: true });
+        
+        // Prevent pull-to-refresh
+        let lastY = 0;
+        document.addEventListener('touchstart', function(e) {
+            lastY = e.touches[0].clientY;
+        }, { passive: false });
+        
+        document.addEventListener('touchmove', function(e) {
+            const y = e.touches[0].clientY;
+            const scrollTop = document.querySelector('.checkin-container').scrollTop;
+            
+            if (scrollTop === 0 && y > lastY) {
+                e.preventDefault();
+            }
+        }, { passive: false });
+        
         // Sub-reason options based on main reason
         const subReasonOptions = {
             'Chiropractic': [
