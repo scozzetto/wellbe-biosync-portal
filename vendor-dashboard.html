@@ -327,35 +327,35 @@
                 </div>
             </div>
 
-            <!-- Packaging Supplier Card -->
+            <!-- Gordon Foods Card -->
             <div class="vendor-card">
                 <div class="vendor-header">
-                    <div class="vendor-name">📦 Packaging Co</div>
-                    <div class="vendor-status status-scheduled">Scheduled</div>
+                    <div class="vendor-name">🍗 Gordon Foods</div>
+                    <div class="vendor-status status-active">Active</div>
                 </div>
                 
                 <div class="delivery-schedule">
                     <div class="schedule-title">📅 Delivery Schedule</div>
                     <div class="schedule-item">
-                        <span class="location">Birmingham</span>
-                        <span class="days">Weekly Bulk</span>
+                        <span class="location">All Locations</span>
+                        <span class="days">Weekly Orders</span>
                     </div>
                 </div>
 
                 <div class="order-section">
-                    <button class="order-button" onclick="placePackagingOrder()">
-                        📋 Order Cups, Lids, Boxes
+                    <button class="order-button" onclick="placeGordonOrder()">
+                        📋 Order Chicken, Wraps, Burgers
                     </button>
-                    <button class="contact-button" onclick="contactVendor('Packaging')">
-                        📞 Contact Packaging Co
+                    <button class="contact-button" onclick="contactVendor('Gordon Foods')">
+                        📞 Contact Gordon Foods
                     </button>
                 </div>
             </div>
 
-            <!-- Supplement Supplier Card -->
+            <!-- Natural Zing Card -->
             <div class="vendor-card">
                 <div class="vendor-header">
-                    <div class="vendor-name">💊 Supplement Co</div>
+                    <div class="vendor-name">🌿 Natural Zing</div>
                     <div class="vendor-status status-active">Active</div>
                 </div>
                 
@@ -363,16 +363,41 @@
                     <div class="schedule-title">📅 Delivery Schedule</div>
                     <div class="schedule-item">
                         <span class="location">Birmingham</span>
-                        <span class="days">Bi-weekly</span>
+                        <span class="days">1 week delivery</span>
                     </div>
                 </div>
 
                 <div class="order-section">
-                    <button class="order-button" onclick="placeSupplementOrder()">
-                        📋 Order Proteins & Superfoods
+                    <button class="order-button" onclick="placeNaturalZingOrder()">
+                        📋 Order Superfoods & Supplements
                     </button>
-                    <button class="contact-button" onclick="contactVendor('Supplements')">
-                        📞 Contact Supplement Co
+                    <button class="contact-button" onclick="contactVendor('Natural Zing')">
+                        📞 Contact Natural Zing
+                    </button>
+                </div>
+            </div>
+
+            <!-- UNFI Card -->
+            <div class="vendor-card">
+                <div class="vendor-header">
+                    <div class="vendor-name">📦 UNFI</div>
+                    <div class="vendor-status status-scheduled">Scheduled</div>
+                </div>
+                
+                <div class="delivery-schedule">
+                    <div class="schedule-title">📅 Delivery Schedule</div>
+                    <div class="schedule-item">
+                        <span class="location">Birmingham</span>
+                        <span class="days">Wed order → Fri delivery</span>
+                    </div>
+                </div>
+
+                <div class="order-section">
+                    <button class="order-button" onclick="placeUNFIOrder()">
+                        📋 Order Bulk Items ($1,000 min)
+                    </button>
+                    <button class="contact-button" onclick="contactVendor('UNFI')">
+                        📞 Contact UNFI
                     </button>
                 </div>
             </div>
@@ -509,19 +534,60 @@ Total Estimated: $485
             }
         };
 
-        const placeSupplementOrder = () => {
+        const placeGordonOrder = () => {
             const orderItems = [
-                'Vanilla Protein - 5 tubs',
-                'Chocolate Protein - 4 tubs',
-                'Maca Powder - 2 containers',
-                'Chlorella/Spirulina - 3 containers'
+                'Chicken Grilled - 5 cases per week',
+                'Mini Wraps - 24 bags to a case',
+                '4oz Hamburgers - 1 case',
+                'Brioche Buns - 1 case',
+                'Turkey slices - 1 package',
+                'Sweet Potato Tots - 1 case'
             ];
 
-            if (confirm(`Place Supplement Order?\n\n${orderItems.join('\n')}\n\nEstimated: $285`)) {
-                showNotification('💊 Supplement order placed! Delivery in 5-7 business days.');
+            if (confirm(`Place Gordon Foods Order?\n\n${orderItems.join('\n')}\n\nAccount: $Be7926570\n\nEstimated: $420`)) {
+                showNotification('🍗 Gordon Foods order placed via sso.gfs.com!');
                 
                 setTimeout(() => {
-                    showNotification('✅ Supplement order confirmed - Order #SUP' + Date.now().toString().slice(-6));
+                    showNotification('✅ Gordon Foods order confirmed - Order #GF' + Date.now().toString().slice(-6));
+                }, 2000);
+            }
+        };
+
+        const placeNaturalZingOrder = () => {
+            const orderItems = [
+                'Bee Pollen - 2 containers',
+                'Chlorella - 3 bags',
+                'Spirulina - 3 containers', 
+                'Cacao Powder - 4 bags',
+                'Maca - 2 containers',
+                'Goji Berries - 2 bags'
+            ];
+
+            if (confirm(`Place Natural Zing Order?\n\n${orderItems.join('\n')}\n\nUsername: orders@bewelllifestylecenters\nPassword: $Be7926570\n\n1 week delivery\n\nEstimated: $385`)) {
+                showNotification('🌿 Natural Zing order placed! 1 week delivery from wholesale.naturalzing.com');
+                
+                setTimeout(() => {
+                    showNotification('✅ Natural Zing order confirmed - Order #NZ' + Date.now().toString().slice(-6));
+                }, 2000);
+            }
+        };
+
+        const placeUNFIOrder = () => {
+            const orderItems = [
+                'Almond Butter - 8 bottles',
+                'Coconut Oil - 6 bottles',
+                'Coconut Flakes - 9 cases',
+                'Oats (Gluten Free) - 13 cases',
+                'BBQ Sauce - 6 cases',
+                'Coconut Water - 16 cases',
+                'Apple Juice - 16 cases'
+            ];
+
+            if (confirm(`Place UNFI Order?\n\n${orderItems.join('\n')}\n\nUsername: liquidlunch\n$1,000 minimum order\nWed order → Fri delivery\n\nEstimated: $1,150`)) {
+                showNotification('📦 UNFI order placed! Order by Wednesday for Friday delivery.');
+                
+                setTimeout(() => {
+                    showNotification('✅ UNFI order confirmed - Order #UF' + Date.now().toString().slice(-6));
                 }, 2000);
             }
         };
@@ -529,24 +595,29 @@ Total Estimated: $485
         const contactVendor = (vendor) => {
             const contacts = {
                 'VACPAK': {
-                    phone: '(555) 123-4567',
-                    email: 'orders@vacpak.com',
-                    contact: 'Sarah Johnson'
+                    phone: '586-791-1515',
+                    email: 'Text Rick at 586-855-9326',
+                    contact: 'Rick (VACPAK)'
                 },
                 'Distribution': {
-                    phone: '(555) 234-5678', 
-                    email: 'berkeley@bewelllifestylecenters.com',
-                    contact: 'Berkeley Prep Team'
+                    phone: '248-792-6570', 
+                    email: 'orders@bewelllifestylecenters.com',
+                    contact: 'Be Well Berkeley Prep Team'
                 },
-                'Packaging': {
-                    phone: '(555) 345-6789',
-                    email: 'sales@packagingco.com',
-                    contact: 'Mike Thompson'
+                'Gordon Foods': {
+                    phone: 'sso.gfs.com',
+                    email: 'orders@bewelllifestylecenters.com',
+                    contact: 'Account: $Be7926570'
                 },
-                'Supplements': {
-                    phone: '(555) 456-7890',
-                    email: 'orders@supplementco.com',
-                    contact: 'Lisa Chen'
+                'Natural Zing': {
+                    phone: '301-703-4116',
+                    email: 'wholesale.naturalzing.com',
+                    contact: 'Username: orders@bewelllifestylecenters, Password: $Be7926570'
+                },
+                'UNFI': {
+                    phone: 'customers.UNFI.com',
+                    email: 'Username: liquidlunch',
+                    contact: '$1,000 minimum order - Wed orders for Fri delivery'
                 }
             };
 

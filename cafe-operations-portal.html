@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Be Well Café Operations Portal</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: linear-gradient(135deg, #1e2a4a 0%, #2d3a5a 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .header h1 {
+            color: #2c3e50;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .quick-access {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .access-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+
+        .access-card:hover {
+            transform: translateY(-3px);
+        }
+
+        .access-card h3 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+
+        .access-card p {
+            color: #7f8c8d;
+            font-size: 0.9em;
+        }
+
+        .main-sections {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        .section-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .section-title {
+            font-size: 1.4em;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #ecf0f1;
+        }
+
+        .procedure-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .procedure-item {
+            padding: 12px 0;
+            border-bottom: 1px solid #ecf0f1;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .procedure-item:last-child {
+            border-bottom: none;
+        }
+
+        .procedure-name {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .procedure-action {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 8px;
+            font-size: 0.8em;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .procedure-action:hover {
+            background: #2980b9;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .contact-card {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .contact-name {
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+
+        .contact-role {
+            color: #7f8c8d;
+            font-size: 0.9em;
+            margin-bottom: 8px;
+        }
+
+        .contact-info {
+            color: #3498db;
+            font-size: 0.8em;
+        }
+
+        .emergency-section {
+            background: rgba(231, 76, 60, 0.1);
+            border: 2px solid #e74c3c;
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 30px;
+        }
+
+        .emergency-title {
+            color: #e74c3c;
+            font-weight: 700;
+            font-size: 1.2em;
+            margin-bottom: 15px;
+        }
+
+        .emergency-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .emergency-item {
+            background: rgba(255, 255, 255, 0.8);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .emergency-scenario {
+            font-weight: 600;
+            color: #e74c3c;
+            margin-bottom: 8px;
+        }
+
+        .emergency-action {
+            color: #2c3e50;
+            font-size: 0.9em;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 30px;
+            border-radius: 20px;
+            width: 80%;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover {
+            color: #000;
+        }
+
+        .procedure-steps {
+            list-style: decimal;
+            padding-left: 20px;
+        }
+
+        .procedure-steps li {
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+
+        @media (max-width: 768px) {
+            .main-sections {
+                grid-template-columns: 1fr;
+            }
+            
+            .quick-access {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>👨‍🍳 Café Operations Portal</h1>
+            <div class="subtitle">Complete operations guide for Be Well Lifestyle Centers café staff</div>
+        </div>
+
+        <div class="quick-access">
+            <div class="access-card" onclick="window.open('inventory-management.html', '_blank')">
+                <h3>📦 Inventory System</h3>
+                <p>Real-time stock tracking and ordering</p>
+            </div>
+            <div class="access-card" onclick="window.open('vendor-dashboard.html', '_blank')">
+                <h3>🚚 Vendor Management</h3>
+                <p>VACPAK, Gordon Foods, and supplier contacts</p>
+            </div>
+            <div class="access-card" onclick="window.open('recipe-inventory-tracker.html', '_blank')">
+                <h3>🧪 Recipe Tracker</h3>
+                <p>Track ingredient usage per recipe</p>
+            </div>
+            <div class="access-card" onclick="showProcedure('timeTracking')">
+                <h3>⏰ Time Tracking</h3>
+                <p>ADP punch procedures and policies</p>
+            </div>
+        </div>
+
+        <div class="main-sections">
+            <div class="section-card">
+                <div class="section-title">📋 Daily Procedures</div>
+                <ul class="procedure-list">
+                    <li class="procedure-item">
+                        <span class="procedure-name">Opening Checklist</span>
+                        <button class="procedure-action" onclick="showProcedure('opening')">View</button>
+                    </li>
+                    <li class="procedure-item">
+                        <span class="procedure-name">Closing Checklist</span>
+                        <button class="procedure-action" onclick="showProcedure('closing')">View</button>
+                    </li>
+                    <li class="procedure-item">
+                        <span class="procedure-name">Food Preparation</span>
+                        <button class="procedure-action" onclick="showProcedure('prep')">View</button>
+                    </li>
+                    <li class="procedure-item">
+                        <span class="procedure-name">Order Processing</span>
+                        <button class="procedure-action" onclick="showProcedure('ordering')">View</button>
+                    </li>
+                    <li class="procedure-item">
+                        <span class="procedure-name">Cleaning Procedures</span>
+                        <button class="procedure-action" onclick="showProcedure('cleaning')">View</button>
+                    </li>
+                    <li class="procedure-item">
+                        <span class="procedure-name">Health Department Guidelines</span>
+                        <button class="procedure-action" onclick="showProcedure('health')">View</button>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="section-card">
+                <div class="section-title">📞 Important Contacts</div>
+                <div class="contact-grid">
+                    <div class="contact-card">
+                        <div class="contact-name">Silvio Cozzetto</div>
+                        <div class="contact-role">Director of Operations</div>
+                        <div class="contact-info">248-792-6570 ext 2<br>cozzetto@infinitymgtsys.com</div>
+                    </div>
+                    <div class="contact-card">
+                        <div class="contact-name">Christine Gross</div>
+                        <div class="contact-role">HR & Payroll</div>
+                        <div class="contact-info">Accounting@infinitymgtsys.com</div>
+                    </div>
+                    <div class="contact-card">
+                        <div class="contact-name">VACPAK Orders</div>
+                        <div class="contact-role">Produce Supplier</div>
+                        <div class="contact-info">586-791-1515<br>Text Rick: 586-855-9326</div>
+                    </div>
+                    <div class="contact-card">
+                        <div class="contact-name">Inventory Orders</div>
+                        <div class="contact-role">General Ordering</div>
+                        <div class="contact-info">orders@bewelllifestylecenters.com</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="emergency-section">
+            <div class="emergency-title">🚨 Emergency Procedures</div>
+            <div class="emergency-grid">
+                <div class="emergency-item">
+                    <div class="emergency-scenario">Stock Runs Out During Rush</div>
+                    <div class="emergency-action">Two staff: one preps while other makes orders</div>
+                </div>
+                <div class="emergency-item">
+                    <div class="emergency-scenario">Equipment Breakdown</div>
+                    <div class="emergency-action">Fill out repair ticket, place in money bag</div>
+                </div>
+                <div class="emergency-item">
+                    <div class="emergency-scenario">Wrong Order Made</div>
+                    <div class="emergency-action">Remake correct order, log waste on waste sheet</div>
+                </div>
+                <div class="emergency-item">
+                    <div class="emergency-scenario">WiFi/POS Down</div>
+                    <div class="emergency-action">Use manual order taking, process when system returns</div>
+                </div>
+                <div class="emergency-item">
+                    <div class="emergency-scenario">Food Safety Issue</div>
+                    <div class="emergency-action">Discard immediately, alert management, document</div>
+                </div>
+                <div class="emergency-item">
+                    <div class="emergency-scenario">Understaffed/No Show</div>
+                    <div class="emergency-action">Contact manager immediately, use Sling to find coverage</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for procedures -->
+    <div id="procedureModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <div id="modalContent"></div>
+        </div>
+    </div>
+
+    <script>
+        const procedures = {
+            opening: {
+                title: "🌅 Café Opening Checklist",
+                content: `
+                    <ol class="procedure-steps">
+                        <li>Store personal belongings in closet (coat, keys, cell phone, water bottle)</li>
+                        <li>Ensure proper outfit: apron, Be Well shirt, hat, black pants, closed-toe shoes</li>
+                        <li>Turn on lights in café</li>
+                        <li>Clean and organize outside/inside café, lobby, and dining area</li>
+                        <li>Fill dog bowl with fresh water (weather permitting)</li>
+                        <li>Check all fridge and freezer temperatures (Fridge 40°F / Freezer 0°F)</li>
+                        <li>Make coffee (see specific instructions)</li>
+                        <li>Verify all prep items are fully stocked</li>
+                        <li>Turn on and assemble blenders, juicer, and appliances</li>
+                        <li>Fill sterilize sink halfway with hot water and sterilizer</li>
+                        <li>Fill wash sink with ¼ cup dish soap and hot water</li>
+                        <li>Prepare red sanitizer bucket with water, 1 sani-tablet, and towel</li>
+                        <li>Turn on grill to 480°F or turn on TurboChef</li>
+                        <li>Fill fruit line and backup fridge bins</li>
+                        <li>Place 2 bottles each of honey and almond butter at stations</li>
+                        <li>Prep tomatoes & cucumbers for the day</li>
+                        <li>Stock paper towels, utensils, cups, lids, napkins</li>
+                        <li>Check for moldy fruit, vegetables, and expired products</li>
+                        <li>Verify expiration dates on all fridge items</li>
+                        <li>Stock and clean retail items and grab-and-go fridge</li>
+                        <li>Prepare inventory sheet for daily tracking</li>
+                        <li>Place damp towel next to coffee machine for cleanup</li>
+                    </ol>
+                `
+            },
+            closing: {
+                title: "🌙 Café Closing Checklist",
+                content: `
+                    <h4>Start 1 Hour Before Closing:</h4>
+                    <ol class="procedure-steps">
+                        <li>Prep items for next day's opening shift</li>
+                        <li>Stock all line items in fridge</li>
+                        <li>Refill butters, honey, and granola</li>
+                        <li>Remove all moldy items</li>
+                        <li>Clean and refill superfood containers</li>
+                        <li>Stock back fridge/freezer with 8 bags frozen bananas</li>
+                        <li>Discard ALL expired food, juices, and shots</li>
+                        <li>Scrub and wash blenders and covers</li>
+                        <li>Fully stock cups, boxes, silverware, napkins</li>
+                        <li>Stock front refrigerators for morning</li>
+                        <li>Check retail items and restock if low</li>
+                        <li>Fill out repair ticket if needed</li>
+                    </ol>
+                    
+                    <h4>After Closing:</h4>
+                    <ol class="procedure-steps">
+                        <li>Turn off café lights and close door</li>
+                        <li>Complete inventory checklist with all low items listed</li>
+                        <li>Settle all tickets and close drawer on tablet</li>
+                        <li>Complete cash acknowledgement sheet for money bag</li>
+                        <li>Charge handheld with 2 rolls printer paper each</li>
+                        <li>Get $200 opening bag from management</li>
+                        <li>Empty and refill back sink with hot water, vinegar, dish soap</li>
+                        <li>Take apart and soak all juicer items</li>
+                        <li>Scrub cutting boards, mats, and equipment</li>
+                        <li>Refrigerate produce, honey, and nut butters</li>
+                        <li>Clean coffee equipment and wipe syrup bottles</li>
+                        <li>Clean TurboChef thoroughly and remove cutting boards</li>
+                        <li>Clean sinks and under-sink drains with bleach</li>
+                        <li>Check all fridge/freezer temperatures and doors</li>
+                        <li>Pull out and clean freezers, mop with vinegar</li>
+                        <li>Wipe all surfaces: register, phone, walls, cabinets, counters</li>
+                        <li>Sweep café and back room</li>
+                        <li>Take out trash, replace bags (café, lounge, back room)</li>
+                        <li>Put dirty towels in laundry bin at back door</li>
+                        <li>Mop café, hallway, back room with water and vinegar</li>
+                        <li>Vacuum rugs in café and entry way</li>
+                        <li>Organize signs, tables, chairs</li>
+                        <li>Final check: everything off, proper temperature, closed</li>
+                    </ol>
+                `
+            },
+            prep: {
+                title: "🥪 Food Preparation Guide",
+                content: `
+                    <h4>Daily Prep Items:</h4>
+                    <ul class="procedure-steps">
+                        <li><strong>Almond Mylk:</strong> 2 cartons almond milk + 2 quarts water</li>
+                        <li><strong>Bananas (Frozen):</strong> 18 brown bananas per gallon bag, flatten</li>
+                        <li><strong>Apples & Cucumber:</strong> Dice into small pieces for the day</li>
+                        <li><strong>Tomatoes:</strong> Dice small pieces + slice one tomato</li>
+                        <li><strong>Strawberries:</strong> Cut off green, dice for wraps, slice for bowls</li>
+                        <li><strong>Egg Whites:</strong> Oil both sides, wrap in foil, 20 pieces per gallon bag</li>
+                        <li><strong>Honey & Nut Butters:</strong> 4 bottles each - 2 front, 2 back fridge</li>
+                    </ul>
+                    
+                    <h4>Special Prep (Commissary Items):</h4>
+                    <ul class="procedure-steps">
+                        <li><strong>$100 Smoothie Mix:</strong> Complex superfood blend (see full recipe)</li>
+                        <li><strong>Chaga Tonic Mix:</strong> 7oz ginger + 3oz lemon + 1oz ACV + ½ tsp cayenne</li>
+                        <li><strong>Tuna:</strong> 1 can + 1.25 cups mayo + 2 cups celery + seasonings</li>
+                        <li><strong>Super Greens:</strong> Specific blend of 6 superfoods per jar</li>
+                    </ul>
+                    
+                    <h4>Temperature Guidelines:</h4>
+                    <ul class="procedure-steps">
+                        <li>Cold foods: 41°F or below</li>
+                        <li>Hot foods: 135°F or higher</li>
+                        <li>Danger zone: 70°F - 125°F (bacteria grows rapidly)</li>
+                        <li>Always check temperatures and expiration dates</li>
+                    </ul>
+                `
+            },
+            ordering: {
+                title: "📱 Order Processing Procedures",
+                content: `
+                    <h4>Taking Orders (Phone or In-Person):</h4>
+                    <ol class="procedure-steps">
+                        <li>Use iPad or Mobile POS to take order</li>
+                        <li>For cheese items: ask "vegan or regular?"</li>
+                        <li>For granola: ask "on the side or on the bowl?"</li>
+                        <li>For bowls eaten outside: ask "would you like a lid?"</li>
+                        <li>Ask about additional items or customizations</li>
+                        <li>Press "Charge" button (or "Save" for later pickup)</li>
+                        <li>Take payment: swipe, tap, slide, manual entry, gift card</li>
+                        <li>Process tip screen</li>
+                    </ol>
+                    
+                    <h4>Ticket Handling:</h4>
+                    <ol class="procedure-steps">
+                        <li>Write customer location on ticket (car, table, etc.)</li>
+                        <li>Write pickup time or "ASAP"</li>
+                        <li>Place one ticket on order line</li>
+                        <li>Place second ticket at packaging station</li>
+                        <li>Write item description on cup/bowl/box</li>
+                        <li>When complete: package order, check items off ticket</li>
+                        <li>For pickup: tie bag, attach ticket until collected</li>
+                        <li>For delivery services: verify company and complete name</li>
+                        <li>After pickup: place ticket on ticket stick</li>
+                    </ol>
+                    
+                    <h4>Payment Processing:</h4>
+                    <ul class="procedure-steps">
+                        <li><strong>Card on File:</strong> Customer fills auth form, give to management</li>
+                        <li><strong>Gift Cards:</strong> Process through Square system</li>
+                        <li><strong>UWM Coupons:</strong> Write date and price, enter with coupon button</li>
+                        <li><strong>Always take payment before making order if paying in person</strong></li>
+                    </ul>
+                `
+            },
+            cleaning: {
+                title: "🧽 Cleaning Procedures",
+                content: `
+                    <h4>Equipment Cleaning:</h4>
+                    <ul class="procedure-steps">
+                        <li><strong>Juicer:</strong> Nightly wash and morning rinse</li>
+                        <li><strong>Blenders:</strong> Clean, scrub, proper assembly after each use</li>
+                        <li><strong>Three Compartment Sink:</strong> Wash → Rinse → Sanitize → Air dry</li>
+                        <li><strong>Coffee Equipment:</strong> Daily cleaning of pots, makers, syrup lines</li>
+                        <li><strong>TurboChef/Grill:</strong> Remove items, clean thoroughly</li>
+                    </ul>
+                    
+                    <h4>Sanitizing:</h4>
+                    <ul class="procedure-steps">
+                        <li>Food contact surfaces: wash/rinse/sanitize every 4 hours</li>
+                        <li>Test strips for proper sanitizer concentration</li>
+                        <li>Chlorine: 50-100ppm, Quat: 200-400ppm, Iodine: 12.5-25ppm</li>
+                        <li>Wet wiping cloths stored submerged in sanitizer</li>
+                        <li>Solution buckets kept off floor, away from food</li>
+                    </ul>
+                    
+                    <h4>Daily Cleaning Tasks:</h4>
+                    <ul class="procedure-steps">
+                        <li>All counters, floors, walls washed</li>
+                        <li>Sinks and drains bleached and cleaned</li>
+                        <li>Fridge, freezer, equipment cleaning with items moved</li>
+                        <li>Stock all items, add low items to inventory order</li>
+                        <li>Sweep and mop kitchen and back room</li>
+                        <li>Empty trash, replace bags</li>
+                        <li>Dirty towels to laundry bin</li>
+                    </ul>
+                `
+            },
+            health: {
+                title: "🏥 Health Department Guidelines",
+                content: `
+                    <h4>Personal Hygiene Requirements:</h4>
+                    <ul class="procedure-steps">
+                        <li>Proper hair restraint: hairnet, hat, or visor with hairnet</li>
+                        <li>Clean uniform at all times</li>
+                        <li>Limited jewelry (no loose items)</li>
+                        <li>Short nails that fit in gloves without ripping</li>
+                        <li>No open-toed shoes, shorts, or tank tops</li>
+                    </ul>
+                    
+                    <h4>Handwashing Protocol:</h4>
+                    <ol class="procedure-steps">
+                        <li>Use soap and warm running water</li>
+                        <li>Rub hands vigorously for 20 seconds</li>
+                        <li>Wash all surfaces: backs, wrists, between fingers, under nails</li>
+                        <li>Rinse well under warm running water</li>
+                        <li>Dry with paper towel or hand dryer</li>
+                        <li>Turn off water using paper towel</li>
+                    </ol>
+                    
+                    <h4>When to Wash Hands:</h4>
+                    <ul class="procedure-steps">
+                        <li>Before handling food or clean equipment</li>
+                        <li>After touching hair, skin, soiled dishes, money, raw meat</li>
+                        <li>After touching any unclean surface or chemicals</li>
+                        <li>Only use designated hand washing sinks</li>
+                    </ul>
+                    
+                    <h4>Employee Health:</h4>
+                    <p><strong>Inform manager immediately if experiencing:</strong></p>
+                    <ul class="procedure-steps">
+                        <li>Vomiting or diarrhea</li>
+                        <li>Jaundice (yellowing of eyes or skin)</li>
+                        <li>Sore throat with fever</li>
+                        <li>Infected cuts, wounds, or burns</li>
+                    </ul>
+                    
+                    <h4>Food Safety:</h4>
+                    <ul class="procedure-steps">
+                        <li>Store items 6 inches off floor in clean location</li>
+                        <li>Follow "First In, First Out" rule</li>
+                        <li>Date mark ready-to-eat foods (7-day maximum)</li>
+                        <li>Ready-to-eat foods: no bare hand contact</li>
+                        <li>Use gloves, tongs, deli tissue, or ladles</li>
+                    </ul>
+                `
+            },
+            timeTracking: {
+                title: "⏰ Time Tracking Policies",
+                content: `
+                    <h4>ADP Punch Requirements:</h4>
+                    <ul class="procedure-steps">
+                        <li>Record entry/exit at beginning and end of each workday</li>
+                        <li>Record time in/out for lunch and unpaid breaks</li>
+                        <li>Select correct location when clocking in</li>
+                        <li>Cannot punch in more than 15 minutes before scheduled time</li>
+                        <li>Cannot punch out more than 30 minutes after scheduled time without approval</li>
+                    </ul>
+                    
+                    <h4>Missed Punch Procedure:</h4>
+                    <ol class="procedure-steps">
+                        <li>Written notice to HR with: employee name, date, location, correct times, reason, signature</li>
+                        <li>Notice signed by Dr. Cozzetto</li>
+                        <li>Email to accounting@infinitymgtsys.com or drop at Birmingham front desk</li>
+                        <li>Up to 14 days to investigate and correct on next payroll</li>
+                        <li>Notice must be received within 30 days of missed punch</li>
+                        <li>Make-up hours paid at base rate, not tip-eligible</li>
+                    </ol>
+                    
+                    <h4>Important Notes:</h4>
+                    <ul class="procedure-steps">
+                        <li>Any unapproved time is policy violation</li>
+                        <li>Falsifying time records may result in termination</li>
+                        <li>Tip pool calculation based on hours worked per location</li>
+                        <li>Time reports are company property</li>
+                        <li>Failure to select correct location = non-tip eligible hours</li>
+                    </ul>
+                `
+            }
+        };
+
+        function showProcedure(procedureKey) {
+            const procedure = procedures[procedureKey];
+            if (procedure) {
+                document.getElementById('modalContent').innerHTML = `
+                    <h2>${procedure.title}</h2>
+                    ${procedure.content}
+                `;
+                document.getElementById('procedureModal').style.display = 'block';
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('procedureModal').style.display = 'none';
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('procedureModal');
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('Be Well Café Operations Portal loaded');
+        });
+    </script>
+</body>
+</html>

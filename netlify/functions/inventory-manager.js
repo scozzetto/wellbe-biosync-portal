@@ -237,7 +237,7 @@ const sendLowStockAlert = async (location, items) => {
 
         const mailOptions = {
             from: process.env.SMTP_USER,
-            to: process.env.INVENTORY_ALERT_EMAIL || 'silvio@bewelllifestylecenters.com',
+            to: process.env.INVENTORY_ALERT_EMAIL || 'orders@bewelllifestylecenters.com',
             subject: `🚨 Low Stock Alert - ${location.toUpperCase()}`,
             html: emailContent
         };
@@ -292,7 +292,7 @@ const sendOrderConfirmation = async (location, orders) => {
 
         const mailOptions = {
             from: process.env.SMTP_USER,
-            to: process.env.INVENTORY_ALERT_EMAIL || 'silvio@bewelllifestylecenters.com',
+            to: process.env.INVENTORY_ALERT_EMAIL || 'orders@bewelllifestylecenters.com',
             subject: `📋 Order Confirmation - ${location.toUpperCase()}`,
             html: emailContent
         };
