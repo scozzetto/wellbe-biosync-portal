@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#1C2630">
+    <title>Be Well Check-In</title>
+    <link rel="apple-touch-icon" href="logo.svg">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #0f1419;
+            color: white;
+            overflow: hidden;
+            position: fixed;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .wizard-container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+        }
+        
+        /* Progress bar */
+        .progress-bar {
+            height: 8px;
+            background: rgba(164, 124, 91, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: #A47C5B;
+            transition: width 0.3s ease;
+            width: 20%;
+        }
+        
+        /* Question area */
+        .question-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .question-area h1 {
+            font-size: 3rem;
+            font-weight: 300;
+            margin-bottom: 20px;
+            color: #A47C5B;
+        }
+        
+        .question-area p {
+            font-size: 1.5rem;
+            opacity: 0.8;
+            margin-bottom: 40px;
+        }
+        
+        /* Input field */
+        .input-display {
+            width: 80%;
+            max-width: 600px;
+            padding: 30px;
+            font-size: 2.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(164, 124, 91, 0.5);
+            border-radius: 16px;
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+            min-height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .input-display.empty {
+            color: rgba(255, 255, 255, 0.3);
+        }
+        
+        /* Yes/No buttons */
+        .yes-no-container {
+            display: flex;
+            gap: 40px;
+        }
+        
+        .yes-no-btn {
+            padding: 40px 80px;
+            font-size: 2.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 3px solid rgba(164, 124, 91, 0.5);
+            border-radius: 20px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .yes-no-btn:active {
+            transform: scale(0.95);
+        }
+        
+        .yes-no-btn.yes:hover {
+            background: #22c55e;
+            border-color: #22c55e;
+        }
+        
+        .yes-no-btn.no:hover {
+            background: #ef4444;
+            border-color: #ef4444;
+        }
+        
+        /* Service selection */
+        .service-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            width: 80%;
+            max-width: 800px;
+        }
+        
+        .service-btn {
+            padding: 30px;
+            font-size: 1.8rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 3px solid rgba(164, 124, 91, 0.5);
+            border-radius: 16px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .service-btn:hover {
+            background: rgba(164, 124, 91, 0.3);
+            border-color: #A47C5B;
+        }
+        
+        .service-btn.selected {
+            background: #A47C5B;
+            border-color: #A47C5B;
+        }
+        
+        /* Keyboard */
+        .keyboard-container {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 20px;
+            border-top: 1px solid rgba(164, 124, 91, 0.3);
+        }
+        
+        .keyboard {
+            display: grid;
+            grid-template-columns: repeat(10, 1fr);
+            gap: 8px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .key {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            padding: 20px 10px;
+            font-size: 1.8rem;
+            color: white;
+            cursor: pointer;
+            transition: all 0.1s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 70px;
+        }
+        
+        .key:active {
+            background: rgba(164, 124, 91, 0.5);
+            transform: scale(0.95);
+        }
+        
+        .key.space {
+            grid-column: span 5;
+        }
+        
+        .key.backspace {
+            grid-column: span 2;
+            background: rgba(239, 68, 68, 0.2);
+        }
+        
+        .key.next {
+            grid-column: span 3;
+            background: #A47C5B;
+            font-weight: bold;
+        }
+        
+        .key.next:hover {
+            background: #8B6349;
+        }
+        
+        /* Number row for phone */
+        .number-keyboard {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        
+        .number-keyboard .key {
+            font-size: 2.5rem;
+            padding: 30px;
+        }
+        
+        /* Success screen */
+        .success-screen {
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+        }
+        
+        .checkmark {
+            width: 120px;
+            height: 120px;
+            background: #22c55e;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            margin-bottom: 30px;
+            animation: scaleIn 0.5s ease;
+        }
+        
+        @keyframes scaleIn {
+            from { transform: scale(0); }
+            to { transform: scale(1); }
+        }
+        
+        .success-screen h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+        
+        .success-screen p {
+            font-size: 1.5rem;
+            opacity: 0.8;
+            margin-bottom: 40px;
+        }
+        
+        /* Hide elements */
+        .hidden {
+            display: none !important;
+        }
+        
+        /* Logo */
+        .logo-header {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+        }
+        
+        .logo-header img {
+            height: 50px;
+            filter: brightness(0) invert(1);
+            opacity: 0.8;
+        }
+        
+        /* Back button */
+        .back-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            padding: 15px 30px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            z-index: 10;
+        }
+        
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <div class="logo-header">
+        <img src="logo.svg" alt="Be Well">
+    </div>
+    
+    <button class="back-btn hidden" id="backBtn" onclick="goBack()">← Back</button>
+    
+    <div class="wizard-container" id="wizardContainer">
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressBar"></div>
+        </div>
+        
+        <!-- Step 1: Name -->
+        <div class="step" id="step1">
+            <div class="question-area">
+                <h1>What's your name?</h1>
+                <p>Please enter your full name</p>
+                <div class="input-display empty" id="nameDisplay">Type your name...</div>
+            </div>
+            <div class="keyboard-container">
+                <div class="keyboard">
+                    <button class="key" onclick="addLetter('Q')">Q</button>
+                    <button class="key" onclick="addLetter('W')">W</button>
+                    <button class="key" onclick="addLetter('E')">E</button>
+                    <button class="key" onclick="addLetter('R')">R</button>
+                    <button class="key" onclick="addLetter('T')">T</button>
+                    <button class="key" onclick="addLetter('Y')">Y</button>
+                    <button class="key" onclick="addLetter('U')">U</button>
+                    <button class="key" onclick="addLetter('I')">I</button>
+                    <button class="key" onclick="addLetter('O')">O</button>
+                    <button class="key" onclick="addLetter('P')">P</button>
+                    
+                    <button class="key" onclick="addLetter('A')">A</button>
+                    <button class="key" onclick="addLetter('S')">S</button>
+                    <button class="key" onclick="addLetter('D')">D</button>
+                    <button class="key" onclick="addLetter('F')">F</button>
+                    <button class="key" onclick="addLetter('G')">G</button>
+                    <button class="key" onclick="addLetter('H')">H</button>
+                    <button class="key" onclick="addLetter('J')">J</button>
+                    <button class="key" onclick="addLetter('K')">K</button>
+                    <button class="key" onclick="addLetter('L')">L</button>
+                    <button class="key backspace" onclick="backspace()">←</button>
+                    
+                    <button class="key" onclick="addLetter('Z')">Z</button>
+                    <button class="key" onclick="addLetter('X')">X</button>
+                    <button class="key" onclick="addLetter('C')">C</button>
+                    <button class="key" onclick="addLetter('V')">V</button>
+                    <button class="key" onclick="addLetter('B')">B</button>
+                    <button class="key" onclick="addLetter('N')">N</button>
+                    <button class="key" onclick="addLetter('M')">M</button>
+                    <button class="key next" onclick="nextStep()">NEXT →</button>
+                    
+                    <button class="key space" onclick="addLetter(' ')">SPACE</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Step 2: Phone -->
+        <div class="step hidden" id="step2">
+            <div class="question-area">
+                <h1>Your phone number?</h1>
+                <p>We'll text you when you're ready</p>
+                <div class="input-display empty" id="phoneDisplay">(___) ___-____</div>
+            </div>
+            <div class="keyboard-container">
+                <div class="number-keyboard">
+                    <button class="key" onclick="addNumber('1')">1</button>
+                    <button class="key" onclick="addNumber('2')">2</button>
+                    <button class="key" onclick="addNumber('3')">3</button>
+                    <button class="key" onclick="addNumber('4')">4</button>
+                    <button class="key" onclick="addNumber('5')">5</button>
+                    <button class="key" onclick="addNumber('6')">6</button>
+                    <button class="key" onclick="addNumber('7')">7</button>
+                    <button class="key" onclick="addNumber('8')">8</button>
+                    <button class="key" onclick="addNumber('9')">9</button>
+                    <button class="key backspace" onclick="backspacePhone()">←</button>
+                    <button class="key" onclick="addNumber('0')">0</button>
+                    <button class="key next" onclick="nextStep()">NEXT →</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Step 3: First Visit -->
+        <div class="step hidden" id="step3">
+            <div class="question-area">
+                <h1>Is this your first visit?</h1>
+                <p>Have you been to Be Well before?</p>
+                <div class="yes-no-container">
+                    <button class="yes-no-btn yes" onclick="setFirstVisit('YES')">YES<br><small>First Time</small></button>
+                    <button class="yes-no-btn no" onclick="setFirstVisit('NO')">NO<br><small>Been Here</small></button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Step 4: Service -->
+        <div class="step hidden" id="step4">
+            <div class="question-area">
+                <h1>What service are you here for?</h1>
+                <p>Select your primary service</p>
+                <div class="service-grid">
+                    <button class="service-btn" onclick="selectService('Chiropractic')">Chiropractic</button>
+                    <button class="service-btn" onclick="selectService('Massage')">Massage</button>
+                    <button class="service-btn" onclick="selectService('Colon Hydrotherapy')">Colon Hydrotherapy</button>
+                    <button class="service-btn" onclick="selectService('IV Therapy')">IV Therapy</button>
+                    <button class="service-btn" onclick="selectService('Injections')">Injections</button>
+                    <button class="service-btn" onclick="selectService('Consultation')">Consultation</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Step 5: Secondary Service -->
+        <div class="step hidden" id="step5">
+            <div class="question-area">
+                <h1>Any additional service?</h1>
+                <p>Select a secondary service or skip</p>
+                <div class="service-grid">
+                    <button class="service-btn" onclick="selectSecondaryService('Chiropractic')">Chiropractic</button>
+                    <button class="service-btn" onclick="selectSecondaryService('Massage')">Massage</button>
+                    <button class="service-btn" onclick="selectSecondaryService('Colon Hydrotherapy')">Colon Hydrotherapy</button>
+                    <button class="service-btn" onclick="selectSecondaryService('IV Therapy')">IV Therapy</button>
+                    <button class="service-btn" onclick="selectSecondaryService('Injections')">Injections</button>
+                    <button class="service-btn" onclick="selectSecondaryService('None')" style="grid-column: span 2; background: rgba(107, 114, 128, 0.2);">No Additional Service</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Success Screen -->
+    <div class="success-screen" id="successScreen">
+        <div class="checkmark">✓</div>
+        <h1>You're all checked in!</h1>
+        <p>Please have a seat and we'll call you shortly.</p>
+        <p style="font-size: 1.2rem; opacity: 0.6;">This screen will reset in <span id="countdown">10</span> seconds...</p>
+    </div>
+    
+    <script>
+        let currentStep = 1;
+        let formData = {
+            name: '',
+            phone: '',
+            phoneRaw: '',
+            firstVisit: '',
+            primaryService: '',
+            secondaryService: ''
+        };
+        
+        // Update progress bar
+        function updateProgress() {
+            const progress = (currentStep / 5) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+            
+            // Show/hide back button
+            document.getElementById('backBtn').classList.toggle('hidden', currentStep === 1);
+        }
+        
+        // Name input
+        function addLetter(letter) {
+            formData.name += letter;
+            updateNameDisplay();
+        }
+        
+        function backspace() {
+            formData.name = formData.name.slice(0, -1);
+            updateNameDisplay();
+        }
+        
+        function updateNameDisplay() {
+            const display = document.getElementById('nameDisplay');
+            if (formData.name) {
+                display.textContent = formData.name;
+                display.classList.remove('empty');
+            } else {
+                display.textContent = 'Type your name...';
+                display.classList.add('empty');
+            }
+        }
+        
+        // Phone input
+        function addNumber(num) {
+            if (formData.phoneRaw.length < 10) {
+                formData.phoneRaw += num;
+                updatePhoneDisplay();
+            }
+        }
+        
+        function backspacePhone() {
+            formData.phoneRaw = formData.phoneRaw.slice(0, -1);
+            updatePhoneDisplay();
+        }
+        
+        function updatePhoneDisplay() {
+            const display = document.getElementById('phoneDisplay');
+            const raw = formData.phoneRaw;
+            
+            if (raw.length === 0) {
+                display.textContent = '(___) ___-____';
+                display.classList.add('empty');
+            } else {
+                let formatted = '(';
+                for (let i = 0; i < 10; i++) {
+                    if (i < raw.length) {
+                        formatted += raw[i];
+                    } else {
+                        formatted += '_';
+                    }
+                    if (i === 2) formatted += ') ';
+                    if (i === 5) formatted += '-';
+                }
+                display.textContent = formatted;
+                display.classList.remove('empty');
+                
+                // Store formatted version
+                if (raw.length === 10) {
+                    formData.phone = `(${raw.slice(0,3)}) ${raw.slice(3,6)}-${raw.slice(6,10)}`;
+                }
+            }
+        }
+        
+        // First visit
+        function setFirstVisit(value) {
+            formData.firstVisit = value;
+            nextStep();
+        }
+        
+        // Service selection
+        function selectService(service) {
+            formData.primaryService = service;
+            nextStep();
+        }
+        
+        function selectSecondaryService(service) {
+            formData.secondaryService = service === 'None' ? '' : service;
+            submitCheckIn();
+        }
+        
+        // Navigation
+        function nextStep() {
+            // Validation
+            if (currentStep === 1 && !formData.name.trim()) {
+                return;
+            }
+            if (currentStep === 2 && formData.phoneRaw.length !== 10) {
+                return;
+            }
+            
+            // Hide current step
+            document.getElementById('step' + currentStep).classList.add('hidden');
+            
+            // Show next step
+            currentStep++;
+            if (currentStep <= 5) {
+                document.getElementById('step' + currentStep).classList.remove('hidden');
+                updateProgress();
+            }
+        }
+        
+        function goBack() {
+            if (currentStep > 1) {
+                document.getElementById('step' + currentStep).classList.add('hidden');
+                currentStep--;
+                document.getElementById('step' + currentStep).classList.remove('hidden');
+                updateProgress();
+            }
+        }
+        
+        // Submit check-in
+        function submitCheckIn() {
+            const checkinData = {
+                name: formData.name,
+                phone: formData.phone,
+                firstVisit: formData.firstVisit,
+                reason: formData.primaryService,
+                subReason: formData.secondaryService ? formData.primaryService + ' + ' + formData.secondaryService : formData.primaryService,
+                dateIn: new Date().toISOString().split('T')[0],
+                timeIn: new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }),
+                source: 'Kiosk',
+                ackTime: '',
+                ackBy: '',
+                outTime: '',
+                outBy: '',
+                comment: formData.secondaryService ? `Secondary service: ${formData.secondaryService}` : '',
+                status: 'waiting',
+                id: Date.now().toString(),
+                timestamp: new Date().toISOString()
+            };
+            
+            // Store in localStorage
+            let checkins = JSON.parse(localStorage.getItem('patientCheckins') || '[]');
+            checkins.push(checkinData);
+            localStorage.setItem('patientCheckins', JSON.stringify(checkins));
+            
+            // Show success screen
+            document.getElementById('wizardContainer').style.display = 'none';
+            document.getElementById('successScreen').style.display = 'flex';
+            document.getElementById('backBtn').style.display = 'none';
+            
+            // Countdown and reset
+            let countdown = 10;
+            const countdownInterval = setInterval(() => {
+                countdown--;
+                document.getElementById('countdown').textContent = countdown;
+                
+                if (countdown === 0) {
+                    clearInterval(countdownInterval);
+                    location.reload();
+                }
+            }, 1000);
+        }
+        
+        // Initialize
+        updateProgress();
+        
+        // Prevent zoom on double tap
+        document.addEventListener('touchstart', function(e) {
+            e.preventDefault();
+        }, { passive: false });
+    </script>
+</body>
+</html>
