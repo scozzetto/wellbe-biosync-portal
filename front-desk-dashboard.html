@@ -626,7 +626,7 @@
         
         // Check out patient
         function checkoutPatient(id) {
-            const checkins = JSON.parse(localStorage.getItem('patientCheckins') || '[]');
+            const checkins = JSON.parse(localStorage.getItem('allCheckins') || '[]');
             const checkinIndex = checkins.findIndex(c => c.id === id);
             
             if (checkinIndex !== -1) {
@@ -648,7 +648,7 @@
             document.getElementById('commentModal').style.display = 'block';
             
             // Load existing comment
-            const checkins = JSON.parse(localStorage.getItem('patientCheckins') || '[]');
+            const checkins = JSON.parse(localStorage.getItem('allCheckins') || '[]');
             const checkin = checkins.find(c => c.id === id);
             if (checkin && checkin.comment) {
                 document.getElementById('commentText').value = checkin.comment;
@@ -665,7 +665,7 @@
         function saveComment() {
             if (!currentCommentId) return;
             
-            const checkins = JSON.parse(localStorage.getItem('patientCheckins') || '[]');
+            const checkins = JSON.parse(localStorage.getItem('allCheckins') || '[]');
             const checkinIndex = checkins.findIndex(c => c.id === currentCommentId);
             
             if (checkinIndex !== -1) {
