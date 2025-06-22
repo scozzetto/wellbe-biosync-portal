@@ -5,10 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Be Well Reserve™ Memberships - Be Well LifeStyle Centers</title>
     <link rel="stylesheet" href="styles.css">
-    <!-- TEMPORARILY DISABLED TO TEST: <script src="https://js.stripe.com/v3/"></script> -->
+    <script src="https://js.stripe.com/v3/"></script>
     <script>
-        // TEMPORARILY DISABLED STRIPE TO TEST WHITE DOT
-        // const stripe = Stripe('pk_live_51JFk2OLeFHoi9neBTLR6uDHCFKQhj8izByCvifayl1SJuTkrnpMOvukln7e1ZVP36EPBwAq2FVUxuEJuLbod9JMM00EOkZEkO5');
+        // Initialize Stripe
+        const stripe = Stripe('pk_live_51JFk2OLeFHoi9neBTLR6uDHCFKQhj8izByCvifayl1SJuTkrnpMOvukln7e1ZVP36EPBwAq2FVUxuEJuLbod9JMM00EOkZEkO5');
         
         // Stripe Price IDs
         const stripePrices = {
