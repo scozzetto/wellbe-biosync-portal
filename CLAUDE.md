@@ -23,34 +23,33 @@ grep "WELLBE-BIOSYNC-2025" CLAUDE.md  # Should return this unique ID
 ```
 
 ## 💡 MAGIC PHRASES TO TELL CLAUDE
-**ANY mention of "Be Well Lifestyle Centers" should trigger full project context loading!**
+**ANY mention of "Be Well" or "wellbe" should trigger full project context loading!**
 
 ### Primary Triggers:
-- "Check the Be Well website files"
-- "This is the main Be Well website"
-- "Be Well website project"
+- "We're working on the Be Well website"
+- "Be Well project"
+- "wellbe website"
 - "Check CLAUDE.md first"
 - "Verify WELLBE-BIOSYNC-2025"
-- "This is the wellBe project with the splash video"
+- "Be Well Lifestyle Centers"
 - **"Find everything you need to know about the Be Well LifeStyle Centers webpage and catch yourself back up to speed"**
 - **"Go into the wellbe directory and read CLAUDE.md and SYSTEM_STATUS.md to get up to speed"**
 
-### Alternative Triggers (all should work):
-- "Update yourself with the Be Well Lifestyle Centers website"
-- "Familiarize yourself with Be Well Lifestyle Centers"
-- "We're working on the Be Well Lifestyle Centers"
-- "Be Well Lifestyle Centers project"
-- "BeWell website"
-- "wellBe project"
-- Any variation of "Be Well" + "website/project/centers"
+### Recovery Phrases (if Claude forgets):
+- "You crashed, we're working on Be Well"
+- "Remember the Be Well website project"
+- "Load the wellbe project context"
+- "Check /Users/silviomac/wellbe/CLAUDE.md"
 
 ### What These Phrases Should Do:
 1. `cd /Users/silviomac/wellbe`
 2. `grep "WELLBE-BIOSYNC-2025" CLAUDE.md` (verify correct project)
-3. Read `CLAUDE.md` and `SYSTEM_STATUS.md`
-4. Load full project context and current system status
+3. Read `CLAUDE.md`, `SYSTEM_STATUS.md`, and `SALESFORCE_NATIVE_INTEGRATION.md`
+4. Check recent git commits for latest changes
+5. Load full project context and current system status
 
-## 🚀 CURRENT STATE (Last Updated: June 21, 2025 - 4:15 PM)
+
+## 🚀 CURRENT STATE (Last Updated: June 22, 2025)
 - Splash screen: 4-second video with white disc logo
 - Header: Transparent luxury design with white text
 - Hero: "It's Time to Transform"
@@ -63,6 +62,8 @@ grep "WELLBE-BIOSYNC-2025" CLAUDE.md  # Should return this unique ID
 - Staff knowledge base with password protection
 - Admin dashboard for member management
 - Website live and fully operational at bewelllifestylecenters.com
+- **Chat button shows membership info popup** (dark theme, working navigation)
+- **Silvio added to member portal** (silvio@bewelllifestylecenters.com)
 
 ## 💳 STRIPE PAYMENT LINKS
 - **Restore ($149):** https://buy.stripe.com/eVq6oI3KEbHrais8DtgQE01

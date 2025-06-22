@@ -1,5 +1,5 @@
 # BE WELL LIFESTYLE CENTERS - COMPLETE SYSTEM STATUS
-**Last Updated: June 21, 2025 at 4:20 PM**
+**Last Updated: June 22, 2025**
 
 ## 🎯 PROJECT IDENTIFIER
 **UNIQUE ID**: WELLBE-BIOSYNC-2025  
@@ -82,6 +82,9 @@
 3. **Added comprehensive logging** for debugging
 4. **Member portal authentication** working properly
 5. **Database operations** functioning correctly
+6. **Chat button updated** - Shows membership info popup (June 22)
+7. **Removed duplicate Salesforce webhooks** - Cleaned up webhook endpoints
+8. **Added Silvio to member portal** - Manual entry for testing
 
 ## 📁 CRITICAL FILE LOCATIONS
 
