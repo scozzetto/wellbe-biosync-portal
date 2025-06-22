@@ -151,52 +151,8 @@
     </style>
 </head>
 <body>
-    <!-- Mode Switcher -->
-    <div class="mode-switcher">
-        <button class="btn btn-secondary" onclick="switchToKiosk()">Kiosk Mode</button>
-        <button class="btn btn-secondary" onclick="switchToDashboard()">Dashboard Mode</button>
-    </div>
-
-    <!-- Kiosk Screen -->
-    <div id="kioskScreen" class="screen kiosk-screen active">
-        <h1>Welcome to Be Well</h1>
-        <p style="font-size: 1.5rem; margin-bottom: 40px;">Please check in below</p>
-        
-        <form id="checkinForm">
-            <div class="form-group">
-                <input type="text" id="patientName" placeholder="Your Full Name" required>
-            </div>
-            
-            <div class="form-group">
-                <input type="tel" id="patientPhone" placeholder="Phone Number" required>
-            </div>
-            
-            <div class="form-group">
-                <select id="firstVisit" required>
-                    <option value="">Is this your first visit?</option>
-                    <option value="YES">Yes - First Time</option>
-                    <option value="NO">No - Been Here Before</option>
-                </select>
-            </div>
-            
-            <div class="form-group">
-                <select id="serviceType" required>
-                    <option value="">What service are you here for?</option>
-                    <option value="Chiropractic">Chiropractic</option>
-                    <option value="Massage">Massage</option>
-                    <option value="IV Therapy">IV Therapy</option>
-                    <option value="Colon Hydrotherapy">Colon Hydrotherapy</option>
-                    <option value="Injections">Injections</option>
-                    <option value="Consultation">Consultation</option>
-                </select>
-            </div>
-            
-            <button type="submit" class="btn btn-primary" style="font-size: 2rem; padding: 20px 60px;">CHECK IN</button>
-        </form>
-    </div>
-
     <!-- Dashboard Screen -->
-    <div id="dashboardScreen" class="screen dashboard-screen">
+    <div id="dashboardScreen" class="screen dashboard-screen active">
         <div class="dashboard-header">
             <h1>Front Desk Dashboard</h1>
             <div>
