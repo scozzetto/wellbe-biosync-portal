@@ -235,6 +235,11 @@
         .hidden {
             display: none !important;
         }
+        
+        @keyframes scaleIn {
+            from { transform: scale(0); }
+            to { transform: scale(1); }
+        }
 
         /* Dashboard Screen */
         .dashboard-screen {
@@ -413,6 +418,14 @@
                 </div>
             </div>
         </div>
+        
+        <!-- Success Screen -->
+        <div class="success-screen" id="successScreen" style="display: none; flex-direction: column; justify-content: center; align-items: center; height: 100vh; text-align: center;">
+            <div style="width: 120px; height: 120px; background: #22c55e; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 4rem; margin-bottom: 30px; animation: scaleIn 0.5s ease;">✓</div>
+            <h1 style="font-size: 3rem; margin-bottom: 20px;">You're all checked in!</h1>
+            <p style="font-size: 1.5rem; opacity: 0.8; margin-bottom: 40px;">Please have a seat and we'll call you shortly.</p>
+            <p style="font-size: 1.2rem; opacity: 0.6;">This screen will reset in <span id="countdown">10</span> seconds...</p>
+        </div>
     </div>
 
     <!-- Dashboard Screen -->
@@ -471,6 +484,9 @@
         // Save data to localStorage
         function saveData() {
             localStorage.setItem('allCheckins', JSON.stringify(checkins));
+            console.log('SAVED TO LOCALSTORAGE:', checkins.length, 'items');
+            console.log('KEY: allCheckins');
+            console.log('DATA:', JSON.stringify(checkins));
         }
 
         // Switch between modes
@@ -605,17 +621,36 @@
             // Save to localStorage
             saveData();
             
-            // Show success and reset
-            alert('Check-in successful for ' + checkinData.name + '!');
+            // Show success screen
+            document.getElementById('kioskScreen').style.display = 'none';
+            document.getElementById('successScreen').style.display = 'flex';
             
-            // Reset wizard
-            formData = { name: '', phone: '', phoneRaw: '', firstVisit: '', service: '' };
-            currentStep = 1;
-            document.querySelectorAll('.step').forEach(step => step.classList.remove('active'));
-            document.getElementById('step1').classList.add('active');
-            updateProgress();
-            updateNameDisplay();
-            updatePhoneDisplay();
+            // Countdown and reset
+            let countdown = 10;
+            const countdownInterval = setInterval(() => {
+                countdown--;
+                document.getElementById('countdown').textContent = countdown;
+                
+                if (countdown === 0) {
+                    clearInterval(countdownInterval);
+                    
+                    // Reset everything
+                    document.getElementById('successScreen').style.display = 'none';
+                    document.getElementById('kioskScreen').style.display = 'flex';
+                    
+                    // Reset wizard
+                    formData = { name: '', phone: '', phoneRaw: '', firstVisit: '', service: '' };
+                    currentStep = 1;
+                    document.querySelectorAll('.step').forEach(step => step.classList.remove('active'));
+                    document.getElementById('step1').classList.add('active');
+                    updateProgress();
+                    updateNameDisplay();
+                    updatePhoneDisplay();
+                    
+                    // Reset countdown
+                    document.getElementById('countdown').textContent = '10';
+                }
+            }, 1000);
             
             console.log('Check-in saved:', checkinData);
             console.log('Total check-ins:', checkins.length);
