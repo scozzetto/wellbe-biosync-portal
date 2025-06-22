@@ -357,6 +357,25 @@
             </div>
         </div>
         
+        <!-- Dashboard debug overlay -->
+        <div id="dashboardDebug" 
+             style="
+               position: fixed;
+               top: 10px; 
+               left: 10px; 
+               background: rgba(0,0,0,0.8); 
+               color: #fff; 
+               padding: 10px; 
+               font-size: 0.8rem; 
+               max-width: 250px;
+               max-height: 200px;
+               overflow-y: auto;
+               z-index: 9999;
+               border-radius: 4px;
+             ">
+          Dashboard Debug: Loading...
+        </div>
+        
         <div class="stats-bar">
             <div class="stat-card">
                 <div class="stat-number" id="waitingCount">0</div>
@@ -464,8 +483,48 @@
                 refreshStatus.style.color = '#f59e0b';
                 refreshStatus.textContent = '⟳';
                 
-                // Get check-ins from localStorage
-                const checkins = JSON.parse(localStorage.getItem('allCheckins') || '[]');
+                // Get check-ins from server first, then merge with localStorage
+                fetch('/.netlify/functions/checkin-sync')
+                .then(response => response.json())
+                .then(serverData => {
+                    console.log('Server checkins:', serverData);
+                    
+                    // Get local checkins
+                    let localCheckins = JSON.parse(localStorage.getItem('allCheckins') || '[]');
+                    
+                    // Merge server checkins with local ones
+                    if (serverData.success && serverData.checkins) {
+                        serverData.checkins.forEach(serverCheckin => {
+                            // Add if not already in local storage
+                            if (!localCheckins.find(c => c.id === serverCheckin.id)) {
+                                localCheckins.push(serverCheckin);
+                                console.log('Added server checkin:', serverCheckin.name);
+                            }
+                        });
+                        
+                        // Update localStorage with merged data
+                        localStorage.setItem('allCheckins', JSON.stringify(localCheckins));
+                    }
+                    
+                    processCheckins(localCheckins);
+                })
+                .catch(error => {
+                    console.warn('Failed to fetch from server, using localStorage only:', error);
+                    // Fallback to localStorage only
+                    const checkins = JSON.parse(localStorage.getItem('allCheckins') || '[]');
+                    processCheckins(checkins);
+                });
+                
+            } catch (e) {
+                console.error('Error in loadCheckins:', e);
+                alert('Error loading check-ins: ' + e.message);
+            }
+        }
+        
+        // Process checkins data (extracted from loadCheckins)
+        function processCheckins(checkins) {
+            try {
+                const refreshStatus = document.getElementById('refreshStatus');
                 const today = new Date().toISOString().split('T')[0];
                 const todayCheckins = checkins.filter(c => c.dateIn === today);
                 
@@ -547,9 +606,22 @@
                 refreshStatus.textContent = '●';
                 
                 console.log('Refresh complete - displayed', todayCheckins.length, 'check-ins');
+                
+                // Update dashboard debug overlay
+                const dashboardDebugEl = document.getElementById('dashboardDebug');
+                if (dashboardDebugEl) {
+                    dashboardDebugEl.textContent = 
+                        `Dashboard Debug:\n` +
+                        `Total in allCheckins: ${checkins.length}\n` +
+                        `Today's checkins: ${todayCheckins.length}\n` +
+                        `Waiting: ${waitingCount}\n` +
+                        `Active: ${activeCount}\n` +
+                        `Completed: ${completedCount}\n` +
+                        `Last refresh: ${new Date().toLocaleTimeString()}`;
+                }
             } catch (e) {
-                console.error('Error loading checkins:', e);
-                alert('Error loading check-ins: ' + e.message);
+                console.error('Error processing checkins:', e);
+                alert('Error processing check-ins: ' + e.message);
             }
         }
         
@@ -717,12 +789,27 @@
                 // Add to our localStorage
                 let checkins = JSON.parse(localStorage.getItem('allCheckins') || '[]');
                 checkins.push(event.data.data);
-                localStorage.setItem('patientCheckins', JSON.stringify(checkins));
+                localStorage.setItem('allCheckins', JSON.stringify(checkins));
                 
                 // Refresh dashboard immediately
                 loadCheckins();
                 
                 alert('New check-in received: ' + event.data.data.name);
+            }
+            
+            // Also listen for CHECKIN_SAVED messages
+            if (event.data && event.data.type === 'CHECKIN_SAVED') {
+                console.log('Received CHECKIN_SAVED from kiosk:', event.data.data);
+                
+                let all = JSON.parse(localStorage.getItem('allCheckins') || '[]');
+                
+                // Check if we already have this record
+                if (!all.find(c => c.id === event.data.data.id)) {
+                    all.push(event.data.data);
+                    localStorage.setItem('allCheckins', JSON.stringify(all));
+                    loadCheckins();
+                    console.log('Added new checkin from message:', event.data.data.name);
+                }
             }
         });
         
@@ -757,11 +844,47 @@
             }
         }
         
+        // Import individual checkins from kiosk
+        function importIndividualCheckins() {
+            // scan for keys like "checkin_1234567890"
+            let imported = 0;
+            Object.keys(localStorage).forEach(key => {
+                if (key.startsWith('checkin_')) {
+                    try {
+                        const rec = JSON.parse(localStorage.getItem(key));
+                        let all = JSON.parse(localStorage.getItem('allCheckins') || '[]');
+                        
+                        // Check if we already have this record
+                        if (!all.find(c => c.id === rec.id)) {
+                            all.push(rec);
+                            localStorage.setItem('allCheckins', JSON.stringify(all));
+                            imported++;
+                            console.log('Imported checkin:', rec.name, 'from key:', key);
+                        }
+                    } catch(e) {
+                        console.warn('Couldn\'t import', key, e);
+                    }
+                    localStorage.removeItem(key);
+                }
+            });
+            
+            if (imported > 0) {
+                console.log('Imported', imported, 'new checkins from individual keys');
+            }
+        }
+
         // Initialize
         updateTime();
         setInterval(updateTime, 60000); // Update time every minute
+        
+        // Import any individual checkins first, then load
+        importIndividualCheckins();
         loadCheckins();
-        setInterval(loadCheckins, 5000); // Auto-refresh every 5 seconds
+        
+        setInterval(() => {
+            importIndividualCheckins();
+            loadCheckins();
+        }, 5000); // Auto-refresh every 5 seconds
         setInterval(checkForNewCheckins, 2000); // Check for new checkins every 2 seconds
     </script>
 </body>

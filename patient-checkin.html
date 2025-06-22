@@ -319,6 +319,24 @@
         <img src="logo.svg" alt="Be Well">
     </div>
     
+    <!-- check-in debug overlay -->
+    <div id="checkinDebug" 
+         style="
+           position: absolute;
+           top: 10px; 
+           right: 10px; 
+           background: rgba(0,0,0,0.7); 
+           color: #fff; 
+           padding: 8px; 
+           font-size: 0.9rem; 
+           max-width: 200px;
+           max-height: 150px;
+           overflow-y: auto;
+           z-index: 9999;
+         ">
+      Debug: (no data yet)
+    </div>
+    
     <button class="back-btn hidden" id="backBtn" onclick="goBack()">← Back</button>
     
     <div class="wizard-container" id="wizardContainer">
@@ -600,25 +618,76 @@
                 timestamp: new Date().toISOString()
             };
             
-            // Save to the SAME key the dashboard uses
+            // Save to MULTIPLE places to ensure it works
             let checkins = JSON.parse(localStorage.getItem('allCheckins') || '[]');
             checkins.push(checkinData);
+            
+            // Save to primary key
             localStorage.setItem('allCheckins', JSON.stringify(checkins));
+            
+            // Also save to backup key
+            localStorage.setItem('patientCheckins', JSON.stringify(checkins));
+            
+            // Save individual record for cross-domain sync
+            localStorage.setItem('checkin_' + checkinData.id, JSON.stringify(checkinData));
+            
+            // CRITICAL: Also save to a simple storage format for dashboard
+            localStorage.setItem('latest_checkin', JSON.stringify({
+                ...checkinData,
+                saveTime: Date.now()
+            }));
+            
+            // Update debug overlay immediately
+            const debugEl = document.getElementById('checkinDebug');
+            if (debugEl) {
+                const saved = JSON.parse(localStorage.getItem('allCheckins') || '[]');
+                debugEl.textContent = 
+                    `Saved items: ${saved.length}\n` +
+                    saved.map((c,i)=>`${i+1}. ${c.name}`).join('\n');
+            }
             
             // FORCE DEBUG - Show exactly what we saved
             console.log('=== POOP DEBUG ===');
+            console.log('Current URL:', window.location.href);
             console.log('Saved checkin:', checkinData);
             console.log('Total checkins after save:', checkins.length);
-            console.log('localStorage key used: allCheckins');
-            console.log('Saved data:', JSON.stringify(checkins));
+            console.log('Saved to allCheckins:', localStorage.getItem('allCheckins') ? 'YES' : 'NO');
+            console.log('Saved to patientCheckins:', localStorage.getItem('patientCheckins') ? 'YES' : 'NO');
             
-            // Immediately verify it was saved
-            const verification = localStorage.getItem('allCheckins');
-            console.log('Verification - data exists in localStorage:', verification ? 'YES' : 'NO');
-            if (verification) {
-                const parsed = JSON.parse(verification);
-                console.log('Verification - total items:', parsed.length);
-                console.log('Verification - last item:', parsed[parsed.length - 1]);
+            // Try posting to parent window if in iframe
+            try {
+                if (window.parent && window.parent !== window) {
+                    window.parent.postMessage({
+                        type: 'CHECKIN_SAVED', 
+                        data: checkinData
+                    }, '*');
+                    console.log('Posted to parent window');
+                }
+            } catch (e) {
+                console.log('Could not post to parent:', e);
+            }
+            
+            // Send to server for cross-domain sync
+            try {
+                fetch('/.netlify/functions/checkin-sync', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(checkinData)
+                })
+                .then(response => response.json())
+                .then(result => {
+                    console.log('Server sync result:', result);
+                    if (result.success) {
+                        console.log('✅ Check-in synced to server successfully');
+                    }
+                })
+                .catch(error => {
+                    console.warn('Server sync failed (fallback to localStorage):', error);
+                });
+            } catch (e) {
+                console.log('Could not sync to server:', e);
             }
             
             // Try to send to dashboard if it's open

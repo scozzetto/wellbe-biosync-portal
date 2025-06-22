@@ -64,6 +64,9 @@ grep "WELLBE-BIOSYNC-2025" CLAUDE.md  # Should return this unique ID
 - Website live and fully operational at bewelllifestylecenters.com
 - **Chat button shows membership info popup** (dark theme, working navigation)
 - **Silvio added to member portal** (silvio@bewelllifestylecenters.com)
+- **✅ PATIENT CHECK-IN SYSTEM COMPLETE:** Multi-page wizard with giant keyboard for accessibility
+- **✅ FRONT DESK DASHBOARD COMPLETE:** Real-time check-in management with auto-refresh
+- **🔧 FIXING LOCALSTORAGE SYNC ISSUE:** Cross-domain data sharing between iPad kiosk and dashboard
 
 ## 💳 STRIPE PAYMENT LINKS
 - **Restore ($149):** https://buy.stripe.com/eVq6oI3KEbHrais8DtgQE01
@@ -99,6 +102,9 @@ grep "WELLBE-BIOSYNC-2025" CLAUDE.md  # Should return this unique ID
 - `/netlify/functions/member-lookup.js` - Member portal backend
 - `/netlify/functions/salesforce-sync.js` - Salesforce integration
 - `/member-portal.html` - Member portal frontend
+- `/patient-checkin.html` - iPad kiosk with multi-step wizard
+- `/front-desk-dashboard.html` - Staff dashboard with real-time updates
+- `/CHECKIN_SYSTEM_STATUS.md` - **CRITICAL: Patient check-in system debugging info**
 
 ### 🧪 TEST DATA:
 - **Working test member:** test321@stripetest.ca (can login to portal)
