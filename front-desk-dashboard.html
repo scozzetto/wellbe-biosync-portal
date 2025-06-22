@@ -477,54 +477,35 @@
         
         // Load and display check-ins
         function loadCheckins() {
-            try {
-                // Show refresh indicator
-                const refreshStatus = document.getElementById('refreshStatus');
-                refreshStatus.style.color = '#f59e0b';
-                refreshStatus.textContent = '⟳';
-                
-                // Get check-ins from server first, then merge with localStorage
-                fetch('/.netlify/functions/checkin-sync')
-                .then(response => response.json())
+            fetch('/.netlify/functions/checkin-sync')
+                .then(r => r.json())
                 .then(serverData => {
-                    console.log('Server checkins:', serverData);
-                    
-                    // Get local checkins
-                    let localCheckins = JSON.parse(localStorage.getItem('allCheckins') || '[]');
-                    
-                    // Merge server checkins with local ones
+                    let local = JSON.parse(localStorage.getItem('allCheckins')||'[]');
                     if (serverData.success && serverData.checkins) {
-                        serverData.checkins.forEach(serverCheckin => {
-                            // Add if not already in local storage
-                            if (!localCheckins.find(c => c.id === serverCheckin.id)) {
-                                localCheckins.push(serverCheckin);
-                                console.log('Added server checkin:', serverCheckin.name);
+                        serverData.checkins.forEach(item => {
+                            if (!local.find(c=>c.id===item.id)) {
+                                local.push(item);
+                                console.log('Added server checkin:', item.name);
                             }
                         });
-                        
-                        // Update localStorage with merged data
-                        localStorage.setItem('allCheckins', JSON.stringify(localCheckins));
+                        localStorage.setItem('allCheckins', JSON.stringify(local));
                     }
-                    
-                    processCheckins(localCheckins);
+                    processCheckins(local);
                 })
-                .catch(error => {
-                    console.warn('Failed to fetch from server, using localStorage only:', error);
-                    // Fallback to localStorage only
-                    const checkins = JSON.parse(localStorage.getItem('allCheckins') || '[]');
-                    processCheckins(checkins);
+                .catch((error) => {
+                    console.warn('Server fetch failed, using localStorage only:', error);
+                    // fallback
+                    processCheckins(JSON.parse(localStorage.getItem('allCheckins')||'[]'));
                 });
-                
-            } catch (e) {
-                console.error('Error in loadCheckins:', e);
-                alert('Error loading check-ins: ' + e.message);
-            }
         }
         
         // Process checkins data (extracted from loadCheckins)
         function processCheckins(checkins) {
             try {
+                // Show refresh indicator
                 const refreshStatus = document.getElementById('refreshStatus');
+                refreshStatus.style.color = '#f59e0b';
+                refreshStatus.textContent = '⟳';
                 const today = new Date().toISOString().split('T')[0];
                 const todayCheckins = checkins.filter(c => c.dateIn === today);
                 
