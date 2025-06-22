@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Be Well Recipe-Inventory Tracker</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .header h1 {
+            color: #2c3e50;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .control-panel {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .recipe-selector {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 15px;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .recipe-select {
+            padding: 15px;
+            border: 2px solid #ecf0f1;
+            border-radius: 15px;
+            font-size: 1.1em;
+            background: white;
+        }
+
+        .make-button {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 1.1em;
+            transition: all 0.3s ease;
+        }
+
+        .make-button:hover {
+            background: #c0392b;
+            transform: scale(1.05);
+        }
+
+        .quantity-controls {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .quantity-input {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .quantity-input label {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .quantity-input input {
+            padding: 10px;
+            border: 2px solid #ecf0f1;
+            border-radius: 10px;
+            width: 80px;
+            text-align: center;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        .recipe-panel, .inventory-impact {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .panel-title {
+            font-size: 1.4em;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #ecf0f1;
+        }
+
+        .ingredient-list {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .ingredient-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #ecf0f1;
+        }
+
+        .ingredient-item:last-child {
+            border-bottom: none;
+        }
+
+        .ingredient-name {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .ingredient-amount {
+            color: #7f8c8d;
+            font-weight: 500;
+        }
+
+        .impact-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 15px;
+            background: #f8f9fa;
+        }
+
+        .impact-details {
+            flex: 1;
+        }
+
+        .impact-ingredient {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+
+        .impact-usage {
+            color: #7f8c8d;
+            font-size: 0.9em;
+        }
+
+        .impact-status {
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.9em;
+        }
+
+        .status-ok {
+            background: #d5edda;
+            color: #155724;
+        }
+
+        .status-warning {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-critical {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .usage-summary {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 25px;
+            margin-top: 30px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .summary-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .summary-value {
+            font-size: 2em;
+            font-weight: 700;
+            color: #e74c3c;
+            margin-bottom: 5px;
+        }
+
+        .summary-label {
+            color: #7f8c8d;
+            font-weight: 600;
+        }
+
+        .notifications {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        .notification {
+            background: #27ae60;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 15px;
+            margin-bottom: 10px;
+            box-shadow: 0 10px 20px rgba(39, 174, 96, 0.3);
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .recipe-selector {
+                grid-template-columns: 1fr;
+            }
+            
+            .quantity-controls {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🧪 Recipe-Inventory Tracker</h1>
+            <div class="subtitle">Track ingredient usage and inventory impact in real-time</div>
+        </div>
+
+        <div class="control-panel">
+            <div class="recipe-selector">
+                <select class="recipe-select" id="recipeSelect">
+                    <option value="">Select a Recipe</option>
+                    <optgroup label="Smoothies">
+                        <option value="alive">ALIVE - Green Smoothie</option>
+                        <option value="avocado">AVOCADO - Tropical Green</option>
+                        <option value="balanced">BALANCED - Berry Blend</option>
+                        <option value="calm">CALM - Chocolate Comfort</option>
+                        <option value="fulfilled">FULFILLED - Cacao Dream</option>
+                        <option value="healthy">HEALTHY - Citrus Clean</option>
+                        <option value="playful">PLAYFUL - Berry Burst</option>
+                        <option value="matcha">MATCHA SMOOTHIE</option>
+                    </optgroup>
+                    <optgroup label="Juices">
+                        <option value="clean">CLEAN - Green Juice</option>
+                        <option value="energized">ENERGIZED - Root Boost</option>
+                        <option value="refreshed">REFRESHED - Hydration</option>
+                    </optgroup>
+                    <optgroup label="Wraps">
+                        <option value="avocado-wrap">Avocado Wrap</option>
+                        <option value="caesar-wrap">Caesar Salad Wrap</option>
+                        <option value="chicken-wrap">Chicken Wrap</option>
+                    </optgroup>
+                    <optgroup label="Bowls">
+                        <option value="acai-original">ACAI Bowl - Original</option>
+                        <option value="pitaya-tropical">PITAYA Bowl - Tropical</option>
+                        <option value="oatmeal-autumn">Autumn Oatmeal</option>
+                    </optgroup>
+                </select>
+                <button class="make-button" onclick="makeRecipe()">Make Recipe</button>
+            </div>
+
+            <div class="quantity-controls">
+                <div class="quantity-input">
+                    <label>Quantity:</label>
+                    <input type="number" id="quantity" value="1" min="1" max="50">
+                </div>
+                <div class="quantity-input">
+                    <label>Location:</label>
+                    <select id="location">
+                        <option value="birmingham">Birmingham</option>
+                        <option value="uwm">UWM</option>
+                        <option value="berkeley">Berkeley</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="recipe-panel">
+                <div class="panel-title">📋 Recipe Details</div>
+                <div id="recipeDetails">
+                    <p style="text-align: center; color: #7f8c8d; padding: 40px;">
+                        Select a recipe to view ingredients and instructions
+                    </p>
+                </div>
+            </div>
+
+            <div class="inventory-impact">
+                <div class="panel-title">📊 Inventory Impact</div>
+                <div id="inventoryImpact">
+                    <p style="text-align: center; color: #7f8c8d; padding: 40px;">
+                        Make a recipe to see inventory usage
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="usage-summary">
+            <div class="panel-title">📈 Daily Usage Summary</div>
+            <div class="summary-grid">
+                <div class="summary-card">
+                    <div class="summary-value" id="recipesCount">0</div>
+                    <div class="summary-label">Recipes Made</div>
+                </div>
+                <div class="summary-card">
+                    <div class="summary-value" id="ingredientsUsed">0</div>
+                    <div class="summary-label">Ingredients Used</div>
+                </div>
+                <div class="summary-card">
+                    <div class="summary-value" id="lowStockItems">0</div>
+                    <div class="summary-label">Low Stock Alerts</div>
+                </div>
+                <div class="summary-card">
+                    <div class="summary-value" id="reorderNeeded">0</div>
+                    <div class="summary-label">Reorder Needed</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="notifications" id="notifications"></div>
+
+    <script>
+        // Recipe database with exact ingredients from your list
+        const recipes = {
+            alive: {
+                name: "ALIVE - Green Smoothie",
+                ingredients: [
+                    { name: "Almond Milk", amount: "8oz", inventory: "almond-milk" },
+                    { name: "Frozen Banana", amount: "1", inventory: "bananas-frozen" },
+                    { name: "Spinach", amount: "15 leaves", inventory: "spinach" },
+                    { name: "Chlorella/Spirulina", amount: "½ Scoop", inventory: "chlorella-spirulina" },
+                    { name: "Almond Butter", amount: "1 Tblsp", inventory: "almond-butter" }
+                ],
+                instructions: "Blend all ingredients until smooth. Serve immediately."
+            },
+            avocado: {
+                name: "AVOCADO - Tropical Green",
+                ingredients: [
+                    { name: "Almond Milk", amount: "8oz", inventory: "almond-milk" },
+                    { name: "Avocado", amount: "½", inventory: "avocado" },
+                    { name: "Banana", amount: "½", inventory: "bananas-fresh" },
+                    { name: "Apple", amount: "1 slice", inventory: "apples" },
+                    { name: "Spinach", amount: "10 leaves", inventory: "spinach" },
+                    { name: "Mango", amount: "1 scoop", inventory: "mango-frozen" },
+                    { name: "Pineapple", amount: "1 scoop", inventory: "pineapple-frozen" },
+                    { name: "Vanilla Bean Powder", amount: "1/16 tsp", inventory: "vanilla-bean-powder" }
+                ],
+                instructions: "Blend until creamy and smooth."
+            },
+            balanced: {
+                name: "BALANCED - Berry Blend",
+                ingredients: [
+                    { name: "Coconut Water", amount: "8oz", inventory: "coconut-water" },
+                    { name: "Orange", amount: "1 slice", inventory: "oranges" },
+                    { name: "Frozen Strawberries", amount: "4", inventory: "strawberries-frozen" },
+                    { name: "Blueberries", amount: "¼ cup", inventory: "blueberries-frozen" },
+                    { name: "Spinach", amount: "10 leaves", inventory: "spinach" },
+                    { name: "Banana", amount: "½", inventory: "bananas-fresh" },
+                    { name: "Almond Butter", amount: "1 Tblsp", inventory: "almond-butter" }
+                ],
+                instructions: "Blend all ingredients until smooth."
+            },
+            "avocado-wrap": {
+                name: "Avocado Wrap (Regular)",
+                ingredients: [
+                    { name: "Large Tortilla", amount: "1", inventory: "tortillas-large" },
+                    { name: "Avocado", amount: "½ mashed", inventory: "avocado" },
+                    { name: "Vegan Cheddar", amount: "2 Tblsp", inventory: "cheese-vegan" },
+                    { name: "Tomato", amount: "2 Tblsp chopped", inventory: "tomatoes" },
+                    { name: "Cucumber", amount: "2 Tblsp chopped", inventory: "cucumber" },
+                    { name: "Red Pepper Flakes", amount: "2 shakes", inventory: "red-pepper-flakes" },
+                    { name: "Salt", amount: "2 shakes", inventory: "salt" },
+                    { name: "Spinach", amount: "10 pieces", inventory: "spinach" }
+                ],
+                instructions: "Mash avocado on tortilla, add ingredients, fold into burrito, heat in TurboChef."
+            },
+            "acai-original": {
+                name: "ACAI Bowl - Original",
+                ingredients: [
+                    { name: "Regular Granola", amount: "1oz bottom + 1oz top", inventory: "granola-regular" },
+                    { name: "Apple Juice", amount: "4oz", inventory: "apple-juice" },
+                    { name: "Acai Pack", amount: "1", inventory: "acai-packets" },
+                    { name: "Banana", amount: "1.5 for blend + ¼ for top", inventory: "bananas-fresh" },
+                    { name: "Strawberries", amount: "2", inventory: "strawberries-fresh" },
+                    { name: "Blueberries", amount: "2oz", inventory: "blueberries-fresh" },
+                    { name: "Honey", amount: "½ Tblsp", inventory: "honey" }
+                ],
+                instructions: "Layer granola in bowl, blend acai mix, add to bowl, top with fruit and honey."
+            }
+        };
+
+        // Current inventory levels (simulated)
+        let currentInventory = {
+            "almond-milk": { current: 25, unit: "cartons", reorderPoint: 10 },
+            "bananas-frozen": { current: 120, unit: "bananas", reorderPoint: 50 },
+            "bananas-fresh": { current: 80, unit: "bananas", reorderPoint: 30 },
+            "spinach": { current: 200, unit: "leaves", reorderPoint: 100 },
+            "avocado": { current: 24, unit: "pieces", reorderPoint: 12 },
+            "strawberries-frozen": { current: 150, unit: "pieces", reorderPoint: 50 },
+            "strawberries-fresh": { current: 80, unit: "pieces", reorderPoint: 30 },
+            "blueberries-frozen": { current: 300, unit: "scoops", reorderPoint: 100 },
+            "blueberries-fresh": { current: 200, unit: "oz", reorderPoint: 50 },
+            "chlorella-spirulina": { current: 40, unit: "scoops", reorderPoint: 15 },
+            "almond-butter": { current: 60, unit: "Tblsp", reorderPoint: 20 },
+            "coconut-water": { current: 20, unit: "bottles", reorderPoint: 8 },
+            "mango-frozen": { current: 80, unit: "scoops", reorderPoint: 30 },
+            "pineapple-frozen": { current: 90, unit: "scoops", reorderPoint: 35 },
+            "apples": { current: 50, unit: "slices", reorderPoint: 20 },
+            "oranges": { current: 30, unit: "slices", reorderPoint: 15 },
+            "cheese-vegan": { current: 100, unit: "Tblsp", reorderPoint: 40 },
+            "tomatoes": { current: 80, unit: "Tblsp", reorderPoint: 30 },
+            "cucumber": { current: 60, unit: "Tblsp", reorderPoint: 25 },
+            "tortillas-large": { current: 40, unit: "pieces", reorderPoint: 15 },
+            "granola-regular": { current: 50, unit: "oz", reorderPoint: 20 },
+            "acai-packets": { current: 30, unit: "packets", reorderPoint: 12 },
+            "apple-juice": { current: 25, unit: "bottles", reorderPoint: 10 },
+            "honey": { current: 80, unit: "Tblsp", reorderPoint: 30 }
+        };
+
+        // Daily usage tracking
+        let dailyUsage = {
+            recipesCount: 0,
+            ingredientsUsed: 0,
+            lowStockItems: 0,
+            reorderNeeded: 0
+        };
+
+        const showNotification = (message, type = 'success') => {
+            const notifications = document.getElementById('notifications');
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            notification.textContent = message;
+            
+            notifications.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 5000);
+        };
+
+        const displayRecipeDetails = (recipeKey) => {
+            const recipe = recipes[recipeKey];
+            if (!recipe) return;
+
+            const detailsDiv = document.getElementById('recipeDetails');
+            detailsDiv.innerHTML = `
+                <h3 style="margin-bottom: 15px; color: #2c3e50;">${recipe.name}</h3>
+                <div class="ingredient-list">
+                    ${recipe.ingredients.map(ingredient => `
+                        <div class="ingredient-item">
+                            <span class="ingredient-name">${ingredient.name}</span>
+                            <span class="ingredient-amount">${ingredient.amount}</span>
+                        </div>
+                    `).join('')}
+                </div>
+                <div style="margin-top: 20px; padding: 15px; background: #f8f9fa; border-radius: 10px;">
+                    <strong>Instructions:</strong><br>
+                    ${recipe.instructions}
+                </div>
+            `;
+        };
+
+        const calculateInventoryImpact = (recipeKey, quantity) => {
+            const recipe = recipes[recipeKey];
+            if (!recipe) return [];
+
+            const impacts = [];
+            
+            recipe.ingredients.forEach(ingredient => {
+                const inventoryItem = currentInventory[ingredient.inventory];
+                if (inventoryItem) {
+                    // Calculate usage (simplified - assuming 1 unit per ingredient)
+                    const usage = quantity;
+                    const newLevel = inventoryItem.current - usage;
+                    
+                    let status = 'ok';
+                    if (newLevel <= 0) {
+                        status = 'critical';
+                    } else if (newLevel <= inventoryItem.reorderPoint) {
+                        status = 'warning';
+                    }
+
+                    impacts.push({
+                        name: ingredient.name,
+                        current: inventoryItem.current,
+                        usage: usage,
+                        newLevel: Math.max(0, newLevel),
+                        unit: inventoryItem.unit,
+                        status: status
+                    });
+                }
+            });
+
+            return impacts;
+        };
+
+        const displayInventoryImpact = (impacts) => {
+            const impactDiv = document.getElementById('inventoryImpact');
+            
+            if (impacts.length === 0) {
+                impactDiv.innerHTML = '<p style="text-align: center; color: #7f8c8d; padding: 40px;">No inventory data available</p>';
+                return;
+            }
+
+            impactDiv.innerHTML = impacts.map(impact => `
+                <div class="impact-item">
+                    <div class="impact-details">
+                        <div class="impact-ingredient">${impact.name}</div>
+                        <div class="impact-usage">
+                            Using ${impact.usage} ${impact.unit} • 
+                            ${impact.current} → ${impact.newLevel} ${impact.unit}
+                        </div>
+                    </div>
+                    <div class="impact-status status-${impact.status}">
+                        ${impact.status === 'critical' ? 'OUT OF STOCK' : 
+                          impact.status === 'warning' ? 'LOW STOCK' : 'OK'}
+                    </div>
+                </div>
+            `).join('');
+        };
+
+        const makeRecipe = () => {
+            const recipeKey = document.getElementById('recipeSelect').value;
+            const quantity = parseInt(document.getElementById('quantity').value);
+            const location = document.getElementById('location').value;
+
+            if (!recipeKey) {
+                showNotification('Please select a recipe first!', 'warning');
+                return;
+            }
+
+            const recipe = recipes[recipeKey];
+            const impacts = calculateInventoryImpact(recipeKey, quantity);
+            
+            // Check if we can make the recipe
+            const outOfStock = impacts.filter(impact => impact.newLevel <= 0);
+            if (outOfStock.length > 0) {
+                showNotification(`Cannot make recipe: Out of stock - ${outOfStock.map(item => item.name).join(', ')}`, 'error');
+                return;
+            }
+
+            // Update inventory
+            impacts.forEach(impact => {
+                const inventoryKey = Object.keys(currentInventory).find(key => 
+                    currentInventory[key].unit === impact.unit
+                );
+                if (inventoryKey && currentInventory[inventoryKey]) {
+                    currentInventory[inventoryKey].current = impact.newLevel;
+                }
+            });
+
+            // Update daily usage stats
+            dailyUsage.recipesCount += quantity;
+            dailyUsage.ingredientsUsed += impacts.length * quantity;
+            
+            // Count low stock items
+            dailyUsage.lowStockItems = Object.values(currentInventory).filter(item => 
+                item.current <= item.reorderPoint
+            ).length;
+            
+            dailyUsage.reorderNeeded = Object.values(currentInventory).filter(item => 
+                item.current <= item.reorderPoint * 0.5
+            ).length;
+
+            updateSummaryDisplay();
+            displayInventoryImpact(impacts);
+            
+            showNotification(`✅ Made ${quantity}x ${recipe.name} at ${location}!`);
+
+            // Check for low stock alerts
+            const lowStock = impacts.filter(impact => impact.status === 'warning');
+            const critical = impacts.filter(impact => impact.status === 'critical');
+            
+            if (critical.length > 0) {
+                showNotification(`🚨 CRITICAL: ${critical.map(item => item.name).join(', ')} need immediate restocking!`, 'error');
+            } else if (lowStock.length > 0) {
+                showNotification(`⚠️ LOW STOCK: ${lowStock.map(item => item.name).join(', ')} should be reordered soon`, 'warning');
+            }
+        };
+
+        const updateSummaryDisplay = () => {
+            document.getElementById('recipesCount').textContent = dailyUsage.recipesCount;
+            document.getElementById('ingredientsUsed').textContent = dailyUsage.ingredientsUsed;
+            document.getElementById('lowStockItems').textContent = dailyUsage.lowStockItems;
+            document.getElementById('reorderNeeded').textContent = dailyUsage.reorderNeeded;
+        };
+
+        // Event listeners
+        document.getElementById('recipeSelect').addEventListener('change', (e) => {
+            if (e.target.value) {
+                displayRecipeDetails(e.target.value);
+                const impacts = calculateInventoryImpact(e.target.value, parseInt(document.getElementById('quantity').value));
+                displayInventoryImpact(impacts);
+            } else {
+                document.getElementById('recipeDetails').innerHTML = '<p style="text-align: center; color: #7f8c8d; padding: 40px;">Select a recipe to view ingredients and instructions</p>';
+                document.getElementById('inventoryImpact').innerHTML = '<p style="text-align: center; color: #7f8c8d; padding: 40px;">Make a recipe to see inventory usage</p>';
+            }
+        });
+
+        document.getElementById('quantity').addEventListener('input', (e) => {
+            const recipeKey = document.getElementById('recipeSelect').value;
+            if (recipeKey) {
+                const impacts = calculateInventoryImpact(recipeKey, parseInt(e.target.value));
+                displayInventoryImpact(impacts);
+            }
+        });
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            updateSummaryDisplay();
+            showNotification('🧪 Recipe-Inventory Tracker Online!');
+        });
+
+        // Export functionality for integration
+        window.recipeTracker = {
+            getInventoryLevels: () => currentInventory,
+            getDailyUsage: () => dailyUsage,
+            updateInventory: (item, amount) => {
+                if (currentInventory[item]) {
+                    currentInventory[item].current += amount;
+                    updateSummaryDisplay();
+                }
+            }
+        };
+    </script>
+</body>
+</html>

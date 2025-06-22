@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Be Well Inventory Management</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .header h1 {
+            color: #2c3e50;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .header .subtitle {
+            color: #7f8c8d;
+            font-size: 1.2em;
+        }
+
+        .location-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .location-tab {
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .location-tab.active {
+            background: #e74c3c;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 15px 30px rgba(231, 76, 60, 0.3);
+        }
+
+        .location-tab:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .inventory-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .category-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .category-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .category-header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #ecf0f1;
+        }
+
+        .category-title {
+            font-size: 1.4em;
+            font-weight: 700;
+            color: #2c3e50;
+        }
+
+        .category-count {
+            background: #3498db;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: 600;
+        }
+
+        .item-list {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .inventory-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #ecf0f1;
+        }
+
+        .inventory-item:last-child {
+            border-bottom: none;
+        }
+
+        .item-info {
+            flex: 1;
+        }
+
+        .item-name {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+
+        .item-details {
+            font-size: 0.9em;
+            color: #7f8c8d;
+        }
+
+        .item-status {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .stock-level {
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.9em;
+        }
+
+        .stock-good {
+            background: #d5edda;
+            color: #155724;
+        }
+
+        .stock-low {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .stock-critical {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .reorder-btn {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .reorder-btn:hover {
+            background: #c0392b;
+            transform: scale(1.05);
+        }
+
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .action-btn {
+            background: rgba(255, 255, 255, 0.9);
+            border: 2px solid #3498db;
+            color: #3498db;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .action-btn:hover {
+            background: #3498db;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 15px 30px rgba(52, 152, 219, 0.3);
+        }
+
+        .notifications {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        .notification {
+            background: #e74c3c;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 15px;
+            margin-bottom: 10px;
+            box-shadow: 0 10px 20px rgba(231, 76, 60, 0.3);
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .debug-panel {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            font-family: monospace;
+            font-size: 0.8em;
+            max-width: 300px;
+            display: none;
+        }
+
+        .debug-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #34495e;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2em;
+        }
+
+        @media (max-width: 768px) {
+            .inventory-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .location-tabs {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏪 Inventory Management</h1>
+            <div class="subtitle">Real-time inventory tracking across all locations</div>
+        </div>
+
+        <div class="location-tabs">
+            <button class="location-tab active" data-location="birmingham">Birmingham</button>
+            <button class="location-tab" data-location="uwm">UWM</button>
+            <button class="location-tab" data-location="berkeley">Berkeley</button>
+        </div>
+
+        <div class="inventory-grid" id="inventoryGrid">
+            <!-- Inventory items will be populated here -->
+        </div>
+
+        <div class="action-buttons">
+            <button class="action-btn" onclick="generateOrder()">📋 Generate Order</button>
+            <button class="action-btn" onclick="updateInventory()">🔄 Update Stock</button>
+            <button class="action-btn" onclick="viewReports()">📊 View Reports</button>
+            <button class="action-btn" onclick="syncVendors()">🚚 Sync Vendors</button>
+        </div>
+    </div>
+
+    <div class="notifications" id="notifications"></div>
+
+    <div class="debug-panel" id="debugPanel">
+        <div>Debug Mode: ON</div>
+        <div id="debugLog"></div>
+    </div>
+
+    <button class="debug-toggle" onclick="toggleDebug()">🐛</button>
+
+    <script>
+        // Global state
+        let currentLocation = 'birmingham';
+        let inventoryData = {};
+        let debugMode = false;
+
+        // Initialize inventory data structure
+        const initializeInventoryData = () => {
+            const locations = ['birmingham', 'uwm', 'berkeley'];
+            
+            locations.forEach(location => {
+                inventoryData[location] = {
+                    produce: [],
+                    frozen: [],
+                    packaging: [],
+                    supplements: [],
+                    prepared: [],
+                    equipment: []
+                };
+            });
+
+            // Populate with sample data from your recipes
+            populateInventoryData();
+        };
+
+        // Populate inventory with actual data from your recipes
+        const populateInventoryData = () => {
+            // Birmingham (Main + Distribution)
+            inventoryData.birmingham.produce = [
+                { name: 'Apples', current: 24, reorderPoint: 12, unit: 'cases', vendor: 'VACPAK', status: 'good' },
+                { name: 'Bananas (Green)', current: 8, reorderPoint: 4, unit: 'cases', vendor: 'VACPAK', status: 'good' },
+                { name: 'Bananas (Yellow)', current: 6, reorderPoint: 4, unit: 'cases', vendor: 'VACPAK', status: 'low' },
+                { name: 'Strawberries (Fresh)', current: 12, reorderPoint: 6, unit: 'cases', vendor: 'VACPAK', status: 'good' },
+                { name: 'Blueberries (Fresh)', current: 8, reorderPoint: 4, unit: 'cases', vendor: 'VACPAK', status: 'good' },
+                { name: 'Avocado', current: 18, reorderPoint: 9, unit: 'cases', vendor: 'VACPAK', status: 'good' },
+                { name: 'Spinach', current: 6, reorderPoint: 3, unit: 'cases', vendor: 'VACPAK', status: 'good' },
+                { name: 'Kale', current: 4, reorderPoint: 2, unit: 'cases', vendor: 'VACPAK', status: 'good' },
+                { name: 'Romaine Lettuce', current: 8, reorderPoint: 4, unit: 'cases', vendor: 'VACPAK', status: 'good' },
+                { name: 'Cucumber', current: 15, reorderPoint: 8, unit: 'individual', vendor: 'VACPAK', status: 'good' },
+                { name: 'Tomatoes', current: 12, reorderPoint: 6, unit: 'cases', vendor: 'VACPAK', status: 'good' },
+                { name: 'Celery', current: 8, reorderPoint: 4, unit: 'cases', vendor: 'VACPAK', status: 'good' },
+                { name: 'Carrots', current: 3, reorderPoint: 2, unit: 'bags', vendor: 'VACPAK', status: 'low' },
+                { name: 'Ginger', current: 6, reorderPoint: 3, unit: 'cases', vendor: 'VACPAK', status: 'good' },
+                { name: 'Turmeric', current: 4, reorderPoint: 2, unit: 'cases', vendor: 'VACPAK', status: 'good' },
+                { name: 'Lemons', current: 8, reorderPoint: 4, unit: 'cases', vendor: 'VACPAK', status: 'good' },
+                { name: 'Oranges', current: 6, reorderPoint: 3, unit: 'cases', vendor: 'VACPAK', status: 'good' }
+            ];
+
+            inventoryData.birmingham.frozen = [
+                { name: 'Strawberries (Frozen)', current: 12, reorderPoint: 6, unit: 'cases', vendor: 'VACPAK', status: 'good' },
+                { name: 'Blueberries (Frozen)', current: 8, reorderPoint: 4, unit: 'cases', vendor: 'VACPAK', status: 'good' },
+                { name: 'Mango (Frozen)', current: 6, reorderPoint: 3, unit: 'cases', vendor: 'VACPAK', status: 'good' },
+                { name: 'Pineapple (Frozen)', current: 8, reorderPoint: 4, unit: 'cases', vendor: 'VACPAK', status: 'good' },
+                { name: 'Acai Packets', current: 24, reorderPoint: 12, unit: 'cases', vendor: 'Distribution', status: 'good' },
+                { name: 'Pitaya Packets', current: 8, reorderPoint: 4, unit: 'cases', vendor: 'Distribution', status: 'good' },
+                { name: 'Chicken Breast', current: 15, reorderPoint: 8, unit: 'bags', vendor: 'Distribution', status: 'good' },
+                { name: 'Egg Whites', current: 12, reorderPoint: 6, unit: 'bags', vendor: 'Distribution', status: 'good' },
+                { name: 'Bagels (Everything)', current: 18, reorderPoint: 9, unit: 'dozen', vendor: 'Distribution', status: 'good' },
+                { name: 'Bagels (Egg)', current: 12, reorderPoint: 6, unit: 'dozen', vendor: 'Distribution', status: 'good' }
+            ];
+
+            inventoryData.birmingham.packaging = [
+                { name: '16oz Smoothie Cups', current: 8, reorderPoint: 4, unit: 'cases', vendor: 'Packaging Co', status: 'good' },
+                { name: '16oz Smoothie Lids', current: 6, reorderPoint: 3, unit: 'cases', vendor: 'Packaging Co', status: 'good' },
+                { name: 'Sandwich Boxes', current: 12, reorderPoint: 6, unit: 'cases', vendor: 'Packaging Co', status: 'good' },
+                { name: 'Acai Bowl Clams', current: 8, reorderPoint: 4, unit: 'cases', vendor: 'Packaging Co', status: 'good' },
+                { name: 'Straws (Colossal)', current: 4, reorderPoint: 2, unit: 'cases', vendor: 'Packaging Co', status: 'good' },
+                { name: 'Cutlery', current: 15, reorderPoint: 8, unit: 'cases', vendor: 'Packaging Co', status: 'good' },
+                { name: 'Paper Towels', current: 8, reorderPoint: 4, unit: 'cases', vendor: 'Packaging Co', status: 'good' },
+                { name: 'Gloves (Large)', current: 6, reorderPoint: 3, unit: 'cases', vendor: 'Packaging Co', status: 'good' }
+            ];
+
+            inventoryData.birmingham.supplements = [
+                { name: 'Vanilla Protein', current: 4, reorderPoint: 2, unit: 'tubs', vendor: 'Supplement Co', status: 'good' },
+                { name: 'Chocolate Protein', current: 3, reorderPoint: 2, unit: 'tubs', vendor: 'Supplement Co', status: 'low' },
+                { name: 'Chlorella/Spirulina', current: 2, reorderPoint: 1, unit: 'containers', vendor: 'Supplement Co', status: 'good' },
+                { name: 'Maca Powder', current: 1, reorderPoint: 1, unit: 'containers', vendor: 'Supplement Co', status: 'critical' },
+                { name: 'Cacao Powder', current: 4, reorderPoint: 2, unit: 'bags', vendor: 'Supplement Co', status: 'good' },
+                { name: 'Matcha Powder', current: 2, reorderPoint: 1, unit: 'containers', vendor: 'Supplement Co', status: 'good' },
+                { name: 'Bee Pollen', current: 1, reorderPoint: 1, unit: 'containers', vendor: 'Supplement Co', status: 'critical' },
+                { name: 'Hemp Seeds', current: 3, reorderPoint: 2, unit: 'bags', vendor: 'Supplement Co', status: 'low' }
+            ];
+
+            inventoryData.birmingham.prepared = [
+                { name: 'Almond Butter', current: 6, reorderPoint: 3, unit: 'bottles', vendor: 'Berkeley Prep', status: 'good' },
+                { name: 'Peanut Butter', current: 8, reorderPoint: 4, unit: 'bottles', vendor: 'Berkeley Prep', status: 'good' },
+                { name: 'Nakee Butter', current: 4, reorderPoint: 2, unit: 'bottles', vendor: 'Berkeley Prep', status: 'good' },
+                { name: 'Hummus', current: 6, reorderPoint: 3, unit: 'containers', vendor: 'Berkeley Prep', status: 'good' },
+                { name: 'Honey', current: 8, reorderPoint: 4, unit: 'bottles', vendor: 'Berkeley Prep', status: 'good' },
+                { name: 'Granola (Regular)', current: 4, reorderPoint: 2, unit: 'containers', vendor: 'Berkeley Prep', status: 'good' },
+                { name: 'Granola (Gluten-Free)', current: 3, reorderPoint: 2, unit: 'containers', vendor: 'Berkeley Prep', status: 'low' }
+            ];
+
+            // UWM (Smaller quantities)
+            inventoryData.uwm.produce = [
+                { name: 'Apples', current: 6, reorderPoint: 3, unit: 'cases', vendor: 'VACPAK', status: 'good' },
+                { name: 'Bananas (Yellow)', current: 8, reorderPoint: 4, unit: 'cases', vendor: 'VACPAK', status: 'good' },
+                { name: 'Strawberries (Fresh)', current: 8, reorderPoint: 4, unit: 'cases', vendor: 'VACPAK', status: 'good' },
+                { name: 'Avocado', current: 12, reorderPoint: 6, unit: 'cases', vendor: 'VACPAK', status: 'good' },
+                { name: 'Spinach', current: 4, reorderPoint: 2, unit: 'cases', vendor: 'VACPAK', status: 'good' },
+                { name: 'Romaine Lettuce', current: 6, reorderPoint: 3, unit: 'cases', vendor: 'VACPAK', status: 'good' }
+            ];
+
+            inventoryData.uwm.packaging = [
+                { name: '16oz Smoothie Cups', current: 4, reorderPoint: 2, unit: 'cases', vendor: 'Distribution', status: 'good' },
+                { name: 'Sandwich Boxes', current: 15, reorderPoint: 8, unit: 'cases', vendor: 'Distribution', status: 'good' },
+                { name: 'Chips', current: 8, reorderPoint: 4, unit: 'boxes', vendor: 'Distribution', status: 'good' }
+            ];
+
+            // Berkeley (Prep/Commissary)
+            inventoryData.berkeley.equipment = [
+                { name: 'Blender Containers', current: 12, reorderPoint: 6, unit: 'units', vendor: 'Equipment Co', status: 'good' },
+                { name: 'Prep Containers', current: 24, reorderPoint: 12, unit: 'units', vendor: 'Equipment Co', status: 'good' },
+                { name: 'Food Processor Blades', current: 4, reorderPoint: 2, unit: 'units', vendor: 'Equipment Co', status: 'good' }
+            ];
+
+            // Set initial status based on current vs reorder point
+            updateAllItemStatus();
+        };
+
+        const updateAllItemStatus = () => {
+            Object.keys(inventoryData).forEach(location => {
+                Object.keys(inventoryData[location]).forEach(category => {
+                    inventoryData[location][category].forEach(item => {
+                        if (item.current <= item.reorderPoint * 0.5) {
+                            item.status = 'critical';
+                        } else if (item.current <= item.reorderPoint) {
+                            item.status = 'low';
+                        } else {
+                            item.status = 'good';
+                        }
+                    });
+                });
+            });
+        };
+
+        const renderInventory = (location) => {
+            const grid = document.getElementById('inventoryGrid');
+            grid.innerHTML = '';
+
+            const locationData = inventoryData[location];
+            
+            Object.keys(locationData).forEach(category => {
+                if (locationData[category].length === 0) return;
+
+                const categoryCard = document.createElement('div');
+                categoryCard.className = 'category-card';
+                
+                const categoryIcon = {
+                    produce: '🥬',
+                    frozen: '🧊',
+                    packaging: '📦',
+                    supplements: '💊',
+                    prepared: '🥜',
+                    equipment: '🔧'
+                };
+
+                categoryCard.innerHTML = `
+                    <div class="category-header">
+                        <div class="category-title">
+                            ${categoryIcon[category]} ${category.charAt(0).toUpperCase() + category.slice(1)}
+                        </div>
+                        <div class="category-count">${locationData[category].length}</div>
+                    </div>
+                    <div class="item-list">
+                        ${locationData[category].map(item => `
+                            <div class="inventory-item">
+                                <div class="item-info">
+                                    <div class="item-name">${item.name}</div>
+                                    <div class="item-details">
+                                        ${item.current} ${item.unit} • Reorder at: ${item.reorderPoint} • ${item.vendor}
+                                    </div>
+                                </div>
+                                <div class="item-status">
+                                    <div class="stock-level stock-${item.status}">
+                                        ${item.current} ${item.unit}
+                                    </div>
+                                    ${item.status === 'low' || item.status === 'critical' ? 
+                                        `<button class="reorder-btn" onclick="reorderItem('${location}', '${category}', '${item.name}')">Order</button>` : ''
+                                    }
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+                
+                grid.appendChild(categoryCard);
+            });
+
+            // Check for low stock notifications
+            checkLowStock(location);
+        };
+
+        const checkLowStock = (location) => {
+            const locationData = inventoryData[location];
+            let lowStockItems = [];
+            
+            Object.keys(locationData).forEach(category => {
+                locationData[category].forEach(item => {
+                    if (item.status === 'low' || item.status === 'critical') {
+                        lowStockItems.push(`${item.name} (${item.current} ${item.unit})`);
+                    }
+                });
+            });
+
+            if (lowStockItems.length > 0) {
+                showNotification(`⚠️ Low stock alert: ${lowStockItems.length} items need reordering`, 'warning');
+            }
+        };
+
+        const showNotification = (message, type = 'info') => {
+            const notifications = document.getElementById('notifications');
+            const notification = document.createElement('div');
+            notification.className = `notification notification-${type}`;
+            notification.textContent = message;
+            
+            notifications.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 5000);
+        };
+
+        const reorderItem = (location, category, itemName) => {
+            const item = inventoryData[location][category].find(i => i.name === itemName);
+            if (item) {
+                const orderQuantity = Math.max(item.reorderPoint * 2, item.reorderPoint + 5);
+                showNotification(`📋 Order placed: ${orderQuantity} ${item.unit} of ${itemName} from ${item.vendor}`, 'success');
+                
+                // Simulate restocking (in real system, this would be handled by delivery confirmation)
+                setTimeout(() => {
+                    item.current += orderQuantity;
+                    updateAllItemStatus();
+                    renderInventory(currentLocation);
+                    showNotification(`✅ Delivered: ${orderQuantity} ${item.unit} of ${itemName}`, 'success');
+                }, 3000);
+            }
+        };
+
+        const generateOrder = () => {
+            const locationData = inventoryData[currentLocation];
+            let orderList = [];
+            
+            Object.keys(locationData).forEach(category => {
+                locationData[category].forEach(item => {
+                    if (item.status === 'low' || item.status === 'critical') {
+                        const orderQty = Math.max(item.reorderPoint * 2, item.reorderPoint + 5);
+                        orderList.push(`${item.name}: ${orderQty} ${item.unit} (${item.vendor})`);
+                    }
+                });
+            });
+
+            if (orderList.length > 0) {
+                showNotification(`📋 Generated order for ${orderList.length} items`, 'success');
+                console.log('ORDER LIST:', orderList);
+                
+                // In a real system, this would email the order or integrate with vendor APIs
+                alert(`Order Generated for ${currentLocation.toUpperCase()}:\n\n${orderList.join('\n')}`);
+            } else {
+                showNotification('✅ No items need reordering at this location', 'info');
+            }
+        };
+
+        const updateInventory = () => {
+            showNotification('🔄 Updating inventory levels...', 'info');
+            
+            // Simulate inventory usage
+            Object.keys(inventoryData).forEach(location => {
+                Object.keys(inventoryData[location]).forEach(category => {
+                    inventoryData[location][category].forEach(item => {
+                        // Random usage simulation
+                        const usage = Math.floor(Math.random() * 3) + 1;
+                        item.current = Math.max(0, item.current - usage);
+                    });
+                });
+            });
+
+            updateAllItemStatus();
+            renderInventory(currentLocation);
+            showNotification('✅ Inventory updated with daily usage', 'success');
+        };
+
+        const viewReports = () => {
+            const locationData = inventoryData[currentLocation];
+            let totalItems = 0;
+            let lowStockItems = 0;
+            let criticalItems = 0;
+            
+            Object.keys(locationData).forEach(category => {
+                locationData[category].forEach(item => {
+                    totalItems++;
+                    if (item.status === 'low') lowStockItems++;
+                    if (item.status === 'critical') criticalItems++;
+                });
+            });
+
+            const report = `
+INVENTORY REPORT - ${currentLocation.toUpperCase()}
+=====================================
+Total Items: ${totalItems}
+Low Stock: ${lowStockItems}
+Critical Stock: ${criticalItems}
+Stock Health: ${((totalItems - lowStockItems - criticalItems) / totalItems * 100).toFixed(1)}%
+            `;
+
+            alert(report);
+            showNotification('📊 Report generated', 'success');
+        };
+
+        const syncVendors = () => {
+            showNotification('🚚 Syncing with vendors...', 'info');
+            
+            // Simulate vendor sync
+            setTimeout(() => {
+                showNotification('✅ VACPAK: Delivery scheduled for Monday', 'success');
+                setTimeout(() => {
+                    showNotification('✅ Distribution: Order confirmed', 'success');
+                }, 1000);
+            }, 2000);
+        };
+
+        const toggleDebug = () => {
+            debugMode = !debugMode;
+            const debugPanel = document.getElementById('debugPanel');
+            debugPanel.style.display = debugMode ? 'block' : 'none';
+            
+            if (debugMode) {
+                updateDebugLog();
+            }
+        };
+
+        const updateDebugLog = () => {
+            const debugLog = document.getElementById('debugLog');
+            debugLog.innerHTML = `
+                <div>Current Location: ${currentLocation}</div>
+                <div>Total Locations: ${Object.keys(inventoryData).length}</div>
+                <div>Last Update: ${new Date().toLocaleTimeString()}</div>
+            `;
+        };
+
+        // Event listeners
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeInventoryData();
+            renderInventory(currentLocation);
+            
+            // Location tab switching
+            document.querySelectorAll('.location-tab').forEach(tab => {
+                tab.addEventListener('click', (e) => {
+                    document.querySelectorAll('.location-tab').forEach(t => t.classList.remove('active'));
+                    e.target.classList.add('active');
+                    currentLocation = e.target.dataset.location;
+                    renderInventory(currentLocation);
+                });
+            });
+
+            // Auto-refresh every 30 seconds
+            setInterval(() => {
+                if (debugMode) {
+                    updateDebugLog();
+                }
+            }, 30000);
+
+            showNotification('🏪 Inventory Management System Online', 'success');
+        });
+
+        // Export functions for external use
+        window.inventorySystem = {
+            getCurrentLocation: () => currentLocation,
+            getInventoryData: () => inventoryData,
+            updateItemStock: (location, category, itemName, newStock) => {
+                const item = inventoryData[location][category].find(i => i.name === itemName);
+                if (item) {
+                    item.current = newStock;
+                    updateAllItemStatus();
+                    renderInventory(currentLocation);
+                }
+            },
+            addNewItem: (location, category, itemData) => {
+                inventoryData[location][category].push(itemData);
+                renderInventory(currentLocation);
+            }
+        };
+    </script>
+</body>
+</html>
