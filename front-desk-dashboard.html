@@ -694,8 +694,10 @@
         // Clear all data
         function clearAllData() {
             localStorage.removeItem('allCheckins');
+            localStorage.removeItem('patientCheckins'); // Clean up old key too
             sessionStorage.removeItem('patientCheckins');
-            alert('All check-in data cleared!');
+            sessionStorage.removeItem('allCheckins');
+            alert('All check-in data cleared from both keys!');
             loadCheckins();
         }
         
