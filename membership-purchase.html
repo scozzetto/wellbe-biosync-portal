@@ -49,7 +49,47 @@
 </head>
 <body>
     <style>
-        /* Hide any splash video elements */
+        /* COMPREHENSIVE GLOWING BALL ELIMINATION */
+        
+        /* Target the single glowing ball/orb */
+        .pulse-ring,
+        .logo-animation,
+        .floating-element,
+        .orb,
+        .glow,
+        .glowing-ball,
+        *[class*="glow"],
+        *[class*="ball"],
+        *[class*="orb"] {
+            display: none !important;
+            visibility: hidden !important;
+            opacity: 0 !important;
+        }
+        
+        /* Remove any pseudo-elements that might create the glowing ball */
+        *::before,
+        *::after {
+            content: none !important;
+            display: none !important;
+        }
+        
+        /* Hide any circular elements with white/light backgrounds */
+        *[style*="border-radius: 50%"],
+        *[style*="border-radius:50%"],
+        *[style*="background: white"],
+        *[style*="background:white"],
+        *[style*="background-color: white"],
+        *[style*="background-color:white"] {
+            display: none !important;
+        }
+        
+        /* Disable all CSS animations that might create the glowing effect */
+        * {
+            animation: none !important;
+            transition: none !important;
+        }
+        
+        /* Hide splash video elements */
         .splash-screen,
         #splash-video,
         #splash-container,
@@ -67,18 +107,18 @@
             display: none !important;
         }
         
-        /* Restore original background */
+        /* Reset background to default */
         body {
-            background: inherit !important;
+            background: var(--bg-color) !important;
         }
         
-        /* Remove any radial gradients that might create dots */
+        /* Remove any radial gradients that might create the glowing ball */
         .membership-cards,
         .membership-card {
             background-image: none !important;
         }
         
-        /* Hide ALL possible white dots/circles */
+        /* Hide ALL possible circular elements */
         .spinner,
         .loading-spinner,
         canvas,
@@ -93,46 +133,89 @@
             display: none !important;
         }
         
-        /* Force hide any absolute positioned white elements */
+        /* Force hide any absolute positioned elements that could be the ball */
         div[style*="position: absolute"],
         div[style*="position: fixed"] {
-            background: transparent !important;
+            display: none !important;
+        }
+        
+        /* Ensure membership cards have clean positioning */
+        .membership-card {
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
         }
     </style>
     
     <script>
-        // Aggressively hunt for the white dot
-        function killWhiteDot() {
-            // Find all elements with white backgrounds or borders
+        // Hunt for the glowing white ball
+        function killGlowingBall() {
+            // Find all elements that could be the glowing ball
             const allElements = document.querySelectorAll('*');
             allElements.forEach(el => {
                 const style = window.getComputedStyle(el);
+                const rect = el.getBoundingClientRect();
                 
-                // Check for white/light colored elements
-                if (style.backgroundColor.includes('white') || 
-                    style.backgroundColor.includes('rgb(255') ||
-                    style.borderColor.includes('white') ||
-                    style.borderColor.includes('rgb(255') ||
-                    style.color.includes('white') ||
-                    el.style.background?.includes('white') ||
-                    el.style.backgroundColor?.includes('white')) {
+                // Check for white/light colored circular elements
+                if ((style.backgroundColor.includes('white') || 
+                     style.backgroundColor.includes('rgb(255') ||
+                     style.borderColor.includes('white') ||
+                     style.borderColor.includes('rgb(255') ||
+                     style.background?.includes('white') ||
+                     el.style.background?.includes('white') ||
+                     el.style.backgroundColor?.includes('white')) &&
+                    (style.borderRadius === '50%' || 
+                     style.borderRadius.includes('50%') ||
+                     el.style.borderRadius === '50%' ||
+                     el.style.borderRadius?.includes('50%'))) {
                     
-                    // If it's small and round, hide it
-                    const rect = el.getBoundingClientRect();
-                    if (rect.width < 100 && rect.height < 100 && 
-                        Math.abs(rect.width - rect.height) < 10) {
-                        console.log('Hiding potential white dot:', el);
-                        el.style.display = 'none';
+                    console.log('Hiding potential glowing ball:', el);
+                    el.style.display = 'none !important';
+                    el.style.visibility = 'hidden !important';
+                    el.style.opacity = '0 !important';
+                }
+                
+                // Also check for any element positioned behind membership cards
+                if (rect.width > 0 && rect.height > 0 && rect.width < 200 && rect.height < 200) {
+                    const membershipCards = document.querySelector('.membership-cards');
+                    if (membershipCards) {
+                        const cardsRect = membershipCards.getBoundingClientRect();
+                        // If element is positioned behind or within membership cards area
+                        if (rect.left >= cardsRect.left && rect.right <= cardsRect.right &&
+                            rect.top >= cardsRect.top && rect.bottom <= cardsRect.bottom) {
+                            // And if it's circular or has glow effects
+                            if (style.borderRadius.includes('50%') || 
+                                style.boxShadow.includes('glow') ||
+                                el.className.includes('glow') ||
+                                el.className.includes('ball') ||
+                                el.className.includes('orb')) {
+                                console.log('Hiding element behind membership cards:', el);
+                                el.style.display = 'none !important';
+                            }
+                        }
                     }
                 }
             });
+            
+            // Remove any canvas elements that might be drawing the ball
+            const canvases = document.querySelectorAll('canvas');
+            canvases.forEach(canvas => {
+                console.log('Hiding canvas element:', canvas);
+                canvas.style.display = 'none !important';
+            });
         }
         
-        // Run immediately and on page load
-        killWhiteDot();
-        document.addEventListener('DOMContentLoaded', killWhiteDot);
-        setTimeout(killWhiteDot, 1000);
-        setTimeout(killWhiteDot, 3000);
+        // Run immediately and repeatedly
+        killGlowingBall();
+        document.addEventListener('DOMContentLoaded', killGlowingBall);
+        setTimeout(killGlowingBall, 500);
+        setTimeout(killGlowingBall, 1000);
+        setTimeout(killGlowingBall, 2000);
+        setTimeout(killGlowingBall, 3000);
+        
+        // Monitor for new elements being added
+        const observer = new MutationObserver(killGlowingBall);
+        observer.observe(document.body, { childList: true, subtree: true });
     </script>
     <nav>
         <div class="nav-container">
