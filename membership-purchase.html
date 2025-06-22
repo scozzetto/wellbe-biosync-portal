@@ -139,6 +139,27 @@
             display: none !important;
         }
         
+        /* Hide Stripe loading elements */
+        .__PrivateStripeElement,
+        .StripeElement,
+        [class*="stripe"],
+        [id*="stripe"],
+        iframe[src*="stripe"],
+        .stripe-loading,
+        .stripe-spinner {
+            display: none !important;
+        }
+        
+        /* Target specific white circular elements that could be blocking mobile */
+        *[style*="border-radius: 50%"][style*="background: white"],
+        *[style*="border-radius:50%"][style*="background:white"],
+        div[style*="position: absolute"][style*="background: white"],
+        div[style*="position: fixed"][style*="background: white"],
+        div[style*="z-index"][style*="border-radius: 50%"] {
+            display: none !important;
+            visibility: hidden !important;
+        }
+        
         /* Ensure membership cards have clean positioning */
         .membership-card {
             position: relative;
@@ -216,6 +237,45 @@
         // Monitor for new elements being added
         const observer = new MutationObserver(killGlowingBall);
         observer.observe(document.body, { childList: true, subtree: true });
+        
+        // More aggressive Stripe and overlay hunting
+        function hideBlockingElements() {
+            // Look for Stripe-specific elements
+            document.querySelectorAll('iframe[src*="stripe"], [class*="stripe"], [id*="stripe"]').forEach(el => {
+                console.log('Hiding Stripe element:', el);
+                el.style.display = 'none !important';
+            });
+            
+            // Look for any overlay elements that could be blocking mobile
+            document.querySelectorAll('*').forEach(el => {
+                const style = getComputedStyle(el);
+                const rect = el.getBoundingClientRect();
+                
+                // If element covers a large area (potential overlay)
+                if (rect.width > window.innerWidth * 0.5 || rect.height > window.innerHeight * 0.5) {
+                    if (style.position === 'fixed' || style.position === 'absolute') {
+                        if (style.backgroundColor.includes('white') || 
+                            style.background.includes('white') ||
+                            style.borderRadius.includes('50%')) {
+                            console.log('Hiding large blocking element:', el);
+                            el.style.display = 'none !important';
+                        }
+                    }
+                }
+                
+                // Target high z-index white circular elements
+                const zIndex = parseInt(style.zIndex);
+                if (zIndex > 100 && style.borderRadius.includes('50%') && 
+                    (style.backgroundColor.includes('white') || style.backgroundColor.includes('rgb(255'))) {
+                    console.log('Hiding high z-index ball element:', el);
+                    el.style.display = 'none !important';
+                }
+            });
+        }
+        
+        // Run very frequently to catch dynamic elements
+        setInterval(hideBlockingElements, 100);
+        setInterval(killGlowingBall, 200);
     </script>
     <nav>
         <div class="nav-container">
