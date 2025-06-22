@@ -161,10 +161,11 @@ function initChatSupport() {
             background-color: #1a1a1a;
             color: #ffffff;
             margin: 5% auto;
-            padding: 30px;
+            padding: 40px;
             border: 1px solid #A47C5B;
             width: 90%;
-            max-width: 600px;
+            max-width: 700px;
+            min-width: 350px;
             border-radius: 10px;
             max-height: 80vh;
             overflow-y: auto;
@@ -228,6 +229,18 @@ function initChatSupport() {
         .contact-info p {
             margin: 15px 0;
             white-space: nowrap;
+            font-size: 16px;
+        }
+        
+        @media (max-width: 600px) {
+            .contact-info p {
+                white-space: normal;
+                font-size: 14px;
+            }
+            .chat-modal-content {
+                padding: 25px;
+                width: 95%;
+            }
         }
         
         .join-btn {
