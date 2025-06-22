@@ -605,6 +605,22 @@
             checkins.push(checkinData);
             localStorage.setItem('allCheckins', JSON.stringify(checkins));
             
+            // FORCE DEBUG - Show exactly what we saved
+            console.log('=== POOP DEBUG ===');
+            console.log('Saved checkin:', checkinData);
+            console.log('Total checkins after save:', checkins.length);
+            console.log('localStorage key used: allCheckins');
+            console.log('Saved data:', JSON.stringify(checkins));
+            
+            // Immediately verify it was saved
+            const verification = localStorage.getItem('allCheckins');
+            console.log('Verification - data exists in localStorage:', verification ? 'YES' : 'NO');
+            if (verification) {
+                const parsed = JSON.parse(verification);
+                console.log('Verification - total items:', parsed.length);
+                console.log('Verification - last item:', parsed[parsed.length - 1]);
+            }
+            
             // Try to send to dashboard if it's open
             try {
                 if (window.opener && !window.opener.closed) {
