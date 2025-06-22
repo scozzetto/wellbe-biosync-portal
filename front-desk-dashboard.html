@@ -493,15 +493,22 @@
                 // SAFETY: Only show today's check-ins by default (prevents day-to-day accumulation)
                 const todayCheckins = checkins.filter(c => c.dateIn === today);
                 
+                // CHECK: If End of Day was already run today, hide completed patients
+                const lastArchiveDate = localStorage.getItem('lastArchiveDate');
+                const displayCheckins = (lastArchiveDate === today) 
+                    ? todayCheckins.filter(c => c.status !== 'completed')
+                    : todayCheckins;
+                
                 console.log('📅 Dashboard filter - Today:', today);
                 console.log('📅 Dashboard filter - Total checkins in system:', checkins.length);
-                console.log('📅 Dashboard filter - Today checkins shown:', todayCheckins.length);
+                console.log('📅 Dashboard filter - Today checkins shown:', displayCheckins.length);
+                console.log('📅 Dashboard filter - Completed hidden:', lastArchiveDate === today);
                 
                 const tbody = document.getElementById('checkinsTableBody');
                 tbody.innerHTML = '';
             
             // Show message if no check-ins
-            if (todayCheckins.length === 0) {
+            if (displayCheckins.length === 0) {
                 const row = document.createElement('tr');
                 row.innerHTML = `
                     <td colspan="11" style="text-align: center; padding: 40px; color: #9ca3af; font-style: italic;">
@@ -519,7 +526,7 @@
             let totalWaitTime = 0;
             let waitingPatients = 0;
             
-            todayCheckins.forEach(checkin => {
+            displayCheckins.forEach(checkin => {
                 const waitTime = checkin.status === 'waiting' ? calculateWaitTime(checkin.timeIn) : 
                                 checkin.ackTime ? calculateWaitTime(checkin.timeIn) : 0;
                 
@@ -571,7 +578,7 @@
                 refreshStatus.style.color = '#22c55e';
                 refreshStatus.textContent = '●';
                 
-                console.log('Refresh complete - displayed', todayCheckins.length, 'check-ins');
+                console.log('Refresh complete - displayed', displayCheckins.length, 'check-ins');
                 
             } catch (e) {
                 console.error('Error processing checkins:', e);
@@ -750,6 +757,9 @@
             const archiveKey = `archive_${today}`;
             localStorage.setItem(archiveKey, JSON.stringify(completedCheckins));
             console.log('💾 Debug - Archived to key:', archiveKey);
+            
+            // Mark that End of Day was run today (for filtering)
+            localStorage.setItem('lastArchiveDate', today);
             
             // Keep only NON-completed check-ins from today + all other days
             const remainingCheckins = checkins.filter(c => {
