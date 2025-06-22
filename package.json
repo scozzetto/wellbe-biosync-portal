@@ -20,6 +20,7 @@
   "dependencies": {
     "dotenv": "^16.5.0",
     "stripe": "^18.2.1",
-    "jsforce": "^1.11.1"
+    "jsforce": "^1.11.1",
+    "nodemailer": "^6.9.8"
   }
 }
