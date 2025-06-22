@@ -489,10 +489,13 @@
                 refreshStatus.style.color = '#f59e0b';
                 refreshStatus.textContent = '⟳';
                 const today = new Date().toISOString().split('T')[0];
+                
+                // SAFETY: Only show today's check-ins by default (prevents day-to-day accumulation)
                 const todayCheckins = checkins.filter(c => c.dateIn === today);
                 
-                console.log('Total checkins:', checkins.length);
-                console.log('Today checkins:', todayCheckins.length);
+                console.log('📅 Dashboard filter - Today:', today);
+                console.log('📅 Dashboard filter - Total checkins in system:', checkins.length);
+                console.log('📅 Dashboard filter - Today checkins shown:', todayCheckins.length);
                 
                 const tbody = document.getElementById('checkinsTableBody');
                 tbody.innerHTML = '';
@@ -716,9 +719,15 @@
         
         // Archive completed check-ins and generate report
         function clearAllData() {
+            console.log('🗃️ Starting End of Day process...');
+            
             const checkins = JSON.parse(localStorage.getItem('allCheckins') || '[]');
             const today = new Date().toISOString().split('T')[0];
             const todayCheckins = checkins.filter(c => c.dateIn === today);
+            
+            console.log('📊 Debug - Total checkins:', checkins.length);
+            console.log('📊 Debug - Today checkins:', todayCheckins.length);
+            console.log('📊 Debug - Today date:', today);
             
             if (todayCheckins.length === 0) {
                 alert('No check-ins to archive today.');
@@ -729,6 +738,9 @@
             const completedCheckins = todayCheckins.filter(c => c.status === 'completed');
             const activeCheckins = todayCheckins.filter(c => c.status !== 'completed');
             
+            console.log('✅ Debug - Completed checkins:', completedCheckins.length);
+            console.log('⏳ Debug - Active/waiting checkins:', activeCheckins.length);
+            
             if (completedCheckins.length === 0) {
                 alert('No completed check-ins to archive. Complete check-ins first.');
                 return;
@@ -737,16 +749,42 @@
             // Archive completed check-ins
             const archiveKey = `archive_${today}`;
             localStorage.setItem(archiveKey, JSON.stringify(completedCheckins));
+            console.log('💾 Debug - Archived to key:', archiveKey);
             
-            // Keep only active/waiting check-ins
-            const remainingCheckins = checkins.filter(c => c.dateIn !== today || c.status !== 'completed');
+            // Keep only NON-completed check-ins from today + all other days
+            const remainingCheckins = checkins.filter(c => {
+                // Keep if different date OR not completed
+                return c.dateIn !== today || c.status !== 'completed';
+            });
+            
+            console.log('🔄 Debug - Before archive, total checkins:', checkins.length);
+            console.log('🔄 Debug - After archive, remaining checkins:', remainingCheckins.length);
+            console.log('🔄 Debug - Items being removed:', checkins.length - remainingCheckins.length);
+            
+            // Save the filtered data
             localStorage.setItem('allCheckins', JSON.stringify(remainingCheckins));
+            
+            // Also send to server for sync
+            try {
+                fetch('/.netlify/functions/checkin-sync', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ action: 'archive', date: today, archived: completedCheckins })
+                });
+            } catch (e) {
+                console.log('Server archive notification failed (not critical):', e);
+            }
             
             // Generate printable report
             generateDailyReport(completedCheckins, today);
             
-            alert(`Archived ${completedCheckins.length} completed check-ins. Report opened for printing.`);
-            loadCheckins();
+            // Force complete refresh
+            setTimeout(() => {
+                console.log('🔄 Forcing dashboard refresh...');
+                location.reload();
+            }, 1000);
+            
+            alert(`Archived ${completedCheckins.length} completed check-ins. Dashboard will refresh automatically.`);
         }
         
         // Generate printable daily report
