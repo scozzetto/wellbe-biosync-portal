@@ -56,6 +56,27 @@
         .white-disc {
             display: none !important;
         }
+        
+        /* Remove any glowing background elements */
+        body::before,
+        body::after,
+        .membership-cards::before,
+        .membership-cards::after,
+        .membership-card::before,
+        .membership-card::after {
+            display: none !important;
+        }
+        
+        /* Ensure clean background */
+        body {
+            background: #0a0a0a !important;
+        }
+        
+        /* Remove any radial gradients that might create dots */
+        .membership-cards,
+        .membership-card {
+            background-image: none !important;
+        }
     </style>
     <nav>
         <div class="nav-container">
