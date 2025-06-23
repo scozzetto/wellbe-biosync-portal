@@ -274,11 +274,22 @@
         .editable-cell {
             cursor: pointer;
             position: relative;
+            transition: background 0.2s ease;
         }
         
         .editable-cell:hover {
-            background: rgba(164, 124, 91, 0.1);
+            background: rgba(164, 124, 91, 0.15);
             border-radius: 4px;
+        }
+        
+        .editable-cell:hover::after {
+            content: "✏️";
+            position: absolute;
+            right: 5px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.8rem;
+            opacity: 0.7;
         }
         
         .edit-input {
@@ -323,17 +334,6 @@
         .edit-cancel {
             background: #6b7280;
             color: white;
-        }
-        
-        .edit-icon {
-            background: var(--primary-color);
-            color: white;
-            border: none;
-            padding: 4px 8px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 0.8rem;
-            margin-left: 5px;
         }
         
         textarea {
@@ -418,7 +418,7 @@
                 <span id="refreshStatus" style="color: #22c55e; font-size: 0.9rem;">●</span>
                 <button class="refresh-btn" onclick="loadCheckins()">Refresh</button>
                 <button class="refresh-btn" onclick="testLocalStorage()" style="background: #ef4444;">Debug</button>
-                <button class="refresh-btn" onclick="addTestCheckin()" style="background: #22c55e;">Add Test</button>
+                <button class="refresh-btn" onclick="addClientManually()" style="background: #22c55e;">Add Client</button>
                 <button class="refresh-btn" onclick="clearAllData()" style="background: #f59e0b;">End of Day</button>
             </div>
         </div>
@@ -444,8 +444,11 @@
         </div>
         
         <div class="checkins-table">
-            <div class="table-header">
+            <div class="table-header" style="display: flex; justify-content: space-between; align-items: center;">
                 <h2>Today's Check-Ins</h2>
+                <button class="refresh-btn" onclick="openAddPatientModal()" style="background: #22c55e;">
+                    + Add Patient
+                </button>
             </div>
             <div class="table-wrapper">
                 <table>
@@ -483,6 +486,71 @@
             <div class="modal-buttons">
                 <button class="modal-btn btn-cancel" onclick="closeCommentModal()">Cancel</button>
                 <button class="modal-btn btn-save" onclick="saveComment()">Save</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Add Patient Modal -->
+    <div id="addPatientModal" class="modal">
+        <div class="modal-content" style="width: 600px;">
+            <div class="modal-header">
+                <h3>Add Patient Check-In</h3>
+                <span class="close-modal" onclick="closeAddPatientModal()">&times;</span>
+            </div>
+            <form id="addPatientForm">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+                    <div>
+                        <label style="display: block; margin-bottom: 5px; font-weight: 600; color: var(--primary-color);">Patient Name *</label>
+                        <input type="text" id="addPatientName" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px;">
+                    </div>
+                    <div>
+                        <label style="display: block; margin-bottom: 5px; font-weight: 600; color: var(--primary-color);">Phone Number *</label>
+                        <input type="tel" id="addPatientPhone" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px;" placeholder="(248) 555-0123">
+                    </div>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+                    <div>
+                        <label style="display: block; margin-bottom: 5px; font-weight: 600; color: var(--primary-color);">First Visit?</label>
+                        <select id="addPatientFirstVisit" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px;">
+                            <option value="NO">NO - Returning Patient</option>
+                            <option value="YES">YES - First Time</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label style="display: block; margin-bottom: 5px; font-weight: 600; color: var(--primary-color);">Check-In Time</label>
+                        <input type="time" id="addPatientTime" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px;">
+                    </div>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+                    <div>
+                        <label style="display: block; margin-bottom: 5px; font-weight: 600; color: var(--primary-color);">Service Requested</label>
+                        <select id="addPatientReason" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px;">
+                            <option value="Massage">Massage</option>
+                            <option value="Red Light Therapy">Red Light Therapy</option>
+                            <option value="IV Therapy">IV Therapy</option>
+                            <option value="Wellness Consultation">Wellness Consultation</option>
+                            <option value="HydraCare">HydraCare</option>
+                            <option value="Vitamin B12 Injection">Vitamin B12 Injection</option>
+                            <option value="Compression Therapy">Compression Therapy</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label style="display: block; margin-bottom: 5px; font-weight: 600; color: var(--primary-color);">Sub-Service (Optional)</label>
+                        <input type="text" id="addPatientSubReason" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px;" placeholder="e.g., Deep Tissue, Swedish">
+                    </div>
+                </div>
+                
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; margin-bottom: 5px; font-weight: 600; color: var(--primary-color);">Notes (Optional)</label>
+                    <textarea id="addPatientComment" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; min-height: 60px;" placeholder="Any special notes or instructions..."></textarea>
+                </div>
+            </form>
+            <div class="modal-buttons">
+                <button class="modal-btn btn-cancel" onclick="closeAddPatientModal()">Cancel</button>
+                <button class="modal-btn btn-save" onclick="addPatientCheckin()">Add Patient</button>
             </div>
         </div>
     </div>
@@ -608,16 +676,16 @@
                 
                 const row = document.createElement('tr');
                 row.innerHTML = `
-                    <td class="editable-cell" onclick="editField('${checkin.id}', 'name', this)"><strong>${checkin.name}</strong><button class="edit-icon">✏️</button></td>
-                    <td class="editable-cell" onclick="editField('${checkin.id}', 'phone', this)">${checkin.phone}<button class="edit-icon">✏️</button></td>
-                    <td class="editable-cell" onclick="editField('${checkin.id}', 'timeIn', this)">${checkin.timeIn}<button class="edit-icon">✏️</button></td>
-                    <td class="editable-cell ${checkin.firstVisit === 'YES' ? 'first-visit-yes' : 'first-visit-no'}" onclick="editField('${checkin.id}', 'firstVisit', this)">${checkin.firstVisit}<button class="edit-icon">✏️</button></td>
-                    <td class="editable-cell" onclick="editField('${checkin.id}', 'reason', this)">${checkin.reason}<button class="edit-icon">✏️</button></td>
-                    <td class="editable-cell" onclick="editField('${checkin.id}', 'subReason', this)">${checkin.subReason || '-'}<button class="edit-icon">✏️</button></td>
+                    <td class="editable-cell" onclick="editField('${checkin.id}', 'name', this)"><strong>${checkin.name}</strong></td>
+                    <td class="editable-cell" onclick="editField('${checkin.id}', 'phone', this)">${checkin.phone}</td>
+                    <td class="editable-cell" onclick="editField('${checkin.id}', 'timeIn', this)">${checkin.timeIn}</td>
+                    <td class="editable-cell ${checkin.firstVisit === 'YES' ? 'first-visit-yes' : 'first-visit-no'}" onclick="editField('${checkin.id}', 'firstVisit', this)">${checkin.firstVisit}</td>
+                    <td class="editable-cell" onclick="editField('${checkin.id}', 'reason', this)">${checkin.reason}</td>
+                    <td class="editable-cell" onclick="editField('${checkin.id}', 'subReason', this)">${checkin.subReason || '-'}</td>
                     <td class="wait-time">${checkin.status === 'waiting' ? formatWaitTime(waitTime) : '-'}</td>
-                    <td class="editable-cell" onclick="editField('${checkin.id}', 'status', this)"><span class="status-badge status-${checkin.status}">${checkin.status}</span><button class="edit-icon">✏️</button></td>
+                    <td class="editable-cell" onclick="editField('${checkin.id}', 'status', this)"><span class="status-badge status-${checkin.status}">${checkin.status}</span></td>
                     <td>${checkin.ackBy || '-'}</td>
-                    <td class="editable-cell" onclick="editField('${checkin.id}', 'comment', this)">${checkin.comment || '-'}<button class="edit-icon">✏️</button></td>
+                    <td class="editable-cell" onclick="editField('${checkin.id}', 'comment', this)">${checkin.comment || '-'}</td>
                     <td>
                         <div class="action-btns">
                             ${checkin.status === 'waiting' ? 
@@ -760,33 +828,47 @@
         }
         
         // Add test check-in for debugging
-        function addTestCheckin() {
-            const testCheckin = {
-                name: 'Test Patient',
-                phone: '(248) 555-0123',
-                firstVisit: 'NO',
-                reason: 'Massage',
-                subReason: 'Massage',
+        function addClientManually() {
+            // Prompt for client information
+            const name = prompt('Enter client name (First and Last):');
+            if (!name || name.trim() === '') return;
+            
+            const phone = prompt('Enter phone number:');
+            if (!phone || phone.trim() === '') return;
+            
+            const firstVisit = confirm('Is this their first visit?') ? 'YES' : 'NO';
+            
+            const reason = prompt('Service needed:', 'Chiropractic');
+            if (!reason || reason.trim() === '') return;
+            
+            const comment = prompt('Any additional notes (optional):') || '';
+            
+            const manualCheckin = {
+                name: name.trim(),
+                phone: phone.trim(),
+                firstVisit: firstVisit,
+                reason: reason.trim(),
+                subReason: reason.trim(),
                 dateIn: new Date().toISOString().split('T')[0],
                 timeIn: new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }),
-                source: 'Dashboard Test',
+                source: 'Manual Entry',
                 ackTime: '',
                 ackBy: '',
                 outTime: '',
                 outBy: '',
-                comment: 'Test check-in from dashboard',
+                comment: comment.trim(),
                 status: 'waiting',
                 id: Date.now().toString(),
                 timestamp: new Date().toISOString()
             };
             
             let checkins = JSON.parse(localStorage.getItem('allCheckins') || '[]');
-            checkins.push(testCheckin);
+            checkins.push(manualCheckin);
             localStorage.setItem('allCheckins', JSON.stringify(checkins));
             
-            console.log('Test checkin added:', testCheckin);
+            console.log('Manual checkin added:', manualCheckin);
             console.log('Total checkins now:', checkins.length);
-            alert('Test check-in added! Total: ' + checkins.length);
+            alert('Client added successfully! ' + name + ' is now in the system.');
             loadCheckins();
         }
         
