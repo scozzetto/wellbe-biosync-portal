@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Inventory Ordering - Be Well</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        
+        .header {
+            background: var(--primary-color);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .vendor-section {
+            background: white;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            padding: 20px;
+            page-break-inside: avoid;
+        }
+        
+        .vendor-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary-color);
+        }
+        
+        .vendor-name {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+        
+        .order-date {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .order-date input {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        
+        .items-grid {
+            display: grid;
+            gap: 10px;
+        }
+        
+        .item-row {
+            display: grid;
+            grid-template-columns: 300px 120px 200px;
+            gap: 15px;
+            align-items: center;
+            padding: 8px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .item-name {
+            font-weight: 500;
+            color: #333;
+        }
+        
+        .quantity-input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+            text-align: center;
+        }
+        
+        .unit {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+        }
+        
+        .btn-print {
+            background: var(--primary-color);
+            color: white;
+        }
+        
+        .btn-save {
+            background: #28a745;
+            color: white;
+        }
+        
+        .btn-clear {
+            background: #dc3545;
+            color: white;
+        }
+        
+        @media print {
+            body {
+                background: white;
+            }
+            .header {
+                display: none;
+            }
+            .actions {
+                display: none;
+            }
+            .vendor-section {
+                border: 1px solid #000;
+                margin-bottom: 20px;
+            }
+            .quantity-input {
+                border: 1px solid #000;
+            }
+        }
+        
+        .notes-section {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #ddd;
+        }
+        
+        .notes-label {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        
+        .notes-input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+            min-height: 60px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Simple Inventory Ordering System</h1>
+        <p>Fill in quantities and print vendor order sheets</p>
+        <button onclick="window.location.href='staff-knowledge-base.html'" class="btn" style="background: white; color: var(--primary-color); margin-top: 10px;">
+            Back to Staff Portal
+        </button>
+    </div>
+    
+    <!-- VACPACK Vendor -->
+    <div class="vendor-section" id="vacpack">
+        <div class="vendor-header">
+            <div class="vendor-name">VACPACK</div>
+            <div class="order-date">
+                <label>Order Date:</label>
+                <input type="date" id="vacpack-date" value="">
+            </div>
+        </div>
+        
+        <div class="items-grid">
+            <div class="item-row">
+                <div class="item-name">Bananas</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="vacpack" data-item="Bananas">
+                <div class="unit">cases</div>
+            </div>
+            <div class="item-row">
+                <div class="item-name">Strawberries</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="vacpack" data-item="Strawberries">
+                <div class="unit">cases</div>
+            </div>
+            <div class="item-row">
+                <div class="item-name">Blueberries</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="vacpack" data-item="Blueberries">
+                <div class="unit">cases</div>
+            </div>
+            <div class="item-row">
+                <div class="item-name">Sweet Potato</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="vacpack" data-item="Sweet Potato">
+                <div class="unit">cases</div>
+            </div>
+            <div class="item-row">
+                <div class="item-name">Lemons</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="vacpack" data-item="Lemons">
+                <div class="unit">cases</div>
+            </div>
+            <div class="item-row">
+                <div class="item-name">Coconuts</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="vacpack" data-item="Coconuts">
+                <div class="unit">cases</div>
+            </div>
+            <div class="item-row">
+                <div class="item-name">Spinach</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="vacpack" data-item="Spinach">
+                <div class="unit">cases</div>
+            </div>
+            <div class="item-row">
+                <div class="item-name">Kale</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="vacpack" data-item="Kale">
+                <div class="unit">cases</div>
+            </div>
+            <div class="item-row">
+                <div class="item-name">Avocados</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="vacpack" data-item="Avocados">
+                <div class="unit">cases</div>
+            </div>
+            <div class="item-row">
+                <div class="item-name">Pineapple</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="vacpack" data-item="Pineapple">
+                <div class="unit">cases</div>
+            </div>
+        </div>
+        
+        <div class="notes-section">
+            <div class="notes-label">Notes:</div>
+            <textarea class="notes-input" id="vacpack-notes" placeholder="Special instructions or notes for this order..."></textarea>
+        </div>
+        
+        <div class="actions">
+            <button onclick="printVendor('vacpack')" class="btn btn-print">Print VACPACK Order</button>
+            <button onclick="saveVendor('vacpack')" class="btn btn-save">Save Order</button>
+            <button onclick="clearVendor('vacpack')" class="btn btn-clear">Clear</button>
+        </div>
+    </div>
+    
+    <!-- Gordon Foods Vendor -->
+    <div class="vendor-section" id="gordon">
+        <div class="vendor-header">
+            <div class="vendor-name">Gordon Foods</div>
+            <div class="order-date">
+                <label>Order Date:</label>
+                <input type="date" id="gordon-date" value="">
+            </div>
+        </div>
+        
+        <div class="items-grid">
+            <div class="item-row">
+                <div class="item-name">Beyond Burger Patties</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="gordon" data-item="Beyond Burger Patties">
+                <div class="unit">cases</div>
+            </div>
+            <div class="item-row">
+                <div class="item-name">Black Bean Patties</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="gordon" data-item="Black Bean Patties">
+                <div class="unit">cases</div>
+            </div>
+            <div class="item-row">
+                <div class="item-name">Hamburger Buns</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="gordon" data-item="Hamburger Buns">
+                <div class="unit">cases</div>
+            </div>
+            <div class="item-row">
+                <div class="item-name">Sweet Potato Fries</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="gordon" data-item="Sweet Potato Fries">
+                <div class="unit">cases</div>
+            </div>
+            <div class="item-row">
+                <div class="item-name">Oat Milk</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="gordon" data-item="Oat Milk">
+                <div class="unit">cases</div>
+            </div>
+            <div class="item-row">
+                <div class="item-name">Almond Milk</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="gordon" data-item="Almond Milk">
+                <div class="unit">cases</div>
+            </div>
+            <div class="item-row">
+                <div class="item-name">Coconut Milk</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="gordon" data-item="Coconut Milk">
+                <div class="unit">cases</div>
+            </div>
+            <div class="item-row">
+                <div class="item-name">Vegan Cheese</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="gordon" data-item="Vegan Cheese">
+                <div class="unit">cases</div>
+            </div>
+        </div>
+        
+        <div class="notes-section">
+            <div class="notes-label">Notes:</div>
+            <textarea class="notes-input" id="gordon-notes" placeholder="Special instructions or notes for this order..."></textarea>
+        </div>
+        
+        <div class="actions">
+            <button onclick="printVendor('gordon')" class="btn btn-print">Print Gordon Foods Order</button>
+            <button onclick="saveVendor('gordon')" class="btn btn-save">Save Order</button>
+            <button onclick="clearVendor('gordon')" class="btn btn-clear">Clear</button>
+        </div>
+    </div>
+    
+    <!-- Natural Zing Vendor -->
+    <div class="vendor-section" id="naturalzing">
+        <div class="vendor-header">
+            <div class="vendor-name">Natural Zing</div>
+            <div class="order-date">
+                <label>Order Date:</label>
+                <input type="date" id="naturalzing-date" value="">
+            </div>
+        </div>
+        
+        <div class="items-grid">
+            <div class="item-row">
+                <div class="item-name">Organic Acai Powder</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="naturalzing" data-item="Organic Acai Powder">
+                <div class="unit">bags</div>
+            </div>
+            <div class="item-row">
+                <div class="item-name">Chia Seeds</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="naturalzing" data-item="Chia Seeds">
+                <div class="unit">bags</div>
+            </div>
+            <div class="item-row">
+                <div class="item-name">Hemp Hearts</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="naturalzing" data-item="Hemp Hearts">
+                <div class="unit">bags</div>
+            </div>
+            <div class="item-row">
+                <div class="item-name">Goji Berries</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="naturalzing" data-item="Goji Berries">
+                <div class="unit">bags</div>
+            </div>
+            <div class="item-row">
+                <div class="item-name">Cacao Nibs</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="naturalzing" data-item="Cacao Nibs">
+                <div class="unit">bags</div>
+            </div>
+            <div class="item-row">
+                <div class="item-name">Maca Powder</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="naturalzing" data-item="Maca Powder">
+                <div class="unit">bags</div>
+            </div>
+            <div class="item-row">
+                <div class="item-name">Spirulina Powder</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="naturalzing" data-item="Spirulina Powder">
+                <div class="unit">jars</div>
+            </div>
+            <div class="item-row">
+                <div class="item-name">Protein Powder (Vanilla)</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="naturalzing" data-item="Protein Powder (Vanilla)">
+                <div class="unit">containers</div>
+            </div>
+        </div>
+        
+        <div class="notes-section">
+            <div class="notes-label">Notes:</div>
+            <textarea class="notes-input" id="naturalzing-notes" placeholder="Special instructions or notes for this order..."></textarea>
+        </div>
+        
+        <div class="actions">
+            <button onclick="printVendor('naturalzing')" class="btn btn-print">Print Natural Zing Order</button>
+            <button onclick="saveVendor('naturalzing')" class="btn btn-save">Save Order</button>
+            <button onclick="clearVendor('naturalzing')" class="btn btn-clear">Clear</button>
+        </div>
+    </div>
+    
+    <!-- UNFI Vendor -->
+    <div class="vendor-section" id="unfi">
+        <div class="vendor-header">
+            <div class="vendor-name">UNFI</div>
+            <div class="order-date">
+                <label>Order Date:</label>
+                <input type="date" id="unfi-date" value="">
+            </div>
+        </div>
+        
+        <div class="items-grid">
+            <div class="item-row">
+                <div class="item-name">Granola</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="unfi" data-item="Granola">
+                <div class="unit">cases</div>
+            </div>
+            <div class="item-row">
+                <div class="item-name">Peanut Butter</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="unfi" data-item="Peanut Butter">
+                <div class="unit">cases</div>
+            </div>
+            <div class="item-row">
+                <div class="item-name">Almond Butter</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="unfi" data-item="Almond Butter">
+                <div class="unit">cases</div>
+            </div>
+            <div class="item-row">
+                <div class="item-name">Coconut Water</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="unfi" data-item="Coconut Water">
+                <div class="unit">cases</div>
+            </div>
+            <div class="item-row">
+                <div class="item-name">Kombucha</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="unfi" data-item="Kombucha">
+                <div class="unit">cases</div>
+            </div>
+            <div class="item-row">
+                <div class="item-name">Energy Bars</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="unfi" data-item="Energy Bars">
+                <div class="unit">cases</div>
+            </div>
+            <div class="item-row">
+                <div class="item-name">Organic Honey</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="unfi" data-item="Organic Honey">
+                <div class="unit">jars</div>
+            </div>
+            <div class="item-row">
+                <div class="item-name">Agave Nectar</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="unfi" data-item="Agave Nectar">
+                <div class="unit">bottles</div>
+            </div>
+        </div>
+        
+        <div class="notes-section">
+            <div class="notes-label">Notes:</div>
+            <textarea class="notes-input" id="unfi-notes" placeholder="Special instructions or notes for this order..."></textarea>
+        </div>
+        
+        <div class="actions">
+            <button onclick="printVendor('unfi')" class="btn btn-print">Print UNFI Order</button>
+            <button onclick="saveVendor('unfi')" class="btn btn-save">Save Order</button>
+            <button onclick="clearVendor('unfi')" class="btn btn-clear">Clear</button>
+        </div>
+    </div>
+
+    <script>
+        // Set today's date as default
+        document.addEventListener('DOMContentLoaded', function() {
+            const today = new Date().toISOString().split('T')[0];
+            document.querySelectorAll('input[type="date"]').forEach(input => {
+                input.value = today;
+            });
+            
+            // Load saved orders if any
+            loadAllOrders();
+        });
+        
+        // Save vendor order
+        function saveVendor(vendorId) {
+            const vendor = document.getElementById(vendorId);
+            const date = vendor.querySelector(`#${vendorId}-date`).value;
+            const notes = vendor.querySelector(`#${vendorId}-notes`).value;
+            const items = {};
+            
+            vendor.querySelectorAll('.quantity-input').forEach(input => {
+                if (input.value) {
+                    items[input.dataset.item] = input.value;
+                }
+            });
+            
+            const orderData = {
+                vendor: vendorId,
+                date: date,
+                items: items,
+                notes: notes,
+                savedAt: new Date().toISOString()
+            };
+            
+            localStorage.setItem(`order-${vendorId}`, JSON.stringify(orderData));
+            alert(`${vendorId.toUpperCase()} order saved!`);
+        }
+        
+        // Print vendor order
+        function printVendor(vendorId) {
+            // Hide all other vendors
+            document.querySelectorAll('.vendor-section').forEach(section => {
+                if (section.id !== vendorId) {
+                    section.style.display = 'none';
+                }
+            });
+            
+            // Print
+            window.print();
+            
+            // Show all vendors again
+            setTimeout(() => {
+                document.querySelectorAll('.vendor-section').forEach(section => {
+                    section.style.display = 'block';
+                });
+            }, 100);
+        }
+        
+        // Clear vendor order
+        function clearVendor(vendorId) {
+            if (confirm(`Clear all items for ${vendorId.toUpperCase()}?`)) {
+                const vendor = document.getElementById(vendorId);
+                vendor.querySelectorAll('.quantity-input').forEach(input => {
+                    input.value = '';
+                });
+                vendor.querySelector(`#${vendorId}-notes`).value = '';
+                localStorage.removeItem(`order-${vendorId}`);
+            }
+        }
+        
+        // Load all saved orders
+        function loadAllOrders() {
+            ['vacpack', 'gordon', 'naturalzing', 'unfi'].forEach(vendorId => {
+                const savedOrder = localStorage.getItem(`order-${vendorId}`);
+                if (savedOrder) {
+                    const orderData = JSON.parse(savedOrder);
+                    const vendor = document.getElementById(vendorId);
+                    
+                    // Load date
+                    vendor.querySelector(`#${vendorId}-date`).value = orderData.date || '';
+                    
+                    // Load notes
+                    vendor.querySelector(`#${vendorId}-notes`).value = orderData.notes || '';
+                    
+                    // Load items
+                    Object.entries(orderData.items).forEach(([item, quantity]) => {
+                        const input = vendor.querySelector(`[data-item="${item}"]`);
+                        if (input) {
+                            input.value = quantity;
+                        }
+                    });
+                }
+            });
+        }
+    </script>
+</body>
+</html>
