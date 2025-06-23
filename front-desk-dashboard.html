@@ -270,6 +270,72 @@
             opacity: 1;
         }
         
+        /* Edit mode styles */
+        .editable-cell {
+            cursor: pointer;
+            position: relative;
+        }
+        
+        .editable-cell:hover {
+            background: rgba(164, 124, 91, 0.1);
+            border-radius: 4px;
+        }
+        
+        .edit-input {
+            width: 100%;
+            padding: 6px;
+            border: 2px solid var(--primary-color);
+            border-radius: 4px;
+            background: white;
+            color: #333;
+            font-size: 0.9rem;
+        }
+        
+        .edit-select {
+            width: 100%;
+            padding: 6px;
+            border: 2px solid var(--primary-color);
+            border-radius: 4px;
+            background: white;
+            color: #333;
+            font-size: 0.9rem;
+        }
+        
+        .edit-controls {
+            display: flex;
+            gap: 5px;
+            margin-top: 5px;
+        }
+        
+        .edit-btn {
+            padding: 4px 8px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+        
+        .edit-save {
+            background: #22c55e;
+            color: white;
+        }
+        
+        .edit-cancel {
+            background: #6b7280;
+            color: white;
+        }
+        
+        .edit-icon {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 4px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            margin-left: 5px;
+        }
+        
         textarea {
             width: 100%;
             min-height: 100px;
@@ -542,16 +608,16 @@
                 
                 const row = document.createElement('tr');
                 row.innerHTML = `
-                    <td><strong>${checkin.name}</strong></td>
-                    <td>${checkin.phone}</td>
-                    <td>${checkin.timeIn}</td>
-                    <td class="${checkin.firstVisit === 'YES' ? 'first-visit-yes' : 'first-visit-no'}">${checkin.firstVisit}</td>
-                    <td>${checkin.reason}</td>
-                    <td>${checkin.subReason || '-'}</td>
+                    <td class="editable-cell" onclick="editField('${checkin.id}', 'name', this)"><strong>${checkin.name}</strong><button class="edit-icon">✏️</button></td>
+                    <td class="editable-cell" onclick="editField('${checkin.id}', 'phone', this)">${checkin.phone}<button class="edit-icon">✏️</button></td>
+                    <td class="editable-cell" onclick="editField('${checkin.id}', 'timeIn', this)">${checkin.timeIn}<button class="edit-icon">✏️</button></td>
+                    <td class="editable-cell ${checkin.firstVisit === 'YES' ? 'first-visit-yes' : 'first-visit-no'}" onclick="editField('${checkin.id}', 'firstVisit', this)">${checkin.firstVisit}<button class="edit-icon">✏️</button></td>
+                    <td class="editable-cell" onclick="editField('${checkin.id}', 'reason', this)">${checkin.reason}<button class="edit-icon">✏️</button></td>
+                    <td class="editable-cell" onclick="editField('${checkin.id}', 'subReason', this)">${checkin.subReason || '-'}<button class="edit-icon">✏️</button></td>
                     <td class="wait-time">${checkin.status === 'waiting' ? formatWaitTime(waitTime) : '-'}</td>
-                    <td><span class="status-badge status-${checkin.status}">${checkin.status}</span></td>
+                    <td class="editable-cell" onclick="editField('${checkin.id}', 'status', this)"><span class="status-badge status-${checkin.status}">${checkin.status}</span><button class="edit-icon">✏️</button></td>
                     <td>${checkin.ackBy || '-'}</td>
-                    <td>${checkin.comment || '-'}</td>
+                    <td class="editable-cell" onclick="editField('${checkin.id}', 'comment', this)">${checkin.comment || '-'}<button class="edit-icon">✏️</button></td>
                     <td>
                         <div class="action-btns">
                             ${checkin.status === 'waiting' ? 
@@ -724,6 +790,94 @@
             loadCheckins();
         }
         
+        // Edit field functionality
+        function editField(checkInId, fieldName, cellElement) {
+            // Prevent editing if already in edit mode
+            if (cellElement.querySelector('.edit-input') || cellElement.querySelector('.edit-select')) {
+                return;
+            }
+            
+            const checkins = JSON.parse(localStorage.getItem('allCheckins') || '[]');
+            const checkin = checkins.find(c => c.id === checkInId);
+            
+            if (!checkin) return;
+            
+            const currentValue = checkin[fieldName] || '';
+            const originalHTML = cellElement.innerHTML;
+            
+            let inputHTML = '';
+            
+            // Create appropriate input based on field type
+            if (fieldName === 'firstVisit') {
+                inputHTML = `
+                    <select class="edit-select" id="edit-${checkInId}-${fieldName}">
+                        <option value="YES" ${currentValue === 'YES' ? 'selected' : ''}>YES</option>
+                        <option value="NO" ${currentValue === 'NO' ? 'selected' : ''}>NO</option>
+                    </select>
+                `;
+            } else if (fieldName === 'status') {
+                inputHTML = `
+                    <select class="edit-select" id="edit-${checkInId}-${fieldName}">
+                        <option value="waiting" ${currentValue === 'waiting' ? 'selected' : ''}>waiting</option>
+                        <option value="active" ${currentValue === 'active' ? 'selected' : ''}>active</option>
+                        <option value="completed" ${currentValue === 'completed' ? 'selected' : ''}>completed</option>
+                    </select>
+                `;
+            } else if (fieldName === 'reason') {
+                inputHTML = `
+                    <select class="edit-select" id="edit-${checkInId}-${fieldName}">
+                        <option value="Massage" ${currentValue === 'Massage' ? 'selected' : ''}>Massage</option>
+                        <option value="Red Light Therapy" ${currentValue === 'Red Light Therapy' ? 'selected' : ''}>Red Light Therapy</option>
+                        <option value="IV Therapy" ${currentValue === 'IV Therapy' ? 'selected' : ''}>IV Therapy</option>
+                        <option value="Wellness Consultation" ${currentValue === 'Wellness Consultation' ? 'selected' : ''}>Wellness Consultation</option>
+                        <option value="HydraCare" ${currentValue === 'HydraCare' ? 'selected' : ''}>HydraCare</option>
+                        <option value="Vitamin B12 Injection" ${currentValue === 'Vitamin B12 Injection' ? 'selected' : ''}>Vitamin B12 Injection</option>
+                        <option value="Compression Therapy" ${currentValue === 'Compression Therapy' ? 'selected' : ''}>Compression Therapy</option>
+                        <option value="Other" ${currentValue === 'Other' ? 'selected' : ''}>Other</option>
+                    </select>
+                `;
+            } else if (fieldName === 'timeIn') {
+                inputHTML = `<input type="time" class="edit-input" id="edit-${checkInId}-${fieldName}" value="${currentValue}">`;
+            } else {
+                inputHTML = `<input type="text" class="edit-input" id="edit-${checkInId}-${fieldName}" value="${currentValue}">`;
+            }
+            
+            inputHTML += `
+                <div class="edit-controls">
+                    <button class="edit-btn edit-save" onclick="saveFieldEdit('${checkInId}', '${fieldName}', this)">Save</button>
+                    <button class="edit-btn edit-cancel" onclick="cancelFieldEdit(this, '${originalHTML.replace(/'/g, '&#39;')}')">Cancel</button>
+                </div>
+            `;
+            
+            cellElement.innerHTML = inputHTML;
+            cellElement.querySelector('.edit-input, .edit-select').focus();
+        }
+        
+        function saveFieldEdit(checkInId, fieldName, buttonElement) {
+            const cellElement = buttonElement.closest('td');
+            const inputElement = cellElement.querySelector('.edit-input, .edit-select');
+            const newValue = inputElement.value;
+            
+            // Update the data
+            const checkins = JSON.parse(localStorage.getItem('allCheckins') || '[]');
+            const checkinIndex = checkins.findIndex(c => c.id === checkInId);
+            
+            if (checkinIndex !== -1) {
+                checkins[checkinIndex][fieldName] = newValue;
+                localStorage.setItem('allCheckins', JSON.stringify(checkins));
+                
+                // Refresh the table to show updated data
+                loadCheckins();
+                
+                console.log(`Updated ${fieldName} for ${checkInId} to: ${newValue}`);
+            }
+        }
+        
+        function cancelFieldEdit(buttonElement, originalHTML) {
+            const cellElement = buttonElement.closest('td');
+            cellElement.innerHTML = originalHTML;
+        }
+
         // Archive completed check-ins and generate report
         function clearAllData() {
             console.log('🗃️ Starting End of Day process...');
