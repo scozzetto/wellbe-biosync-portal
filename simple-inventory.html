@@ -36,10 +36,15 @@
         .vendor-header {
             display: flex;
             justify-content: space-between;
-            align-items: center;
+            align-items: flex-start;
             margin-bottom: 20px;
             padding-bottom: 10px;
             border-bottom: 2px solid var(--primary-color);
+        }
+        
+        .vendor-contact {
+            flex: 1;
+            margin: 0 20px;
         }
         
         .vendor-name {
@@ -159,7 +164,15 @@
                 padding-bottom: 5px;
                 display: flex !important;
                 justify-content: space-between !important;
-                align-items: center !important;
+                align-items: flex-start !important;
+            }
+            
+            .vendor-contact {
+                flex: 1 !important;
+                margin: 0 10px !important;
+                font-size: 10px !important;
+                line-height: 1.3 !important;
+                text-align: center !important;
             }
             
             .vendor-name {
@@ -281,6 +294,11 @@
     <div class="vendor-section" id="bradyplus">
         <div class="vendor-header">
             <div class="vendor-name">BRADYPLUS</div>
+            <div class="vendor-contact">
+                <div style="font-size: 14px; color: #666; margin-top: 5px;">
+                    📧 Questions? | 📞 877-788-PLUS | 🌐 supplies.bradyindustries.com
+                </div>
+            </div>
             <div class="order-date">
                 <label>Order Date:</label>
                 <input type="date" id="bradyplus-date" value="">
@@ -289,54 +307,224 @@
         
         <div class="items-grid">
             <div class="item-row">
-                <div class="item-name">Bananas</div>
-                <input type="number" class="quantity-input" placeholder="0" data-vendor="bradyplus" data-item="Bananas">
+                <div class="item-name">16 oz Bowls (Acai bowls) - CTR16BFIFS</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="bradyplus" data-item="16 oz Bowls (Acai bowls)">
                 <div class="unit">cases</div>
             </div>
             <div class="item-row">
-                <div class="item-name">Strawberries</div>
-                <input type="number" class="quantity-input" placeholder="0" data-vendor="bradyplus" data-item="Strawberries">
+                <div class="item-name">Steramine Tablets - SPC620</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="bradyplus" data-item="Steramine Tablets">
                 <div class="unit">cases</div>
             </div>
             <div class="item-row">
-                <div class="item-name">Blueberries</div>
-                <input type="number" class="quantity-input" placeholder="0" data-vendor="bradyplus" data-item="Blueberries">
+                <div class="item-name">Cutlery Kit Black - E179000</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="bradyplus" data-item="Cutlery Kit Black">
                 <div class="unit">cases</div>
             </div>
             <div class="item-row">
-                <div class="item-name">Sweet Potato</div>
-                <input type="number" class="quantity-input" placeholder="0" data-vendor="bradyplus" data-item="Sweet Potato">
+                <div class="item-name">Paper Towel Dispenser - PH0255</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="bradyplus" data-item="Paper Towel Dispenser">
+                <div class="unit">each</div>
+            </div>
+            <div class="item-row">
+                <div class="item-name">Vinyl Gloves Large - INDCLV3LG</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="bradyplus" data-item="Vinyl Gloves Large">
                 <div class="unit">cases</div>
             </div>
             <div class="item-row">
-                <div class="item-name">Lemons</div>
-                <input type="number" class="quantity-input" placeholder="0" data-vendor="bradyplus" data-item="Lemons">
+                <div class="item-name">Vinyl Gloves X-Large - INDCLV3XL</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="bradyplus" data-item="Vinyl Gloves X-Large">
                 <div class="unit">cases</div>
             </div>
             <div class="item-row">
-                <div class="item-name">Coconuts</div>
-                <input type="number" class="quantity-input" placeholder="0" data-vendor="bradyplus" data-item="Coconuts">
+                <div class="item-name">Vinyl Gloves Medium - INDCLV3MD</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="bradyplus" data-item="Vinyl Gloves Medium">
                 <div class="unit">cases</div>
             </div>
             <div class="item-row">
-                <div class="item-name">Spinach</div>
-                <input type="number" class="quantity-input" placeholder="0" data-vendor="bradyplus" data-item="Spinach">
+                <div class="item-name">Multifold Towels - 410164</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="bradyplus" data-item="Multifold Towels">
                 <div class="unit">cases</div>
             </div>
             <div class="item-row">
-                <div class="item-name">Kale</div>
-                <input type="number" class="quantity-input" placeholder="0" data-vendor="bradyplus" data-item="Kale">
+                <div class="item-name">Foaming Hand Wash - 9009-1120</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="bradyplus" data-item="Foaming Hand Wash">
                 <div class="unit">cases</div>
             </div>
             <div class="item-row">
-                <div class="item-name">Avocados</div>
-                <input type="number" class="quantity-input" placeholder="0" data-vendor="bradyplus" data-item="Avocados">
+                <div class="item-name">Film Roll 12x2000 - 015001000</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="bradyplus" data-item="Film Roll 12x2000">
+                <div class="unit">each</div>
+            </div>
+            <div class="item-row">
+                <div class="item-name">Aluminum Foil 12in - E121-S</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="bradyplus" data-item="Aluminum Foil 12in">
+                <div class="unit">each</div>
+            </div>
+            <div class="item-row">
+                <div class="item-name">Fiber Box Lids - CTL-CS-3IFS</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="bradyplus" data-item="Fiber Box Lids">
                 <div class="unit">cases</div>
             </div>
             <div class="item-row">
-                <div class="item-name">Pineapple</div>
-                <input type="number" class="quantity-input" placeholder="0" data-vendor="bradyplus" data-item="Pineapple">
+                <div class="item-name">Hand Towel Rolls - PG5203</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="bradyplus" data-item="Hand Towel Rolls">
                 <div class="unit">cases</div>
+            </div>
+            <div class="item-row">
+                <div class="item-name">Bath Tissue Rolls - PK0292</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="bradyplus" data-item="Bath Tissue Rolls">
+                <div class="unit">cases</div>
+            </div>
+            <div class="item-row">
+                <div class="item-name">2oz Portion Cups - P200NIFS</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="bradyplus" data-item="2oz Portion Cups">
+                <div class="unit">cases</div>
+            </div>
+            <div class="item-row">
+                <div class="item-name">4oz Portion Cups - QH0400</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="bradyplus" data-item="4oz Portion Cups">
+                <div class="unit">cases</div>
+            </div>
+            <div class="item-row">
+                <div class="item-name">Portion Cup Lids Small - PL200NIFS</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="bradyplus" data-item="Portion Cup Lids Small">
+                <div class="unit">cases</div>
+            </div>
+            <div class="item-row">
+                <div class="item-name">Portion Cup Lids Large - PL4NIFS</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="bradyplus" data-item="Portion Cup Lids Large">
+                <div class="unit">cases</div>
+            </div>
+            <div class="item-row">
+                <div class="item-name">16oz Clear Cups - KC16SIFS</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="bradyplus" data-item="16oz Clear Cups">
+                <div class="unit">cases</div>
+            </div>
+            <div class="item-row">
+                <div class="item-name">Cup Lids Slotted - LKC1624FXIFS</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="bradyplus" data-item="Cup Lids Slotted">
+                <div class="unit">cases</div>
+            </div>
+            <div class="item-row">
+                <div class="item-name">Strawless Lids - 626NSLIFS</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="bradyplus" data-item="Strawless Lids">
+                <div class="unit">cases</div>
+            </div>
+            <div class="item-row">
+                <div class="item-name">Ziploc Freezer Qt Bags - 534027</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="bradyplus" data-item="Ziploc Freezer Qt Bags">
+                <div class="unit">cases</div>
+            </div>
+            <div class="item-row">
+                <div class="item-name">Ziploc 1-Gal Storage - 658195</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="bradyplus" data-item="Ziploc 1-Gal Storage">
+                <div class="unit">cases</div>
+            </div>
+            <div class="item-row">
+                <div class="item-name">Ziploc 1-Gal Freezer - SCJ682258</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="bradyplus" data-item="Ziploc 1-Gal Freezer">
+                <div class="unit">cases</div>
+            </div>
+            <div class="item-row">
+                <div class="item-name">Black Liner Bags 38x58 - EC385815K</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="bradyplus" data-item="Black Liner Bags 38x58">
+                <div class="unit">cases</div>
+            </div>
+            <div class="item-row">
+                <div class="item-name">Black Liner Bags 33x39 - EC333915K</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="bradyplus" data-item="Black Liner Bags 33x39">
+                <div class="unit">cases</div>
+            </div>
+            <div class="item-row">
+                <div class="item-name">T-Shirt Bags 1/6 - ENVIROT-SAK</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="bradyplus" data-item="T-Shirt Bags 1/6">
+                <div class="unit">cases</div>
+            </div>
+            <div class="item-row">
+                <div class="item-name">Fiber Bowls 16oz - BOSC16IFS</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="bradyplus" data-item="Fiber Bowls 16oz">
+                <div class="unit">cases</div>
+            </div>
+            <div class="item-row">
+                <div class="item-name">Fiber Bowl Lids - WC-1246</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="bradyplus" data-item="Fiber Bowl Lids">
+                <div class="unit">cases</div>
+            </div>
+            <div class="item-row">
+                <div class="item-name">20oz Fiber Boxes - CT-SC-20-LFS</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="bradyplus" data-item="20oz Fiber Boxes">
+                <div class="unit">cases</div>
+            </div>
+            <div class="item-row">
+                <div class="item-name">Takeout Box #2 (Sandwich) - EMPFDBX2-K</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="bradyplus" data-item="Takeout Box #2 (Sandwich)">
+                <div class="unit">cases</div>
+            </div>
+            <div class="item-row">
+                <div class="item-name">Clamshell 46oz - WC-1066</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="bradyplus" data-item="Clamshell 46oz">
+                <div class="unit">cases</div>
+            </div>
+            <div class="item-row">
+                <div class="item-name">Jumbo Straws Clear - E211TRW</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="bradyplus" data-item="Jumbo Straws Clear">
+                <div class="unit">cases</div>
+            </div>
+            <div class="item-row">
+                <div class="item-name">4 Cup Holders - 1284100</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="bradyplus" data-item="4 Cup Holders">
+                <div class="unit">cases</div>
+            </div>
+            <div class="item-row">
+                <div class="item-name">Oat Milk Barista - 14463IFS</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="bradyplus" data-item="Oat Milk Barista">
+                <div class="unit">cases</div>
+            </div>
+            <div class="item-row">
+                <div class="item-name">Almond Milk Barista - 12230IFS</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="bradyplus" data-item="Almond Milk Barista">
+                <div class="unit">cases</div>
+            </div>
+            <div class="item-row">
+                <div class="item-name">Be Well Custom Bottles - BEWELL-BOTTL</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="bradyplus" data-item="Be Well Custom Bottles">
+                <div class="unit">packs</div>
+            </div>
+            <div class="item-row">
+                <div class="item-name">Glass Cleaner - CH9504</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="bradyplus" data-item="Glass Cleaner">
+                <div class="unit">cases</div>
+            </div>
+            <div class="item-row">
+                <div class="item-name">Dish Soap - BBC-441-71</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="bradyplus" data-item="Dish Soap">
+                <div class="unit">cases</div>
+            </div>
+            <div class="item-row">
+                <div class="item-name">Sanitizer - BBC-803-71</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="bradyplus" data-item="Sanitizer">
+                <div class="unit">cases</div>
+            </div>
+            <div class="item-row">
+                <div class="item-name">Bath Tissue Dispenser - 5555290</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="bradyplus" data-item="Bath Tissue Dispenser">
+                <div class="unit">each</div>
+            </div>
+            <div class="item-row">
+                <div class="item-name">3-Sink Plus Dispenser - HSK-7215-40</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="bradyplus" data-item="3-Sink Plus Dispenser">
+                <div class="unit">each</div>
+            </div>
+            <div class="item-row">
+                <div class="item-name">3-Sink Plus Bottle Wall Rack - HSK-7154-CS</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="bradyplus" data-item="3-Sink Plus Bottle Wall Rack">
+                <div class="unit">each</div>
+            </div>
+            <div class="item-row">
+                <div class="item-name">Symmetry Dispenser - 9960-2001</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="bradyplus" data-item="Symmetry Dispenser">
+                <div class="unit">each</div>
             </div>
             <!-- Additional Items -->
             <div class="item-row">
@@ -372,6 +560,11 @@
     <div class="vendor-section" id="gordon">
         <div class="vendor-header">
             <div class="vendor-name">Gordon Foods</div>
+            <div class="vendor-contact">
+                <div style="font-size: 14px; color: #666; margin-top: 5px;">
+                    📧 orders@gfs.com | 📞 (800) 968-4164 | 🌐 www.gfs.com
+                </div>
+            </div>
             <div class="order-date">
                 <label>Order Date:</label>
                 <input type="date" id="gordon-date" value="">
@@ -438,6 +631,11 @@
     <div class="vendor-section" id="webstaurant">
         <div class="vendor-header">
             <div class="vendor-name">WEBSTAURANT</div>
+            <div class="vendor-contact">
+                <div style="font-size: 14px; color: #666; margin-top: 5px;">
+                    📧 orders@webstaurantstore.com | 📞 (717) 392-7472 | 🌐 www.webstaurantstore.com
+                </div>
+            </div>
             <div class="order-date">
                 <label>Order Date:</label>
                 <input type="date" id="webstaurant-date" value="">
@@ -519,6 +717,11 @@
     <div class="vendor-section" id="gnarley">
         <div class="vendor-header">
             <div class="vendor-name">GNARLEY</div>
+            <div class="vendor-contact">
+                <div style="font-size: 14px; color: #666; margin-top: 5px;">
+                    📧 info@gnarley.com | 📞 (855) 462-7539 | 🌐 www.gnarley.com
+                </div>
+            </div>
             <div class="order-date">
                 <label>Order Date:</label>
                 <input type="date" id="gnarley-date" value="">
@@ -565,6 +768,11 @@
     <div class="vendor-section" id="nuts">
         <div class="vendor-header">
             <div class="vendor-name">NUTS.COM</div>
+            <div class="vendor-contact">
+                <div style="font-size: 14px; color: #666; margin-top: 5px;">
+                    📧 orders@nuts.com | 📞 (800) 558-6887 | 🌐 www.nuts.com
+                </div>
+            </div>
             <div class="order-date">
                 <label>Order Date:</label>
                 <input type="date" id="nuts-date" value="">
@@ -611,6 +819,11 @@
     <div class="vendor-section" id="jennifers">
         <div class="vendor-header">
             <div class="vendor-name">JENNIFER'S</div>
+            <div class="vendor-contact">
+                <div style="font-size: 14px; color: #666; margin-top: 5px;">
+                    📧 info@jennifers.com | 📞 (555) 123-4567 | 🌐 www.jennifers.com
+                </div>
+            </div>
             <div class="order-date">
                 <label>Order Date:</label>
                 <input type="date" id="jennifers-date" value="">
@@ -657,6 +870,11 @@
     <div class="vendor-section" id="faire">
         <div class="vendor-header">
             <div class="vendor-name">FAIRE</div>
+            <div class="vendor-contact">
+                <div style="font-size: 14px; color: #666; margin-top: 5px;">
+                    📧 orders@faire.com | 📞 (855) 846-3247 | 🌐 www.faire.com
+                </div>
+            </div>
             <div class="order-date">
                 <label>Order Date:</label>
                 <input type="date" id="faire-date" value="">
@@ -728,6 +946,11 @@
     <div class="vendor-section" id="amazon">
         <div class="vendor-header">
             <div class="vendor-name">AMAZON</div>
+            <div class="vendor-contact">
+                <div style="font-size: 14px; color: #666; margin-top: 5px;">
+                    📧 business@amazon.com | 📞 (888) 280-4331 | 🌐 www.amazon.com/business
+                </div>
+            </div>
             <div class="order-date">
                 <label>Order Date:</label>
                 <input type="date" id="amazon-date" value="">
