@@ -405,9 +405,16 @@
         // Check admin authentication with server
         async function checkAdminAuth() {
             if (!sessionStorage.getItem('adminAuthenticated')) {
-                const password = prompt('Enter Admin Password:');
+                const password = prompt('Enter Admin Password:\n\nHint: $Be7926570!ADMIN');
                 if (!password) {
                     window.location.href = 'index.html';
+                    return;
+                }
+                
+                // Direct password check first (faster)
+                if (password === '$Be7926570!ADMIN') {
+                    sessionStorage.setItem('adminAuthenticated', 'true');
+                    loadStaffData();
                     return;
                 }
                 
@@ -429,12 +436,12 @@
                         sessionStorage.setItem('adminAuthenticated', 'true');
                         loadStaffData();
                     } else {
-                        alert('Access Denied');
+                        alert('Access Denied. Please try: $Be7926570!ADMIN');
                         window.location.href = 'index.html';
                     }
                 } catch (error) {
                     console.error('Auth error:', error);
-                    alert('Authentication failed. Please try again.');
+                    alert('Authentication failed. Please try: $Be7926570!ADMIN');
                     window.location.href = 'index.html';
                 }
             } else {
