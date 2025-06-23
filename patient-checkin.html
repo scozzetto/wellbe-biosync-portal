@@ -470,6 +470,52 @@
             secondaryService: ''
         };
         
+        // Auto-reset timer (30 seconds of inactivity)
+        let autoResetTimer = null;
+        
+        function resetAutoTimer() {
+            if (autoResetTimer) {
+                clearTimeout(autoResetTimer);
+            }
+            
+            // Only start timer if we're not on step 1 (welcome screen)
+            if (currentStep > 1) {
+                autoResetTimer = setTimeout(() => {
+                    console.log('Auto-resetting due to inactivity');
+                    resetToStart();
+                }, 30000); // 30 seconds
+            }
+        }
+        
+        function resetToStart() {
+            currentStep = 1;
+            formData = {
+                name: '',
+                phone: '',
+                phoneRaw: '',
+                firstVisit: '',
+                primaryService: '',
+                secondaryService: ''
+            };
+            
+            // Hide all steps
+            document.querySelectorAll('.step').forEach(step => step.classList.add('hidden'));
+            
+            // Show step 1
+            document.getElementById('step1').classList.remove('hidden');
+            
+            // Reset displays
+            updateNameDisplay();
+            updatePhoneDisplay();
+            updateProgress();
+            
+            // Clear timer
+            if (autoResetTimer) {
+                clearTimeout(autoResetTimer);
+                autoResetTimer = null;
+            }
+        }
+        
         // Update progress bar
         function updateProgress() {
             const progress = (currentStep / 5) * 100;
@@ -483,11 +529,13 @@
         function addLetter(letter) {
             formData.name += letter;
             updateNameDisplay();
+            resetAutoTimer();
         }
         
         function backspace() {
             formData.name = formData.name.slice(0, -1);
             updateNameDisplay();
+            resetAutoTimer();
         }
         
         function updateNameDisplay() {
@@ -507,11 +555,13 @@
                 formData.phoneRaw += num;
                 updatePhoneDisplay();
             }
+            resetAutoTimer();
         }
         
         function backspacePhone() {
             formData.phoneRaw = formData.phoneRaw.slice(0, -1);
             updatePhoneDisplay();
+            resetAutoTimer();
         }
         
         function updatePhoneDisplay() {
@@ -545,23 +595,27 @@
         // First visit
         function setFirstVisit(value) {
             formData.firstVisit = value;
+            resetAutoTimer();
             nextStep();
         }
         
         // Service selection
         function selectService(service) {
             formData.primaryService = service;
+            resetAutoTimer();
             nextStep();
         }
         
         function selectSecondaryService(service) {
             formData.secondaryService = service === 'None' ? '' : service;
+            resetAutoTimer();
             console.log('🎯 About to call submitCheckIn for:', formData.name);
             submitCheckIn();
         }
         
         // Navigation
         function nextStep() {
+            resetAutoTimer();
             // Validation
             if (currentStep === 1 && !formData.name.trim()) {
                 return;
@@ -578,6 +632,11 @@
             if (currentStep <= 5) {
                 document.getElementById('step' + currentStep).classList.remove('hidden');
                 updateProgress();
+                
+                // Start auto-reset timer when moving past welcome screen
+                if (currentStep === 2) {
+                    resetAutoTimer();
+                }
             }
         }
         
@@ -587,6 +646,7 @@
                 currentStep--;
                 document.getElementById('step' + currentStep).classList.remove('hidden');
                 updateProgress();
+                resetAutoTimer();
             }
         }
         

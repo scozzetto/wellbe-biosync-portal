@@ -769,6 +769,17 @@
                 const updatedCheckins = checkins.filter(c => c.id !== id);
                 localStorage.setItem('allCheckins', JSON.stringify(updatedCheckins));
                 
+                // Also notify server
+                try {
+                    fetch('/.netlify/functions/checkin-sync', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ action: 'delete', id: id, deletedBy: document.getElementById('currentUser').textContent })
+                    });
+                } catch (e) {
+                    console.log('Server delete notification failed (not critical):', e);
+                }
+                
                 console.log('Deleted patient:', checkin.name, 'ID:', id);
                 console.log('Remaining checkins:', updatedCheckins.length);
                 
