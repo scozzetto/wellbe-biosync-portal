@@ -173,78 +173,94 @@
         </button>
     </div>
     
-    <!-- VACPACK Vendor -->
-    <div class="vendor-section" id="vacpack">
+    <!-- BRADYPLUS (formerly VACPACK) Vendor -->
+    <div class="vendor-section" id="bradyplus">
         <div class="vendor-header">
-            <div class="vendor-name">VACPACK</div>
+            <div class="vendor-name">BRADYPLUS</div>
             <div class="order-date">
                 <label>Order Date:</label>
-                <input type="date" id="vacpack-date" value="">
+                <input type="date" id="bradyplus-date" value="">
             </div>
         </div>
         
         <div class="items-grid">
             <div class="item-row">
                 <div class="item-name">Bananas</div>
-                <input type="number" class="quantity-input" placeholder="0" data-vendor="vacpack" data-item="Bananas">
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="bradyplus" data-item="Bananas">
                 <div class="unit">cases</div>
             </div>
             <div class="item-row">
                 <div class="item-name">Strawberries</div>
-                <input type="number" class="quantity-input" placeholder="0" data-vendor="vacpack" data-item="Strawberries">
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="bradyplus" data-item="Strawberries">
                 <div class="unit">cases</div>
             </div>
             <div class="item-row">
                 <div class="item-name">Blueberries</div>
-                <input type="number" class="quantity-input" placeholder="0" data-vendor="vacpack" data-item="Blueberries">
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="bradyplus" data-item="Blueberries">
                 <div class="unit">cases</div>
             </div>
             <div class="item-row">
                 <div class="item-name">Sweet Potato</div>
-                <input type="number" class="quantity-input" placeholder="0" data-vendor="vacpack" data-item="Sweet Potato">
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="bradyplus" data-item="Sweet Potato">
                 <div class="unit">cases</div>
             </div>
             <div class="item-row">
                 <div class="item-name">Lemons</div>
-                <input type="number" class="quantity-input" placeholder="0" data-vendor="vacpack" data-item="Lemons">
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="bradyplus" data-item="Lemons">
                 <div class="unit">cases</div>
             </div>
             <div class="item-row">
                 <div class="item-name">Coconuts</div>
-                <input type="number" class="quantity-input" placeholder="0" data-vendor="vacpack" data-item="Coconuts">
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="bradyplus" data-item="Coconuts">
                 <div class="unit">cases</div>
             </div>
             <div class="item-row">
                 <div class="item-name">Spinach</div>
-                <input type="number" class="quantity-input" placeholder="0" data-vendor="vacpack" data-item="Spinach">
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="bradyplus" data-item="Spinach">
                 <div class="unit">cases</div>
             </div>
             <div class="item-row">
                 <div class="item-name">Kale</div>
-                <input type="number" class="quantity-input" placeholder="0" data-vendor="vacpack" data-item="Kale">
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="bradyplus" data-item="Kale">
                 <div class="unit">cases</div>
             </div>
             <div class="item-row">
                 <div class="item-name">Avocados</div>
-                <input type="number" class="quantity-input" placeholder="0" data-vendor="vacpack" data-item="Avocados">
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="bradyplus" data-item="Avocados">
                 <div class="unit">cases</div>
             </div>
             <div class="item-row">
                 <div class="item-name">Pineapple</div>
-                <input type="number" class="quantity-input" placeholder="0" data-vendor="vacpack" data-item="Pineapple">
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="bradyplus" data-item="Pineapple">
                 <div class="unit">cases</div>
+            </div>
+            <!-- Additional Items -->
+            <div class="item-row">
+                <input type="text" class="item-name" placeholder="Additional item..." style="padding: 8px; border: 1px solid #ccc; border-radius: 4px;" data-vendor="bradyplus" data-type="custom-item">
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="bradyplus" data-type="custom-qty">
+                <input type="text" class="unit" placeholder="units" style="padding: 8px; border: 1px solid #ccc; border-radius: 4px; width: 100%;" data-vendor="bradyplus" data-type="custom-unit">
+            </div>
+            <div class="item-row">
+                <input type="text" class="item-name" placeholder="Additional item..." style="padding: 8px; border: 1px solid #ccc; border-radius: 4px;" data-vendor="bradyplus" data-type="custom-item">
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="bradyplus" data-type="custom-qty">
+                <input type="text" class="unit" placeholder="units" style="padding: 8px; border: 1px solid #ccc; border-radius: 4px; width: 100%;" data-vendor="bradyplus" data-type="custom-unit">
+            </div>
+            <div class="item-row">
+                <input type="text" class="item-name" placeholder="Additional item..." style="padding: 8px; border: 1px solid #ccc; border-radius: 4px;" data-vendor="bradyplus" data-type="custom-item">
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="bradyplus" data-type="custom-qty">
+                <input type="text" class="unit" placeholder="units" style="padding: 8px; border: 1px solid #ccc; border-radius: 4px; width: 100%;" data-vendor="bradyplus" data-type="custom-unit">
             </div>
         </div>
         
         <div class="notes-section">
             <div class="notes-label">Notes:</div>
-            <textarea class="notes-input" id="vacpack-notes" placeholder="Special instructions or notes for this order..."></textarea>
+            <textarea class="notes-input" id="bradyplus-notes" placeholder="Special instructions or notes for this order..."></textarea>
         </div>
         
         <div class="actions">
-            <button onclick="printVendor('vacpack')" class="btn btn-print">Print VACPACK Order</button>
-            <button onclick="saveVendor('vacpack')" class="btn btn-save">Save Order</button>
-            <button onclick="clearVendor('vacpack')" class="btn btn-clear">Clear</button>
+            <button onclick="printVendor('bradyplus')" class="btn btn-print">Print BRADYPLUS Order</button>
+            <button onclick="saveVendor('bradyplus')" class="btn btn-save">Save Order</button>
+            <button onclick="clearVendor('bradyplus')" class="btn btn-clear">Clear</button>
         </div>
     </div>
     
@@ -260,28 +276,18 @@
         
         <div class="items-grid">
             <div class="item-row">
-                <div class="item-name">Beyond Burger Patties</div>
-                <input type="number" class="quantity-input" placeholder="0" data-vendor="gordon" data-item="Beyond Burger Patties">
+                <div class="item-name">Chicken Breast</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="gordon" data-item="Chicken Breast">
                 <div class="unit">cases</div>
             </div>
             <div class="item-row">
-                <div class="item-name">Black Bean Patties</div>
-                <input type="number" class="quantity-input" placeholder="0" data-vendor="gordon" data-item="Black Bean Patties">
+                <div class="item-name">4oz Hamburger Patties</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="gordon" data-item="4oz Hamburger Patties">
                 <div class="unit">cases</div>
             </div>
             <div class="item-row">
-                <div class="item-name">Hamburger Buns</div>
-                <input type="number" class="quantity-input" placeholder="0" data-vendor="gordon" data-item="Hamburger Buns">
-                <div class="unit">cases</div>
-            </div>
-            <div class="item-row">
-                <div class="item-name">Sweet Potato Fries</div>
-                <input type="number" class="quantity-input" placeholder="0" data-vendor="gordon" data-item="Sweet Potato Fries">
-                <div class="unit">cases</div>
-            </div>
-            <div class="item-row">
-                <div class="item-name">Oat Milk</div>
-                <input type="number" class="quantity-input" placeholder="0" data-vendor="gordon" data-item="Oat Milk">
+                <div class="item-name">6oz Hamburger Patties</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="gordon" data-item="6oz Hamburger Patties">
                 <div class="unit">cases</div>
             </div>
             <div class="item-row">
@@ -290,14 +296,25 @@
                 <div class="unit">cases</div>
             </div>
             <div class="item-row">
-                <div class="item-name">Coconut Milk</div>
-                <input type="number" class="quantity-input" placeholder="0" data-vendor="gordon" data-item="Coconut Milk">
+                <div class="item-name">Apple Juice</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="gordon" data-item="Apple Juice">
                 <div class="unit">cases</div>
             </div>
+            <!-- Additional Items -->
             <div class="item-row">
-                <div class="item-name">Vegan Cheese</div>
-                <input type="number" class="quantity-input" placeholder="0" data-vendor="gordon" data-item="Vegan Cheese">
-                <div class="unit">cases</div>
+                <input type="text" class="item-name" placeholder="Additional item..." style="padding: 8px; border: 1px solid #ccc; border-radius: 4px;" data-vendor="gordon" data-type="custom-item">
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="gordon" data-type="custom-qty">
+                <input type="text" class="unit" placeholder="units" style="padding: 8px; border: 1px solid #ccc; border-radius: 4px; width: 100%;" data-vendor="gordon" data-type="custom-unit">
+            </div>
+            <div class="item-row">
+                <input type="text" class="item-name" placeholder="Additional item..." style="padding: 8px; border: 1px solid #ccc; border-radius: 4px;" data-vendor="gordon" data-type="custom-item">
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="gordon" data-type="custom-qty">
+                <input type="text" class="unit" placeholder="units" style="padding: 8px; border: 1px solid #ccc; border-radius: 4px; width: 100%;" data-vendor="gordon" data-type="custom-unit">
+            </div>
+            <div class="item-row">
+                <input type="text" class="item-name" placeholder="Additional item..." style="padding: 8px; border: 1px solid #ccc; border-radius: 4px;" data-vendor="gordon" data-type="custom-item">
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="gordon" data-type="custom-qty">
+                <input type="text" class="unit" placeholder="units" style="padding: 8px; border: 1px solid #ccc; border-radius: 4px; width: 100%;" data-vendor="gordon" data-type="custom-unit">
             </div>
         </div>
         
@@ -313,133 +330,354 @@
         </div>
     </div>
     
-    <!-- Natural Zing Vendor -->
-    <div class="vendor-section" id="naturalzing">
+    <!-- WEBSTAURANT Vendor -->
+    <div class="vendor-section" id="webstaurant">
         <div class="vendor-header">
-            <div class="vendor-name">Natural Zing</div>
+            <div class="vendor-name">WEBSTAURANT</div>
             <div class="order-date">
                 <label>Order Date:</label>
-                <input type="date" id="naturalzing-date" value="">
+                <input type="date" id="webstaurant-date" value="">
             </div>
         </div>
         
         <div class="items-grid">
             <div class="item-row">
-                <div class="item-name">Organic Acai Powder</div>
-                <input type="number" class="quantity-input" placeholder="0" data-vendor="naturalzing" data-item="Organic Acai Powder">
-                <div class="unit">bags</div>
+                <div class="item-name">Almond Milk</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="webstaurant" data-item="Almond Milk">
+                <div class="unit">cases</div>
             </div>
             <div class="item-row">
-                <div class="item-name">Chia Seeds</div>
-                <input type="number" class="quantity-input" placeholder="0" data-vendor="naturalzing" data-item="Chia Seeds">
-                <div class="unit">bags</div>
+                <div class="item-name">Coconut Milk</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="webstaurant" data-item="Coconut Milk">
+                <div class="unit">cases</div>
             </div>
             <div class="item-row">
-                <div class="item-name">Hemp Hearts</div>
-                <input type="number" class="quantity-input" placeholder="0" data-vendor="naturalzing" data-item="Hemp Hearts">
-                <div class="unit">bags</div>
+                <div class="item-name">Egg Bagels</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="webstaurant" data-item="Egg Bagels">
+                <div class="unit">cases</div>
             </div>
             <div class="item-row">
-                <div class="item-name">Goji Berries</div>
-                <input type="number" class="quantity-input" placeholder="0" data-vendor="naturalzing" data-item="Goji Berries">
-                <div class="unit">bags</div>
+                <div class="item-name">Everything Bagels</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="webstaurant" data-item="Everything Bagels">
+                <div class="unit">cases</div>
             </div>
             <div class="item-row">
-                <div class="item-name">Cacao Nibs</div>
-                <input type="number" class="quantity-input" placeholder="0" data-vendor="naturalzing" data-item="Cacao Nibs">
-                <div class="unit">bags</div>
+                <div class="item-name">Apple Juice</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="webstaurant" data-item="Apple Juice">
+                <div class="unit">cases</div>
             </div>
             <div class="item-row">
-                <div class="item-name">Maca Powder</div>
-                <input type="number" class="quantity-input" placeholder="0" data-vendor="naturalzing" data-item="Maca Powder">
-                <div class="unit">bags</div>
+                <div class="item-name">Granola</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="webstaurant" data-item="Granola">
+                <div class="unit">cases</div>
             </div>
             <div class="item-row">
-                <div class="item-name">Spirulina Powder</div>
-                <input type="number" class="quantity-input" placeholder="0" data-vendor="naturalzing" data-item="Spirulina Powder">
-                <div class="unit">jars</div>
+                <div class="item-name">Egg White Patties</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="webstaurant" data-item="Egg White Patties">
+                <div class="unit">cases</div>
             </div>
             <div class="item-row">
-                <div class="item-name">Protein Powder (Vanilla)</div>
-                <input type="number" class="quantity-input" placeholder="0" data-vendor="naturalzing" data-item="Protein Powder (Vanilla)">
-                <div class="unit">containers</div>
+                <div class="item-name">Vegan Sausage</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="webstaurant" data-item="Vegan Sausage">
+                <div class="unit">cases</div>
+            </div>
+            <!-- Additional Items -->
+            <div class="item-row">
+                <input type="text" class="item-name" placeholder="Additional item..." style="padding: 8px; border: 1px solid #ccc; border-radius: 4px;" data-vendor="webstaurant" data-type="custom-item">
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="webstaurant" data-type="custom-qty">
+                <input type="text" class="unit" placeholder="units" style="padding: 8px; border: 1px solid #ccc; border-radius: 4px; width: 100%;" data-vendor="webstaurant" data-type="custom-unit">
+            </div>
+            <div class="item-row">
+                <input type="text" class="item-name" placeholder="Additional item..." style="padding: 8px; border: 1px solid #ccc; border-radius: 4px;" data-vendor="webstaurant" data-type="custom-item">
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="webstaurant" data-type="custom-qty">
+                <input type="text" class="unit" placeholder="units" style="padding: 8px; border: 1px solid #ccc; border-radius: 4px; width: 100%;" data-vendor="webstaurant" data-type="custom-unit">
+            </div>
+            <div class="item-row">
+                <input type="text" class="item-name" placeholder="Additional item..." style="padding: 8px; border: 1px solid #ccc; border-radius: 4px;" data-vendor="webstaurant" data-type="custom-item">
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="webstaurant" data-type="custom-qty">
+                <input type="text" class="unit" placeholder="units" style="padding: 8px; border: 1px solid #ccc; border-radius: 4px; width: 100%;" data-vendor="webstaurant" data-type="custom-unit">
             </div>
         </div>
         
         <div class="notes-section">
             <div class="notes-label">Notes:</div>
-            <textarea class="notes-input" id="naturalzing-notes" placeholder="Special instructions or notes for this order..."></textarea>
+            <textarea class="notes-input" id="webstaurant-notes" placeholder="Special instructions or notes for this order..."></textarea>
         </div>
         
         <div class="actions">
-            <button onclick="printVendor('naturalzing')" class="btn btn-print">Print Natural Zing Order</button>
-            <button onclick="saveVendor('naturalzing')" class="btn btn-save">Save Order</button>
-            <button onclick="clearVendor('naturalzing')" class="btn btn-clear">Clear</button>
+            <button onclick="printVendor('webstaurant')" class="btn btn-print">Print WEBSTAURANT Order</button>
+            <button onclick="saveVendor('webstaurant')" class="btn btn-save">Save Order</button>
+            <button onclick="clearVendor('webstaurant')" class="btn btn-clear">Clear</button>
         </div>
     </div>
     
-    <!-- UNFI Vendor -->
-    <div class="vendor-section" id="unfi">
+    <!-- GNARLEY Vendor -->
+    <div class="vendor-section" id="gnarley">
         <div class="vendor-header">
-            <div class="vendor-name">UNFI</div>
+            <div class="vendor-name">GNARLEY</div>
             <div class="order-date">
                 <label>Order Date:</label>
-                <input type="date" id="unfi-date" value="">
+                <input type="date" id="gnarley-date" value="">
+            </div>
+        </div>
+        
+        <div class="items-grid">
+            <div class="item-row">
+                <div class="item-name">Chocolate Protein Powder</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="gnarley" data-item="Chocolate Protein Powder">
+                <div class="unit">containers</div>
+            </div>
+            <div class="item-row">
+                <div class="item-name">Vanilla Protein Powder</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="gnarley" data-item="Vanilla Protein Powder">
+                <div class="unit">containers</div>
+            </div>
+            <!-- Additional Items -->
+            <div class="item-row">
+                <input type="text" class="item-name" placeholder="Additional item..." style="padding: 8px; border: 1px solid #ccc; border-radius: 4px;" data-vendor="gnarley" data-type="custom-item">
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="gnarley" data-type="custom-qty">
+                <input type="text" class="unit" placeholder="units" style="padding: 8px; border: 1px solid #ccc; border-radius: 4px; width: 100%;" data-vendor="gnarley" data-type="custom-unit">
+            </div>
+            <div class="item-row">
+                <input type="text" class="item-name" placeholder="Additional item..." style="padding: 8px; border: 1px solid #ccc; border-radius: 4px;" data-vendor="gnarley" data-type="custom-item">
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="gnarley" data-type="custom-qty">
+                <input type="text" class="unit" placeholder="units" style="padding: 8px; border: 1px solid #ccc; border-radius: 4px; width: 100%;" data-vendor="gnarley" data-type="custom-unit">
+            </div>
+        </div>
+        
+        <div class="notes-section">
+            <div class="notes-label">Notes:</div>
+            <textarea class="notes-input" id="gnarley-notes" placeholder="Special instructions or notes for this order..."></textarea>
+        </div>
+        
+        <div class="actions">
+            <button onclick="printVendor('gnarley')" class="btn btn-print">Print GNARLEY Order</button>
+            <button onclick="saveVendor('gnarley')" class="btn btn-save">Save Order</button>
+            <button onclick="clearVendor('gnarley')" class="btn btn-clear">Clear</button>
+        </div>
+    </div>
+    
+    <!-- NUTS.COM Vendor -->
+    <div class="vendor-section" id="nuts">
+        <div class="vendor-header">
+            <div class="vendor-name">NUTS.COM</div>
+            <div class="order-date">
+                <label>Order Date:</label>
+                <input type="date" id="nuts-date" value="">
             </div>
         </div>
         
         <div class="items-grid">
             <div class="item-row">
                 <div class="item-name">Granola</div>
-                <input type="number" class="quantity-input" placeholder="0" data-vendor="unfi" data-item="Granola">
-                <div class="unit">cases</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="nuts" data-item="Granola">
+                <div class="unit">bags</div>
+            </div>
+            <!-- Additional Items -->
+            <div class="item-row">
+                <input type="text" class="item-name" placeholder="Additional item..." style="padding: 8px; border: 1px solid #ccc; border-radius: 4px;" data-vendor="nuts" data-type="custom-item">
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="nuts" data-type="custom-qty">
+                <input type="text" class="unit" placeholder="units" style="padding: 8px; border: 1px solid #ccc; border-radius: 4px; width: 100%;" data-vendor="nuts" data-type="custom-unit">
             </div>
             <div class="item-row">
-                <div class="item-name">Peanut Butter</div>
-                <input type="number" class="quantity-input" placeholder="0" data-vendor="unfi" data-item="Peanut Butter">
-                <div class="unit">cases</div>
+                <input type="text" class="item-name" placeholder="Additional item..." style="padding: 8px; border: 1px solid #ccc; border-radius: 4px;" data-vendor="nuts" data-type="custom-item">
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="nuts" data-type="custom-qty">
+                <input type="text" class="unit" placeholder="units" style="padding: 8px; border: 1px solid #ccc; border-radius: 4px; width: 100%;" data-vendor="nuts" data-type="custom-unit">
             </div>
             <div class="item-row">
-                <div class="item-name">Almond Butter</div>
-                <input type="number" class="quantity-input" placeholder="0" data-vendor="unfi" data-item="Almond Butter">
-                <div class="unit">cases</div>
-            </div>
-            <div class="item-row">
-                <div class="item-name">Coconut Water</div>
-                <input type="number" class="quantity-input" placeholder="0" data-vendor="unfi" data-item="Coconut Water">
-                <div class="unit">cases</div>
-            </div>
-            <div class="item-row">
-                <div class="item-name">Kombucha</div>
-                <input type="number" class="quantity-input" placeholder="0" data-vendor="unfi" data-item="Kombucha">
-                <div class="unit">cases</div>
-            </div>
-            <div class="item-row">
-                <div class="item-name">Energy Bars</div>
-                <input type="number" class="quantity-input" placeholder="0" data-vendor="unfi" data-item="Energy Bars">
-                <div class="unit">cases</div>
-            </div>
-            <div class="item-row">
-                <div class="item-name">Organic Honey</div>
-                <input type="number" class="quantity-input" placeholder="0" data-vendor="unfi" data-item="Organic Honey">
-                <div class="unit">jars</div>
-            </div>
-            <div class="item-row">
-                <div class="item-name">Agave Nectar</div>
-                <input type="number" class="quantity-input" placeholder="0" data-vendor="unfi" data-item="Agave Nectar">
-                <div class="unit">bottles</div>
+                <input type="text" class="item-name" placeholder="Additional item..." style="padding: 8px; border: 1px solid #ccc; border-radius: 4px;" data-vendor="nuts" data-type="custom-item">
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="nuts" data-type="custom-qty">
+                <input type="text" class="unit" placeholder="units" style="padding: 8px; border: 1px solid #ccc; border-radius: 4px; width: 100%;" data-vendor="nuts" data-type="custom-unit">
             </div>
         </div>
         
         <div class="notes-section">
             <div class="notes-label">Notes:</div>
-            <textarea class="notes-input" id="unfi-notes" placeholder="Special instructions or notes for this order..."></textarea>
+            <textarea class="notes-input" id="nuts-notes" placeholder="Special instructions or notes for this order..."></textarea>
         </div>
         
         <div class="actions">
-            <button onclick="printVendor('unfi')" class="btn btn-print">Print UNFI Order</button>
-            <button onclick="saveVendor('unfi')" class="btn btn-save">Save Order</button>
-            <button onclick="clearVendor('unfi')" class="btn btn-clear">Clear</button>
+            <button onclick="printVendor('nuts')" class="btn btn-print">Print NUTS.COM Order</button>
+            <button onclick="saveVendor('nuts')" class="btn btn-save">Save Order</button>
+            <button onclick="clearVendor('nuts')" class="btn btn-clear">Clear</button>
+        </div>
+    </div>
+    
+    <!-- JENNIFER'S Vendor -->
+    <div class="vendor-section" id="jennifers">
+        <div class="vendor-header">
+            <div class="vendor-name">JENNIFER'S</div>
+            <div class="order-date">
+                <label>Order Date:</label>
+                <input type="date" id="jennifers-date" value="">
+            </div>
+        </div>
+        
+        <div class="items-grid">
+            <div class="item-row">
+                <div class="item-name">Gluten-Free Granola</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="jennifers" data-item="Gluten-Free Granola">
+                <div class="unit">bags</div>
+            </div>
+            <!-- Additional Items -->
+            <div class="item-row">
+                <input type="text" class="item-name" placeholder="Additional item..." style="padding: 8px; border: 1px solid #ccc; border-radius: 4px;" data-vendor="jennifers" data-type="custom-item">
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="jennifers" data-type="custom-qty">
+                <input type="text" class="unit" placeholder="units" style="padding: 8px; border: 1px solid #ccc; border-radius: 4px; width: 100%;" data-vendor="jennifers" data-type="custom-unit">
+            </div>
+            <div class="item-row">
+                <input type="text" class="item-name" placeholder="Additional item..." style="padding: 8px; border: 1px solid #ccc; border-radius: 4px;" data-vendor="jennifers" data-type="custom-item">
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="jennifers" data-type="custom-qty">
+                <input type="text" class="unit" placeholder="units" style="padding: 8px; border: 1px solid #ccc; border-radius: 4px; width: 100%;" data-vendor="jennifers" data-type="custom-unit">
+            </div>
+            <div class="item-row">
+                <input type="text" class="item-name" placeholder="Additional item..." style="padding: 8px; border: 1px solid #ccc; border-radius: 4px;" data-vendor="jennifers" data-type="custom-item">
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="jennifers" data-type="custom-qty">
+                <input type="text" class="unit" placeholder="units" style="padding: 8px; border: 1px solid #ccc; border-radius: 4px; width: 100%;" data-vendor="jennifers" data-type="custom-unit">
+            </div>
+        </div>
+        
+        <div class="notes-section">
+            <div class="notes-label">Notes:</div>
+            <textarea class="notes-input" id="jennifers-notes" placeholder="Special instructions or notes for this order..."></textarea>
+        </div>
+        
+        <div class="actions">
+            <button onclick="printVendor('jennifers')" class="btn btn-print">Print JENNIFER'S Order</button>
+            <button onclick="saveVendor('jennifers')" class="btn btn-save">Save Order</button>
+            <button onclick="clearVendor('jennifers')" class="btn btn-clear">Clear</button>
+        </div>
+    </div>
+    
+    <!-- FAIRE Vendor -->
+    <div class="vendor-section" id="faire">
+        <div class="vendor-header">
+            <div class="vendor-name">FAIRE</div>
+            <div class="order-date">
+                <label>Order Date:</label>
+                <input type="date" id="faire-date" value="">
+            </div>
+        </div>
+        
+        <div class="items-grid">
+            <div class="item-row">
+                <div class="item-name">Mixed Nuts (3oz)</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="faire" data-item="Mixed Nuts (3oz)">
+                <div class="unit">bags</div>
+            </div>
+            <div class="item-row">
+                <div class="item-name">Mixed Nuts (12oz)</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="faire" data-item="Mixed Nuts (12oz)">
+                <div class="unit">bags</div>
+            </div>
+            <div class="item-row">
+                <div class="item-name">MASA Chips</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="faire" data-item="MASA Chips">
+                <div class="unit">bags</div>
+            </div>
+            <div class="item-row">
+                <div class="item-name">VANDY Chips</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="faire" data-item="VANDY Chips">
+                <div class="unit">bags</div>
+            </div>
+            <div class="item-row">
+                <div class="item-name">Smart Sweets</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="faire" data-item="Smart Sweets">
+                <div class="unit">bags</div>
+            </div>
+            <div class="item-row">
+                <div class="item-name">Lolli (Supplements)</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="faire" data-item="Lolli (Supplements)">
+                <div class="unit">bottles</div>
+            </div>
+            <!-- Additional Items -->
+            <div class="item-row">
+                <input type="text" class="item-name" placeholder="Additional item..." style="padding: 8px; border: 1px solid #ccc; border-radius: 4px;" data-vendor="faire" data-type="custom-item">
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="faire" data-type="custom-qty">
+                <input type="text" class="unit" placeholder="units" style="padding: 8px; border: 1px solid #ccc; border-radius: 4px; width: 100%;" data-vendor="faire" data-type="custom-unit">
+            </div>
+            <div class="item-row">
+                <input type="text" class="item-name" placeholder="Additional item..." style="padding: 8px; border: 1px solid #ccc; border-radius: 4px;" data-vendor="faire" data-type="custom-item">
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="faire" data-type="custom-qty">
+                <input type="text" class="unit" placeholder="units" style="padding: 8px; border: 1px solid #ccc; border-radius: 4px; width: 100%;" data-vendor="faire" data-type="custom-unit">
+            </div>
+            <div class="item-row">
+                <input type="text" class="item-name" placeholder="Additional item..." style="padding: 8px; border: 1px solid #ccc; border-radius: 4px;" data-vendor="faire" data-type="custom-item">
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="faire" data-type="custom-qty">
+                <input type="text" class="unit" placeholder="units" style="padding: 8px; border: 1px solid #ccc; border-radius: 4px; width: 100%;" data-vendor="faire" data-type="custom-unit">
+            </div>
+        </div>
+        
+        <div class="notes-section">
+            <div class="notes-label">Notes:</div>
+            <textarea class="notes-input" id="faire-notes" placeholder="Special instructions or notes for this order..."></textarea>
+        </div>
+        
+        <div class="actions">
+            <button onclick="printVendor('faire')" class="btn btn-print">Print FAIRE Order</button>
+            <button onclick="saveVendor('faire')" class="btn btn-save">Save Order</button>
+            <button onclick="clearVendor('faire')" class="btn btn-clear">Clear</button>
+        </div>
+    </div>
+    
+    <!-- AMAZON Vendor -->
+    <div class="vendor-section" id="amazon">
+        <div class="vendor-header">
+            <div class="vendor-name">AMAZON</div>
+            <div class="order-date">
+                <label>Order Date:</label>
+                <input type="date" id="amazon-date" value="">
+            </div>
+        </div>
+        
+        <div class="items-grid">
+            <div class="item-row">
+                <div class="item-name">Spirulina (Supplement)</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="amazon" data-item="Spirulina (Supplement)">
+                <div class="unit">bottles</div>
+            </div>
+            <div class="item-row">
+                <div class="item-name">Chlorella (Supplement)</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="amazon" data-item="Chlorella (Supplement)">
+                <div class="unit">bottles</div>
+            </div>
+            <div class="item-row">
+                <div class="item-name">Dish Soap</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="amazon" data-item="Dish Soap">
+                <div class="unit">bottles</div>
+            </div>
+            <div class="item-row">
+                <div class="item-name">Paper Towels</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="amazon" data-item="Paper Towels">
+                <div class="unit">cases</div>
+            </div>
+            <!-- Additional Items -->
+            <div class="item-row">
+                <input type="text" class="item-name" placeholder="Additional item..." style="padding: 8px; border: 1px solid #ccc; border-radius: 4px;" data-vendor="amazon" data-type="custom-item">
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="amazon" data-type="custom-qty">
+                <input type="text" class="unit" placeholder="units" style="padding: 8px; border: 1px solid #ccc; border-radius: 4px; width: 100%;" data-vendor="amazon" data-type="custom-unit">
+            </div>
+            <div class="item-row">
+                <input type="text" class="item-name" placeholder="Additional item..." style="padding: 8px; border: 1px solid #ccc; border-radius: 4px;" data-vendor="amazon" data-type="custom-item">
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="amazon" data-type="custom-qty">
+                <input type="text" class="unit" placeholder="units" style="padding: 8px; border: 1px solid #ccc; border-radius: 4px; width: 100%;" data-vendor="amazon" data-type="custom-unit">
+            </div>
+            <div class="item-row">
+                <input type="text" class="item-name" placeholder="Additional item..." style="padding: 8px; border: 1px solid #ccc; border-radius: 4px;" data-vendor="amazon" data-type="custom-item">
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="amazon" data-type="custom-qty">
+                <input type="text" class="unit" placeholder="units" style="padding: 8px; border: 1px solid #ccc; border-radius: 4px; width: 100%;" data-vendor="amazon" data-type="custom-unit">
+            </div>
+        </div>
+        
+        <div class="notes-section">
+            <div class="notes-label">Notes:</div>
+            <textarea class="notes-input" id="amazon-notes" placeholder="Special instructions or notes for this order..."></textarea>
+        </div>
+        
+        <div class="actions">
+            <button onclick="printVendor('amazon')" class="btn btn-print">Print AMAZON Order</button>
+            <button onclick="saveVendor('amazon')" class="btn btn-save">Save Order</button>
+            <button onclick="clearVendor('amazon')" class="btn btn-clear">Clear</button>
         </div>
     </div>
 
@@ -514,7 +752,7 @@
         
         // Load all saved orders
         function loadAllOrders() {
-            ['vacpack', 'gordon', 'naturalzing', 'unfi'].forEach(vendorId => {
+            ['bradyplus', 'gordon', 'webstaurant', 'gnarley', 'nuts', 'jennifers', 'faire', 'amazon'].forEach(vendorId => {
                 const savedOrder = localStorage.getItem(`order-${vendorId}`);
                 if (savedOrder) {
                     const orderData = JSON.parse(savedOrder);
