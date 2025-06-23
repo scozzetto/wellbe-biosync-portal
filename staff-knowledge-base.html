@@ -383,7 +383,12 @@
                 
                 <!-- Current Staff List -->
                 <div style="background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(220, 53, 69, 0.3); border-radius: 8px; padding: 20px;">
-                    <h4 style="color: #dc3545; margin-bottom: 15px;"><i class="fas fa-users"></i> Current Staff Members</h4>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                        <h4 style="color: #dc3545; margin: 0;"><i class="fas fa-users"></i> Current Staff Members</h4>
+                        <button onclick="loadAdminStaffData()" style="background: #0dcaf0; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 0.9rem;">
+                            <i class="fas fa-sync"></i> Refresh
+                        </button>
+                    </div>
                     <div id="admin-staff-list" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 15px;">
                         <!-- Staff cards will be populated here -->
                     </div>
@@ -931,7 +936,35 @@
             const staffList = document.getElementById('admin-staff-list');
             if (!staffList) return;
             
-            const staffData = JSON.parse(localStorage.getItem('staffData')) || [];
+            // Always load from localStorage for admin view to see real passwords
+            let staffData = JSON.parse(localStorage.getItem('staffData')) || [];
+            
+            // If localStorage is empty, initialize with defaults
+            if (staffData.length === 0) {
+                staffData = [
+                    {
+                        id: 'admin-001',
+                        name: 'System Administrator',
+                        email: 'admin@bewelllifestylecenters.com',
+                        position: 'Administrator',
+                        location: 'All',
+                        accessLevel: 'admin',
+                        password: '$Be7926570!ADMIN',
+                        active: true
+                    },
+                    {
+                        id: 'staff-001',
+                        name: 'General Staff',
+                        email: 'staff@bewelllifestylecenters.com',
+                        position: 'Staff Member',
+                        location: 'All',
+                        accessLevel: 'staff',
+                        password: '$Be7926570!',
+                        active: true
+                    }
+                ];
+                localStorage.setItem('staffData', JSON.stringify(staffData));
+            }
             
             staffList.innerHTML = '';
             
