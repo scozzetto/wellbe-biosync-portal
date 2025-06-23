@@ -735,8 +735,16 @@
         }
         
         // Initialize
-        renderStaffGrid();
-        updateStats();
+        document.addEventListener('DOMContentLoaded', function() {
+            checkAdminAuth();
+        });
+        
+        // Also run immediately if page already loaded
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', checkAdminAuth);
+        } else {
+            checkAdminAuth();
+        }
         
         // Close modal when clicking outside
         window.onclick = function(event) {
