@@ -507,8 +507,14 @@
                 
                 if (staff && staff.accessLevel === 'admin') {
                     currentUser = staff;
-                    document.getElementById('auth-section').style.display = 'none';
-                    document.querySelector('.admin-container').style.display = 'block';
+                    const authSection = document.getElementById('auth-section');
+                    const adminContainer = document.querySelector('.admin-container');
+                    
+                    if (authSection && adminContainer) {
+                        authSection.style.display = 'none';
+                        adminContainer.style.display = 'block';
+                    }
+                    
                     sessionStorage.setItem('staffAuthenticated', 'true');
                     sessionStorage.setItem('currentUser', JSON.stringify(staff));
                     sessionStorage.setItem('adminAuthenticated', 'true');
@@ -529,19 +535,36 @@
         // Start authentication setup immediately
         setupAuthentication();
         
-        // Hide admin container initially
-        document.querySelector('.admin-container').style.display = 'none';
+        // Setup add staff form
+        setupAddStaffForm();
         
-        // Check if already authenticated
-        if (sessionStorage.getItem('adminAuthenticated') && sessionStorage.getItem('currentUser')) {
-            const user = JSON.parse(sessionStorage.getItem('currentUser'));
-            if (user.accessLevel === 'admin') {
-                document.getElementById('auth-section').style.display = 'none';
-                document.querySelector('.admin-container').style.display = 'block';
-                currentUser = user;
-                loadStaffData();
+        // Setup initial display state
+        function setupInitialDisplay() {
+            const adminContainer = document.querySelector('.admin-container');
+            const authSection = document.getElementById('auth-section');
+            
+            if (!adminContainer || !authSection) {
+                setTimeout(setupInitialDisplay, 100);
+                return;
+            }
+            
+            // Hide admin container initially
+            adminContainer.style.display = 'none';
+            authSection.style.display = 'flex';
+            
+            // Check if already authenticated
+            if (sessionStorage.getItem('adminAuthenticated') && sessionStorage.getItem('currentUser')) {
+                const user = JSON.parse(sessionStorage.getItem('currentUser'));
+                if (user.accessLevel === 'admin') {
+                    authSection.style.display = 'none';
+                    adminContainer.style.display = 'block';
+                    currentUser = user;
+                    loadStaffData();
+                }
             }
         }
+        
+        setupInitialDisplay();
         
         // Staff management system
         let staffData = [];
@@ -645,7 +668,14 @@
         }
         
         // Add new staff member (with Dropbox sync)
-        document.getElementById('add-staff-form').addEventListener('submit', async function(e) {
+        function setupAddStaffForm() {
+            const form = document.getElementById('add-staff-form');
+            if (!form) {
+                setTimeout(setupAddStaffForm, 100);
+                return;
+            }
+            
+            form.addEventListener('submit', async function(e) {
             e.preventDefault();
             
             const name = document.getElementById('staff-name').value;
@@ -709,7 +739,8 @@
             document.getElementById('add-staff-form').reset();
             renderStaffGrid();
             updateStats();
-        });
+            });
+        }
         
         // Render staff grid
         function renderStaffGrid() {
