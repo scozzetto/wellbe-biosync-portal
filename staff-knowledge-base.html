@@ -639,6 +639,34 @@
             }
         }
         
+        // Load staff data on page load
+        async function loadStaffDataForAuth() {
+            try {
+                // Try to get latest staff data from same source as admin dashboard
+                const response = await fetch('/.netlify/functions/staff-manager');
+                if (response.ok) {
+                    const serverStaffData = await response.json();
+                    staffData = serverStaffData;
+                } else {
+                    // Fallback to localStorage
+                    const localData = localStorage.getItem('staffData');
+                    if (localData) {
+                        staffData = JSON.parse(localData);
+                    }
+                }
+            } catch (error) {
+                console.error('Error loading staff data:', error);
+                // Use localStorage as final fallback
+                const localData = localStorage.getItem('staffData');
+                if (localData) {
+                    staffData = JSON.parse(localData);
+                }
+            }
+        }
+        
+        // Load staff data when page loads
+        loadStaffDataForAuth();
+        
         // Check if already authenticated
         if (sessionStorage.getItem('staffAuthenticated') === 'true') {
             const storedUser = JSON.parse(sessionStorage.getItem('currentUser') || '{}');
