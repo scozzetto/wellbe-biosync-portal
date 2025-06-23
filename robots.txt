@@ -1,0 +1,23 @@
+# Be Well Lifestyle Centers Robots.txt
+# https://bewelllifestylecenters.com
+
+User-agent: *
+Allow: /
+
+# Sitemaps
+Sitemap: https://bewelllifestylecenters.com/sitemap.xml
+
+# Disallow admin areas
+Disallow: /admin/
+Disallow: /staff-admin-dashboard.html
+Disallow: /.netlify/
+
+# Allow all search engines to index
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+# Crawl delay
+Crawl-delay: 1
