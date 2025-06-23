@@ -285,6 +285,54 @@
                 <h3 style="color: #dc3545; margin-bottom: 15px; font-size: 1.5rem;"><i class="fas fa-user-shield"></i> Admin Functions</h3>
                 <p style="color: #6c757d; margin-bottom: 20px;">Administrative tools for managing staff accounts and system settings.</p>
                 
+                <!-- Edit Modal -->
+                <div id="edit-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000;">
+                    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: var(--card-bg); padding: 30px; border-radius: 8px; width: 90%; max-width: 500px;">
+                        <h3 style="color: #dc3545; margin-bottom: 20px;">Edit Staff Member</h3>
+                        <form id="edit-staff-form">
+                            <input type="hidden" id="edit-staff-id">
+                            <div style="margin-bottom: 15px;">
+                                <label style="display: block; margin-bottom: 5px; font-weight: 600;">Full Name:</label>
+                                <input type="text" id="edit-staff-name" required style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+                            </div>
+                            <div style="margin-bottom: 15px;">
+                                <label style="display: block; margin-bottom: 5px; font-weight: 600;">Email:</label>
+                                <input type="email" id="edit-staff-email" required style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+                            </div>
+                            <div style="margin-bottom: 15px;">
+                                <label style="display: block; margin-bottom: 5px; font-weight: 600;">Position:</label>
+                                <input type="text" id="edit-staff-position" required style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+                            </div>
+                            <div style="margin-bottom: 15px;">
+                                <label style="display: block; margin-bottom: 5px; font-weight: 600;">Location:</label>
+                                <select id="edit-staff-location" required style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+                                    <option value="Birmingham">Birmingham</option>
+                                    <option value="UWM">UWM</option>
+                                    <option value="Berkeley">Berkeley</option>
+                                    <option value="All">All Locations</option>
+                                </select>
+                            </div>
+                            <div style="margin-bottom: 15px;">
+                                <label style="display: block; margin-bottom: 5px; font-weight: 600;">Access Level:</label>
+                                <select id="edit-access-level" required style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+                                    <option value="admin">Administrator</option>
+                                    <option value="manager">Manager</option>
+                                    <option value="staff">Staff</option>
+                                    <option value="cafe">Café Only</option>
+                                </select>
+                            </div>
+                            <div style="margin-bottom: 15px;">
+                                <label style="display: block; margin-bottom: 5px; font-weight: 600;">Password:</label>
+                                <input type="text" id="edit-staff-password" required style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+                            </div>
+                            <div style="display: flex; gap: 10px;">
+                                <button type="submit" style="background: #198754; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer;">Save Changes</button>
+                                <button type="button" onclick="closeEditModal()" style="background: #6c757d; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer;">Cancel</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                
                 <!-- Add Staff Form -->
                 <div style="background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(220, 53, 69, 0.3); border-radius: 8px; padding: 20px; margin-bottom: 20px;">
                     <h4 style="color: #dc3545; margin-bottom: 15px;"><i class="fas fa-user-plus"></i> Add New Staff Member</h4>
@@ -675,7 +723,7 @@
                 // Show admin section in the portal
                 if (adminSection) {
                     adminSection.style.display = 'block';
-                    setupAdminFunctions();
+                    initializeAdminForms();
                     loadAdminStaffData();
                 }
                 
@@ -903,10 +951,11 @@
                     <p style="margin: 3px 0; color: var(--text-color); font-size: 0.9rem;"><strong>Email:</strong> ${staff.email}</p>
                     <p style="margin: 3px 0; color: var(--text-color); font-size: 0.9rem;"><strong>Position:</strong> ${staff.position}</p>
                     <p style="margin: 3px 0; color: var(--text-color); font-size: 0.9rem;"><strong>Location:</strong> ${staff.location}</p>
+                    <p style="margin: 3px 0; color: var(--text-color); font-size: 0.9rem;"><strong>Password:</strong> <span style="font-family: monospace; background: rgba(0,0,0,0.1); padding: 2px 4px; border-radius: 3px;">${staff.password}</span></p>
                     <span style="background: ${accessColor[staff.accessLevel] || '#6c757d'}; color: white; padding: 2px 6px; border-radius: 3px; font-size: 0.8rem; text-transform: uppercase;">${staff.accessLevel}</span>
                     <div style="margin-top: 10px;">
-                        <button onclick="deleteStaff('${staff.id}')" style="background: #dc3545; color: white; border: none; padding: 4px 8px; border-radius: 3px; font-size: 0.8rem; cursor: pointer;">Delete</button>
-                        <button onclick="resetStaffPassword('${staff.id}')" style="background: #fd7e14; color: white; border: none; padding: 4px 8px; border-radius: 3px; font-size: 0.8rem; cursor: pointer; margin-left: 5px;">Reset Password</button>
+                        <button onclick="editStaff('${staff.id}')" style="background: #0dcaf0; color: white; border: none; padding: 4px 8px; border-radius: 3px; font-size: 0.8rem; cursor: pointer;">Edit</button>
+                        <button onclick="deleteStaff('${staff.id}')" style="background: #dc3545; color: white; border: none; padding: 4px 8px; border-radius: 3px; font-size: 0.8rem; cursor: pointer; margin-left: 5px;">Delete</button>
                     </div>
                 `;
                 
@@ -924,18 +973,65 @@
             loadAdminStaffData();
         }
         
-        function resetStaffPassword(staffId) {
-            const newPassword = generateAdminPassword();
+        function editStaff(staffId) {
+            const staffData = JSON.parse(localStorage.getItem('staffData')) || [];
+            const staff = staffData.find(s => s.id === staffId);
             
-            let staffData = JSON.parse(localStorage.getItem('staffData')) || [];
-            const staffIndex = staffData.findIndex(s => s.id === staffId);
+            if (!staff) return;
             
-            if (staffIndex !== -1) {
-                staffData[staffIndex].password = newPassword;
-                localStorage.setItem('staffData', JSON.stringify(staffData));
+            // Populate edit form
+            document.getElementById('edit-staff-id').value = staff.id;
+            document.getElementById('edit-staff-name').value = staff.name;
+            document.getElementById('edit-staff-email').value = staff.email;
+            document.getElementById('edit-staff-position').value = staff.position;
+            document.getElementById('edit-staff-location').value = staff.location;
+            document.getElementById('edit-access-level').value = staff.accessLevel;
+            document.getElementById('edit-staff-password').value = staff.password;
+            
+            // Show modal
+            document.getElementById('edit-modal').style.display = 'block';
+        }
+        
+        function closeEditModal() {
+            document.getElementById('edit-modal').style.display = 'none';
+        }
+        
+        // Setup edit form handler
+        function setupEditForm() {
+            const form = document.getElementById('edit-staff-form');
+            if (!form) return;
+            
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
                 
-                alert(`✅ Password reset for ${staffData[staffIndex].name}\n\nNew Password: ${newPassword}\n\nMake sure to share this securely with the staff member.`);
-            }
+                const staffId = document.getElementById('edit-staff-id').value;
+                let staffData = JSON.parse(localStorage.getItem('staffData')) || [];
+                const staffIndex = staffData.findIndex(s => s.id === staffId);
+                
+                if (staffIndex !== -1) {
+                    staffData[staffIndex] = {
+                        ...staffData[staffIndex],
+                        name: document.getElementById('edit-staff-name').value,
+                        email: document.getElementById('edit-staff-email').value,
+                        position: document.getElementById('edit-staff-position').value,
+                        location: document.getElementById('edit-staff-location').value,
+                        accessLevel: document.getElementById('edit-access-level').value,
+                        password: document.getElementById('edit-staff-password').value
+                    };
+                    
+                    localStorage.setItem('staffData', JSON.stringify(staffData));
+                    
+                    alert('✅ Staff member updated successfully!');
+                    closeEditModal();
+                    loadAdminStaffData();
+                }
+            });
+        }
+        
+        // Call this when admin functions are set up
+        function initializeAdminForms() {
+            setupAdminFunctions();
+            setupEditForm();
         }
     </script>
     <!-- Auto-backup system -->
