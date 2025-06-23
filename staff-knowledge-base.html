@@ -383,17 +383,7 @@
                 
                 <!-- Current Staff List -->
                 <div style="background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(220, 53, 69, 0.3); border-radius: 8px; padding: 20px;">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                        <h4 style="color: #dc3545; margin: 0;"><i class="fas fa-users"></i> Current Staff Members</h4>
-                        <div style="display: flex; gap: 10px;">
-                            <button onclick="fixHiddenPasswords()" style="background: #ffc107; color: #000; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 0.9rem;">
-                                <i class="fas fa-key"></i> Fix Hidden Passwords
-                            </button>
-                            <button onclick="loadAdminStaffData()" style="background: #0dcaf0; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 0.9rem;">
-                                <i class="fas fa-sync"></i> Refresh
-                            </button>
-                        </div>
-                    </div>
+                    <h4 style="color: #dc3545; margin-bottom: 15px;"><i class="fas fa-users"></i> Current Staff Members</h4>
                     <div id="admin-staff-list" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 15px;">
                         <!-- Staff cards will be populated here -->
                     </div>
@@ -971,6 +961,25 @@
                 localStorage.setItem('staffData', JSON.stringify(staffData));
             }
             
+            // Auto-fix any hidden passwords
+            let needsUpdate = false;
+            staffData = staffData.map(staff => {
+                if (staff.password === '***HIDDEN***') {
+                    if (staff.id === 'admin-001' || staff.email === 'admin@bewelllifestylecenters.com') {
+                        staff.password = '$Be7926570!ADMIN';
+                        needsUpdate = true;
+                    } else if (staff.id === 'staff-001' || staff.email === 'staff@bewelllifestylecenters.com') {
+                        staff.password = '$Be7926570!';
+                        needsUpdate = true;
+                    }
+                }
+                return staff;
+            });
+            
+            if (needsUpdate) {
+                localStorage.setItem('staffData', JSON.stringify(staffData));
+            }
+            
             staffList.innerHTML = '';
             
             staffData.forEach(staff => {
@@ -1080,32 +1089,6 @@
             setupEditForm();
         }
         
-        // Fix hidden passwords in localStorage
-        function fixHiddenPasswords() {
-            let staffData = JSON.parse(localStorage.getItem('staffData')) || [];
-            let fixed = false;
-            
-            staffData = staffData.map(staff => {
-                if (staff.password === '***HIDDEN***') {
-                    if (staff.id === 'admin-001' || staff.email === 'admin@bewelllifestylecenters.com') {
-                        staff.password = '$Be7926570!ADMIN';
-                        fixed = true;
-                    } else if (staff.id === 'staff-001' || staff.email === 'staff@bewelllifestylecenters.com') {
-                        staff.password = '$Be7926570!';
-                        fixed = true;
-                    }
-                }
-                return staff;
-            });
-            
-            if (fixed) {
-                localStorage.setItem('staffData', JSON.stringify(staffData));
-                alert('✅ Passwords have been restored! The page will reload.');
-                loadAdminStaffData();
-            } else {
-                alert('All passwords are already visible.');
-            }
-        }
     </script>
     <!-- Auto-backup system -->
     <script src="auto-backup.js"></script>
