@@ -711,17 +711,10 @@
         // Load staff data when page loads
         loadStaffDataForAuth();
         
-        // Check if already authenticated
-        if (sessionStorage.getItem('staffAuthenticated') === 'true') {
-            const storedUser = JSON.parse(sessionStorage.getItem('currentUser') || '{}');
-            if (storedUser.name) {
-                currentUser = storedUser;
-                document.getElementById('auth-section').style.display = 'none';
-                document.getElementById('knowledge-base').style.display = 'block';
-                document.querySelector('.kb-header p').innerHTML = `Welcome back, <strong>${storedUser.name}</strong> (${storedUser.position}) - ${storedUser.location} Location`;
-                updateAccessPermissions(storedUser.accessLevel);
-            }
-        }
+        // Clear any existing sessions to prevent conflicts
+        sessionStorage.removeItem('staffAuthenticated');
+        sessionStorage.removeItem('currentUser');
+        sessionStorage.removeItem('adminAuthenticated');
         
         // Logout function
         function logout() {
