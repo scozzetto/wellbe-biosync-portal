@@ -401,50 +401,144 @@
         </div>
     </div>
 
+    <!-- Authentication Section (same as staff portal) -->
+    <div id="auth-section" class="auth-container" style="display: flex; justify-content: center; align-items: center; min-height: 100vh; background: var(--bg-color);">
+        <button style="position: fixed; top: 20px; right: 20px; background: var(--primary-color); color: white; padding: 8px 16px; border: none; border-radius: 6px; cursor: pointer; font-size: 0.9rem;" onclick="window.location.href='index.html'">
+            <i class="fas fa-home"></i> Home
+        </button>
+        <div style="background: var(--card-bg); padding: 40px; border-radius: 12px; border: 1px solid rgba(164, 124, 91, 0.3); max-width: 400px; width: 100%; text-align: center;">
+            <img src="logo.svg" alt="Be Well Logo" style="height: 50px; width: auto; margin-bottom: 20px; filter: brightness(0) invert(1);">
+            <h2 style="color: var(--primary-color); margin-bottom: 20px;">Staff Admin Dashboard</h2>
+            <p style="color: #9ca3af; margin-bottom: 25px;">Enter staff password to access admin functions</p>
+            
+            <form id="auth-form">
+                <div style="margin-bottom: 20px; text-align: left;">
+                    <label for="password" style="color: var(--text-color); display: block; margin-bottom: 5px; font-weight: 600;">Password:</label>
+                    <input type="password" id="password" required style="width: 100%; padding: 12px; border: 1px solid rgba(164, 124, 91, 0.3); border-radius: 6px; background: rgba(255, 255, 255, 0.1); color: var(--text-color); font-size: 1rem;">
+                </div>
+                <button type="submit" style="background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); color: white; padding: 12px 30px; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; width: 100%;">Access Admin Dashboard</button>
+            </form>
+            
+            <div id="auth-error" style="color: #ff6b6b; margin-top: 15px; display: none;">
+                Incorrect password. Please try again.
+            </div>
+        </div>
+    </div>
+
     <script>
-        // Check admin authentication with server
-        async function checkAdminAuth() {
-            if (!sessionStorage.getItem('adminAuthenticated')) {
-                const password = prompt('Enter Admin Password:\n\nHint: $Be7926570!ADMIN');
-                if (!password) {
-                    window.location.href = 'index.html';
-                    return;
+        // Use same authentication system as staff portal
+        let staffData = JSON.parse(localStorage.getItem('staffData')) || [];
+        let currentUser = null;
+        
+        // Initialize with default staff if empty
+        if (staffData.length === 0) {
+            staffData = [
+                {
+                    id: 'admin-001',
+                    name: 'System Administrator',
+                    email: 'admin@bewelllifestylecenters.com',
+                    position: 'Administrator',
+                    location: 'All',
+                    accessLevel: 'admin',
+                    password: '$Be7926570!ADMIN',
+                    active: true
+                },
+                {
+                    id: 'staff-001',
+                    name: 'General Staff',
+                    email: 'staff@bewelllifestylecenters.com',
+                    position: 'Staff Member',
+                    location: 'All',
+                    accessLevel: 'staff',
+                    password: '$Be7926570!',
+                    active: true
                 }
+            ];
+            localStorage.setItem('staffData', JSON.stringify(staffData));
+        }
+        
+        // Unified authentication setup (same as staff portal)
+        function setupAuthentication() {
+            const authForm = document.getElementById('auth-form');
+            if (!authForm) {
+                setTimeout(setupAuthentication, 100);
+                return;
+            }
+            
+            authForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const password = document.getElementById('password').value;
                 
-                // Direct password check first (faster)
+                let staff = null;
+                
+                // Check against known passwords
                 if (password === '$Be7926570!ADMIN') {
-                    sessionStorage.setItem('adminAuthenticated', 'true');
-                    loadStaffData();
-                    return;
+                    staff = {
+                        id: 'admin-001',
+                        name: 'System Administrator',
+                        email: 'admin@bewelllifestylecenters.com',
+                        position: 'Administrator',
+                        location: 'All',
+                        accessLevel: 'admin',
+                        active: true
+                    };
+                } else if (password === '$Be7926570!') {
+                    staff = {
+                        id: 'staff-001',
+                        name: 'General Staff',
+                        email: 'staff@bewelllifestylecenters.com',
+                        position: 'Staff Member',
+                        location: 'All',
+                        accessLevel: 'staff',
+                        active: true
+                    };
+                } else {
+                    // Check localStorage for additional staff
+                    const localData = localStorage.getItem('staffData');
+                    if (localData) {
+                        try {
+                            const localStaff = JSON.parse(localData);
+                            staff = localStaff.find(s => s.password === password && s.active);
+                        } catch (e) {
+                            console.error('Error parsing local staff data:', e);
+                        }
+                    }
                 }
                 
-                try {
-                    const response = await fetch('/.netlify/functions/staff-manager', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({
-                            action: 'admin-auth',
-                            password: password
-                        })
-                    });
+                if (staff && staff.accessLevel === 'admin') {
+                    currentUser = staff;
+                    document.getElementById('auth-section').style.display = 'none';
+                    document.querySelector('.admin-container').style.display = 'block';
+                    sessionStorage.setItem('staffAuthenticated', 'true');
+                    sessionStorage.setItem('currentUser', JSON.stringify(staff));
+                    sessionStorage.setItem('adminAuthenticated', 'true');
                     
-                    const result = await response.json();
-                    
-                    if (result.success) {
-                        sessionStorage.setItem('adminAuthenticated', 'true');
-                        loadStaffData();
-                    } else {
-                        alert('Access Denied. Please try: $Be7926570!ADMIN');
-                        window.location.href = 'index.html';
-                    }
-                } catch (error) {
-                    console.error('Auth error:', error);
-                    alert('Authentication failed. Please try: $Be7926570!ADMIN');
-                    window.location.href = 'index.html';
+                    loadStaffData();
+                } else if (staff) {
+                    document.getElementById('auth-error').style.display = 'block';
+                    document.getElementById('auth-error').innerHTML = 'Admin access required. Contact your administrator.';
+                    document.getElementById('password').value = '';
+                } else {
+                    document.getElementById('auth-error').style.display = 'block';
+                    document.getElementById('auth-error').innerHTML = 'Invalid password. Try: $Be7926570!ADMIN (admin) or $Be7926570! (staff)';
+                    document.getElementById('password').value = '';
                 }
-            } else {
+            });
+        }
+        
+        // Start authentication setup immediately
+        setupAuthentication();
+        
+        // Hide admin container initially
+        document.querySelector('.admin-container').style.display = 'none';
+        
+        // Check if already authenticated
+        if (sessionStorage.getItem('adminAuthenticated') && sessionStorage.getItem('currentUser')) {
+            const user = JSON.parse(sessionStorage.getItem('currentUser'));
+            if (user.accessLevel === 'admin') {
+                document.getElementById('auth-section').style.display = 'none';
+                document.querySelector('.admin-container').style.display = 'block';
+                currentUser = user;
                 loadStaffData();
             }
         }
@@ -741,17 +835,8 @@
             window.location.href = 'index.html';
         }
         
-        // Initialize
-        document.addEventListener('DOMContentLoaded', function() {
-            checkAdminAuth();
-        });
-        
-        // Also run immediately if page already loaded
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', checkAdminAuth);
-        } else {
-            checkAdminAuth();
-        }
+        // Initialize - authentication is now handled by setupAuthentication()
+        // The page will show the login form initially, then show admin dashboard after login
         
         // Close modal when clicking outside
         window.onclick = function(event) {
