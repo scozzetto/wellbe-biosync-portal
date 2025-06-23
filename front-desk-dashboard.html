@@ -527,13 +527,15 @@
                     <div>
                         <label style="display: block; margin-bottom: 5px; font-weight: 600; color: var(--primary-color);">Service Requested</label>
                         <select id="addPatientReason" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px;">
+                            <option value="Chiropractic">Chiropractic</option>
                             <option value="Massage">Massage</option>
-                            <option value="Red Light Therapy">Red Light Therapy</option>
+                            <option value="Dry Needling">Dry Needling</option>
+                            <option value="Cupping">Cupping</option>
                             <option value="IV Therapy">IV Therapy</option>
-                            <option value="Wellness Consultation">Wellness Consultation</option>
-                            <option value="HydraCare">HydraCare</option>
-                            <option value="Vitamin B12 Injection">Vitamin B12 Injection</option>
-                            <option value="Compression Therapy">Compression Therapy</option>
+                            <option value="Vitamin Injections">Vitamin Injections</option>
+                            <option value="Blood Labs">Blood Labs</option>
+                            <option value="Consultations">Consultations</option>
+                            <option value="Colon Hydrotherapy">Colon Hydrotherapy</option>
                             <option value="Other">Other</option>
                         </select>
                     </div>
@@ -541,17 +543,25 @@
                         <label style="display: block; margin-bottom: 5px; font-weight: 600; color: var(--primary-color);">Sub-Service (Optional)</label>
                         <select id="addPatientSubReason" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px;">
                             <option value="">Select sub-service...</option>
+                            <!-- Chiropractic -->
+                            <option value="Adjustment">Adjustment</option>
+                            <option value="Examination">Examination</option>
+                            <option value="X-Ray Review">X-Ray Review</option>
+                            <option value="Follow-up">Follow-up</option>
+                            <!-- Massage -->
                             <option value="Deep Tissue">Deep Tissue</option>
                             <option value="Swedish">Swedish</option>
-                            <option value="Hot Stone">Hot Stone</option>
-                            <option value="Aromatherapy">Aromatherapy</option>
                             <option value="Sports Massage">Sports Massage</option>
-                            <option value="Prenatal">Prenatal</option>
-                            <option value="Couples">Couples</option>
-                            <option value="Chair Massage">Chair Massage</option>
-                            <option value="Red Light Full Body">Red Light Full Body</option>
-                            <option value="Red Light Targeted">Red Light Targeted</option>
-                            <option value="Red Light Face">Red Light Face</option>
+                            <option value="Therapeutic">Therapeutic</option>
+                            <option value="Relaxation">Relaxation</option>
+                            <!-- Dry Needling -->
+                            <option value="Trigger Point">Trigger Point</option>
+                            <option value="Muscle Release">Muscle Release</option>
+                            <!-- Cupping -->
+                            <option value="Stationary Cupping">Stationary Cupping</option>
+                            <option value="Moving Cupping">Moving Cupping</option>
+                            <option value="Fire Cupping">Fire Cupping</option>
+                            <!-- IV Therapy -->
                             <option value="Myers Cocktail">Myers Cocktail</option>
                             <option value="Vitamin C">Vitamin C</option>
                             <option value="B-Complex">B-Complex</option>
@@ -560,24 +570,29 @@
                             <option value="Hydration">Hydration</option>
                             <option value="Energy Boost">Energy Boost</option>
                             <option value="Immune Support">Immune Support</option>
-                            <option value="Weight Loss">Weight Loss</option>
-                            <option value="Anti-Aging">Anti-Aging</option>
                             <option value="Recovery">Recovery</option>
-                            <option value="Detox">Detox</option>
-                            <option value="HydraFacial">HydraFacial</option>
-                            <option value="HydraFacial Deluxe">HydraFacial Deluxe</option>
-                            <option value="HydraFacial Platinum">HydraFacial Platinum</option>
-                            <option value="Add-On Booster">Add-On Booster</option>
+                            <!-- Vitamin Injections -->
                             <option value="B12 Injection">B12 Injection</option>
                             <option value="Lipotropic Injection">Lipotropic Injection</option>
                             <option value="Biotin Injection">Biotin Injection</option>
-                            <option value="Full Body">Full Body</option>
-                            <option value="Legs Only">Legs Only</option>
-                            <option value="Arms Only">Arms Only</option>
+                            <option value="Vitamin D">Vitamin D</option>
+                            <!-- Blood Labs -->
+                            <option value="Complete Blood Panel">Complete Blood Panel</option>
+                            <option value="Hormone Panel">Hormone Panel</option>
+                            <option value="Vitamin Levels">Vitamin Levels</option>
+                            <option value="Thyroid Panel">Thyroid Panel</option>
+                            <option value="Food Sensitivity">Food Sensitivity</option>
+                            <!-- Consultations -->
                             <option value="Initial Consultation">Initial Consultation</option>
-                            <option value="Follow-up">Follow-up</option>
+                            <option value="Wellness Consultation">Wellness Consultation</option>
                             <option value="Nutrition Counseling">Nutrition Counseling</option>
-                            <option value="Supplement Review">Supplement Review</option>
+                            <option value="Lab Review">Lab Review</option>
+                            <option value="Treatment Planning">Treatment Planning</option>
+                            <!-- Colon Hydrotherapy -->
+                            <option value="Initial Session">Initial Session</option>
+                            <option value="Follow-up Session">Follow-up Session</option>
+                            <option value="Series Package">Series Package</option>
+                            <!-- Other -->
                             <option value="Other">Other</option>
                         </select>
                     </div>
@@ -903,7 +918,7 @@
             
             const firstVisit = confirm('Is this their first visit?') ? 'YES' : 'NO';
             
-            const reason = prompt('Service needed:', 'Chiropractic');
+            const reason = prompt('Service needed (Chiropractic, Massage, Dry Needling, Cupping, IV Therapy, Vitamin Injections, Blood Labs, Consultations, Colon Hydrotherapy, Other):', 'Chiropractic');
             if (!reason || reason.trim() === '') return;
             
             const comment = prompt('Any additional notes (optional):') || '';
@@ -973,13 +988,15 @@
             } else if (fieldName === 'reason') {
                 inputHTML = `
                     <select class="edit-select" id="edit-${checkInId}-${fieldName}">
+                        <option value="Chiropractic" ${currentValue === 'Chiropractic' ? 'selected' : ''}>Chiropractic</option>
                         <option value="Massage" ${currentValue === 'Massage' ? 'selected' : ''}>Massage</option>
-                        <option value="Red Light Therapy" ${currentValue === 'Red Light Therapy' ? 'selected' : ''}>Red Light Therapy</option>
+                        <option value="Dry Needling" ${currentValue === 'Dry Needling' ? 'selected' : ''}>Dry Needling</option>
+                        <option value="Cupping" ${currentValue === 'Cupping' ? 'selected' : ''}>Cupping</option>
                         <option value="IV Therapy" ${currentValue === 'IV Therapy' ? 'selected' : ''}>IV Therapy</option>
-                        <option value="Wellness Consultation" ${currentValue === 'Wellness Consultation' ? 'selected' : ''}>Wellness Consultation</option>
-                        <option value="HydraCare" ${currentValue === 'HydraCare' ? 'selected' : ''}>HydraCare</option>
-                        <option value="Vitamin B12 Injection" ${currentValue === 'Vitamin B12 Injection' ? 'selected' : ''}>Vitamin B12 Injection</option>
-                        <option value="Compression Therapy" ${currentValue === 'Compression Therapy' ? 'selected' : ''}>Compression Therapy</option>
+                        <option value="Vitamin Injections" ${currentValue === 'Vitamin Injections' ? 'selected' : ''}>Vitamin Injections</option>
+                        <option value="Blood Labs" ${currentValue === 'Blood Labs' ? 'selected' : ''}>Blood Labs</option>
+                        <option value="Consultations" ${currentValue === 'Consultations' ? 'selected' : ''}>Consultations</option>
+                        <option value="Colon Hydrotherapy" ${currentValue === 'Colon Hydrotherapy' ? 'selected' : ''}>Colon Hydrotherapy</option>
                         <option value="Other" ${currentValue === 'Other' ? 'selected' : ''}>Other</option>
                     </select>
                 `;
