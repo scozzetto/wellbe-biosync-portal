@@ -525,11 +525,45 @@
             localStorage.setItem('staffData', JSON.stringify(staffData));
         }
         
-        document.getElementById('auth-form').addEventListener('submit', function(e) {
+        document.getElementById('auth-form').addEventListener('submit', async function(e) {
             e.preventDefault();
             const password = document.getElementById('password').value;
             
-            // Find staff member by password
+            try {
+                // Try Dropbox authentication first
+                const response = await fetch('/.netlify/functions/dropbox-manager', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        action: 'authenticate',
+                        password: password
+                    })
+                });
+                
+                if (response.ok) {
+                    const result = await response.json();
+                    if (result.success) {
+                        currentUser = result.staff;
+                        document.getElementById('auth-section').style.display = 'none';
+                        document.getElementById('knowledge-base').style.display = 'block';
+                        sessionStorage.setItem('staffAuthenticated', 'true');
+                        sessionStorage.setItem('currentUser', JSON.stringify(result.staff));
+                        
+                        // Update welcome message
+                        document.querySelector('.kb-header p').innerHTML = `Welcome back, <strong>${result.staff.name}</strong> (${result.staff.position}) - ${result.staff.location} Location<br><small style="color: #10b981;">✅ Authenticated via Dropbox</small>`;
+                        
+                        // Show/hide sections based on access level
+                        updateAccessPermissions(result.staff.accessLevel);
+                        return;
+                    }
+                }
+            } catch (error) {
+                console.error('Dropbox auth failed:', error);
+            }
+            
+            // Fallback to local authentication
             const staff = staffData.find(s => s.password === password && s.active);
             
             if (staff) {
@@ -540,12 +574,13 @@
                 sessionStorage.setItem('currentUser', JSON.stringify(staff));
                 
                 // Update welcome message
-                document.querySelector('.kb-header p').innerHTML = `Welcome back, <strong>${staff.name}</strong> (${staff.position}) - ${staff.location} Location`;
+                document.querySelector('.kb-header p').innerHTML = `Welcome back, <strong>${staff.name}</strong> (${staff.position}) - ${staff.location} Location<br><small style="color: #f59e0b;">⚠️ Local authentication (Dropbox unavailable)</small>`;
                 
                 // Show/hide sections based on access level
                 updateAccessPermissions(staff.accessLevel);
             } else {
                 document.getElementById('auth-error').style.display = 'block';
+                document.getElementById('auth-error').innerHTML = 'Invalid password. Please try again.<br><small>Note: If you added your account recently, make sure Dropbox is configured.</small>';
                 document.getElementById('password').value = '';
             }
         });
