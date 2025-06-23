@@ -290,9 +290,18 @@ async function handleCheckoutCompleted(session) {
             console.error('✗ Database creation failed:', dbError);
         }
         
-        // Salesforce sync handled by native Stripe for Salesforce Platform app
-        console.log('=== SALESFORCE SYNC HANDLED BY NATIVE APP ===');
-        console.log('✓ Stripe for Salesforce Platform will handle contact creation automatically');
+        // Sync to Salesforce
+        console.log('=== SYNCING TO SALESFORCE ===');
+        try {
+            const salesforceResult = await salesforce.upsertContact(customerData, subscriptionData);
+            if (salesforceResult.success) {
+                console.log('✓ Salesforce sync successful:', JSON.stringify(salesforceResult.result, null, 2));
+            } else {
+                console.log('⚠️ Salesforce sync failed:', salesforceResult.reason || salesforceResult.error);
+            }
+        } catch (salesforceError) {
+            console.error('✗ Salesforce sync error:', salesforceError);
+        }
         
         console.log('=== CHECKOUT HANDLING COMPLETE ===');
         
@@ -378,8 +387,18 @@ async function handleSubscriptionDeleted(subscription) {
         await memberDB.updateMemberStatus(subscription.customer, 'cancelled');
         console.log('✓ Member status updated to cancelled');
         
-        // Salesforce update handled by native app
-        console.log('✓ Salesforce cancellation handled by native Stripe for Salesforce Platform app');
+        // Update Salesforce contact status
+        console.log('=== UPDATING SALESFORCE CONTACT STATUS ===');
+        try {
+            const salesforceResult = await salesforce.updateContactStatus(subscription.customer, 'cancelled');
+            if (salesforceResult.success) {
+                console.log('✓ Salesforce status update successful');
+            } else {
+                console.log('⚠️ Salesforce status update failed:', salesforceResult.reason || salesforceResult.error);
+            }
+        } catch (salesforceError) {
+            console.error('✗ Salesforce status update error:', salesforceError);
+        }
         
     } catch (error) {
         console.error('=== SUBSCRIPTION DELETION ERROR ===');
