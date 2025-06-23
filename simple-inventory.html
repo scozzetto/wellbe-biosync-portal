@@ -125,21 +125,119 @@
         }
         
         @media print {
+            * {
+                font-size: 12px !important;
+                line-height: 1.2 !important;
+            }
+            
             body {
                 background: white;
+                margin: 0;
+                padding: 10px;
+                font-family: Arial, sans-serif;
             }
+            
             .header {
                 display: none;
             }
+            
             .actions {
                 display: none;
             }
+            
             .vendor-section {
-                border: 1px solid #000;
-                margin-bottom: 20px;
+                border: 2px solid #000;
+                margin-bottom: 15px;
+                padding: 10px;
+                page-break-inside: avoid;
+                background: white;
             }
+            
+            .vendor-header {
+                border-bottom: 1px solid #000;
+                margin-bottom: 10px;
+                padding-bottom: 5px;
+                display: flex !important;
+                justify-content: space-between !important;
+                align-items: center !important;
+            }
+            
+            .vendor-name {
+                font-size: 16px !important;
+                font-weight: bold;
+                margin: 0;
+            }
+            
+            .order-date {
+                font-size: 12px !important;
+                font-weight: normal;
+            }
+            
+            .items-grid {
+                display: block !important;
+            }
+            
+            .item-row {
+                display: flex !important;
+                justify-content: space-between;
+                align-items: center;
+                padding: 2px 0;
+                border-bottom: 1px dotted #ccc;
+                grid-template-columns: none !important;
+                gap: 10px !important;
+            }
+            
+            .item-row:last-child {
+                border-bottom: none;
+            }
+            
+            .item-name {
+                flex: 1;
+                font-weight: 500;
+                margin: 0;
+            }
+            
             .quantity-input {
-                border: 1px solid #000;
+                width: 40px !important;
+                text-align: center;
+                border: 1px solid #000 !important;
+                background: white !important;
+                padding: 2px !important;
+                font-weight: bold;
+                margin: 0 5px;
+            }
+            
+            .unit {
+                width: 60px;
+                text-align: left;
+                font-size: 10px !important;
+                color: #666;
+            }
+            
+            .notes-section {
+                margin-top: 10px;
+                padding-top: 8px;
+                border-top: 1px solid #ccc;
+            }
+            
+            .notes-label {
+                font-weight: bold;
+                font-size: 11px !important;
+                margin-bottom: 3px;
+            }
+            
+            .notes-input {
+                width: 100% !important;
+                height: 30px !important;
+                border: 1px solid #000 !important;
+                padding: 3px !important;
+                font-size: 10px !important;
+                background: white !important;
+            }
+            
+            /* Hide empty rows in print - controlled by JavaScript */
+            .print-hide {
+                display: none !important;
             }
         }
         
@@ -724,8 +822,46 @@
             alert(`${vendorId.toUpperCase()} order saved!`);
         }
         
+        // Hide empty rows for printing
+        function hideEmptyRowsForPrint() {
+            document.querySelectorAll('.item-row').forEach(row => {
+                const quantityInput = row.querySelector('.quantity-input');
+                const customItem = row.querySelector('[data-type="custom-item"]');
+                const customQty = row.querySelector('[data-type="custom-qty"]');
+                
+                let hasContent = false;
+                
+                // Check regular quantity inputs
+                if (quantityInput && quantityInput.value && quantityInput.value !== '0') {
+                    hasContent = true;
+                }
+                
+                // Check custom items
+                if (customItem && customItem.value && customItem.value.trim() !== '') {
+                    hasContent = true;
+                }
+                
+                // Hide row if no content
+                if (!hasContent) {
+                    row.classList.add('print-hide');
+                } else {
+                    row.classList.remove('print-hide');
+                }
+            });
+        }
+        
+        // Show all rows again after printing
+        function showAllRows() {
+            document.querySelectorAll('.item-row').forEach(row => {
+                row.classList.remove('print-hide');
+            });
+        }
+        
         // Print vendor order
         function printVendor(vendorId) {
+            // Hide empty rows for cleaner print
+            hideEmptyRowsForPrint();
+            
             // Hide all other vendors
             document.querySelectorAll('.vendor-section').forEach(section => {
                 if (section.id !== vendorId) {
@@ -736,11 +872,12 @@
             // Print
             window.print();
             
-            // Show all vendors again
+            // Show all vendors and rows again
             setTimeout(() => {
                 document.querySelectorAll('.vendor-section').forEach(section => {
                     section.style.display = 'block';
                 });
+                showAllRows();
             }, 100);
         }
         
@@ -765,6 +902,9 @@
                 alert('Please add some items to your orders before printing.');
                 return;
             }
+            
+            // Hide empty rows for cleaner print
+            hideEmptyRowsForPrint();
             
             // Hide vendors that have no items
             document.querySelectorAll('.vendor-section').forEach(section => {
@@ -793,11 +933,12 @@
             // Print
             window.print();
             
-            // Show all vendors again
+            // Show all vendors and rows again
             setTimeout(() => {
                 document.querySelectorAll('.vendor-section').forEach(section => {
                     section.style.display = 'block';
                 });
+                showAllRows();
             }, 100);
         }
         
