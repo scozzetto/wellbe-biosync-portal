@@ -642,24 +642,65 @@
         // Load staff data on page load
         async function loadStaffDataForAuth() {
             try {
-                // Try to get latest staff data from same source as admin dashboard
-                const response = await fetch('/.netlify/functions/staff-manager');
+                // Try Dropbox authentication first (includes real passwords)
+                const response = await fetch('/.netlify/functions/dropbox-manager', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        action: 'get-staff-for-auth'
+                    })
+                });
+                
                 if (response.ok) {
-                    const serverStaffData = await response.json();
-                    staffData = serverStaffData;
-                } else {
-                    // Fallback to localStorage
-                    const localData = localStorage.getItem('staffData');
-                    if (localData) {
-                        staffData = JSON.parse(localData);
+                    const result = await response.json();
+                    if (result.staff) {
+                        staffData = result.staff;
+                        return;
                     }
                 }
             } catch (error) {
-                console.error('Error loading staff data:', error);
-                // Use localStorage as final fallback
-                const localData = localStorage.getItem('staffData');
-                if (localData) {
-                    staffData = JSON.parse(localData);
+                console.error('Dropbox auth data failed:', error);
+            }
+            
+            // Fallback: Use hardcoded default accounts for now
+            staffData = [
+                {
+                    id: 'admin-001',
+                    name: 'System Administrator',
+                    email: 'admin@bewelllifestylecenters.com',
+                    position: 'Administrator',
+                    location: 'All',
+                    accessLevel: 'admin',
+                    password: '$Be7926570!ADMIN',
+                    active: true
+                },
+                {
+                    id: 'staff-001',
+                    name: 'General Staff',
+                    email: 'staff@bewelllifestylecenters.com',
+                    position: 'Staff Member',
+                    location: 'All',
+                    accessLevel: 'staff',
+                    password: '$Be7926570!',
+                    active: true
+                }
+            ];
+            
+            // Also check localStorage for any additional staff
+            const localData = localStorage.getItem('staffData');
+            if (localData) {
+                try {
+                    const localStaff = JSON.parse(localData);
+                    // Merge with defaults (avoiding duplicates)
+                    localStaff.forEach(staff => {
+                        if (!staffData.find(s => s.id === staff.id)) {
+                            staffData.push(staff);
+                        }
+                    });
+                } catch (e) {
+                    console.error('Error parsing local staff data:', e);
                 }
             }
         }
