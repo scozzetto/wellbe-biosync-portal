@@ -658,65 +658,89 @@
             }
         }
         
-        // Voice notification function
+        // Luxurious bell notification function
         function playCheckInAlert() {
             try {
-                // Use Speech Synthesis API for voice message
-                if ('speechSynthesis' in window) {
-                    const utterance = new SpeechSynthesisUtterance("Thank you! You've been successfully checked in.");
-                    
-                    // Configure voice settings
-                    utterance.rate = 0.9;  // Slightly slower for clarity
-                    utterance.pitch = 1.0; // Normal pitch
-                    utterance.volume = 0.8; // Good volume level
-                    
-                    // Try to use a pleasant voice if available
-                    const voices = speechSynthesis.getVoices();
-                    const preferredVoice = voices.find(voice => 
-                        voice.name.includes('Alex') || 
-                        voice.name.includes('Samantha') || 
-                        voice.name.includes('Karen') ||
-                        voice.name.includes('Siri') ||
-                        voice.lang.includes('en-US')
-                    );
-                    
-                    if (preferredVoice) {
-                        utterance.voice = preferredVoice;
-                    }
-                    
-                    speechSynthesis.speak(utterance);
-                    console.log('🗣️ Voice check-in message played');
-                } else {
-                    console.log('Speech synthesis not supported, using fallback');
-                    // Fallback to bell sound if speech not supported
-                    playBellFallback();
-                }
-            } catch (e) {
-                console.log('Voice synthesis failed:', e);
-                playBellFallback();
-            }
-        }
-        
-        // Fallback bell sound function
-        function playBellFallback() {
-            try {
+                // Create audio context for luxurious bell sound
                 const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-                const oscillator = audioContext.createOscillator();
-                const gainNode = audioContext.createGain();
                 
-                oscillator.connect(gainNode);
-                gainNode.connect(audioContext.destination);
+                // Create multiple oscillators for rich harmonics
+                const fundamental = audioContext.createOscillator();
+                const harmonic2 = audioContext.createOscillator();
+                const harmonic3 = audioContext.createOscillator();
+                const subHarmonic = audioContext.createOscillator();
                 
-                oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
-                gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
-                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+                // Create gain nodes for mixing
+                const mainGain = audioContext.createGain();
+                const harmonic2Gain = audioContext.createGain();
+                const harmonic3Gain = audioContext.createGain();
+                const subGain = audioContext.createGain();
+                const masterGain = audioContext.createGain();
                 
-                oscillator.start(audioContext.currentTime);
-                oscillator.stop(audioContext.currentTime + 0.5);
+                // Connect everything
+                fundamental.connect(mainGain);
+                harmonic2.connect(harmonic2Gain);
+                harmonic3.connect(harmonic3Gain);
+                subHarmonic.connect(subGain);
                 
-                console.log('🔔 Fallback bell played');
+                mainGain.connect(masterGain);
+                harmonic2Gain.connect(masterGain);
+                harmonic3Gain.connect(masterGain);
+                subGain.connect(masterGain);
+                masterGain.connect(audioContext.destination);
+                
+                // Set frequencies for luxurious bell sound
+                const baseFreq = 523.25; // C5 note - pleasant and clear
+                fundamental.frequency.setValueAtTime(baseFreq, audioContext.currentTime);
+                harmonic2.frequency.setValueAtTime(baseFreq * 2.1, audioContext.currentTime); // Slightly detuned 2nd harmonic
+                harmonic3.frequency.setValueAtTime(baseFreq * 3.05, audioContext.currentTime); // Slightly detuned 3rd harmonic
+                subHarmonic.frequency.setValueAtTime(baseFreq * 0.5, audioContext.currentTime); // Lower octave for richness
+                
+                // Set gains for balanced sound - louder overall
+                mainGain.gain.setValueAtTime(0.6, audioContext.currentTime);
+                harmonic2Gain.gain.setValueAtTime(0.3, audioContext.currentTime);
+                harmonic3Gain.gain.setValueAtTime(0.2, audioContext.currentTime);
+                subGain.gain.setValueAtTime(0.4, audioContext.currentTime);
+                masterGain.gain.setValueAtTime(0.7, audioContext.currentTime); // Increased from 0.3 to 0.7
+                
+                // Create luxurious fade-out
+                masterGain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 2.5);
+                
+                // Start all oscillators
+                fundamental.start(audioContext.currentTime);
+                harmonic2.start(audioContext.currentTime);
+                harmonic3.start(audioContext.currentTime);
+                subHarmonic.start(audioContext.currentTime);
+                
+                // Stop all oscillators
+                fundamental.stop(audioContext.currentTime + 2.5);
+                harmonic2.stop(audioContext.currentTime + 2.5);
+                harmonic3.stop(audioContext.currentTime + 2.5);
+                subHarmonic.stop(audioContext.currentTime + 2.5);
+                
+                console.log('🔔 Luxurious bell alert played');
             } catch (e) {
-                console.log('All audio methods failed:', e);
+                console.log('Audio not supported or blocked:', e);
+                // Simple fallback bell
+                try {
+                    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                    const oscillator = audioContext.createOscillator();
+                    const gainNode = audioContext.createGain();
+                    
+                    oscillator.connect(gainNode);
+                    gainNode.connect(audioContext.destination);
+                    
+                    oscillator.frequency.setValueAtTime(523.25, audioContext.currentTime);
+                    gainNode.gain.setValueAtTime(0.7, audioContext.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 1.5);
+                    
+                    oscillator.start(audioContext.currentTime);
+                    oscillator.stop(audioContext.currentTime + 1.5);
+                    
+                    console.log('🔔 Fallback bell played');
+                } catch (e2) {
+                    console.log('All audio methods failed:', e2);
+                }
             }
         }
 
