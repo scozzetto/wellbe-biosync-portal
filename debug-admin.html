@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug Admin Access - Be Well</title>
+</head>
+<body>
+    <h1>Debug Admin Access</h1>
+    <p>Test password: <input type="text" id="testPassword" value="$Be7926570!ADMIN"></p>
+    <button onclick="testAuth()">Test Authentication</button>
+    <div id="result"></div>
+    
+    <br><br>
+    <button onclick="directAccess()">Direct Access to Admin Dashboard</button>
+    
+    <script>
+        function testAuth() {
+            const password = document.getElementById('testPassword').value;
+            const result = document.getElementById('result');
+            
+            if (password === '$Be7926570!ADMIN') {
+                result.innerHTML = '✅ Password matches! Authentication should work.';
+                result.style.color = 'green';
+            } else {
+                result.innerHTML = '❌ Password does not match. Check for hidden characters.';
+                result.style.color = 'red';
+            }
+        }
+        
+        function directAccess() {
+            // Set session storage and redirect
+            sessionStorage.setItem('adminAuthenticated', 'true');
+            sessionStorage.setItem('currentUser', JSON.stringify({
+                id: 'admin-001',
+                name: 'System Administrator',
+                email: 'admin@bewelllifestylecenters.com',
+                position: 'Administrator',
+                location: 'All',
+                accessLevel: 'admin',
+                active: true
+            }));
+            
+            window.location.href = 'staff-admin-dashboard.html';
+        }
+    </script>
+</body>
+</html>
