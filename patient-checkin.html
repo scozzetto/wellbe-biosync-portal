@@ -658,70 +658,58 @@
             }
         }
         
-        // Luxurious bell notification function
+        // Bright, ding-y bell notification function
         function playCheckInAlert() {
             try {
-                // Create audio context for luxurious bell sound
+                // Create audio context for bright ding sound
                 const audioContext = new (window.AudioContext || window.webkitAudioContext)();
                 
-                // Create multiple oscillators for rich harmonics
-                const fundamental = audioContext.createOscillator();
-                const harmonic2 = audioContext.createOscillator();
-                const harmonic3 = audioContext.createOscillator();
-                const subHarmonic = audioContext.createOscillator();
+                // Create oscillators for bright, sparkly ding
+                const ding1 = audioContext.createOscillator();
+                const ding2 = audioContext.createOscillator();
                 
-                // Create gain nodes for mixing
-                const mainGain = audioContext.createGain();
-                const harmonic2Gain = audioContext.createGain();
-                const harmonic3Gain = audioContext.createGain();
-                const subGain = audioContext.createGain();
+                // Create gain nodes
+                const gain1 = audioContext.createGain();
+                const gain2 = audioContext.createGain();
                 const masterGain = audioContext.createGain();
                 
                 // Connect everything
-                fundamental.connect(mainGain);
-                harmonic2.connect(harmonic2Gain);
-                harmonic3.connect(harmonic3Gain);
-                subHarmonic.connect(subGain);
-                
-                mainGain.connect(masterGain);
-                harmonic2Gain.connect(masterGain);
-                harmonic3Gain.connect(masterGain);
-                subGain.connect(masterGain);
+                ding1.connect(gain1);
+                ding2.connect(gain2);
+                gain1.connect(masterGain);
+                gain2.connect(masterGain);
                 masterGain.connect(audioContext.destination);
                 
-                // Set frequencies for luxurious bell sound
-                const baseFreq = 523.25; // C5 note - pleasant and clear
-                fundamental.frequency.setValueAtTime(baseFreq, audioContext.currentTime);
-                harmonic2.frequency.setValueAtTime(baseFreq * 2.1, audioContext.currentTime); // Slightly detuned 2nd harmonic
-                harmonic3.frequency.setValueAtTime(baseFreq * 3.05, audioContext.currentTime); // Slightly detuned 3rd harmonic
-                subHarmonic.frequency.setValueAtTime(baseFreq * 0.5, audioContext.currentTime); // Lower octave for richness
+                // Set frequencies for bright, sparkly ding
+                // Higher frequencies for brighter sound
+                ding1.frequency.setValueAtTime(1046.5, audioContext.currentTime); // C6 - bright and clear
+                ding2.frequency.setValueAtTime(1318.5, audioContext.currentTime); // E6 - major third for pleasant harmony
                 
-                // Set gains for balanced sound - louder overall
-                mainGain.gain.setValueAtTime(0.6, audioContext.currentTime);
-                harmonic2Gain.gain.setValueAtTime(0.3, audioContext.currentTime);
-                harmonic3Gain.gain.setValueAtTime(0.2, audioContext.currentTime);
-                subGain.gain.setValueAtTime(0.4, audioContext.currentTime);
-                masterGain.gain.setValueAtTime(0.7, audioContext.currentTime); // Increased from 0.3 to 0.7
+                // Quick attack, quick decay for "ding" effect
+                gain1.gain.setValueAtTime(0, audioContext.currentTime);
+                gain2.gain.setValueAtTime(0, audioContext.currentTime);
+                masterGain.gain.setValueAtTime(0.6, audioContext.currentTime); // Good volume
                 
-                // Create luxurious fade-out
-                masterGain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 2.5);
+                // Quick attack
+                gain1.gain.linearRampToValueAtTime(0.8, audioContext.currentTime + 0.01);
+                gain2.gain.linearRampToValueAtTime(0.6, audioContext.currentTime + 0.01);
                 
-                // Start all oscillators
-                fundamental.start(audioContext.currentTime);
-                harmonic2.start(audioContext.currentTime);
-                harmonic3.start(audioContext.currentTime);
-                subHarmonic.start(audioContext.currentTime);
+                // Quick decay for sparkly ding
+                gain1.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 1.2);
+                gain2.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 1.0);
                 
-                // Stop all oscillators
-                fundamental.stop(audioContext.currentTime + 2.5);
-                harmonic2.stop(audioContext.currentTime + 2.5);
-                harmonic3.stop(audioContext.currentTime + 2.5);
-                subHarmonic.stop(audioContext.currentTime + 2.5);
+                // Start oscillators
+                ding1.start(audioContext.currentTime);
+                ding2.start(audioContext.currentTime);
                 
-                console.log('🔔 Luxurious bell alert played');
+                // Stop oscillators
+                ding1.stop(audioContext.currentTime + 1.2);
+                ding2.stop(audioContext.currentTime + 1.0);
+                
+                console.log('🔔 Bright ding alert played');
             } catch (e) {
                 console.log('Audio not supported or blocked:', e);
-                // Simple fallback bell
+                // Simple fallback ding
                 try {
                     const audioContext = new (window.AudioContext || window.webkitAudioContext)();
                     const oscillator = audioContext.createOscillator();
@@ -730,14 +718,14 @@
                     oscillator.connect(gainNode);
                     gainNode.connect(audioContext.destination);
                     
-                    oscillator.frequency.setValueAtTime(523.25, audioContext.currentTime);
-                    gainNode.gain.setValueAtTime(0.7, audioContext.currentTime);
-                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 1.5);
+                    oscillator.frequency.setValueAtTime(1046.5, audioContext.currentTime); // High C
+                    gainNode.gain.setValueAtTime(0.6, audioContext.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.8);
                     
                     oscillator.start(audioContext.currentTime);
-                    oscillator.stop(audioContext.currentTime + 1.5);
+                    oscillator.stop(audioContext.currentTime + 0.8);
                     
-                    console.log('🔔 Fallback bell played');
+                    console.log('🔔 Fallback ding played');
                 } catch (e2) {
                     console.log('All audio methods failed:', e2);
                 }
