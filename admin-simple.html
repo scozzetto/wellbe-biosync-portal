@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Admin Access - Be Well</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .simple-auth {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: var(--bg-color);
+        }
+        .auth-box {
+            background: var(--card-bg);
+            padding: 40px;
+            border-radius: 12px;
+            border: 1px solid rgba(164, 124, 91, 0.3);
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="simple-auth">
+        <div class="auth-box">
+            <h2 style="color: var(--primary-color);">Simple Admin Access</h2>
+            <p>Enter the admin password:</p>
+            <input type="password" id="adminPass" placeholder="Enter password" style="width: 100%; padding: 12px; margin: 20px 0; border: 1px solid #ccc; border-radius: 6px;">
+            <button onclick="checkPassword()" style="width: 100%; padding: 12px; background: var(--primary-color); color: white; border: none; border-radius: 6px;">Access Admin</button>
+            <div id="message" style="margin-top: 20px; color: red;"></div>
+            
+            <hr style="margin: 30px 0;">
+            <button onclick="skipAuth()" style="width: 100%; padding: 12px; background: #28a745; color: white; border: none; border-radius: 6px;">Skip Authentication (Direct Access)</button>
+        </div>
+    </div>
+
+    <script>
+        // Clear any existing sessions first
+        sessionStorage.clear();
+        localStorage.removeItem('adminAuthenticated');
+        
+        function checkPassword() {
+            const password = document.getElementById('adminPass').value;
+            const message = document.getElementById('message');
+            
+            if (password === '$Be7926570!ADMIN') {
+                message.style.color = 'green';
+                message.innerHTML = '✅ Success! Redirecting...';
+                
+                // Set session and redirect
+                sessionStorage.setItem('adminAuthenticated', 'true');
+                sessionStorage.setItem('currentUser', JSON.stringify({
+                    id: 'admin-001',
+                    name: 'System Administrator',
+                    email: 'admin@bewelllifestylecenters.com',
+                    position: 'Administrator',
+                    location: 'All',
+                    accessLevel: 'admin',
+                    active: true
+                }));
+                
+                setTimeout(() => {
+                    window.location.href = 'staff-admin-dashboard.html';
+                }, 1000);
+                
+            } else {
+                message.style.color = 'red';
+                message.innerHTML = '❌ Wrong password. Try: $Be7926570!ADMIN';
+            }
+        }
+        
+        function skipAuth() {
+            // Direct access without password
+            sessionStorage.setItem('adminAuthenticated', 'true');
+            sessionStorage.setItem('currentUser', JSON.stringify({
+                id: 'admin-001',
+                name: 'System Administrator',
+                email: 'admin@bewelllifestylecenters.com',
+                position: 'Administrator',
+                location: 'All',
+                accessLevel: 'admin',
+                active: true
+            }));
+            
+            window.location.href = 'staff-admin-dashboard.html';
+        }
+        
+        // Allow Enter key
+        document.getElementById('adminPass').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                checkPassword();
+            }
+        });
+    </script>
+</body>
+</html>
