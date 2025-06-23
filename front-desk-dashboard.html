@@ -960,6 +960,75 @@
             cellElement.innerHTML = originalHTML;
         }
 
+        // Add Patient Modal Functions
+        function openAddPatientModal() {
+            document.getElementById('addPatientModal').style.display = 'block';
+            // Set current time as default
+            const now = new Date();
+            document.getElementById('addPatientTime').value = now.toLocaleTimeString('en-US', {
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: false
+            });
+        }
+        
+        function closeAddPatientModal() {
+            document.getElementById('addPatientModal').style.display = 'none';
+            // Clear form
+            document.getElementById('addPatientForm').reset();
+        }
+        
+        function addPatientCheckin() {
+            // Get form values
+            const name = document.getElementById('addPatientName').value.trim();
+            const phone = document.getElementById('addPatientPhone').value.trim();
+            const firstVisit = document.getElementById('addPatientFirstVisit').value;
+            const time = document.getElementById('addPatientTime').value;
+            const reason = document.getElementById('addPatientReason').value;
+            const subReason = document.getElementById('addPatientSubReason').value.trim();
+            const comment = document.getElementById('addPatientComment').value.trim();
+            
+            // Validate required fields
+            if (!name) {
+                alert('Patient name is required');
+                return;
+            }
+            if (!phone) {
+                alert('Phone number is required');
+                return;
+            }
+            
+            const patientCheckin = {
+                name: name,
+                phone: phone,
+                firstVisit: firstVisit,
+                reason: reason,
+                subReason: subReason || reason,
+                dateIn: new Date().toISOString().split('T')[0],
+                timeIn: time || new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }),
+                source: 'Front Desk Manual Entry',
+                ackTime: '',
+                ackBy: '',
+                outTime: '',
+                outBy: '',
+                comment: comment,
+                status: 'waiting',
+                id: Date.now().toString(),
+                timestamp: new Date().toISOString()
+            };
+            
+            let checkins = JSON.parse(localStorage.getItem('allCheckins') || '[]');
+            checkins.push(patientCheckin);
+            localStorage.setItem('allCheckins', JSON.stringify(checkins));
+            
+            console.log('Patient checkin added:', patientCheckin);
+            console.log('Total checkins now:', checkins.length);
+            
+            closeAddPatientModal();
+            loadCheckins();
+            alert('Patient added successfully! ' + name + ' is now in the system.');
+        }
+
         // Archive completed check-ins and generate report
         function clearAllData() {
             console.log('🗃️ Starting End of Day process...');
@@ -1134,9 +1203,14 @@
         
         // Close modal when clicking outside
         window.onclick = function(event) {
-            const modal = document.getElementById('commentModal');
-            if (event.target === modal) {
+            const commentModal = document.getElementById('commentModal');
+            const addPatientModal = document.getElementById('addPatientModal');
+            
+            if (event.target === commentModal) {
                 closeCommentModal();
+            }
+            if (event.target === addPatientModal) {
+                closeAddPatientModal();
             }
         }
         
