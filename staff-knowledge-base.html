@@ -385,9 +385,14 @@
                 <div style="background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(220, 53, 69, 0.3); border-radius: 8px; padding: 20px;">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
                         <h4 style="color: #dc3545; margin: 0;"><i class="fas fa-users"></i> Current Staff Members</h4>
-                        <button onclick="loadAdminStaffData()" style="background: #0dcaf0; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 0.9rem;">
-                            <i class="fas fa-sync"></i> Refresh
-                        </button>
+                        <div style="display: flex; gap: 10px;">
+                            <button onclick="fixHiddenPasswords()" style="background: #ffc107; color: #000; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 0.9rem;">
+                                <i class="fas fa-key"></i> Fix Hidden Passwords
+                            </button>
+                            <button onclick="loadAdminStaffData()" style="background: #0dcaf0; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 0.9rem;">
+                                <i class="fas fa-sync"></i> Refresh
+                            </button>
+                        </div>
                     </div>
                     <div id="admin-staff-list" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 15px;">
                         <!-- Staff cards will be populated here -->
@@ -979,12 +984,20 @@
                     'cafe': '#0dcaf0'
                 };
                 
+                // Force display of actual passwords for known default accounts
+                let displayPassword = staff.password;
+                if (staff.id === 'admin-001' && displayPassword === '***HIDDEN***') {
+                    displayPassword = '$Be7926570!ADMIN';
+                } else if (staff.id === 'staff-001' && displayPassword === '***HIDDEN***') {
+                    displayPassword = '$Be7926570!';
+                }
+                
                 card.innerHTML = `
                     <h5 style="margin: 0 0 8px 0; color: var(--primary-color);">${staff.name}</h5>
                     <p style="margin: 3px 0; color: var(--text-color); font-size: 0.9rem;"><strong>Email:</strong> ${staff.email}</p>
                     <p style="margin: 3px 0; color: var(--text-color); font-size: 0.9rem;"><strong>Position:</strong> ${staff.position}</p>
                     <p style="margin: 3px 0; color: var(--text-color); font-size: 0.9rem;"><strong>Location:</strong> ${staff.location}</p>
-                    <p style="margin: 3px 0; color: var(--text-color); font-size: 0.9rem;"><strong>Password:</strong> <span style="font-family: monospace; background: rgba(0,0,0,0.1); padding: 2px 4px; border-radius: 3px;">${staff.password}</span></p>
+                    <p style="margin: 3px 0; color: var(--text-color); font-size: 0.9rem;"><strong>Password:</strong> <span style="font-family: monospace; background: rgba(0,0,0,0.1); padding: 2px 4px; border-radius: 3px;">${displayPassword}</span></p>
                     <span style="background: ${accessColor[staff.accessLevel] || '#6c757d'}; color: white; padding: 2px 6px; border-radius: 3px; font-size: 0.8rem; text-transform: uppercase;">${staff.accessLevel}</span>
                     <div style="margin-top: 10px;">
                         <button onclick="editStaff('${staff.id}')" style="background: #0dcaf0; color: white; border: none; padding: 4px 8px; border-radius: 3px; font-size: 0.8rem; cursor: pointer;">Edit</button>
@@ -1065,6 +1078,33 @@
         function initializeAdminForms() {
             setupAdminFunctions();
             setupEditForm();
+        }
+        
+        // Fix hidden passwords in localStorage
+        function fixHiddenPasswords() {
+            let staffData = JSON.parse(localStorage.getItem('staffData')) || [];
+            let fixed = false;
+            
+            staffData = staffData.map(staff => {
+                if (staff.password === '***HIDDEN***') {
+                    if (staff.id === 'admin-001' || staff.email === 'admin@bewelllifestylecenters.com') {
+                        staff.password = '$Be7926570!ADMIN';
+                        fixed = true;
+                    } else if (staff.id === 'staff-001' || staff.email === 'staff@bewelllifestylecenters.com') {
+                        staff.password = '$Be7926570!';
+                        fixed = true;
+                    }
+                }
+                return staff;
+            });
+            
+            if (fixed) {
+                localStorage.setItem('staffData', JSON.stringify(staffData));
+                alert('✅ Passwords have been restored! The page will reload.');
+                loadAdminStaffData();
+            } else {
+                alert('All passwords are already visible.');
+            }
         }
     </script>
     <!-- Auto-backup system -->
