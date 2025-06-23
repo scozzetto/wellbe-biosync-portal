@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Backup Conversation - Be Well</title>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .backup-box {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        button {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 18px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px;
+        }
+        button:hover {
+            background: #45a049;
+        }
+        #status {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            display: none;
+        }
+        .success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        textarea {
+            width: 100%;
+            height: 200px;
+            margin: 20px 0;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="backup-box">
+        <h1>🔄 Manual Conversation Backup</h1>
+        <p>Click below to backup our conversation to Dropbox</p>
+        
+        <button onclick="backupConversation()">💾 Backup Current Conversation</button>
+        
+        <h3>Or paste conversation here:</h3>
+        <textarea id="conversation-text" placeholder="Paste conversation text here..."></textarea>
+        
+        <button onclick="backupPastedConversation()">📤 Backup Pasted Conversation</button>
+        
+        <div id="status"></div>
+    </div>
+
+    <script>
+        // Our conversation summary
+        const conversationSummary = {
+            date: new Date().toISOString(),
+            topic: "Be Well Complete Digital Transformation",
+            keyAccomplishments: [
+                "Built complete inventory management system (200+ items)",
+                "Created vendor integration (VACPAK, Gordon Foods, etc)",
+                "Implemented individual staff login system",
+                "Set up Dropbox backup integration",
+                "Fixed authentication issues"
+            ],
+            filesCreated: [
+                "inventory-management.html",
+                "vendor-dashboard.html", 
+                "recipe-inventory-tracker.html",
+                "cafe-operations-portal.html",
+                "staff-admin-dashboard.html"
+            ],
+            currentIssues: [
+                "Testing Dropbox sync after deployment",
+                "Ensuring conversation backups work"
+            ]
+        };
+
+        async function backupConversation() {
+            const status = document.getElementById('status');
+            status.className = '';
+            status.style.display = 'block';
+            status.innerHTML = '⏳ Backing up conversation...';
+            
+            try {
+                const response = await fetch('/.netlify/functions/conversation-backup', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        conversation: conversationSummary,
+                        sessionId: `bewellbe-${Date.now()}`,
+                        topic: 'Complete Digital Transformation Session'
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok) {
+                    status.className = 'success';
+                    status.innerHTML = `✅ Success! Conversation backed up to Dropbox<br>File: ${result.filename}`;
+                } else {
+                    status.className = 'error';
+                    status.innerHTML = `❌ Error: ${result.error}<br>Details: ${result.details}`;
+                }
+            } catch (error) {
+                status.className = 'error';
+                status.innerHTML = `❌ Network error: ${error.message}`;
+            }
+        }
+        
+        async function backupPastedConversation() {
+            const conversationText = document.getElementById('conversation-text').value;
+            if (!conversationText) {
+                alert('Please paste conversation text first');
+                return;
+            }
+            
+            const status = document.getElementById('status');
+            status.className = '';
+            status.style.display = 'block';
+            status.innerHTML = '⏳ Backing up pasted conversation...';
+            
+            try {
+                const response = await fetch('/.netlify/functions/conversation-backup', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        conversation: {
+                            pastedText: conversationText,
+                            ...conversationSummary
+                        },
+                        sessionId: `pasted-${Date.now()}`,
+                        topic: 'Pasted Conversation Backup'
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok) {
+                    status.className = 'success';
+                    status.innerHTML = `✅ Success! Pasted conversation backed up to Dropbox<br>File: ${result.filename}`;
+                } else {
+                    status.className = 'error';
+                    status.innerHTML = `❌ Error: ${result.error}<br>Details: ${result.details}`;
+                }
+            } catch (error) {
+                status.className = 'error';
+                status.innerHTML = `❌ Network error: ${error.message}`;
+            }
+        }
+    </script>
+</body>
+</html>
