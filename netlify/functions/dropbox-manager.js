@@ -173,9 +173,18 @@ exports.handler = async (event, context) => {
         const method = event.httpMethod;
         const body = event.body ? JSON.parse(event.body) : {};
 
-        // Ensure folder structure exists
-        await createFolder(accessToken, '/bewellbe-data');
-        await createFolder(accessToken, '/bewellbe-data/conversation-backups');
+        // Ensure folder structure exists (ignore errors if folders already exist)
+        try {
+            await createFolder(accessToken, '/bewellbe-data');
+        } catch (err) {
+            // Ignore folder exists errors
+        }
+        
+        try {
+            await createFolder(accessToken, '/bewellbe-data/conversation-backups');
+        } catch (err) {
+            // Ignore folder exists errors
+        }
 
         switch (method) {
             case 'GET':
@@ -209,7 +218,7 @@ exports.handler = async (event, context) => {
                         await uploadFile(accessToken, STAFF_DATA_PATH, staffData);
                     }
                     
-                    // Return staff data (hide passwords for security)
+                    // Return staff data without passwords for admin dashboard
                     const safeStaffData = staffData.map(staff => ({
                         ...staff,
                         password: '***HIDDEN***'
@@ -224,7 +233,16 @@ exports.handler = async (event, context) => {
 
             case 'POST':
                 // Handle different actions
-                if (body.action === 'authenticate') {
+                if (body.action === 'get-staff-for-auth') {
+                    // Special endpoint that returns full staff data including passwords for auth
+                    let staffData = await downloadFile(accessToken, STAFF_DATA_PATH) || DEFAULT_STAFF;
+                    
+                    return {
+                        statusCode: 200,
+                        headers,
+                        body: JSON.stringify({ staff: staffData })
+                    };
+                } else if (body.action === 'authenticate') {
                     const { password } = body;
                     let staffData = await downloadFile(accessToken, STAFF_DATA_PATH) || DEFAULT_STAFF;
                     
