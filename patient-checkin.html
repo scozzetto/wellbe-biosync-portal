@@ -650,6 +650,49 @@
             }
         }
         
+        // Audio notification function
+        function playCheckInAlert() {
+            try {
+                // Create audio context
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                
+                // Create bell sound using oscillators
+                const oscillator1 = audioContext.createOscillator();
+                const oscillator2 = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                
+                // Connect the nodes
+                oscillator1.connect(gainNode);
+                oscillator2.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                // Set frequencies for a pleasant bell sound
+                oscillator1.frequency.setValueAtTime(800, audioContext.currentTime);
+                oscillator2.frequency.setValueAtTime(1000, audioContext.currentTime);
+                
+                // Set volume
+                gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 1);
+                
+                // Start and stop the oscillators
+                oscillator1.start(audioContext.currentTime);
+                oscillator2.start(audioContext.currentTime);
+                oscillator1.stop(audioContext.currentTime + 1);
+                oscillator2.stop(audioContext.currentTime + 1);
+                
+                console.log('🔔 Check-in alert played');
+            } catch (e) {
+                console.log('Audio not supported or blocked:', e);
+                // Fallback - try browser beep
+                try {
+                    const audio = new Audio('data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmgfBjqR2PLEbyMFIHLB7+ORRAwZbLvw3JBLDwo8j+D2wGwiCSF7yu3Ygy4SLIfLASF8ju3Sjy4NIHjB9OOeTQ0OQ6Dj9MG5bCIKIXvN8t2QQgsRYrXz551JFQs9lOP1vGEfBjuF0PLMeSYGI3vN9t2RTQwM0IzA7+mcmQAJKHL5vNSBOBZNlNvlvGM+4MXr1FhsOAB7hbX5x5YaBSt/4Oa');
+                    audio.play();
+                } catch (e2) {
+                    console.log('Fallback audio also failed:', e2);
+                }
+            }
+        }
+
         // Submit check-in
         function submitCheckIn() {
             console.log('🛎️ submitCheckIn fired for:', formData);
@@ -772,6 +815,9 @@
             console.log('Current URL when saving:', window.location.href);
             
             // No alert needed
+            
+            // Play audio alert for front desk
+            playCheckInAlert();
             
             // Show success screen
             document.getElementById('wizardContainer').style.display = 'none';
