@@ -525,9 +525,19 @@
             localStorage.setItem('staffData', JSON.stringify(staffData));
         }
         
-        // Wait for page to fully load before adding event listener
-        document.addEventListener('DOMContentLoaded', function() {
-            document.getElementById('auth-form').addEventListener('submit', function(e) {
+        // Bulletproof authentication setup
+        function setupAuthentication() {
+            const authForm = document.getElementById('auth-form');
+            if (!authForm) {
+                setTimeout(setupAuthentication, 100);
+                return;
+            }
+            
+            // Remove any existing listeners to prevent duplicates
+            const newForm = authForm.cloneNode(true);
+            authForm.parentNode.replaceChild(newForm, authForm);
+            
+            newForm.addEventListener('submit', function(e) {
             e.preventDefault();
             const password = document.getElementById('password').value;
             
@@ -586,7 +596,10 @@
                 document.getElementById('password').value = '';
             }
             });
-        });
+        }
+        
+        // Start authentication setup immediately
+        setupAuthentication();
         
         // Access permissions based on staff level
         function updateAccessPermissions(accessLevel) {
