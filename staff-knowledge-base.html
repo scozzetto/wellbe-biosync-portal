@@ -525,7 +525,9 @@
             localStorage.setItem('staffData', JSON.stringify(staffData));
         }
         
-        document.getElementById('auth-form').addEventListener('submit', function(e) {
+        // Wait for page to fully load before adding event listener
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('auth-form').addEventListener('submit', function(e) {
             e.preventDefault();
             const password = document.getElementById('password').value;
             
@@ -583,6 +585,7 @@
                 document.getElementById('auth-error').innerHTML = 'Invalid password. Try: $Be7926570!ADMIN (admin) or $Be7926570! (staff)';
                 document.getElementById('password').value = '';
             }
+            });
         });
         
         // Access permissions based on staff level
