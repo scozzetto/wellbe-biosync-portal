@@ -701,7 +701,7 @@
                     <td class="wait-time">${checkin.status === 'waiting' ? formatWaitTime(waitTime) : '-'}</td>
                     <td class="editable-cell" onclick="editField('${checkin.id}', 'status', this)"><span class="status-badge status-${checkin.status}">${checkin.status}</span></td>
                     <td>${checkin.ackBy || '-'}</td>
-                    <td class="editable-cell" onclick="editField('${checkin.id}', 'comment', this)">${checkin.comment || '-'}</td>
+                    <td class="editable-cell" onclick="editField('${checkin.id}', 'comment', this)">${checkin.comment || ''}</td>
                     <td>
                         <div class="action-btns">
                             ${checkin.status === 'waiting' ? 
@@ -1255,7 +1255,7 @@
                                     <td>${c.firstVisit}</td>
                                     <td>${c.outTime || '-'}</td>
                                     <td>${c.outBy || '-'}</td>
-                                    <td>${c.comment || '-'}</td>
+                                    <td>${c.comment || ''}</td>
                                 </tr>
                             `).join('')}
                         </tbody>
