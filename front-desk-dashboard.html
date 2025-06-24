@@ -458,9 +458,6 @@
                     <button class="refresh-btn" onclick="openAddPatientModal()" style="background: #22c55e;">
                         + Add Patient
                     </button>
-                    <button class="refresh-btn" onclick="reprintEndOfDay()" style="background: #8b5cf6;">
-                        Reprint End of Day
-                    </button>
                 </div>
             </div>
             <div class="table-wrapper">
@@ -1147,15 +1144,11 @@
             localStorage.setItem('lastArchiveDate', today);
             localStorage.setItem('endOfDayProcessed', today);
             
-            // Keep only check-ins from OTHER days (remove all of today's)
-            const remainingCheckins = checkins.filter(c => c.dateIn !== today);
-            
-            console.log('🔄 Debug - Before archive, total checkins:', checkins.length);
-            console.log('🔄 Debug - After archive, remaining checkins:', remainingCheckins.length);
-            console.log('🔄 Debug - Items archived:', todayCheckins.length);
-            
-            // Save the filtered data
-            localStorage.setItem('allCheckins', JSON.stringify(remainingCheckins));
+            // DON'T remove today's patients - keep them visible until tomorrow
+            // The system will auto-clean old dates on the next day
+            console.log('🔄 Debug - Total checkins:', checkins.length);
+            console.log('🔄 Debug - Today checkins archived:', todayCheckins.length);
+            console.log('📋 Debug - Patients remain visible until tomorrow');
             
             // Also send to server for sync
             try {
@@ -1171,12 +1164,7 @@
             // Generate printable report
             generateDailyReport(todayCheckins, today);
             
-            alert(`Archived ${todayCheckins.length} check-ins for today. The report is ready to print. Dashboard will now show only active patients.`);
-            
-            // Refresh to show clean dashboard
-            setTimeout(() => {
-                loadCheckins();
-            }, 500);
+            alert(`End of Day complete! Archived ${todayCheckins.length} check-ins. Print report now. All patients remain visible until tomorrow.`);
         }
         
         // Generate printable daily report
@@ -1425,30 +1413,28 @@
             document.getElementById('avgWaitTime').textContent = 0;
         }
         
-        // Reprint End of Day report
-        function reprintEndOfDay() {
+        // Auto-cleanup old checkins when starting new day
+        function cleanupOldCheckins() {
             const today = new Date().toISOString().split('T')[0];
-            const archiveKey = `archive_${today}`;
-            const archivedData = localStorage.getItem(archiveKey);
+            const lastCleanupDate = localStorage.getItem('lastCleanupDate');
             
-            if (!archivedData) {
-                // Try yesterday
-                const yesterday = new Date();
-                yesterday.setDate(yesterday.getDate() - 1);
-                const yesterdayKey = `archive_${yesterday.toISOString().split('T')[0]}`;
-                const yesterdayData = localStorage.getItem(yesterdayKey);
+            // Only run cleanup if it's a new day
+            if (lastCleanupDate !== today) {
+                console.log('🧹 Running daily cleanup...');
                 
-                if (yesterdayData) {
-                    const archive = JSON.parse(yesterdayData);
-                    generateDailyReport(archive.checkins, archive.date);
-                } else {
-                    alert('No End of Day report found. Run "End of Day" first to generate a report.');
-                }
-                return;
+                const checkins = JSON.parse(localStorage.getItem('allCheckins') || '[]');
+                const todayCheckins = checkins.filter(c => c.dateIn === today);
+                
+                // Keep only today's checkins
+                localStorage.setItem('allCheckins', JSON.stringify(todayCheckins));
+                localStorage.setItem('lastCleanupDate', today);
+                
+                // Clear old processing flags
+                localStorage.removeItem('lastArchiveDate');
+                localStorage.removeItem('endOfDayProcessed');
+                
+                console.log('🧹 Cleanup complete - removed old checkins, kept', todayCheckins.length, 'for today');
             }
-            
-            const archive = JSON.parse(archivedData);
-            generateDailyReport(archive.checkins, archive.date);
         }
         
         // Update processCheckins to handle status filter
