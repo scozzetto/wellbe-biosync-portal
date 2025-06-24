@@ -374,8 +374,11 @@
         function loadOrders() {
             try {
                 // Simple localStorage-based orders
-                allOrders = JSON.parse(localStorage.getItem('allOrders') || '[]');
+                const rawData = localStorage.getItem('allOrders');
+                console.log('📋 Raw localStorage data:', rawData);
+                allOrders = JSON.parse(rawData || '[]');
                 console.log('📋 Dashboard loaded orders:', allOrders.length);
+                console.log('📋 Orders data:', allOrders);
                 filterByLocation();
                 updateStats();
             } catch (error) {

@@ -1775,6 +1775,7 @@
             
             console.log('📦 Orders sent to dashboard:', newOrders);
             console.log('📦 Total orders now:', updatedOrders.length);
+            console.log('📦 localStorage allOrders:', JSON.stringify(updatedOrders, null, 2));
             
             // Ask if they want to view the dashboard
             if (confirm(`${newOrders.length} orders sent to dashboard! Would you like to view the Orders Dashboard?`)) {
