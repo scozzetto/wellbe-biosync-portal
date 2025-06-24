@@ -504,7 +504,7 @@
                     <h2 style="margin: 0 0 2px 0; font-size: 16px; color: black;">${order.vendor} - ${order.location.toUpperCase()}</h2>
                     <p style="margin: 0 0 1px 0; color: black; font-size: 10px;">${new Date(order.timestamp).toLocaleDateString()} ${new Date(order.timestamp).toLocaleTimeString()}</p>
                     <hr style="margin: 1px 0; border: 0.5px solid black;">
-                    ${order.items.map(item => `<div style="margin: 0.5px 0; display: flex; justify-content: space-between;"><span>${item.name}</span><span><strong>${item.quantity} ${item.unit}</strong></span></div>`).join('')}
+                    ${order.items.map(item => `<div style="margin: 0.5px 0;"><span>${item.name}</span> - <strong>${item.quantity} ${item.unit}</strong></div>`).join('')}
                     <hr style="margin: 1px 0; border: 0.5px solid black;">
                     <p style="margin: 0.5px 0; color: black; font-size: 10px;"><strong>Total: ${order.itemCount} items</strong>${order.notes ? ` | Notes: ${order.notes}` : ''}</p>
                 </div>
@@ -585,7 +585,7 @@
                     ${Object.values(groupedOrders).map(group => `
                         <div style="margin-bottom: 3px; page-break-inside: avoid;">
                             <h3 style="margin: 1px 0; font-size: 14px; color: black;">${group.vendor} - ${group.location}</h3>
-                            ${Object.values(group.items).map(item => `<div style="margin: 0.5px 0; display: flex; justify-content: space-between;"><span>${item.name}</span><span><strong>${item.quantity} ${item.unit}</strong></span></div>`).join('')}
+                            ${Object.values(group.items).map(item => `<div style="margin: 0.5px 0;"><span>${item.name}</span> - <strong>${item.quantity} ${item.unit}</strong></div>`).join('')}
                             ${group.notes.length > 0 ? `<p style="margin: 0.5px 0; font-size: 10px; color: #666;">Notes: ${[...new Set(group.notes)].join('; ')}</p>` : ''}
                             <hr style="margin: 1px 0; border: 0.5px solid #ccc;">
                         </div>
