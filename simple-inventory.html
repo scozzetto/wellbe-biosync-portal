@@ -1623,6 +1623,24 @@
             });
         }
         
+        // Clear all vendors at once (no individual confirmations)
+        function clearAllVendors() {
+            ['bradyplus', 'gordon', 'webstaurant', 'gnarley', 'nuts', 'jennifers', 'faire', 'amazon'].forEach(vendorId => {
+                const vendor = document.getElementById(vendorId);
+                if (vendor) {
+                    vendor.querySelectorAll('.quantity-input').forEach(input => {
+                        input.value = '';
+                    });
+                    const notesField = vendor.querySelector(`#${vendorId}-notes`);
+                    if (notesField) {
+                        notesField.value = '';
+                    }
+                    localStorage.removeItem(`order-${vendorId}`);
+                }
+            });
+            console.log('✅ All vendors cleared');
+        }
+        
         // Send all orders to dashboard
         function sendAllOrders() {
             const location = document.getElementById('orderingLocation').value;
@@ -1701,16 +1719,14 @@
             console.log('📦 Orders sent to dashboard:', newOrders);
             console.log('📦 Total orders now:', updatedOrders.length);
             
-            // Clear the inventory form
-            if (confirm(`${newOrders.length} orders sent to dashboard! Clear this form?`)) {
-                ['bradyplus', 'gordon', 'webstaurant', 'gnarley', 'nuts', 'jennifers', 'faire', 'amazon'].forEach(vendorId => {
-                    clearVendor(vendorId);
-                });
+            // Ask if they want to view the dashboard
+            if (confirm(`${newOrders.length} orders sent to dashboard! Would you like to view the Orders Dashboard?`)) {
+                window.open('orders-dashboard.html', '_blank');
             }
             
-            // Ask if they want to view the dashboard
-            if (confirm('Orders sent successfully! Would you like to view the Orders Dashboard?')) {
-                window.open('orders-dashboard.html', '_blank');
+            // Ask to clear the inventory form
+            if (confirm('Clear this inventory form now?')) {
+                clearAllVendors();
             }
         }
     </script>

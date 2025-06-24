@@ -488,8 +488,15 @@
         }
 
         function printOrder(orderId) {
+            console.log('🖨️ Printing order:', orderId);
             const order = allOrders.find(o => o.id === orderId);
-            if (!order) return;
+            if (!order) {
+                console.error('Order not found:', orderId);
+                alert('Order not found!');
+                return;
+            }
+            
+            console.log('🖨️ Found order:', order.vendor, 'for', order.location);
             
             const printContent = `
                 <div style="font-family: Arial, sans-serif; padding: 10px; font-size: 14px; line-height: 1.1; background: white; color: black;">
@@ -512,10 +519,33 @@
                 </div>
             `;
             
+            console.log('🖨️ Opening print window...');
             const printWindow = window.open('', '_blank');
-            printWindow.document.write(printContent);
+            if (!printWindow) {
+                alert('Print blocked by popup blocker! Please allow popups for this site.');
+                return;
+            }
+            
+            printWindow.document.write(`
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>Order - ${order.vendor} for ${order.location}</title>
+                </head>
+                <body>
+                    ${printContent}
+                </body>
+                </html>
+            `);
             printWindow.document.close();
-            printWindow.print();
+            
+            // Wait a moment then print
+            setTimeout(() => {
+                printWindow.print();
+                setTimeout(() => {
+                    printWindow.close();
+                }, 100);
+            }, 250);
         }
 
         function printFilteredOrders() {
@@ -549,10 +579,33 @@
                 </div>
             `;
             
+            console.log('🖨️ Opening print window for all orders...');
             const printWindow = window.open('', '_blank');
-            printWindow.document.write(printContent);
+            if (!printWindow) {
+                alert('Print blocked by popup blocker! Please allow popups for this site.');
+                return;
+            }
+            
+            printWindow.document.write(`
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>Orders Summary - ${currentFilter === 'all' ? 'All Locations' : currentFilter}</title>
+                </head>
+                <body>
+                    ${printContent}
+                </body>
+                </html>
+            `);
             printWindow.document.close();
-            printWindow.print();
+            
+            // Wait a moment then print
+            setTimeout(() => {
+                printWindow.print();
+                setTimeout(() => {
+                    printWindow.close();
+                }, 100);
+            }, 250);
         }
 
         function clearAllOrders() {
