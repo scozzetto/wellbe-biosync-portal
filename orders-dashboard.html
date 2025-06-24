@@ -499,23 +499,13 @@
             console.log('🖨️ Found order:', order.vendor, 'for', order.location);
             
             const printContent = `
-                <div style="font-family: Arial, sans-serif; padding: 10px; font-size: 14px; line-height: 1.1; background: white; color: black;">
-                    <h2 style="margin: 0 0 5px 0; font-size: 18px; color: black;">ORDER FOR: ${order.location.toUpperCase()}</h2>
-                    <p style="margin: 1px 0; color: black;"><strong>Vendor:</strong> ${order.vendor}</p>
-                    <p style="margin: 1px 0; color: black;"><strong>Date:</strong> ${new Date(order.timestamp).toLocaleDateString()}</p>
-                    <p style="margin: 1px 0; color: black;"><strong>Time:</strong> ${new Date(order.timestamp).toLocaleTimeString()}</p>
-                    <hr style="margin: 3px 0; border: 1px solid black;">
-                    <div style="margin: 3px 0;">
-                        ${order.items.map(item => `
-                            <div style="display: flex; margin: 0; padding: 0; line-height: 1.1;">
-                                <span style="margin: 0; color: black; width: 250px;">${item.name}</span>
-                                <span style="margin: 0; color: black; margin-left: 5px;"><strong>${item.quantity} ${item.unit}</strong></span>
-                            </div>
-                        `).join('')}
-                    </div>
-                    <hr style="margin: 3px 0; border: 1px solid black;">
-                    <p style="margin: 1px 0; color: black;"><strong>Total Items:</strong> ${order.itemCount}</p>
-                    ${order.notes ? `<p style="margin: 1px 0; color: black;"><strong>Notes:</strong> ${order.notes}</p>` : ''}
+                <div style="font-family: Arial, sans-serif; padding: 5px; font-size: 12px; line-height: 1.2; background: white; color: black;">
+                    <h2 style="margin: 0 0 3px 0; font-size: 16px; color: black;">${order.vendor} - ${order.location.toUpperCase()}</h2>
+                    <p style="margin: 0 0 2px 0; color: black; font-size: 10px;">${new Date(order.timestamp).toLocaleDateString()} ${new Date(order.timestamp).toLocaleTimeString()}</p>
+                    <hr style="margin: 2px 0; border: 0.5px solid black;">
+                    ${order.items.map(item => `<div style="margin: 1px 0; display: flex; justify-content: space-between;"><span>${item.name}</span><span><strong>${item.quantity} ${item.unit}</strong></span></div>`).join('')}
+                    <hr style="margin: 2px 0; border: 0.5px solid black;">
+                    <p style="margin: 1px 0; color: black; font-size: 10px;"><strong>Total: ${order.itemCount} items</strong>${order.notes ? ` | Notes: ${order.notes}` : ''}</p>
                 </div>
             `;
             
@@ -554,28 +544,52 @@
                 return;
             }
             
+            // Group orders by vendor and location
+            const groupedOrders = {};
+            filteredOrders.forEach(order => {
+                const key = `${order.vendor}-${order.location}`;
+                if (!groupedOrders[key]) {
+                    groupedOrders[key] = {
+                        vendor: order.vendor,
+                        location: order.location,
+                        items: {},
+                        notes: []
+                    };
+                }
+                
+                // Combine quantities for same items
+                order.items.forEach(item => {
+                    const itemKey = `${item.name}-${item.unit}`;
+                    if (groupedOrders[key].items[itemKey]) {
+                        groupedOrders[key].items[itemKey].quantity += parseInt(item.quantity);
+                    } else {
+                        groupedOrders[key].items[itemKey] = {
+                            name: item.name,
+                            quantity: parseInt(item.quantity),
+                            unit: item.unit
+                        };
+                    }
+                });
+                
+                if (order.notes) {
+                    groupedOrders[key].notes.push(order.notes);
+                }
+            });
+            
             const printContent = `
-                <div style="font-family: Arial, sans-serif; padding: 10px; font-size: 14px; line-height: 1.1; background: white; color: black;">
-                    <h1 style="margin: 0 0 5px 0; font-size: 20px; color: black;">ORDERS SUMMARY - ${currentFilter === 'all' ? 'ALL LOCATIONS' : currentFilter.toUpperCase()}</h1>
-                    <p style="margin: 1px 0; color: black;"><strong>Generated:</strong> ${new Date().toLocaleString()}</p>
-                    <hr style="margin: 3px 0; border: 1px solid black;">
-                    ${filteredOrders.map(order => `
-                        <div style="margin-bottom: 8px; page-break-inside: avoid;">
-                            <h3 style="margin: 2px 0; font-size: 16px; color: black;">${order.vendor} - ${order.location}</h3>
-                            <p style="margin: 1px 0; font-size: 12px; color: black;"><strong>Date:</strong> ${new Date(order.timestamp).toLocaleDateString()} ${new Date(order.timestamp).toLocaleTimeString()}</p>
-                            <div style="margin: 2px 0;">
-                                ${order.items.map(item => `
-                                    <div style="display: flex; margin: 0; padding: 0; line-height: 1.1;">
-                                        <span style="margin: 0; color: black; width: 250px;">${item.name}</span>
-                                        <span style="margin: 0; color: black; margin-left: 5px;"><strong>${item.quantity} ${item.unit}</strong></span>
-                                    </div>
-                                `).join('')}
-                            </div>
-                            ${order.notes ? `<p style="margin: 1px 0; font-size: 12px; color: black;"><strong>Notes:</strong> ${order.notes}</p>` : ''}
-                            <hr style="margin: 2px 0; border: 1px solid black;">
+                <div style="font-family: Arial, sans-serif; padding: 5px; font-size: 12px; line-height: 1.3; background: white; color: black;">
+                    <h1 style="margin: 0 0 3px 0; font-size: 16px; color: black;">ORDERS SUMMARY - ${currentFilter === 'all' ? 'ALL LOCATIONS' : currentFilter.toUpperCase()}</h1>
+                    <p style="margin: 0 0 3px 0; color: black; font-size: 10px;">Generated: ${new Date().toLocaleString()}</p>
+                    <hr style="margin: 2px 0; border: 0.5px solid black;">
+                    ${Object.values(groupedOrders).map(group => `
+                        <div style="margin-bottom: 6px; page-break-inside: avoid;">
+                            <h3 style="margin: 2px 0; font-size: 14px; color: black;">${group.vendor} - ${group.location}</h3>
+                            ${Object.values(group.items).map(item => `<div style="margin: 1px 0; display: flex; justify-content: space-between;"><span>${item.name}</span><span><strong>${item.quantity} ${item.unit}</strong></span></div>`).join('')}
+                            ${group.notes.length > 0 ? `<p style="margin: 1px 0; font-size: 10px; color: #666;">Notes: ${[...new Set(group.notes)].join('; ')}</p>` : ''}
+                            <hr style="margin: 2px 0; border: 0.5px solid #ccc;">
                         </div>
                     `).join('')}
-                    <p style="margin: 1px 0; color: black;"><strong>Total Orders:</strong> ${filteredOrders.length}</p>
+                    <p style="margin: 1px 0; color: black; font-size: 10px;"><strong>Total Vendors: ${Object.keys(groupedOrders).length}</strong></p>
                 </div>
             `;
             
