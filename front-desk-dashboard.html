@@ -450,12 +450,10 @@
                 <h2>Today's Check-Ins</h2>
                 <div style="display: flex; gap: 10px; align-items: center;">
                     <select id="statusFilter" onchange="filterByStatus()" style="padding: 8px 15px; border: 2px solid var(--primary-color); border-radius: 6px; background: var(--card-bg); color: var(--text-color); font-size: 1rem;">
-                        <option value="active">Active Patients Only</option>
-                        <option value="all">All Today's Patients</option>
-                        <option value="waiting">Waiting Only</option>
-                        <option value="being-seen">Being Seen Only</option>
-                        <option value="completed">Completed Only</option>
-                        <option value="archived">Archived (End of Day)</option>
+                        <option value="checked-in">Checked In</option>
+                        <option value="in-treatment">Currently in Treatment</option>
+                        <option value="was-seen">Was Seen</option>
+                        <option value="all-today">All Patients Seen Today (Ready for Print)</option>
                     </select>
                     <button class="refresh-btn" onclick="openAddPatientModal()" style="background: #22c55e;">
                         + Add Patient
@@ -1387,26 +1385,8 @@
 
         // Filter checkins by status
         function filterByStatus() {
-            const filterValue = document.getElementById('statusFilter').value;
-            const today = new Date().toISOString().split('T')[0];
-            
-            if (filterValue === 'archived') {
-                // Show archived data
-                const archiveKey = `archive_${today}`;
-                const archivedData = localStorage.getItem(archiveKey);
-                
-                if (!archivedData) {
-                    alert('No archived data for today. Run "End of Day" first.');
-                    document.getElementById('statusFilter').value = 'active';
-                    return;
-                }
-                
-                const archive = JSON.parse(archivedData);
-                displayArchivedCheckins(archive.checkins);
-            } else {
-                // Normal filtering
-                loadCheckins();
-            }
+            // Simply reload with the new filter
+            loadCheckins();
         }
         
         // Display archived checkins (read-only)
@@ -1474,27 +1454,27 @@
         // Update processCheckins to handle status filter
         const originalProcessCheckins = processCheckins;
         processCheckins = function(checkins) {
-            const filterValue = document.getElementById('statusFilter') ? document.getElementById('statusFilter').value : 'active';
+            const filterValue = document.getElementById('statusFilter') ? document.getElementById('statusFilter').value : 'checked-in';
             const today = new Date().toISOString().split('T')[0];
             let filteredCheckins = checkins.filter(c => c.dateIn === today);
             
             // Apply status filter
             switch(filterValue) {
-                case 'active':
-                    // Show only waiting and being seen
-                    filteredCheckins = filteredCheckins.filter(c => c.status === 'waiting' || c.status === 'active');
-                    break;
-                case 'waiting':
+                case 'checked-in':
+                    // Show only waiting patients (checked in but not yet being seen)
                     filteredCheckins = filteredCheckins.filter(c => c.status === 'waiting');
                     break;
-                case 'being-seen':
+                case 'in-treatment':
+                    // Show only patients currently being seen
                     filteredCheckins = filteredCheckins.filter(c => c.status === 'active');
                     break;
-                case 'completed':
+                case 'was-seen':
+                    // Show only completed patients
                     filteredCheckins = filteredCheckins.filter(c => c.status === 'completed');
                     break;
-                case 'all':
-                    // Show all today's patients
+                case 'all-today':
+                    // Show all today's patients for printing
+                    // Keep all patients - no additional filtering
                     break;
             }
             
@@ -1504,9 +1484,24 @@
             
             if (filteredCheckins.length === 0) {
                 const row = document.createElement('tr');
+                let message = 'No patients found';
+                switch(filterValue) {
+                    case 'checked-in':
+                        message = 'No patients waiting to be seen';
+                        break;
+                    case 'in-treatment':
+                        message = 'No patients currently in treatment';
+                        break;
+                    case 'was-seen':
+                        message = 'No completed patients today';
+                        break;
+                    case 'all-today':
+                        message = 'No patients checked in today';
+                        break;
+                }
                 row.innerHTML = `
                     <td colspan="11" style="text-align: center; padding: 40px; color: #9ca3af; font-style: italic;">
-                        No ${filterValue === 'all' ? '' : filterValue} check-ins for today
+                        ${message}
                     </td>
                 `;
                 tbody.appendChild(row);
