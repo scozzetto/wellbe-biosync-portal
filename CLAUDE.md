@@ -107,7 +107,46 @@ grep "WELLBE-BIOSYNC-2025" CLAUDE.md  # Should return this unique ID
 
 **If you crash/restart, immediately check CLAUDE.md for project status and continue documentation!**
 
-## 🔧 SYSTEM STATUS & TROUBLESHOOTING (Current as of June 21, 2025 4:15 PM)
+## 🔄 **AUTOMATED BACKUP SYSTEM** (NEW - June 24, 2025 7:14 PM)
+
+### 🛡️ BULLETPROOF DATA PROTECTION ACTIVE
+**NEVER LOSE DATA AGAIN - EVERYTHING IS PRESERVED**
+
+#### 📁 Auto-Backup Scripts Created:
+- **`/scripts/auto-backup.sh`** - Full project backup every 30 minutes
+  - Copies entire project to timestamped Dropbox folder
+  - Captures git status, recent commits, uncommitted changes
+  - Keeps last 20 backups, auto-cleans old ones
+  - Creates `latest-backup` symlink for easy access
+
+- **`/scripts/session-backup.sh`** - Conversation & session state capture
+  - Preserves current working context for Claude continuity
+  - Session info with project state and recent activity
+  - Copies CLAUDE.md and backup logs for recovery
+  - Creates `latest-session` symlink
+
+#### 🎯 Backup Locations:
+- **Project Backups**: `/Users/silviomac/Library/CloudStorage/Dropbox/Apps/bewellbe-data-sync/bewellbe-data/auto-backup-TIMESTAMP/`
+- **Session Backups**: `/Users/silviomac/Library/CloudStorage/Dropbox/Apps/bewellbe-data-sync/bewellbe-data/sessions/session-TIMESTAMP/`
+- **Logs**: `backup.log` and `session.log` in backup base directory
+
+#### ⚡ To Activate Automatic Backups:
+```bash
+# Manual execution (test)
+/Users/silviomac/wellbe/scripts/auto-backup.sh
+/Users/silviomac/wellbe/scripts/session-backup.sh
+
+# Set up cron job for automatic execution every 30 minutes
+# Add to crontab: */30 * * * * /Users/silviomac/wellbe/scripts/auto-backup.sh
+```
+
+#### 🔍 Recovery Instructions:
+- **Latest backup**: Follow symlink at `/bewellbe-data/latest-backup`
+- **Session context**: Check `/bewellbe-data/latest-session/session-info.md`
+- **Git history**: `git log --oneline -10` for recent commits
+- **If Claude crashes**: Read this CLAUDE.md + latest session backup immediately
+
+## 🔧 SYSTEM STATUS & TROUBLESHOOTING (Current as of June 24, 2025 7:14 PM)
 
 ### ✅ WORKING SYSTEMS:
 - **Stripe Integration:** Webhook receiving events, signature verification working
