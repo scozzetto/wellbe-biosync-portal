@@ -144,7 +144,7 @@
         }
         
         .order-details h4 {
-            color: #8B4513;
+            color: #8B3A7C;
             margin-bottom: 15px;
             font-size: 1.2rem;
             font-weight: bold;
@@ -181,7 +181,7 @@
         
         .order-vendor {
             font-weight: bold;
-            color: #8B4513;
+            color: #8B3A7C;
             font-size: 1rem;
         }
         
@@ -436,15 +436,16 @@
                 <div class="order-details" id="order-${index}">
                     <h4>📋 Order Details - ${order.vendor} for ${order.location}</h4>
                     <div class="items-list">
-                        ${order.items.map(item => `
+                        ${order.items && order.items.length > 0 ? order.items.map(item => `
                             <div class="item-detail">
-                                <span class="item-name-detail">${item.name}</span>
-                                <span class="item-quantity">${item.quantity} ${item.unit}</span>
+                                <span class="item-name-detail">${item.name || 'Unknown Item'}</span>
+                                <span class="item-quantity">${item.quantity || '0'} ${item.unit || 'case'}</span>
                             </div>
-                        `).join('')}
+                        `).join('') : '<p style="color: #999;">No items found</p>'}
                     </div>
                     ${order.notes ? `<p><strong>Notes:</strong> ${order.notes}</p>` : ''}
-                    <p><strong>Order Date:</strong> ${order.date}</p>
+                    <p><strong>Order Date:</strong> ${order.date || new Date(order.timestamp).toLocaleDateString()}</p>
+                    <p style="font-size: 0.8rem; color: #666;"><strong>Debug:</strong> ${order.items ? order.items.length : 0} items, ID: ${order.id}</p>
                 </div>
             `).join('');
             
