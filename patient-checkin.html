@@ -814,7 +814,7 @@
             
             // Send to server for cross-domain sync
             try {
-                fetch('/.netlify/functions/checkin-sync', {
+                fetch('/.netlify/functions/checkin-sync-v2', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

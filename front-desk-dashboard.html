@@ -609,7 +609,7 @@
         
         // Load and display check-ins
         function loadCheckins() {
-            fetch('/.netlify/functions/checkin-sync')
+            fetch('/.netlify/functions/checkin-sync-v2')
                 .then(r => r.json())
                 .then(serverData => {
                     let local = JSON.parse(localStorage.getItem('allCheckins')||'[]');
@@ -773,7 +773,7 @@
                 
                 // Also notify server
                 try {
-                    fetch('/.netlify/functions/checkin-sync', {
+                    fetch('/.netlify/functions/checkin-sync-v2', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ action: 'delete', id: id, deletedBy: document.getElementById('currentUser').textContent })
@@ -1150,7 +1150,7 @@
             
             // Also send to server for sync
             try {
-                fetch('/.netlify/functions/checkin-sync', {
+                fetch('/.netlify/functions/checkin-sync-v2', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ action: 'archive', date: today, archived: completedCheckins })
