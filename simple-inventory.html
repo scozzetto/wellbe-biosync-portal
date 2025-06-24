@@ -1627,6 +1627,7 @@
         function sendAllOrders() {
             const location = document.getElementById('orderingLocation').value;
             const allOrders = JSON.parse(localStorage.getItem('allOrders') || '[]');
+            let newOrders = [];
             
             ['bradyplus', 'gordon', 'webstaurant', 'gnarley', 'nuts', 'jennifers', 'faire', 'amazon'].forEach(vendorId => {
                 const vendor = document.getElementById(vendorId);
@@ -1682,20 +1683,26 @@
                         notes: vendor.querySelector(`#${vendorId}-notes`).value || ''
                     };
                     
-                    allOrders.push(order);
+                    newOrders.push(order);
                 }
             });
             
-            if (allOrders.length === 0) {
+            if (newOrders.length === 0) {
                 alert('No items to send. Please add some quantities to your orders.');
                 return;
             }
             
+            // Add new orders to existing ones
+            const updatedOrders = allOrders.concat(newOrders);
+            
             // Save to localStorage
-            localStorage.setItem('allOrders', JSON.stringify(allOrders));
+            localStorage.setItem('allOrders', JSON.stringify(updatedOrders));
+            
+            console.log('📦 Orders sent to dashboard:', newOrders);
+            console.log('📦 Total orders now:', updatedOrders.length);
             
             // Clear the inventory form
-            if (confirm('Orders sent to dashboard! Clear this form?')) {
+            if (confirm(`${newOrders.length} orders sent to dashboard! Clear this form?`)) {
                 ['bradyplus', 'gordon', 'webstaurant', 'gnarley', 'nuts', 'jennifers', 'faire', 'amazon'].forEach(vendorId => {
                     clearVendor(vendorId);
                 });

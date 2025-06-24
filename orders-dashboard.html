@@ -377,6 +377,7 @@
             try {
                 // Simple localStorage-based orders
                 allOrders = JSON.parse(localStorage.getItem('allOrders') || '[]');
+                console.log('📋 Dashboard loaded orders:', allOrders.length);
                 filterByLocation();
                 updateStats();
             } catch (error) {
@@ -403,6 +404,7 @@
 
         function renderOrders() {
             const ordersList = document.getElementById('ordersList');
+            console.log('📋 Rendering orders:', filteredOrders.length, 'for filter:', currentFilter);
             
             if (filteredOrders.length === 0) {
                 ordersList.innerHTML = `
