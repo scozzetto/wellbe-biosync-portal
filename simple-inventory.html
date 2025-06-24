@@ -286,8 +286,23 @@
 <body>
     <div class="header">
         <h1>Simple Inventory Ordering System</h1>
-        <p>Fill in quantities and print vendor order sheets</p>
-        <div style="display: flex; gap: 15px; justify-content: center; margin-top: 15px;">
+        <p>Fill in quantities and send to orders dashboard or print directly</p>
+        
+        <!-- Location Selector -->
+        <div style="margin: 15px 0; text-align: center;">
+            <label for="orderingLocation" style="font-size: 18px; font-weight: bold; margin-right: 10px;">Ordering for:</label>
+            <select id="orderingLocation" style="padding: 8px 15px; font-size: 16px; border-radius: 4px; border: 2px solid var(--primary-color);">
+                <option value="Distribution">Distribution Center</option>
+                <option value="Birmingham">Birmingham</option>
+                <option value="Berkeley">Berkeley</option>
+                <option value="UWM">UWM</option>
+            </select>
+        </div>
+        
+        <div style="display: flex; gap: 15px; justify-content: center; margin-top: 15px; flex-wrap: wrap;">
+            <button onclick="sendAllOrders()" class="btn" style="background: #007bff; color: white; font-size: 18px; padding: 12px 24px;">
+                <i class="fas fa-paper-plane"></i> Send Orders to Dashboard
+            </button>
             <button onclick="printAllOrders()" class="btn" style="background: #28a745; color: white; font-size: 18px; padding: 12px 24px;">
                 <i class="fas fa-print"></i> Print All Orders
             </button>
@@ -1606,6 +1621,90 @@
                     });
                 }
             });
+        }
+        
+        // Send all orders to dashboard
+        function sendAllOrders() {
+            const location = document.getElementById('orderingLocation').value;
+            const allOrders = JSON.parse(localStorage.getItem('allOrders') || '[]');
+            
+            ['bradyplus', 'gordon', 'webstaurant', 'gnarley', 'nuts', 'jennifers', 'faire', 'amazon'].forEach(vendorId => {
+                const vendor = document.getElementById(vendorId);
+                const items = [];
+                let hasItems = false;
+                
+                // Get vendor name
+                const vendorName = vendor.querySelector('.vendor-name').textContent;
+                
+                // Collect items with quantities
+                vendor.querySelectorAll('.quantity-input').forEach(input => {
+                    if (input.value && input.value > 0) {
+                        const itemName = input.dataset.item;
+                        const quantity = input.value;
+                        const unit = input.parentElement.querySelector('.unit-select').value || 'case';
+                        
+                        items.push({
+                            name: itemName,
+                            quantity: quantity,
+                            unit: unit
+                        });
+                        hasItems = true;
+                    }
+                });
+                
+                // Collect custom items
+                vendor.querySelectorAll('[data-type="custom-item"]').forEach(input => {
+                    if (input.value && input.value.trim() !== '') {
+                        const itemName = input.value.trim();
+                        const qtyInput = input.parentElement.querySelector('[data-type="custom-qty"]');
+                        const quantity = qtyInput.value || '1';
+                        const unit = input.parentElement.querySelector('.unit-select').value || 'case';
+                        
+                        items.push({
+                            name: itemName,
+                            quantity: quantity,
+                            unit: unit
+                        });
+                        hasItems = true;
+                    }
+                });
+                
+                // If vendor has items, create order
+                if (hasItems) {
+                    const order = {
+                        id: `order-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+                        vendor: vendorName,
+                        location: location,
+                        items: items,
+                        itemCount: items.length,
+                        date: new Date().toLocaleDateString(),
+                        timestamp: new Date().toISOString(),
+                        notes: vendor.querySelector(`#${vendorId}-notes`).value || ''
+                    };
+                    
+                    allOrders.push(order);
+                }
+            });
+            
+            if (allOrders.length === 0) {
+                alert('No items to send. Please add some quantities to your orders.');
+                return;
+            }
+            
+            // Save to localStorage
+            localStorage.setItem('allOrders', JSON.stringify(allOrders));
+            
+            // Clear the inventory form
+            if (confirm('Orders sent to dashboard! Clear this form?')) {
+                ['bradyplus', 'gordon', 'webstaurant', 'gnarley', 'nuts', 'jennifers', 'faire', 'amazon'].forEach(vendorId => {
+                    clearVendor(vendorId);
+                });
+            }
+            
+            // Ask if they want to view the dashboard
+            if (confirm('Orders sent successfully! Would you like to view the Orders Dashboard?')) {
+                window.open('orders-dashboard.html', '_blank');
+            }
         }
     </script>
 </body>
