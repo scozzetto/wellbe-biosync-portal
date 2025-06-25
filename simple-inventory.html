@@ -1702,6 +1702,171 @@
             <button onclick="clearVendor('sabbathcoffee')" class="btn btn-clear">Clear</button>
         </div>
     </div>
+    
+    <!-- GREEN ROCK DISTRIBUTION (NAKEE Butter & WHY Bars) Vendor -->
+    <div class="vendor-section" id="greenrock">
+        <div class="vendor-header">
+            <div class="vendor-name">GREEN ROCK DISTRIBUTION</div>
+            <div class="vendor-contact">
+                <div style="font-size: 14px; color: #666; margin-top: 5px;">
+                    📞 Phil FIORAVANTE: 248-330-4875 | NAKEE Butter & WHY Bars
+                </div>
+            </div>
+            <div class="order-date">
+                <label>Order Date:</label>
+                <input type="date" id="greenrock-date" value="">
+            </div>
+        </div>
+        
+        <div class="items-grid">
+            <div class="item-row">
+                <div class="item-name">WHY Bar - Blueberry</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="greenrock" data-item="WHY Bar - Blueberry">
+                <select class="unit-select">
+                    <option value="case" selected>Case</option>
+                    <option value="individual">Individual</option>
+                    <option value="box">Box</option>
+                </select>
+            </div>
+            <div class="item-row">
+                <div class="item-name">WHY Bar - Chocolate</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="greenrock" data-item="WHY Bar - Chocolate">
+                <select class="unit-select">
+                    <option value="case" selected>Case</option>
+                    <option value="individual">Individual</option>
+                    <option value="box">Box</option>
+                </select>
+            </div>
+            <div class="item-row">
+                <div class="item-name">WHY Bar - Apple</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="greenrock" data-item="WHY Bar - Apple">
+                <select class="unit-select">
+                    <option value="case" selected>Case</option>
+                    <option value="individual">Individual</option>
+                    <option value="box">Box</option>
+                </select>
+            </div>
+            <div class="item-row">
+                <div class="item-name">WHY Bar - Mango</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="greenrock" data-item="WHY Bar - Mango">
+                <select class="unit-select">
+                    <option value="case" selected>Case</option>
+                    <option value="individual">Individual</option>
+                    <option value="box">Box</option>
+                </select>
+            </div>
+            <div class="item-row">
+                <div class="item-name">NAKEE Butter - Sunflower Packets</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="greenrock" data-item="NAKEE Butter - Sunflower Packets">
+                <select class="unit-select">
+                    <option value="case" selected>Case</option>
+                    <option value="individual">Individual</option>
+                    <option value="box">Box</option>
+                </select>
+            </div>
+            <div class="item-row">
+                <div class="item-name">NAKEE Butter - Original Packets</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="greenrock" data-item="NAKEE Butter - Original Packets">
+                <select class="unit-select">
+                    <option value="case" selected>Case</option>
+                    <option value="individual">Individual</option>
+                    <option value="box">Box</option>
+                </select>
+            </div>
+            <div class="item-row">
+                <div class="item-name">NAKEE Butter - Original Tub</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="greenrock" data-item="NAKEE Butter - Original Tub">
+                <select class="unit-select">
+                    <option value="case" selected>Case</option>
+                    <option value="individual">Individual</option>
+                    <option value="box">Box</option>
+                </select>
+            </div>
+            <div class="item-row">
+                <div class="item-name">Additional Item</div>
+                <input type="text" class="item-name" placeholder="Additional item..." style="padding: 8px; border: 1px solid #ccc; border-radius: 4px;" data-vendor="greenrock" data-type="custom-item">
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="greenrock" data-type="custom-qty">
+                <select class="unit-select" data-vendor="greenrock" data-type="custom-unit">
+                    <option value="case" selected>Case</option>
+                    <option value="individual">Individual</option>
+                    <option value="box">Box</option>
+                </select>
+            </div>
+        </div>
+        
+        <div class="notes-section">
+            <label>Notes:</label>
+            <textarea class="notes-input" id="greenrock-notes" placeholder="Special instructions or notes for this order..."></textarea>
+        </div>
+        
+        <div class="vendor-actions">
+            <button onclick="printVendor('greenrock')" class="btn btn-print">Print GREEN ROCK Order</button>
+            <button onclick="saveVendor('greenrock')" class="btn btn-save">Save Order</button>
+            <button onclick="clearVendor('greenrock')" class="btn btn-clear">Clear</button>
+        </div>
+    </div>
+    
+    <!-- MUFFITS (Debbie Schemansky) Vendor -->
+    <div class="vendor-section" id="muffits">
+        <div class="vendor-header">
+            <div class="vendor-name">MUFFITS</div>
+            <div class="vendor-contact">
+                <div style="font-size: 14px; color: #666; margin-top: 5px;">
+                    📞 Debbie Schemansky: 586-872-3934
+                </div>
+            </div>
+            <div class="order-date">
+                <label>Order Date:</label>
+                <input type="date" id="muffits-date" value="">
+            </div>
+        </div>
+        
+        <div class="items-grid">
+            <div class="item-row">
+                <div class="item-name">MUFFITS - Assorted Flavors</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="muffits" data-item="MUFFITS - Assorted Flavors">
+                <select class="unit-select">
+                    <option value="case" selected>Case</option>
+                    <option value="individual">Individual</option>
+                    <option value="box">Box</option>
+                    <option value="dozen">Dozen</option>
+                </select>
+            </div>
+            <div class="item-row">
+                <div class="item-name">Additional Item</div>
+                <input type="text" class="item-name" placeholder="Additional item..." style="padding: 8px; border: 1px solid #ccc; border-radius: 4px;" data-vendor="muffits" data-type="custom-item">
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="muffits" data-type="custom-qty">
+                <select class="unit-select" data-vendor="muffits" data-type="custom-unit">
+                    <option value="case" selected>Case</option>
+                    <option value="individual">Individual</option>
+                    <option value="box">Box</option>
+                    <option value="dozen">Dozen</option>
+                </select>
+            </div>
+            <div class="item-row">
+                <div class="item-name">Additional Item</div>
+                <input type="text" class="item-name" placeholder="Additional item..." style="padding: 8px; border: 1px solid #ccc; border-radius: 4px;" data-vendor="muffits" data-type="custom-item">
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="muffits" data-type="custom-qty">
+                <select class="unit-select" data-vendor="muffits" data-type="custom-unit">
+                    <option value="case" selected>Case</option>
+                    <option value="individual">Individual</option>
+                    <option value="box">Box</option>
+                    <option value="dozen">Dozen</option>
+                </select>
+            </div>
+        </div>
+        
+        <div class="notes-section">
+            <label>Notes:</label>
+            <textarea class="notes-input" id="muffits-notes" placeholder="Special instructions or notes for this order..."></textarea>
+        </div>
+        
+        <div class="vendor-actions">
+            <button onclick="printVendor('muffits')" class="btn btn-print">Print MUFFITS Order</button>
+            <button onclick="saveVendor('muffits')" class="btn btn-save">Save Order</button>
+            <button onclick="clearVendor('muffits')" class="btn btn-clear">Clear</button>
+        </div>
+    </div>
 
     <script>
         // Set today's date as default
@@ -1874,7 +2039,7 @@
         
         // Load all saved orders
         function loadAllOrders() {
-            ['bradyplus', 'gordon', 'webstaurant', 'gnarley', 'nuts', 'jennifers', 'faire', 'amazon', 'sabbathcoffee'].forEach(vendorId => {
+            ['bradyplus', 'gordon', 'webstaurant', 'gnarley', 'nuts', 'jennifers', 'faire', 'amazon', 'sabbathcoffee', 'greenrock', 'muffits'].forEach(vendorId => {
                 const savedOrder = localStorage.getItem(`order-${vendorId}`);
                 if (savedOrder) {
                     const orderData = JSON.parse(savedOrder);
@@ -1899,7 +2064,7 @@
         
         // Clear all vendors at once (no individual confirmations)
         function clearAllVendors() {
-            ['bradyplus', 'gordon', 'webstaurant', 'gnarley', 'nuts', 'jennifers', 'faire', 'amazon', 'sabbathcoffee'].forEach(vendorId => {
+            ['bradyplus', 'gordon', 'webstaurant', 'gnarley', 'nuts', 'jennifers', 'faire', 'amazon', 'sabbathcoffee', 'greenrock', 'muffits'].forEach(vendorId => {
                 const vendor = document.getElementById(vendorId);
                 if (vendor) {
                     vendor.querySelectorAll('.quantity-input').forEach(input => {
@@ -1929,7 +2094,7 @@
             const allOrders = JSON.parse(localStorage.getItem('allOrders') || '[]');
             let ordersModified = false;
             
-            ['bradyplus', 'gordon', 'webstaurant', 'gnarley', 'nuts', 'jennifers', 'faire', 'amazon', 'sabbathcoffee'].forEach(vendorId => {
+            ['bradyplus', 'gordon', 'webstaurant', 'gnarley', 'nuts', 'jennifers', 'faire', 'amazon', 'sabbathcoffee', 'greenrock', 'muffits'].forEach(vendorId => {
                 const vendor = document.getElementById(vendorId);
                 const newItems = [];
                 let hasItems = false;
