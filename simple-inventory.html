@@ -1806,6 +1806,104 @@
         </div>
     </div>
     
+    <!-- VACPAK (Fresh Produce) Vendor -->
+    <div class="vendor-section" id="vacpak">
+        <div class="vendor-header">
+            <div class="vendor-name">VACPAK</div>
+            <div class="vendor-contact">
+                <div style="font-size: 14px; color: #666; margin-top: 5px;">
+                    📞 Rick: 586-855-9326 | Fresh Produce Delivery
+                </div>
+                <div style="font-size: 12px; color: #888; margin-top: 2px;">
+                    📅 Birmingham: Mon/Wed/Fri | UWM: Mon/Fri
+                </div>
+            </div>
+            <div class="order-date">
+                <label>Order Date:</label>
+                <input type="date" id="vacpak-date" value="">
+            </div>
+        </div>
+        
+        <div class="items-grid">
+            <div class="item-row">
+                <div class="item-name">Fresh Produce Items</div>
+                <input type="text" class="item-name" placeholder="Enter produce item..." style="padding: 8px; border: 1px solid #ccc; border-radius: 4px;" data-vendor="vacpak" data-type="custom-item">
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="vacpak" data-type="custom-qty">
+                <select class="unit-select" data-vendor="vacpak" data-type="custom-unit">
+                    <option value="case" selected>Case</option>
+                    <option value="individual">Individual</option>
+                    <option value="box">Box</option>
+                    <option value="bunch">Bunch</option>
+                    <option value="bag">Bag</option>
+                    <option value="lbs">Lbs</option>
+                </select>
+            </div>
+            <div class="item-row">
+                <div class="item-name">Additional Item</div>
+                <input type="text" class="item-name" placeholder="Enter produce item..." style="padding: 8px; border: 1px solid #ccc; border-radius: 4px;" data-vendor="vacpak" data-type="custom-item">
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="vacpak" data-type="custom-qty">
+                <select class="unit-select" data-vendor="vacpak" data-type="custom-unit">
+                    <option value="case" selected>Case</option>
+                    <option value="individual">Individual</option>
+                    <option value="box">Box</option>
+                    <option value="bunch">Bunch</option>
+                    <option value="bag">Bag</option>
+                    <option value="lbs">Lbs</option>
+                </select>
+            </div>
+            <div class="item-row">
+                <div class="item-name">Additional Item</div>
+                <input type="text" class="item-name" placeholder="Enter produce item..." style="padding: 8px; border: 1px solid #ccc; border-radius: 4px;" data-vendor="vacpak" data-type="custom-item">
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="vacpak" data-type="custom-qty">
+                <select class="unit-select" data-vendor="vacpak" data-type="custom-unit">
+                    <option value="case" selected>Case</option>
+                    <option value="individual">Individual</option>
+                    <option value="box">Box</option>
+                    <option value="bunch">Bunch</option>
+                    <option value="bag">Bag</option>
+                    <option value="lbs">Lbs</option>
+                </select>
+            </div>
+            <div class="item-row">
+                <div class="item-name">Additional Item</div>
+                <input type="text" class="item-name" placeholder="Enter produce item..." style="padding: 8px; border: 1px solid #ccc; border-radius: 4px;" data-vendor="vacpak" data-type="custom-item">
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="vacpak" data-type="custom-qty">
+                <select class="unit-select" data-vendor="vacpak" data-type="custom-unit">
+                    <option value="case" selected>Case</option>
+                    <option value="individual">Individual</option>
+                    <option value="box">Box</option>
+                    <option value="bunch">Bunch</option>
+                    <option value="bag">Bag</option>
+                    <option value="lbs">Lbs</option>
+                </select>
+            </div>
+            <div class="item-row">
+                <div class="item-name">Additional Item</div>
+                <input type="text" class="item-name" placeholder="Enter produce item..." style="padding: 8px; border: 1px solid #ccc; border-radius: 4px;" data-vendor="vacpak" data-type="custom-item">
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="vacpak" data-type="custom-qty">
+                <select class="unit-select" data-vendor="vacpak" data-type="custom-unit">
+                    <option value="case" selected>Case</option>
+                    <option value="individual">Individual</option>
+                    <option value="box">Box</option>
+                    <option value="bunch">Bunch</option>
+                    <option value="bag">Bag</option>
+                    <option value="lbs">Lbs</option>
+                </select>
+            </div>
+        </div>
+        
+        <div class="notes-section">
+            <label>Notes:</label>
+            <textarea class="notes-input" id="vacpak-notes" placeholder="Special instructions or notes for this order..."></textarea>
+        </div>
+        
+        <div class="vendor-actions">
+            <button onclick="printVendor('vacpak')" class="btn btn-print">Print VACPAK Order</button>
+            <button onclick="saveVendor('vacpak')" class="btn btn-save">Save Order</button>
+            <button onclick="clearVendor('vacpak')" class="btn btn-clear">Clear</button>
+        </div>
+    </div>
+    
     <!-- MUFFITS (Debbie Schemansky) Vendor -->
     <div class="vendor-section" id="muffits">
         <div class="vendor-header">
@@ -2039,7 +2137,7 @@
         
         // Load all saved orders
         function loadAllOrders() {
-            ['bradyplus', 'gordon', 'webstaurant', 'gnarley', 'nuts', 'jennifers', 'faire', 'amazon', 'sabbathcoffee', 'greenrock', 'muffits'].forEach(vendorId => {
+            ['bradyplus', 'gordon', 'webstaurant', 'gnarley', 'nuts', 'jennifers', 'faire', 'amazon', 'sabbathcoffee', 'greenrock', 'muffits', 'vacpak'].forEach(vendorId => {
                 const savedOrder = localStorage.getItem(`order-${vendorId}`);
                 if (savedOrder) {
                     const orderData = JSON.parse(savedOrder);
@@ -2064,7 +2162,7 @@
         
         // Clear all vendors at once (no individual confirmations)
         function clearAllVendors() {
-            ['bradyplus', 'gordon', 'webstaurant', 'gnarley', 'nuts', 'jennifers', 'faire', 'amazon', 'sabbathcoffee', 'greenrock', 'muffits'].forEach(vendorId => {
+            ['bradyplus', 'gordon', 'webstaurant', 'gnarley', 'nuts', 'jennifers', 'faire', 'amazon', 'sabbathcoffee', 'greenrock', 'muffits', 'vacpak'].forEach(vendorId => {
                 const vendor = document.getElementById(vendorId);
                 if (vendor) {
                     vendor.querySelectorAll('.quantity-input').forEach(input => {
@@ -2094,7 +2192,7 @@
             const allOrders = JSON.parse(localStorage.getItem('allOrders') || '[]');
             let ordersModified = false;
             
-            ['bradyplus', 'gordon', 'webstaurant', 'gnarley', 'nuts', 'jennifers', 'faire', 'amazon', 'sabbathcoffee', 'greenrock', 'muffits'].forEach(vendorId => {
+            ['bradyplus', 'gordon', 'webstaurant', 'gnarley', 'nuts', 'jennifers', 'faire', 'amazon', 'sabbathcoffee', 'greenrock', 'muffits', 'vacpak'].forEach(vendorId => {
                 const vendor = document.getElementById(vendorId);
                 const newItems = [];
                 let hasItems = false;
