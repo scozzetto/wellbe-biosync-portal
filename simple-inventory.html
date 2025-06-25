@@ -1912,15 +1912,15 @@
             console.log('✅ All vendors cleared');
         }
         
-        // Send all orders to dashboard
+        // Send all orders to dashboard (consolidates with existing orders)
         function sendAllOrders() {
             const location = document.getElementById('orderingLocation').value;
             const allOrders = JSON.parse(localStorage.getItem('allOrders') || '[]');
-            let newOrders = [];
+            let ordersModified = false;
             
             ['bradyplus', 'gordon', 'webstaurant', 'gnarley', 'nuts', 'jennifers', 'faire', 'amazon', 'sabbathcoffee'].forEach(vendorId => {
                 const vendor = document.getElementById(vendorId);
-                const items = [];
+                const newItems = [];
                 let hasItems = false;
                 
                 // Get vendor name
@@ -1930,10 +1930,10 @@
                 vendor.querySelectorAll('.quantity-input').forEach(input => {
                     if (input.value && input.value > 0) {
                         const itemName = input.dataset.item;
-                        const quantity = input.value;
+                        const quantity = parseInt(input.value);
                         const unit = input.parentElement.querySelector('.unit-select').value || 'case';
                         
-                        items.push({
+                        newItems.push({
                             name: itemName,
                             quantity: quantity,
                             unit: unit
@@ -1947,10 +1947,10 @@
                     if (input.value && input.value.trim() !== '') {
                         const itemName = input.value.trim();
                         const qtyInput = input.parentElement.querySelector('[data-type="custom-qty"]');
-                        const quantity = qtyInput.value || '1';
+                        const quantity = parseInt(qtyInput.value) || 1;
                         const unit = input.parentElement.querySelector('.unit-select').value || 'case';
                         
-                        items.push({
+                        newItems.push({
                             name: itemName,
                             quantity: quantity,
                             unit: unit
@@ -1959,40 +1959,78 @@
                     }
                 });
                 
-                // If vendor has items, create order
+                // If vendor has items, find existing order or create new one
                 if (hasItems) {
-                    const order = {
-                        id: `order-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
-                        vendor: vendorName,
-                        location: location,
-                        items: items,
-                        itemCount: items.length,
-                        date: new Date().toLocaleDateString(),
-                        timestamp: new Date().toISOString(),
-                        notes: vendor.querySelector(`#${vendorId}-notes`).value || ''
-                    };
+                    // Look for existing order for this vendor/location
+                    let existingOrder = allOrders.find(order => 
+                        order.vendor === vendorName && order.location === location
+                    );
                     
-                    newOrders.push(order);
+                    if (existingOrder) {
+                        // Consolidate items into existing order
+                        newItems.forEach(newItem => {
+                            // Check if item already exists in order
+                            const existingItem = existingOrder.items.find(item => 
+                                item.name === newItem.name && item.unit === newItem.unit
+                            );
+                            
+                            if (existingItem) {
+                                // Add to existing quantity
+                                existingItem.quantity += newItem.quantity;
+                            } else {
+                                // Add new item to order
+                                existingOrder.items.push(newItem);
+                            }
+                        });
+                        
+                        // Update order metadata
+                        existingOrder.itemCount = existingOrder.items.length;
+                        existingOrder.date = new Date().toLocaleDateString();
+                        existingOrder.timestamp = new Date().toISOString();
+                        
+                        // Append new notes if any
+                        const newNotes = vendor.querySelector(`#${vendorId}-notes`).value || '';
+                        if (newNotes && !existingOrder.notes.includes(newNotes)) {
+                            existingOrder.notes = existingOrder.notes ? 
+                                existingOrder.notes + '\n' + newNotes : newNotes;
+                        }
+                        
+                        ordersModified = true;
+                        console.log(`📦 Consolidated items into existing ${vendorName} order`);
+                    } else {
+                        // Create new order
+                        const newOrder = {
+                            id: `order-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+                            vendor: vendorName,
+                            location: location,
+                            items: newItems,
+                            itemCount: newItems.length,
+                            date: new Date().toLocaleDateString(),
+                            timestamp: new Date().toISOString(),
+                            notes: vendor.querySelector(`#${vendorId}-notes`).value || ''
+                        };
+                        
+                        allOrders.push(newOrder);
+                        ordersModified = true;
+                        console.log(`📦 Created new ${vendorName} order`);
+                    }
                 }
             });
             
-            if (newOrders.length === 0) {
+            if (!ordersModified) {
                 alert('No items to send. Please add some quantities to your orders.');
                 return;
             }
             
-            // Add new orders to existing ones
-            const updatedOrders = allOrders.concat(newOrders);
+            // Save consolidated orders to localStorage
+            localStorage.setItem('allOrders', JSON.stringify(allOrders));
             
-            // Save to localStorage
-            localStorage.setItem('allOrders', JSON.stringify(updatedOrders));
-            
-            console.log('📦 Orders sent to dashboard:', newOrders);
-            console.log('📦 Total orders now:', updatedOrders.length);
-            console.log('📦 localStorage allOrders:', JSON.stringify(updatedOrders, null, 2));
+            console.log('📦 Orders consolidated and saved to dashboard');
+            console.log('📦 Total orders now:', allOrders.length);
+            console.log('📦 localStorage allOrders:', JSON.stringify(allOrders, null, 2));
             
             // Ask if they want to view the dashboard
-            if (confirm(`${newOrders.length} orders sent to dashboard! Would you like to view the Orders Dashboard?`)) {
+            if (confirm(`Orders consolidated and sent to dashboard! Would you like to view the Orders Dashboard?`)) {
                 window.open('orders-dashboard.html', '_blank');
             }
             
