@@ -165,13 +165,13 @@
         
         .item-name-detail {
             font-weight: 500;
-            color: white;
+            color: var(--text-color);
             font-size: 0.9rem;
         }
         
         .item-quantity {
             font-weight: bold;
-            color: white;
+            color: var(--primary-color);
             font-size: 0.9rem;
             min-width: 80px;
             text-align: right;
@@ -315,6 +315,7 @@
                 <span id="currentUser">orders dashboard</span>
                 <button class="refresh-btn" onclick="loadOrders()">Refresh</button>
                 <button class="refresh-btn" onclick="printFilteredOrders()" style="background: #28a745;">Print All</button>
+                <button class="refresh-btn" onclick="removeDuplicates()" style="background: #8b5cf6;">Remove Duplicates</button>
                 <button class="refresh-btn" onclick="clearAllOrders()" style="background: #f59e0b;">Clear All</button>
             </div>
         </div>
@@ -621,6 +622,62 @@
                     printWindow.close();
                 }, 100);
             }, 250);
+        }
+
+        function removeDuplicates() {
+            console.log('🧹 Removing duplicate orders...');
+            console.log('📊 Before cleanup:', allOrders.length, 'orders');
+            
+            // Group orders by vendor + location
+            const consolidated = new Map();
+            
+            allOrders.forEach(order => {
+                const key = `${order.vendor}|${order.location}`;
+                
+                if (consolidated.has(key)) {
+                    // Merge items from duplicate order
+                    const existing = consolidated.get(key);
+                    console.log(`🔀 Merging duplicate ${order.vendor}/${order.location} order`);
+                    
+                    order.items.forEach(newItem => {
+                        const existingItem = existing.items.find(item => 
+                            item.name === newItem.name && item.unit === newItem.unit
+                        );
+                        
+                        if (existingItem) {
+                            existingItem.quantity += newItem.quantity;
+                            console.log(`📊 Combined ${newItem.name}: ${existingItem.quantity} ${newItem.unit}`);
+                        } else {
+                            existing.items.push(newItem);
+                            console.log(`➕ Added ${newItem.name}: ${newItem.quantity} ${newItem.unit}`);
+                        }
+                    });
+                    
+                    // Update metadata
+                    existing.itemCount = existing.items.length;
+                    existing.timestamp = new Date().toISOString();
+                    
+                    // Merge notes
+                    if (order.notes && !existing.notes.includes(order.notes)) {
+                        existing.notes = existing.notes ? existing.notes + '\n' + order.notes : order.notes;
+                    }
+                } else {
+                    // First occurrence of this vendor/location
+                    consolidated.set(key, { ...order });
+                }
+            });
+            
+            // Replace allOrders with consolidated version
+            allOrders = Array.from(consolidated.values());
+            
+            console.log('📊 After cleanup:', allOrders.length, 'orders');
+            console.log('✅ Duplicate removal complete');
+            
+            // Save and refresh
+            localStorage.setItem('allOrders', JSON.stringify(allOrders));
+            filterByLocation();
+            
+            alert(`Duplicates removed! ${consolidated.size} unique orders remain.`);
         }
 
         function clearAllOrders() {

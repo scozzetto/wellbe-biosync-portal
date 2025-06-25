@@ -1961,12 +1961,17 @@
                 
                 // If vendor has items, find existing order or create new one
                 if (hasItems) {
+                    console.log(`🔍 Looking for existing order: vendor="${vendorName}", location="${location}"`);
+                    console.log(`🔍 Current orders:`, allOrders.map(o => `${o.vendor}/${o.location}`));
+                    
                     // Look for existing order for this vendor/location
                     let existingOrder = allOrders.find(order => 
                         order.vendor === vendorName && order.location === location
                     );
                     
                     if (existingOrder) {
+                        console.log(`✅ Found existing order for ${vendorName}/${location}, consolidating...`);
+                        
                         // Consolidate items into existing order
                         newItems.forEach(newItem => {
                             // Check if item already exists in order
@@ -1976,9 +1981,11 @@
                             
                             if (existingItem) {
                                 // Add to existing quantity
+                                console.log(`📊 Adding ${newItem.quantity} to existing ${newItem.name} (was ${existingItem.quantity})`);
                                 existingItem.quantity += newItem.quantity;
                             } else {
                                 // Add new item to order
+                                console.log(`➕ Adding new item: ${newItem.name} (${newItem.quantity} ${newItem.unit})`);
                                 existingOrder.items.push(newItem);
                             }
                         });
@@ -1996,8 +2003,10 @@
                         }
                         
                         ordersModified = true;
-                        console.log(`📦 Consolidated items into existing ${vendorName} order`);
+                        console.log(`📦 Successfully consolidated items into existing ${vendorName} order`);
                     } else {
+                        console.log(`🆕 No existing order found, creating new ${vendorName}/${location} order`);
+                        
                         // Create new order
                         const newOrder = {
                             id: `order-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
@@ -2012,7 +2021,7 @@
                         
                         allOrders.push(newOrder);
                         ordersModified = true;
-                        console.log(`📦 Created new ${vendorName} order`);
+                        console.log(`📦 Created new ${vendorName} order with ID: ${newOrder.id}`);
                     }
                 }
             });
