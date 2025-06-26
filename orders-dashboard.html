@@ -505,14 +505,16 @@
                     <h2 style="margin: 0 0 2px 0; font-size: 18px; color: black;">${order.vendor} - ${order.location.toUpperCase()}</h2>
                     <p style="margin: 0 0 1px 0; color: black; font-size: 12px;">${new Date(order.timestamp).toLocaleDateString()} ${new Date(order.timestamp).toLocaleTimeString()}</p>
                     <hr style="margin: 1px 0; border: 0.5px solid black;">
-                    <table style="width: 100%; border-collapse: collapse;">
-                        ${order.items.map(item => `
-                            <tr>
-                                <td style="padding: 2px 0; border: none; text-align: left; width: 70%;">${item.name}</td>
-                                <td style="padding: 2px 0; border: none; text-align: right; width: 30%; font-weight: bold;">${item.quantity} ${item.unit}</td>
-                            </tr>
-                        `).join('')}
-                    </table>
+                    <div style="display: flex; margin: 2px 0; font-weight: bold; border-bottom: 1px solid #ccc; padding-bottom: 1px;">
+                        <span style="width: 200px;">Item</span>
+                        <span style="padding-left: 12px;">Amount</span>
+                    </div>
+                    ${order.items.map(item => `
+                        <div style="display: flex; margin: 1px 0; padding: 1px 0;">
+                            <span style="width: 200px;">${item.name}</span>
+                            <span style="padding-left: 12px; font-weight: bold;">${item.quantity} ${item.unit}</span>
+                        </div>
+                    `).join('')}
                     <hr style="margin: 1px 0; border: 0.5px solid black;">
                     <p style="margin: 0.5px 0; color: black; font-size: 12px;"><strong>Total: ${order.itemCount} items</strong>${order.notes ? ` | Notes: ${order.notes}` : ''}</p>
                 </div>
@@ -605,19 +607,20 @@
                     ${Object.values(groupedOrders).map(group => `
                         <div style="margin-bottom: 3px; page-break-inside: avoid;">
                             <h3 style="margin: 1px 0; font-size: 16px; color: black;">${group.vendor} - ${group.location}</h3>
-                            <table style="width: 100%; border-collapse: collapse;">
-                                ${Object.values(group.items).map(item => `
-                                    <tr>
-                                        <td style="padding: 2px 0; border: none; text-align: left; width: 70%;">${item.name}</td>
-                                        <td style="padding: 2px 0; border: none; text-align: right; width: 30%; font-weight: bold;">${item.quantity} ${item.unit}</td>
-                                    </tr>
-                                `).join('')}
-                            </table>
+                            <div style="display: flex; margin: 2px 0; font-weight: bold; border-bottom: 1px solid #ccc; padding-bottom: 1px;">
+                                <span style="width: 200px;">Item</span>
+                                <span style="padding-left: 12px;">Amount</span>
+                            </div>
+                            ${Object.values(group.items).map(item => `
+                                <div style="display: flex; margin: 1px 0; padding: 1px 0;">
+                                    <span style="width: 200px;">${item.name}</span>
+                                    <span style="padding-left: 12px; font-weight: bold;">${item.quantity} ${item.unit}</span>
+                                </div>
+                            `).join('')}
                             ${group.notes.length > 0 ? `<p style="margin: 0.5px 0; font-size: 12px; color: #666;">Notes: ${[...new Set(group.notes)].join('; ')}</p>` : ''}
                             <hr style="margin: 1px 0; border: 0.5px solid #ccc;">
                         </div>
                     `).join('')}
-                    <p style="margin: 0.5px 0; color: black; font-size: 12px;"><strong>Total Vendors: ${Object.keys(groupedOrders).length}</strong></p>
                 </div>
             `;
             
