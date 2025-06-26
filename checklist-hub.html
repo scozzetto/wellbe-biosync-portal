@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checklist Hub - Be Well LifeStyle Centers</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .checklist-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            background: var(--bg-color);
+            min-height: 100vh;
+            color: var(--text-color);
+        }
+        
+        .checklist-header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px;
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            border: 1px solid rgba(164, 124, 91, 0.3);
+        }
+        
+        .checklist-header h1 {
+            color: var(--primary-color);
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        
+        .checklist-header p {
+            color: var(--text-color);
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .checklist-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+        
+        .checklist-card {
+            background: var(--card-bg);
+            border: 1px solid rgba(164, 124, 91, 0.3);
+            border-radius: var(--border-radius);
+            padding: 25px;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .checklist-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-color);
+            box-shadow: 0 10px 25px rgba(62, 91, 61, 0.2);
+        }
+        
+        .checklist-card.active:hover {
+            border-color: var(--primary-color);
+            box-shadow: 0 10px 25px rgba(164, 124, 91, 0.2);
+        }
+        
+        .checklist-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--accent-color);
+            transition: all 0.3s ease;
+        }
+        
+        .checklist-card.active::before {
+            background: var(--primary-color);
+        }
+        
+        .checklist-card.coming-soon::before {
+            background: #666;
+        }
+        
+        .card-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            color: var(--accent-color);
+            transition: all 0.3s ease;
+        }
+        
+        .checklist-card.active .card-icon {
+            color: var(--primary-color);
+        }
+        
+        .checklist-card.coming-soon .card-icon {
+            color: #666;
+        }
+        
+        .card-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--text-color);
+            margin-bottom: 10px;
+        }
+        
+        .card-description {
+            color: var(--text-color);
+            opacity: 0.8;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+        
+        .card-link {
+            display: inline-block;
+            background: var(--accent-color);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .checklist-card.active .card-link {
+            background: var(--primary-color);
+        }
+        
+        .card-link:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .coming-soon-badge {
+            display: inline-block;
+            background: #666;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: default;
+        }
+        
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: var(--card-bg);
+            color: var(--text-color);
+            border: 1px solid rgba(164, 124, 91, 0.3);
+            padding: 12px 20px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+        
+        .back-button:hover {
+            background: var(--primary-color);
+            color: white;
+            transform: translateX(-2px);
+        }
+        
+        .section-divider {
+            margin: 50px 0;
+            text-align: center;
+        }
+        
+        .section-title {
+            color: var(--primary-color);
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 30px;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background: var(--accent-color);
+            border-radius: 2px;
+        }
+        
+        @media (max-width: 768px) {
+            .checklist-container {
+                padding: 20px 10px;
+            }
+            
+            .checklist-header h1 {
+                font-size: 2rem;
+            }
+            
+            .checklist-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .back-button {
+                position: relative;
+                top: auto;
+                left: auto;
+                margin-bottom: 20px;
+                display: block;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="staff-knowledge-base.html" class="back-button">
+        <i class="fas fa-arrow-left"></i> Back to Staff Portal
+    </a>
+
+    <div class="checklist-container">
+        <div class="checklist-header">
+            <h1><i class="fas fa-tasks"></i> Be Well Checklist Hub</h1>
+            <p>Streamlined checklists and procedures for optimal operations</p>
+        </div>
+
+        <div class="section-divider">
+            <h2 class="section-title">Daily Operations</h2>
+        </div>
+
+        <div class="checklist-grid">
+            <div class="checklist-card active">
+                <i class="fas fa-clipboard-check card-icon"></i>
+                <h3 class="card-title">Front Desk Checklist – Simplified</h3>
+                <p class="card-description">Essential daily tasks for front desk operations, streamlined for efficiency</p>
+                <a href="https://bewell-frontdesk-checklist-simple.netlify.app/" target="_blank" class="card-link">
+                    <i class="fas fa-external-link-alt"></i> Open Checklist
+                </a>
+            </div>
+
+            <div class="checklist-card coming-soon">
+                <i class="fas fa-clipboard-list card-icon"></i>
+                <h3 class="card-title">Front Desk Checklist – Extended</h3>
+                <p class="card-description">Comprehensive front desk procedures including detailed protocols</p>
+                <span class="coming-soon-badge">
+                    <i class="fas fa-clock"></i> Coming Soon
+                </span>
+            </div>
+
+            <div class="checklist-card active">
+                <i class="fas fa-book-open card-icon"></i>
+                <h3 class="card-title">General How-To and Text Templates</h3>
+                <p class="card-description">Reference guides and standardized text templates for communication</p>
+                <a href="https://be-well-howto-and-text-template.netlify.app/" target="_blank" class="card-link">
+                    <i class="fas fa-external-link-alt"></i> Open Resource
+                </a>
+            </div>
+        </div>
+
+        <div class="section-divider">
+            <h2 class="section-title">Specialized Procedures</h2>
+        </div>
+
+        <div class="checklist-grid">
+            <div class="checklist-card coming-soon">
+                <i class="fas fa-database card-icon"></i>
+                <h3 class="card-title">Salesforce Process Checklist</h3>
+                <p class="card-description">Step-by-step procedures for Salesforce data management and workflows</p>
+                <span class="coming-soon-badge">
+                    <i class="fas fa-clock"></i> Coming Soon
+                </span>
+            </div>
+
+            <div class="checklist-card coming-soon">
+                <i class="fas fa-spa card-icon"></i>
+                <h3 class="card-title">Massage Therapy Checklist</h3>
+                <p class="card-description">Pre-session, during, and post-session procedures for massage therapists</p>
+                <span class="coming-soon-badge">
+                    <i class="fas fa-clock"></i> Coming Soon
+                </span>
+            </div>
+
+            <div class="checklist-card coming-soon">
+                <i class="fas fa-coffee card-icon"></i>
+                <h3 class="card-title">Café Operations Manual</h3>
+                <p class="card-description">Complete café operations including food prep, service, and cleanup</p>
+                <span class="coming-soon-badge">
+                    <i class="fas fa-clock"></i> Coming Soon
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Add some interactive enhancements
+        document.addEventListener('DOMContentLoaded', function() {
+            // Animate cards on scroll
+            const cards = document.querySelectorAll('.checklist-card');
+            
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -100px 0px'
+            };
+
+            const observer = new IntersectionObserver(function(entries) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+
+            cards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(30px)';
+                card.style.transition = `opacity 0.6s ease ${index * 0.1}s, transform 0.6s ease ${index * 0.1}s`;
+                observer.observe(card);
+            });
+
+            // Add click analytics for coming soon items
+            document.querySelectorAll('.coming-soon').forEach(card => {
+                card.addEventListener('click', function() {
+                    const title = this.querySelector('.card-title').textContent;
+                    console.log(`Interest logged: ${title}`);
+                    
+                    // Optional: Show tooltip or notification
+                    const badge = this.querySelector('.coming-soon-badge');
+                    const originalText = badge.innerHTML;
+                    badge.innerHTML = '<i class="fas fa-heart"></i> Interest Noted!';
+                    badge.style.background = var('--accent-color');
+                    
+                    setTimeout(() => {
+                        badge.innerHTML = originalText;
+                        badge.style.background = '#666';
+                    }, 2000);
+                });
+            });
+        });
+    </script>
+</body>
+</html>
