@@ -67,16 +67,10 @@
             background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
             color: white;
             padding: 15px 20px;
-            cursor: pointer;
             display: flex;
-            justify-content: space-between;
+            justify-content: flex-start;
             align-items: center;
             font-weight: 600;
-            transition: all 0.3s ease;
-        }
-        
-        .section-header:hover {
-            background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
         }
         
         .section-title {
@@ -86,61 +80,20 @@
             font-size: 1.1rem;
         }
         
-        .section-toggle {
-            font-size: 1.2rem;
-            transition: transform 0.3s ease;
-        }
-        
         .section-content {
             padding: 20px;
-            display: none;
-        }
-        
-        .section-content.active {
             display: block;
         }
         
         .checklist-item {
-            display: flex;
-            align-items: flex-start;
-            gap: 12px;
-            padding: 12px 0;
+            padding: 8px 0;
             border-bottom: 1px solid rgba(164, 124, 91, 0.1);
-            transition: all 0.3s ease;
+            line-height: 1.6;
+            color: var(--text-color);
         }
         
         .checklist-item:last-child {
             border-bottom: none;
-        }
-        
-        .checklist-item.completed {
-            opacity: 0.7;
-            text-decoration: line-through;
-        }
-        
-        .checklist-checkbox {
-            width: 20px;
-            height: 20px;
-            border: 2px solid var(--primary-color);
-            border-radius: 4px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-            flex-shrink: 0;
-            margin-top: 2px;
-        }
-        
-        .checklist-checkbox.checked {
-            background: var(--primary-color);
-            color: white;
-        }
-        
-        .checklist-text {
-            flex: 1;
-            line-height: 1.5;
-            color: var(--text-color);
         }
         
         .text-template {
@@ -236,12 +189,6 @@
     </a>
 
     <div class="action-buttons">
-        <button class="action-btn" onclick="resetChecklist()">
-            <i class="fas fa-redo"></i> Reset
-        </button>
-        <button class="action-btn" onclick="expandAll()">
-            <i class="fas fa-expand-arrows-alt"></i> Expand All
-        </button>
         <button class="action-btn" onclick="printChecklist()">
             <i class="fas fa-print"></i> Print
         </button>
@@ -254,183 +201,109 @@
                 <label style="font-weight: 600; color: var(--primary-color);">Date:</label>
                 <input type="date" id="checklistDate" style="padding: 8px; border: 1px solid rgba(164, 124, 91, 0.3); border-radius: 4px; background: var(--card-bg); color: var(--text-color);">
             </div>
-            <div class="progress-bar">
-                <div class="progress-fill" id="progressFill"></div>
-            </div>
-            <div class="progress-text" id="progressText">0% Complete (0 of 0 tasks)</div>
         </div>
 
         <!-- Today's Important To-Do's -->
         <div class="checklist-section">
-            <div class="section-header" onclick="toggleSection(this)">
+            <div class="section-header">
                 <div class="section-title">
                     <span>🔍</span>
                     <span>Today's Important To-Do's</span>
                 </div>
-                <div class="section-toggle">▼</div>
             </div>
-            <div class="section-content active">
+            <div class="section-content">
                 <textarea style="width: 100%; min-height: 80px; padding: 12px; border: 1px solid rgba(164, 124, 91, 0.3); border-radius: 6px; background: var(--card-bg); color: var(--text-color); font-family: inherit; resize: vertical;" placeholder="Type today's important to-do items here..." id="todayNotes"></textarea>
             </div>
         </div>
 
         <!-- Opening Duties -->
         <div class="checklist-section">
-            <div class="section-header" onclick="toggleSection(this)">
+            <div class="section-header">
                 <div class="section-title">
                     <span>🏠</span>
                     <span>Opening Duties</span>
                 </div>
-                <div class="section-toggle">▼</div>
             </div>
             <div class="section-content">
-                <div class="checklist-item">
-                    <div class="checklist-checkbox" onclick="toggleItem(this)"></div>
-                    <div class="checklist-text">Lights on (front desk, back office, chiro room LED remote, traction lamp)</div>
-                </div>
-                <div class="checklist-item">
-                    <div class="checklist-checkbox" onclick="toggleItem(this)"></div>
-                    <div class="checklist-text">Turn on iPads – Password: 063069</div>
-                </div>
-                <div class="checklist-item">
-                    <div class="checklist-checkbox" onclick="toggleItem(this)"></div>
-                    <div class="checklist-text">Play "Nido Del Aguila Radio" on big iPad</div>
-                </div>
-                <div class="checklist-item">
-                    <div class="checklist-checkbox" onclick="toggleItem(this)"></div>
-                    <div class="checklist-text">Turn on front desk computer – Password: Well</div>
-                </div>
-                <div class="checklist-item">
-                    <div class="checklist-checkbox" onclick="toggleItem(this)"></div>
-                    <div class="checklist-text">Open from Chrome bookmarks (Square, Check In, Google Keep, IntakeQ, Salesforce, 8x8 Work)</div>
-                </div>
-                <div class="checklist-item">
-                    <div class="checklist-checkbox" onclick="toggleItem(this)"></div>
-                    <div class="checklist-text">THURSDAY - Remind the Cafe' to take boxes to the corner for pickup</div>
-                </div>
-                <div class="checklist-item">
-                    <div class="checklist-checkbox" onclick="toggleItem(this)"></div>
-                    <div class="checklist-text">Pull file templates (SOAP notes, Scratch Sheets) and prep clipboards</div>
-                </div>
-                <div class="checklist-item">
-                    <div class="checklist-checkbox" onclick="toggleItem(this)"></div>
-                    <div class="checklist-text">Text Silvio 20 minutes before we open to alert of clients</div>
-                </div>
+                <div class="checklist-item">• Lights on (front desk, back office, chiro room LED remote, traction lamp)</div>
+                <div class="checklist-item">• Turn on iPads – Password: 063069</div>
+                <div class="checklist-item">• Play "Nido Del Aguila Radio" on big iPad</div>
+                <div class="checklist-item">• Turn on front desk computer – Password: Well</div>
+                <div class="checklist-item">• Open from Chrome bookmarks (Square, Check In, Google Keep, IntakeQ, Salesforce, 8x8 Work)</div>
+                <div class="checklist-item">• THURSDAY - Remind the Cafe' to take boxes to the corner for pickup</div>
+                <div class="checklist-item">• Pull file templates (SOAP notes, Scratch Sheets) and prep clipboards</div>
+                <div class="checklist-item">• Text Silvio 20 minutes before we open to alert of clients</div>
             </div>
         </div>
 
         <!-- Communication Workflow -->
         <div class="checklist-section">
-            <div class="section-header" onclick="toggleSection(this)">
+            <div class="section-header">
                 <div class="section-title">
                     <span>📞</span>
                     <span>Text & Communication Workflow</span>
                 </div>
-                <div class="section-toggle">▼</div>
             </div>
             <div class="section-content">
-                <div class="checklist-item">
-                    <div class="checklist-checkbox" onclick="toggleItem(this)"></div>
-                    <div class="checklist-text">Check and respond to all 8x8 messages, voicemails, Square messages</div>
-                </div>
-                <div class="checklist-item">
-                    <div class="checklist-checkbox" onclick="toggleItem(this)"></div>
-                    <div class="checklist-text">Text patients from today's Google Keep notes</div>
-                </div>
-                <div class="checklist-item">
-                    <div class="checklist-checkbox" onclick="toggleItem(this)"></div>
-                    <div class="checklist-text">Log into Salesforce > Omni Channel > Set to Messaging: Available</div>
-                </div>
+                <div class="checklist-item">• Check and respond to all 8x8 messages, voicemails, Square messages</div>
+                <div class="checklist-item">• Text patients from today's Google Keep notes</div>
+                <div class="checklist-item">• Log into Salesforce > Omni Channel > Set to Messaging: Available</div>
             </div>
         </div>
 
         <!-- Patient Flow -->
         <div class="checklist-section">
-            <div class="section-header" onclick="toggleSection(this)">
+            <div class="section-header">
                 <div class="section-title">
                     <span>🌐</span>
                     <span>Patient Flow (Chiro, Massage, Colon, IV/Botox)</span>
                 </div>
-                <div class="section-toggle">▼</div>
             </div>
             <div class="section-content">
-                <div class="checklist-item">
-                    <div class="checklist-checkbox" onclick="toggleItem(this)"></div>
-                    <div class="checklist-text"><strong>Chiro:</strong> Follow arrival and sign-in protocol, use Scratch and Sticker sheets</div>
-                </div>
-                <div class="checklist-item">
-                    <div class="checklist-checkbox" onclick="toggleItem(this)"></div>
-                    <div class="checklist-text"><strong>Massage:</strong> Determine unit counts, chiro treatment including massage, cupping, dry needling and the handling, collect payment if needed</div>
-                </div>
-                <div class="checklist-item">
-                    <div class="checklist-checkbox" onclick="toggleItem(this)"></div>
-                    <div class="checklist-text"><strong>Colon:</strong> Check-in, Sticky note, paperwork, payment, let them know we accept insurance for some of our other services, give them the special cards and rebook them for their next colon</div>
-                </div>
-                <div class="checklist-item">
-                    <div class="checklist-checkbox" onclick="toggleItem(this)"></div>
-                    <div class="checklist-text"><strong>IV/Botox/Emsculpt:</strong> Consent form, notify nurse, confirm procedures, rebooking</div>
-                </div>
+                <div class="checklist-item">• <strong>Chiro:</strong> Follow arrival and sign-in protocol, use Scratch and Sticker sheets</div>
+                <div class="checklist-item">• <strong>Massage:</strong> Determine unit counts, chiro treatment including massage, cupping, dry needling and the handling, collect payment if needed</div>
+                <div class="checklist-item">• <strong>Colon:</strong> Check-in, Sticky note, paperwork, payment, let them know we accept insurance for some of our other services, give them the special cards and rebook them for their next colon</div>
+                <div class="checklist-item">• <strong>IV/Botox/Emsculpt:</strong> Consent form, notify nurse, confirm procedures, rebooking</div>
             </div>
         </div>
 
         <!-- Busy Work Protocol -->
         <div class="checklist-section">
-            <div class="section-header" onclick="toggleSection(this)">
+            <div class="section-header">
                 <div class="section-title">
                     <span>📚</span>
                     <span>Busy Work Protocol</span>
                 </div>
-                <div class="section-toggle">▼</div>
             </div>
             <div class="section-content">
-                <div class="checklist-item">
-                    <div class="checklist-checkbox" onclick="toggleItem(this)"></div>
-                    <div class="checklist-text"><strong>Chiro:</strong> Text past patients that fell off the schedule (1 week back)</div>
-                </div>
-                <div class="checklist-item">
-                    <div class="checklist-checkbox" onclick="toggleItem(this)"></div>
-                    <div class="checklist-text"><strong>IV/Botox:</strong> Text previous patients (2 weeks back)</div>
-                </div>
-                <div class="checklist-item">
-                    <div class="checklist-checkbox" onclick="toggleItem(this)"></div>
-                    <div class="checklist-text"><strong>Colon:</strong> Text all 4 weeks back who haven't returned</div>
-                </div>
+                <div class="checklist-item">• <strong>Chiro:</strong> Text past patients that fell off the schedule (1 week back)</div>
+                <div class="checklist-item">• <strong>IV/Botox:</strong> Text previous patients (2 weeks back)</div>
+                <div class="checklist-item">• <strong>Colon:</strong> Text all 4 weeks back who haven't returned</div>
             </div>
         </div>
 
         <!-- Email & Docs -->
         <div class="checklist-section">
-            <div class="section-header" onclick="toggleSection(this)">
+            <div class="section-header">
                 <div class="section-title">
                     <span>📧</span>
                     <span>Email & Docs</span>
                 </div>
-                <div class="section-toggle">▼</div>
             </div>
             <div class="section-content">
-                <div class="checklist-item">
-                    <div class="checklist-checkbox" onclick="toggleItem(this)"></div>
-                    <div class="checklist-text">Open Gmail (birmingham@bewelllifestylecenters)</div>
-                </div>
-                <div class="checklist-item">
-                    <div class="checklist-checkbox" onclick="toggleItem(this)"></div>
-                    <div class="checklist-text">Forward legal/payments to Silvio, billing questions and statements to Billing, print Zellis payments</div>
-                </div>
-                <div class="checklist-item">
-                    <div class="checklist-checkbox" onclick="toggleItem(this)"></div>
-                    <div class="checklist-text">Delete junk (Amazon, spam, voicemails)</div>
-                </div>
+                <div class="checklist-item">• Open Gmail (birmingham@bewelllifestylecenters)</div>
+                <div class="checklist-item">• Forward legal/payments to Silvio, billing questions and statements to Billing, print Zellis payments</div>
+                <div class="checklist-item">• Delete junk (Amazon, spam, voicemails)</div>
             </div>
         </div>
 
         <!-- Massage Slot Priority -->
         <div class="checklist-section">
-            <div class="section-header" onclick="toggleSection(this)">
+            <div class="section-header">
                 <div class="section-title">
                     <span>⚖️</span>
                     <span>Massage Slot Priority (Next Day)</span>
                 </div>
-                <div class="section-toggle">▼</div>
             </div>
             <div class="section-content">
                 <textarea style="width: 100%; min-height: 80px; padding: 12px; border: 1px solid rgba(164, 124, 91, 0.3); border-radius: 6px; background: var(--card-bg); color: var(--text-color); font-family: inherit; resize: vertical;" placeholder="Type open massage slots to fill for tomorrow..." id="massageSlots"></textarea>
@@ -439,79 +312,38 @@
 
         <!-- Text Templates -->
         <div class="checklist-section">
-            <div class="section-header" onclick="toggleSection(this)">
+            <div class="section-header">
                 <div class="section-title">
                     <span>✉️</span>
                     <span>Text Templates (Google Keep)</span>
                 </div>
-                <div class="section-toggle">▼</div>
             </div>
             <div class="section-content">
-                <div class="checklist-item">
-                    <div class="checklist-checkbox" onclick="toggleItem(this)"></div>
-                    <div class="checklist-text">SMS Opt-In</div>
-                </div>
-                <div class="checklist-item">
-                    <div class="checklist-checkbox" onclick="toggleItem(this)"></div>
-                    <div class="checklist-text">Massage / IV Follow-Up</div>
-                </div>
-                <div class="checklist-item">
-                    <div class="checklist-checkbox" onclick="toggleItem(this)"></div>
-                    <div class="checklist-text">Chiro / UWM / Colon Retention</div>
-                </div>
-                <div class="checklist-item">
-                    <div class="checklist-checkbox" onclick="toggleItem(this)"></div>
-                    <div class="checklist-text">Botox / Peptides / Lifestyle Programs</div>
-                </div>
+                <div class="checklist-item">• SMS Opt-In</div>
+                <div class="checklist-item">• Massage / IV Follow-Up</div>
+                <div class="checklist-item">• Chiro / UWM / Colon Retention</div>
+                <div class="checklist-item">• Botox / Peptides / Lifestyle Programs</div>
             </div>
         </div>
 
         <!-- End of Day -->
         <div class="checklist-section">
-            <div class="section-header" onclick="toggleSection(this)">
+            <div class="section-header">
                 <div class="section-title">
                     <span>💼</span>
                     <span>End of Day</span>
                 </div>
-                <div class="section-toggle">▼</div>
             </div>
             <div class="section-content">
-                <div class="checklist-item">
-                    <div class="checklist-checkbox" onclick="toggleItem(this)"></div>
-                    <div class="checklist-text">Update upcoming Massage schedule on Google Keeps</div>
-                </div>
-                <div class="checklist-item">
-                    <div class="checklist-checkbox" onclick="toggleItem(this)"></div>
-                    <div class="checklist-text">Ask Silvio for billing sheet</div>
-                </div>
-                <div class="checklist-item">
-                    <div class="checklist-checkbox" onclick="toggleItem(this)"></div>
-                    <div class="checklist-text">Match sticker sheet with billing list</div>
-                </div>
-                <div class="checklist-item">
-                    <div class="checklist-checkbox" onclick="toggleItem(this)"></div>
-                    <div class="checklist-text">Report mismatches or unlisted patients and check Berkley patients and give to Silvio to fix</div>
-                </div>
-                <div class="checklist-item">
-                    <div class="checklist-checkbox" onclick="toggleItem(this)"></div>
-                    <div class="checklist-text">Send next-day appointment confirmations (Square)</div>
-                </div>
-                <div class="checklist-item">
-                    <div class="checklist-checkbox" onclick="toggleItem(this)"></div>
-                    <div class="checklist-text">Print check-ins report, massage schedules, SOAPs, Scratch sheets</div>
-                </div>
-                <div class="checklist-item">
-                    <div class="checklist-checkbox" onclick="toggleItem(this)"></div>
-                    <div class="checklist-text">Leave reports in top wire basket on front desk paper-clipped</div>
-                </div>
-                <div class="checklist-item">
-                    <div class="checklist-checkbox" onclick="toggleItem(this)"></div>
-                    <div class="checklist-text">Take out trash (unless Thursday), shut down devices, turn off lights</div>
-                </div>
-                <div class="checklist-item">
-                    <div class="checklist-checkbox" onclick="toggleItem(this)"></div>
-                    <div class="checklist-text">LOCK DOORS (or leave masseuse note)</div>
-                </div>
+                <div class="checklist-item">• Update upcoming Massage schedule on Google Keeps</div>
+                <div class="checklist-item">• Ask Silvio for billing sheet</div>
+                <div class="checklist-item">• Match sticker sheet with billing list</div>
+                <div class="checklist-item">• Report mismatches or unlisted patients and check Berkley patients and give to Silvio to fix</div>
+                <div class="checklist-item">• Send next-day appointment confirmations (Square)</div>
+                <div class="checklist-item">• Print check-ins report, massage schedules, SOAPs, Scratch sheets</div>
+                <div class="checklist-item">• Leave reports in top wire basket on front desk paper-clipped</div>
+                <div class="checklist-item">• Take out trash (unless Thursday), shut down devices, turn off lights</div>
+                <div class="checklist-item">• LOCK DOORS (or leave masseuse note)</div>
             </div>
         </div>
     </div>
@@ -524,80 +356,14 @@
             document.getElementById('checklistDate').value = today;
             
             loadProgress();
-            updateProgress();
         });
-
-        function toggleSection(header) {
-            const content = header.nextElementSibling;
-            const toggle = header.querySelector('.section-toggle');
-            
-            if (content.classList.contains('active')) {
-                content.classList.remove('active');
-                toggle.textContent = '▶';
-            } else {
-                content.classList.add('active');
-                toggle.textContent = '▼';
-            }
-        }
-
-        function toggleItem(checkbox) {
-            checkbox.classList.toggle('checked');
-            const item = checkbox.parentElement;
-            item.classList.toggle('completed');
-            
-            if (checkbox.classList.contains('checked')) {
-                checkbox.innerHTML = '<i class="fas fa-check"></i>';
-            } else {
-                checkbox.innerHTML = '';
-            }
-            
-            updateProgress();
-            saveProgress();
-        }
-
-        function updateProgress() {
-            const allItems = document.querySelectorAll('.checklist-item');
-            const completedItems = document.querySelectorAll('.checklist-item.completed');
-            const percentage = allItems.length > 0 ? Math.round((completedItems.length / allItems.length) * 100) : 0;
-            
-            document.getElementById('progressFill').style.width = percentage + '%';
-            document.getElementById('progressText').textContent = 
-                `${percentage}% Complete (${completedItems.length} of ${allItems.length} tasks)`;
-        }
-
-        function resetChecklist() {
-            if (confirm('Are you sure you want to reset all checklist items?')) {
-                document.querySelectorAll('.checklist-checkbox.checked').forEach(checkbox => {
-                    checkbox.classList.remove('checked');
-                    checkbox.innerHTML = '';
-                    checkbox.parentElement.classList.remove('completed');
-                });
-                updateProgress();
-                localStorage.removeItem('frontDeskChecklistProgress');
-            }
-        }
-
-        function expandAll() {
-            document.querySelectorAll('.section-content').forEach(content => {
-                content.classList.add('active');
-            });
-            document.querySelectorAll('.section-toggle').forEach(toggle => {
-                toggle.textContent = '▼';
-            });
-        }
 
         function printChecklist() {
             window.print();
         }
 
         function saveProgress() {
-            const progress = [];
-            document.querySelectorAll('.checklist-item').forEach((item, index) => {
-                progress[index] = item.classList.contains('completed');
-            });
-            
             const data = {
-                progress: progress,
                 todayNotes: document.getElementById('todayNotes')?.value || '',
                 massageSlots: document.getElementById('massageSlots')?.value || '',
                 checklistDate: document.getElementById('checklistDate')?.value || ''
@@ -611,39 +377,15 @@
             if (saved) {
                 const data = JSON.parse(saved);
                 
-                // Handle both old format (array) and new format (object)
-                if (Array.isArray(data)) {
-                    const progress = data;
-                    document.querySelectorAll('.checklist-item').forEach((item, index) => {
-                        if (progress[index]) {
-                            const checkbox = item.querySelector('.checklist-checkbox');
-                            checkbox.classList.add('checked');
-                            checkbox.innerHTML = '<i class="fas fa-check"></i>';
-                            item.classList.add('completed');
-                        }
-                    });
-                } else {
-                    // New format
-                    const progress = data.progress || [];
-                    document.querySelectorAll('.checklist-item').forEach((item, index) => {
-                        if (progress[index]) {
-                            const checkbox = item.querySelector('.checklist-checkbox');
-                            checkbox.classList.add('checked');
-                            checkbox.innerHTML = '<i class="fas fa-check"></i>';
-                            item.classList.add('completed');
-                        }
-                    });
-                    
-                    // Load textarea values
-                    if (document.getElementById('todayNotes')) {
-                        document.getElementById('todayNotes').value = data.todayNotes || '';
-                    }
-                    if (document.getElementById('massageSlots')) {
-                        document.getElementById('massageSlots').value = data.massageSlots || '';
-                    }
-                    if (document.getElementById('checklistDate') && data.checklistDate) {
-                        document.getElementById('checklistDate').value = data.checklistDate;
-                    }
+                // Load textarea values and date
+                if (document.getElementById('todayNotes')) {
+                    document.getElementById('todayNotes').value = data.todayNotes || '';
+                }
+                if (document.getElementById('massageSlots')) {
+                    document.getElementById('massageSlots').value = data.massageSlots || '';
+                }
+                if (document.getElementById('checklistDate') && data.checklistDate) {
+                    document.getElementById('checklistDate').value = data.checklistDate;
                 }
             }
         }
@@ -677,10 +419,6 @@
             
             .section-content {
                 display: block !important;
-            }
-            
-            .section-toggle {
-                display: none;
             }
             
             .checklist-section {
