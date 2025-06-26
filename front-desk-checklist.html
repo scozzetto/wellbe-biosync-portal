@@ -12,6 +12,33 @@
     </style>
 </head>
 <body>
+    <script>
+        // Immediate authentication check - runs before page content loads
+        (function() {
+            const staffAuth = localStorage.getItem('staffAuth');
+            const staffAuthTime = localStorage.getItem('staffAuthTime');
+            
+            if (!staffAuth || staffAuth !== 'authenticated') {
+                window.location.replace('staff-knowledge-base.html');
+                return;
+            }
+            
+            // Check if authentication is expired (24 hours)
+            if (staffAuthTime) {
+                const authTime = parseInt(staffAuthTime);
+                const currentTime = Date.now();
+                const timeLimit = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+                
+                if (currentTime - authTime > timeLimit) {
+                    localStorage.removeItem('staffAuth');
+                    localStorage.removeItem('staffAuthTime');
+                    window.location.replace('staff-knowledge-base.html');
+                    return;
+                }
+            }
+        })();
+    </script>
+
     <h1>Front Desk Simple Checklist – Be Well LifeStyle Centers</h1>
 
     <p><strong>Date:</strong> <input type="date" style="font-size: 12px; padding: 4px;"></p>
@@ -85,38 +112,6 @@
     </ul>
 
     <script>
-        // Check staff portal authentication
-        function checkStaffAuth() {
-            const staffAuth = localStorage.getItem('staffAuth');
-            const staffAuthTime = localStorage.getItem('staffAuthTime');
-            
-            if (!staffAuth || staffAuth !== 'authenticated') {
-                window.location.href = 'staff-knowledge-base.html';
-                return false;
-            }
-            
-            // Check if authentication is expired (24 hours)
-            if (staffAuthTime) {
-                const authTime = parseInt(staffAuthTime);
-                const currentTime = Date.now();
-                const timeLimit = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
-                
-                if (currentTime - authTime > timeLimit) {
-                    localStorage.removeItem('staffAuth');
-                    localStorage.removeItem('staffAuthTime');
-                    window.location.href = 'staff-knowledge-base.html';
-                    return false;
-                }
-            }
-            
-            return true;
-        }
-
-        // Check authentication on page load
-        if (!checkStaffAuth()) {
-            return;
-        }
-
         // Set today's date as default
         document.addEventListener('DOMContentLoaded', function() {
             const today = new Date().toISOString().split('T')[0];

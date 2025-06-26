@@ -53,14 +53,14 @@
 </head>
 <body>
     <script>
-        // Check staff portal authentication
-        function checkStaffAuth() {
+        // Immediate authentication check - runs before page content loads
+        (function() {
             const staffAuth = localStorage.getItem('staffAuth');
             const staffAuthTime = localStorage.getItem('staffAuthTime');
             
             if (!staffAuth || staffAuth !== 'authenticated') {
-                window.location.href = 'staff-knowledge-base.html';
-                return false;
+                window.location.replace('staff-knowledge-base.html');
+                return;
             }
             
             // Check if authentication is expired (24 hours)
@@ -72,19 +72,13 @@
                 if (currentTime - authTime > timeLimit) {
                     localStorage.removeItem('staffAuth');
                     localStorage.removeItem('staffAuthTime');
-                    window.location.href = 'staff-knowledge-base.html';
-                    return false;
+                    window.location.replace('staff-knowledge-base.html');
+                    return;
                 }
             }
-            
-            return true;
-        }
-
-        // Check authentication on page load
-        if (!checkStaffAuth()) {
-            return;
-        }
+        })();
     </script>
+    
     <h1>How To's</h1>
 
     <div class="section">
@@ -105,9 +99,10 @@
         <div class="step">4. Face papers away from you, right side up</div>
         <div class="step">5. Hit scan</div>
         <div class="step">6. Follow pop-up instructions for continuing scan or finishing scan</div>
-        <div class="step">7. Rename file with appropriate title (see below for titles)</div>
-        <div class="step">8. Add current date to filename</div>
-        <div class="step">9. Automatically saves to dropbox</div>
+        <div class="step">7. Delete automatic title</div>
+        <div class="step">8. Rename file with appropriate title (see below for titles)</div>
+        <div class="step">9. Add current date to filename</div>
+        <div class="step">10. Automatically saves to dropbox</div>
     </div>
 
     <div class="section">
