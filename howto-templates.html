@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How-To Guide & Text Templates - Be Well LifeStyle Centers</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .guide-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            background: var(--bg-color);
+            min-height: 100vh;
+            color: var(--text-color);
+        }
+        
+        .guide-header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px;
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            border: 1px solid rgba(164, 124, 91, 0.3);
+        }
+        
+        .guide-header h1 {
+            color: var(--primary-color);
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        
+        .guide-section {
+            background: var(--card-bg);
+            border: 1px solid rgba(164, 124, 91, 0.3);
+            border-radius: var(--border-radius);
+            margin-bottom: 25px;
+            overflow: hidden;
+        }
+        
+        .section-header {
+            background: linear-gradient(135deg, var(--accent-color), var(--secondary-color));
+            color: white;
+            padding: 15px 20px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .section-header:hover {
+            background: linear-gradient(135deg, var(--secondary-color), var(--accent-color));
+        }
+        
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.1rem;
+        }
+        
+        .section-toggle {
+            font-size: 1.2rem;
+            transition: transform 0.3s ease;
+        }
+        
+        .section-content {
+            padding: 20px;
+            display: none;
+        }
+        
+        .section-content.active {
+            display: block;
+        }
+        
+        .procedure-step {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            padding: 15px 0;
+            border-bottom: 1px solid rgba(164, 124, 91, 0.1);
+        }
+        
+        .procedure-step:last-child {
+            border-bottom: none;
+        }
+        
+        .step-number {
+            background: var(--primary-color);
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+        
+        .step-content {
+            flex: 1;
+            line-height: 1.5;
+        }
+        
+        .step-title {
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 5px;
+        }
+        
+        .step-description {
+            color: var(--text-color);
+            opacity: 0.9;
+        }
+        
+        .important-note {
+            background: rgba(231, 76, 60, 0.1);
+            border: 1px solid rgba(231, 76, 60, 0.3);
+            border-radius: 6px;
+            padding: 15px;
+            margin: 15px 0;
+            color: #e74c3c;
+            font-weight: 600;
+        }
+        
+        .tip-box {
+            background: rgba(62, 91, 61, 0.1);
+            border: 1px solid rgba(62, 91, 61, 0.3);
+            border-radius: 6px;
+            padding: 15px;
+            margin: 15px 0;
+            color: var(--accent-color);
+        }
+        
+        .text-template {
+            background: rgba(52, 152, 219, 0.1);
+            border: 1px solid rgba(52, 152, 219, 0.3);
+            border-radius: 6px;
+            padding: 15px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+        
+        .template-label {
+            font-weight: 600;
+            color: #3498db;
+            margin-bottom: 8px;
+            display: block;
+            font-family: Arial, sans-serif;
+        }
+        
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: var(--card-bg);
+            color: var(--text-color);
+            border: 1px solid rgba(164, 124, 91, 0.3);
+            padding: 12px 20px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+        
+        .back-button:hover {
+            background: var(--primary-color);
+            color: white;
+            transform: translateX(-2px);
+        }
+        
+        .action-buttons {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+            z-index: 1000;
+        }
+        
+        .action-btn {
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 12px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .action-btn:hover {
+            background: var(--secondary-color);
+            transform: scale(1.05);
+        }
+        
+        @media (max-width: 768px) {
+            .guide-container {
+                padding: 20px 10px;
+            }
+            
+            .guide-header h1 {
+                font-size: 2rem;
+            }
+            
+            .back-button, .action-buttons {
+                position: relative;
+                top: auto;
+                left: auto;
+                right: auto;
+                margin-bottom: 20px;
+            }
+            
+            .action-buttons {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="checklist-hub.html" class="back-button">
+        <i class="fas fa-arrow-left"></i> Back to Checklist Hub
+    </a>
+
+    <div class="action-buttons">
+        <button class="action-btn" onclick="expandAll()">
+            <i class="fas fa-expand-arrows-alt"></i> Expand All
+        </button>
+        <button class="action-btn" onclick="printGuide()">
+            <i class="fas fa-print"></i> Print
+        </button>
+    </div>
+
+    <div class="guide-container">
+        <div class="guide-header">
+            <h1><i class="fas fa-book-open"></i> How-To Guide & Text Templates</h1>
+            <p>Reference guides and standardized procedures for Be Well operations</p>
+        </div>
+
+        <!-- Scanner Setup and Location -->
+        <div class="guide-section">
+            <div class="section-header" onclick="toggleSection(this)">
+                <div class="section-title">
+                    <span>🖨️</span>
+                    <span>Scanner Setup & Location</span>
+                </div>
+                <div class="section-toggle">▼</div>
+            </div>
+            <div class="section-content active">
+                <div class="procedure-step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <div class="step-title">Scanner Location</div>
+                        <div class="step-description">Located in back office, next to desktop computer</div>
+                    </div>
+                </div>
+                <div class="procedure-step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <div class="step-title">Power On</div>
+                        <div class="step-description">Press the "scan" button to turn on (blue light should illuminate)</div>
+                    </div>
+                </div>
+                <div class="procedure-step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <div class="step-title">Desktop Access</div>
+                        <div class="step-description">Desktop passkey: <strong>6570</strong></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Scanning Guidelines -->
+        <div class="guide-section">
+            <div class="section-header" onclick="toggleSection(this)">
+                <div class="section-title">
+                    <span>📋</span>
+                    <span>Scanning Guidelines</span>
+                </div>
+                <div class="section-toggle">▼</div>
+            </div>
+            <div class="section-content">
+                <div class="procedure-step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <div class="step-title">Verify Scanner Status</div>
+                        <div class="step-description">Ensure blue "scan" button is lit before proceeding</div>
+                    </div>
+                </div>
+                <div class="procedure-step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <div class="step-title">Paper Alignment</div>
+                        <div class="step-description">Align papers carefully and stack evenly</div>
+                    </div>
+                </div>
+                <div class="procedure-step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <div class="step-title">Stack Thickness</div>
+                        <div class="step-description">No thicker than your pinky finger</div>
+                    </div>
+                </div>
+                <div class="important-note">
+                    <i class="fas fa-exclamation-triangle"></i> CRITICAL: Remove ALL staples before scanning!
+                </div>
+                <div class="procedure-step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <div class="step-title">Paper Orientation</div>
+                        <div class="step-description">Face papers away from you, right side up</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Daily Chiro Notes Scanning -->
+        <div class="guide-section">
+            <div class="section-header" onclick="toggleSection(this)">
+                <div class="section-title">
+                    <span>🏥</span>
+                    <span>Daily Chiro Notes Scanning</span>
+                </div>
+                <div class="section-toggle">▼</div>
+            </div>
+            <div class="section-content">
+                <div class="procedure-step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <div class="step-title">Locate Notes</div>
+                        <div class="step-description">Find daily notes in top file cabinet drawer</div>
+                    </div>
+                </div>
+                <div class="procedure-step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <div class="step-title">Separate Documents</div>
+                        <div class="step-description">Separate into two sections: daily sheets and massage SOAP notes</div>
+                    </div>
+                </div>
+                <div class="procedure-step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <div class="step-title">Scan Separately</div>
+                        <div class="step-description">Scan each section as separate files</div>
+                    </div>
+                </div>
+                <div class="procedure-step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <div class="step-title">File Naming</div>
+                        <div class="step-description">
+                            Use these naming formats:
+                            <div class="text-template">
+                                <span class="template-label">Chiro Notes:</span>
+                                BHAM CHIRO daily [DATE]
+                            </div>
+                            <div class="text-template">
+                                <span class="template-label">Massage Notes:</span>
+                                MASSAGE SOAP notes [DATE]
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="procedure-step">
+                    <div class="step-number">5</div>
+                    <div class="step-content">
+                        <div class="step-title">Dispose Properly</div>
+                        <div class="step-description">Shred documents after scanning is complete</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- EOB Scanning -->
+        <div class="guide-section">
+            <div class="section-header" onclick="toggleSection(this)">
+                <div class="section-title">
+                    <span>💰</span>
+                    <span>EOB (Explanation of Benefits) Scanning</span>
+                </div>
+                <div class="section-toggle">▼</div>
+            </div>
+            <div class="section-content">
+                <div class="procedure-step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <div class="step-title">Open Envelopes</div>
+                        <div class="step-description">Open all envelopes while maintaining original order</div>
+                    </div>
+                </div>
+                <div class="procedure-step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <div class="step-title">Remove Staples</div>
+                        <div class="step-description">Carefully remove staples from all documents</div>
+                    </div>
+                </div>
+                <div class="procedure-step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <div class="step-title">Scan in Sections</div>
+                        <div class="step-description">Process documents in manageable sections</div>
+                    </div>
+                </div>
+                <div class="procedure-step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <div class="step-title">File Naming</div>
+                        <div class="step-description">
+                            <div class="text-template">
+                                <span class="template-label">EOB Files:</span>
+                                BeWell EOB's [DATE]
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="procedure-step">
+                    <div class="step-number">5</div>
+                    <div class="step-content">
+                        <div class="step-title">Handle Checks</div>
+                        <div class="step-description">Separate checks and paperclip together for Silvio's review</div>
+                    </div>
+                </div>
+                <div class="tip-box">
+                    <i class="fas fa-lightbulb"></i> <strong>Tip:</strong> Wait for Silvio's instructions before processing checks
+                </div>
+            </div>
+        </div>
+
+        <!-- General Scanning Tips -->
+        <div class="guide-section">
+            <div class="section-header" onclick="toggleSection(this)">
+                <div class="section-title">
+                    <span>💡</span>
+                    <span>General Scanning Tips</span>
+                </div>
+                <div class="section-toggle">▼</div>
+            </div>
+            <div class="section-content">
+                <div class="procedure-step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <div class="step-title">Date Everything</div>
+                        <div class="step-description">Always add current date to file names for organization</div>
+                    </div>
+                </div>
+                <div class="procedure-step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <div class="step-title">Use Paper Cutter</div>
+                        <div class="step-description">Use the paper cutter for precise document handling</div>
+                    </div>
+                </div>
+                <div class="procedure-step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <div class="step-title">Double-Check Staples</div>
+                        <div class="step-description">Always verify staples are removed - check multiple times!</div>
+                    </div>
+                </div>
+                <div class="procedure-step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <div class="step-title">Quality Control</div>
+                        <div class="step-description">Review scanned documents before finalizing to ensure clarity</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Communication Templates -->
+        <div class="guide-section">
+            <div class="section-header" onclick="toggleSection(this)">
+                <div class="section-title">
+                    <span>💬</span>
+                    <span>Communication Templates</span>
+                </div>
+                <div class="section-toggle">▼</div>
+            </div>
+            <div class="section-content">
+                <div class="text-template">
+                    <span class="template-label">Appointment Reminder:</span>
+                    Hi [Name]! This is [Your Name] from Be Well LifeStyle Centers. Just confirming your appointment tomorrow at [TIME] for [SERVICE]. Please reply to confirm or call us at [PHONE] if you need to reschedule.
+                </div>
+                
+                <div class="text-template">
+                    <span class="template-label">New Patient Welcome:</span>
+                    Welcome to Be Well LifeStyle Centers, [Name]! We're excited to help you on your wellness journey. Please arrive 15 minutes early for your first appointment to complete paperwork. See you soon!
+                </div>
+                
+                <div class="text-template">
+                    <span class="template-label">Service Follow-Up:</span>
+                    Hi [Name]! Thanks for your visit to Be Well today. How are you feeling after your [SERVICE]? We'd love to hear your feedback and help schedule your next appointment for continued care.
+                </div>
+                
+                <div class="text-template">
+                    <span class="template-label">Missed Appointment:</span>
+                    Hi [Name], we missed you for your appointment today at Be Well LifeStyle Centers. Please call us at [PHONE] when you're ready to reschedule. We're here to support your health goals!
+                </div>
+                
+                <div class="text-template">
+                    <span class="template-label">Payment Reminder:</span>
+                    Hi [Name], this is Be Well LifeStyle Centers. Your account has an outstanding balance of $[AMOUNT]. Please call us at [PHONE] to discuss payment options. Thank you!
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleSection(header) {
+            const content = header.nextElementSibling;
+            const toggle = header.querySelector('.section-toggle');
+            
+            if (content.classList.contains('active')) {
+                content.classList.remove('active');
+                toggle.textContent = '▶';
+            } else {
+                content.classList.add('active');
+                toggle.textContent = '▼';
+            }
+        }
+
+        function expandAll() {
+            document.querySelectorAll('.section-content').forEach(content => {
+                content.classList.add('active');
+            });
+            document.querySelectorAll('.section-toggle').forEach(toggle => {
+                toggle.textContent = '▼';
+            });
+        }
+
+        function printGuide() {
+            window.print();
+        }
+    </script>
+
+    <style>
+        @media print {
+            .back-button, .action-buttons {
+                display: none;
+            }
+            
+            .guide-container {
+                padding: 20px;
+            }
+            
+            .section-content {
+                display: block !important;
+            }
+            
+            .section-toggle {
+                display: none;
+            }
+            
+            .guide-section {
+                page-break-inside: avoid;
+                margin-bottom: 20px;
+            }
+        }
+    </style>
+</body>
+</html>

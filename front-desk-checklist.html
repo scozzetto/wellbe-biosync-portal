@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Front Desk Checklist - Be Well LifeStyle Centers</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .checklist-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            background: var(--bg-color);
+            min-height: 100vh;
+            color: var(--text-color);
+        }
+        
+        .checklist-header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px;
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            border: 1px solid rgba(164, 124, 91, 0.3);
+        }
+        
+        .checklist-header h1 {
+            color: var(--primary-color);
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        
+        .progress-bar {
+            background: rgba(164, 124, 91, 0.2);
+            height: 8px;
+            border-radius: 4px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            background: var(--primary-color);
+            height: 100%;
+            width: 0%;
+            transition: width 0.3s ease;
+            border-radius: 4px;
+        }
+        
+        .progress-text {
+            text-align: center;
+            margin-top: 10px;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+        
+        .checklist-section {
+            background: var(--card-bg);
+            border: 1px solid rgba(164, 124, 91, 0.3);
+            border-radius: var(--border-radius);
+            margin-bottom: 25px;
+            overflow: hidden;
+        }
+        
+        .section-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 15px 20px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .section-header:hover {
+            background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
+        }
+        
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.1rem;
+        }
+        
+        .section-toggle {
+            font-size: 1.2rem;
+            transition: transform 0.3s ease;
+        }
+        
+        .section-content {
+            padding: 20px;
+            display: none;
+        }
+        
+        .section-content.active {
+            display: block;
+        }
+        
+        .checklist-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(164, 124, 91, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .checklist-item:last-child {
+            border-bottom: none;
+        }
+        
+        .checklist-item.completed {
+            opacity: 0.7;
+            text-decoration: line-through;
+        }
+        
+        .checklist-checkbox {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--primary-color);
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+        
+        .checklist-checkbox.checked {
+            background: var(--primary-color);
+            color: white;
+        }
+        
+        .checklist-text {
+            flex: 1;
+            line-height: 1.5;
+            color: var(--text-color);
+        }
+        
+        .text-template {
+            background: rgba(62, 91, 61, 0.1);
+            border: 1px solid rgba(62, 91, 61, 0.3);
+            border-radius: 6px;
+            padding: 15px;
+            margin: 10px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+        
+        .template-label {
+            font-weight: 600;
+            color: var(--accent-color);
+            margin-bottom: 8px;
+            display: block;
+        }
+        
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: var(--card-bg);
+            color: var(--text-color);
+            border: 1px solid rgba(164, 124, 91, 0.3);
+            padding: 12px 20px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+        
+        .back-button:hover {
+            background: var(--primary-color);
+            color: white;
+            transform: translateX(-2px);
+        }
+        
+        .action-buttons {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+            z-index: 1000;
+        }
+        
+        .action-btn {
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 12px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .action-btn:hover {
+            background: var(--secondary-color);
+            transform: scale(1.05);
+        }
+        
+        @media (max-width: 768px) {
+            .checklist-container {
+                padding: 20px 10px;
+            }
+            
+            .checklist-header h1 {
+                font-size: 2rem;
+            }
+            
+            .back-button, .action-buttons {
+                position: relative;
+                top: auto;
+                left: auto;
+                right: auto;
+                margin-bottom: 20px;
+            }
+            
+            .action-buttons {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="checklist-hub.html" class="back-button">
+        <i class="fas fa-arrow-left"></i> Back to Checklist Hub
+    </a>
+
+    <div class="action-buttons">
+        <button class="action-btn" onclick="resetChecklist()">
+            <i class="fas fa-redo"></i> Reset
+        </button>
+        <button class="action-btn" onclick="expandAll()">
+            <i class="fas fa-expand-arrows-alt"></i> Expand All
+        </button>
+        <button class="action-btn" onclick="printChecklist()">
+            <i class="fas fa-print"></i> Print
+        </button>
+    </div>
+
+    <div class="checklist-container">
+        <div class="checklist-header">
+            <h1><i class="fas fa-clipboard-check"></i> Front Desk Checklist - Simplified</h1>
+            <p>Daily operations checklist for front desk staff</p>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <div class="progress-text" id="progressText">0% Complete (0 of 0 tasks)</div>
+        </div>
+
+        <!-- Today's Important To-Do's -->
+        <div class="checklist-section">
+            <div class="section-header" onclick="toggleSection(this)">
+                <div class="section-title">
+                    <span>🎯</span>
+                    <span>Today's Important To-Do's</span>
+                </div>
+                <div class="section-toggle">▼</div>
+            </div>
+            <div class="section-content active">
+                <div class="checklist-item">
+                    <div class="checklist-checkbox" onclick="toggleItem(this)"></div>
+                    <div class="checklist-text">Check daily priority tasks and appointments</div>
+                </div>
+                <div class="checklist-item">
+                    <div class="checklist-checkbox" onclick="toggleItem(this)"></div>
+                    <div class="checklist-text">Review any special instructions or changes for today</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Opening Duties -->
+        <div class="checklist-section">
+            <div class="section-header" onclick="toggleSection(this)">
+                <div class="section-title">
+                    <span>🌅</span>
+                    <span>Opening Duties</span>
+                </div>
+                <div class="section-toggle">▼</div>
+            </div>
+            <div class="section-content">
+                <div class="checklist-item">
+                    <div class="checklist-checkbox" onclick="toggleItem(this)"></div>
+                    <div class="checklist-text">Turn on lights throughout the facility</div>
+                </div>
+                <div class="checklist-item">
+                    <div class="checklist-checkbox" onclick="toggleItem(this)"></div>
+                    <div class="checklist-text">Turn on iPads (Password: 063069)</div>
+                </div>
+                <div class="checklist-item">
+                    <div class="checklist-checkbox" onclick="toggleItem(this)"></div>
+                    <div class="checklist-text">Play radio/background music</div>
+                </div>
+                <div class="checklist-item">
+                    <div class="checklist-checkbox" onclick="toggleItem(this)"></div>
+                    <div class="checklist-text">Open computer (Password: Well)</div>
+                </div>
+                <div class="checklist-item">
+                    <div class="checklist-checkbox" onclick="toggleItem(this)"></div>
+                    <div class="checklist-text">Open Chrome bookmarks and essential websites</div>
+                </div>
+                <div class="checklist-item">
+                    <div class="checklist-checkbox" onclick="toggleItem(this)"></div>
+                    <div class="checklist-text">Prep file templates for the day</div>
+                </div>
+                <div class="checklist-item">
+                    <div class="checklist-checkbox" onclick="toggleItem(this)"></div>
+                    <div class="checklist-text">Text Silvio before opening to confirm readiness</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Communication Workflow -->
+        <div class="checklist-section">
+            <div class="section-header" onclick="toggleSection(this)">
+                <div class="section-title">
+                    <span>📱</span>
+                    <span>Text & Communication Workflow</span>
+                </div>
+                <div class="section-toggle">▼</div>
+            </div>
+            <div class="section-content">
+                <div class="checklist-item">
+                    <div class="checklist-checkbox" onclick="toggleItem(this)"></div>
+                    <div class="checklist-text">Check and respond to overnight messages</div>
+                </div>
+                <div class="checklist-item">
+                    <div class="checklist-checkbox" onclick="toggleItem(this)"></div>
+                    <div class="checklist-text">Text patients with appointment reminders</div>
+                </div>
+                <div class="checklist-item">
+                    <div class="checklist-checkbox" onclick="toggleItem(this)"></div>
+                    <div class="checklist-text">Set Salesforce status to "Available"</div>
+                </div>
+                <div class="checklist-item">
+                    <div class="checklist-checkbox" onclick="toggleItem(this)"></div>
+                    <div class="checklist-text">Review and update patient communications</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Patient Flow -->
+        <div class="checklist-section">
+            <div class="section-header" onclick="toggleSection(this)">
+                <div class="section-title">
+                    <span>👥</span>
+                    <span>Patient Flow Management</span>
+                </div>
+                <div class="section-toggle">▼</div>
+            </div>
+            <div class="section-content">
+                <div class="checklist-item">
+                    <div class="checklist-checkbox" onclick="toggleItem(this)"></div>
+                    <div class="checklist-text"><strong>Chiropractic:</strong> Manage check-in procedures and scheduling</div>
+                </div>
+                <div class="checklist-item">
+                    <div class="checklist-checkbox" onclick="toggleItem(this)"></div>
+                    <div class="checklist-text"><strong>Massage:</strong> Track massage unit availability and appointments</div>
+                </div>
+                <div class="checklist-item">
+                    <div class="checklist-checkbox" onclick="toggleItem(this)"></div>
+                    <div class="checklist-text"><strong>Colon Therapy:</strong> Process check-in and preparation protocols</div>
+                </div>
+                <div class="checklist-item">
+                    <div class="checklist-checkbox" onclick="toggleItem(this)"></div>
+                    <div class="checklist-text"><strong>IV/Botox:</strong> Handle consent forms and scheduling procedures</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Busy Work Protocol -->
+        <div class="checklist-section">
+            <div class="section-header" onclick="toggleSection(this)">
+                <div class="section-title">
+                    <span>⚡</span>
+                    <span>Busy Work Protocol</span>
+                </div>
+                <div class="section-toggle">▼</div>
+            </div>
+            <div class="section-content">
+                <div class="checklist-item">
+                    <div class="checklist-checkbox" onclick="toggleItem(this)"></div>
+                    <div class="checklist-text">Prioritize urgent patient needs and emergencies</div>
+                </div>
+                <div class="checklist-item">
+                    <div class="checklist-checkbox" onclick="toggleItem(this)"></div>
+                    <div class="checklist-text">Manage multiple check-ins efficiently</div>
+                </div>
+                <div class="checklist-item">
+                    <div class="checklist-checkbox" onclick="toggleItem(this)"></div>
+                    <div class="checklist-text">Coordinate with treatment staff for smooth flow</div>
+                </div>
+                <div class="checklist-item">
+                    <div class="checklist-checkbox" onclick="toggleItem(this)"></div>
+                    <div class="checklist-text">Handle phone calls and walk-ins simultaneously</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Text Templates -->
+        <div class="checklist-section">
+            <div class="section-header" onclick="toggleSection(this)">
+                <div class="section-title">
+                    <span>💬</span>
+                    <span>Text Templates & Communication</span>
+                </div>
+                <div class="section-toggle">▼</div>
+            </div>
+            <div class="section-content">
+                <div class="text-template">
+                    <span class="template-label">SMS Opt-In Template:</span>
+                    Hi [Name]! This is [Your Name] from Be Well LifeStyle Centers. We'd like to send you appointment reminders and health tips via text. Reply YES to opt-in or STOP to opt-out. Thanks!
+                </div>
+                
+                <div class="text-template">
+                    <span class="template-label">Massage/IV Follow-Up:</span>
+                    Hi [Name]! Thanks for visiting Be Well today. How are you feeling after your [service]? We'd love to hear your feedback and help schedule your next appointment.
+                </div>
+                
+                <div class="text-template">
+                    <span class="template-label">Chiro/Colon Retention:</span>
+                    Hi [Name]! It's been a while since your last visit to Be Well. We miss you! Would you like to schedule your next [service] appointment? Call us at [phone] or reply to this message.
+                </div>
+                
+                <div class="text-template">
+                    <span class="template-label">Botox/Peptides Programs:</span>
+                    Hi [Name]! Interested in our Botox and Peptide programs? Schedule a consultation to learn about our anti-aging and wellness treatments. Call [phone] or reply to book!
+                </div>
+            </div>
+        </div>
+
+        <!-- End of Day -->
+        <div class="checklist-section">
+            <div class="section-header" onclick="toggleSection(this)">
+                <div class="section-title">
+                    <span>🌙</span>
+                    <span>End of Day Tasks</span>
+                </div>
+                <div class="section-toggle">▼</div>
+            </div>
+            <div class="section-content">
+                <div class="checklist-item">
+                    <div class="checklist-checkbox" onclick="toggleItem(this)"></div>
+                    <div class="checklist-text">Update massage schedule for tomorrow</div>
+                </div>
+                <div class="checklist-item">
+                    <div class="checklist-checkbox" onclick="toggleItem(this)"></div>
+                    <div class="checklist-text">Request and review billing sheet</div>
+                </div>
+                <div class="checklist-item">
+                    <div class="checklist-checkbox" onclick="toggleItem(this)"></div>
+                    <div class="checklist-text">Match and organize sticker sheets</div>
+                </div>
+                <div class="checklist-item">
+                    <div class="checklist-checkbox" onclick="toggleItem(this)"></div>
+                    <div class="checklist-text">Send appointment confirmations for tomorrow</div>
+                </div>
+                <div class="checklist-item">
+                    <div class="checklist-checkbox" onclick="toggleItem(this)"></div>
+                    <div class="checklist-text">Print daily reports and summaries</div>
+                </div>
+                <div class="checklist-item">
+                    <div class="checklist-checkbox" onclick="toggleItem(this)"></div>
+                    <div class="checklist-text">Clean and organize front desk area</div>
+                </div>
+                <div class="checklist-item">
+                    <div class="checklist-checkbox" onclick="toggleItem(this)"></div>
+                    <div class="checklist-text">Secure facility and lock up properly</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Load saved progress
+        document.addEventListener('DOMContentLoaded', function() {
+            loadProgress();
+            updateProgress();
+        });
+
+        function toggleSection(header) {
+            const content = header.nextElementSibling;
+            const toggle = header.querySelector('.section-toggle');
+            
+            if (content.classList.contains('active')) {
+                content.classList.remove('active');
+                toggle.textContent = '▶';
+            } else {
+                content.classList.add('active');
+                toggle.textContent = '▼';
+            }
+        }
+
+        function toggleItem(checkbox) {
+            checkbox.classList.toggle('checked');
+            const item = checkbox.parentElement;
+            item.classList.toggle('completed');
+            
+            if (checkbox.classList.contains('checked')) {
+                checkbox.innerHTML = '<i class="fas fa-check"></i>';
+            } else {
+                checkbox.innerHTML = '';
+            }
+            
+            updateProgress();
+            saveProgress();
+        }
+
+        function updateProgress() {
+            const allItems = document.querySelectorAll('.checklist-item');
+            const completedItems = document.querySelectorAll('.checklist-item.completed');
+            const percentage = allItems.length > 0 ? Math.round((completedItems.length / allItems.length) * 100) : 0;
+            
+            document.getElementById('progressFill').style.width = percentage + '%';
+            document.getElementById('progressText').textContent = 
+                `${percentage}% Complete (${completedItems.length} of ${allItems.length} tasks)`;
+        }
+
+        function resetChecklist() {
+            if (confirm('Are you sure you want to reset all checklist items?')) {
+                document.querySelectorAll('.checklist-checkbox.checked').forEach(checkbox => {
+                    checkbox.classList.remove('checked');
+                    checkbox.innerHTML = '';
+                    checkbox.parentElement.classList.remove('completed');
+                });
+                updateProgress();
+                localStorage.removeItem('frontDeskChecklistProgress');
+            }
+        }
+
+        function expandAll() {
+            document.querySelectorAll('.section-content').forEach(content => {
+                content.classList.add('active');
+            });
+            document.querySelectorAll('.section-toggle').forEach(toggle => {
+                toggle.textContent = '▼';
+            });
+        }
+
+        function printChecklist() {
+            window.print();
+        }
+
+        function saveProgress() {
+            const progress = [];
+            document.querySelectorAll('.checklist-item').forEach((item, index) => {
+                progress[index] = item.classList.contains('completed');
+            });
+            localStorage.setItem('frontDeskChecklistProgress', JSON.stringify(progress));
+        }
+
+        function loadProgress() {
+            const saved = localStorage.getItem('frontDeskChecklistProgress');
+            if (saved) {
+                const progress = JSON.parse(saved);
+                document.querySelectorAll('.checklist-item').forEach((item, index) => {
+                    if (progress[index]) {
+                        const checkbox = item.querySelector('.checklist-checkbox');
+                        checkbox.classList.add('checked');
+                        checkbox.innerHTML = '<i class="fas fa-check"></i>';
+                        item.classList.add('completed');
+                    }
+                });
+            }
+        }
+
+        // Auto-save every 30 seconds
+        setInterval(saveProgress, 30000);
+    </script>
+
+    <style>
+        @media print {
+            .back-button, .action-buttons {
+                display: none;
+            }
+            
+            .checklist-container {
+                padding: 20px;
+            }
+            
+            .section-content {
+                display: block !important;
+            }
+            
+            .section-toggle {
+                display: none;
+            }
+            
+            .checklist-section {
+                page-break-inside: avoid;
+                margin-bottom: 20px;
+            }
+        }
+    </style>
+</body>
+</html>
