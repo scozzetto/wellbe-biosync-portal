@@ -55,26 +55,11 @@
     <script>
         // Immediate authentication check - runs before page content loads
         (function() {
-            const staffAuth = localStorage.getItem('staffAuth');
-            const staffAuthTime = localStorage.getItem('staffAuthTime');
+            const staffAuth = sessionStorage.getItem('staffAuthenticated');
             
-            if (!staffAuth || staffAuth !== 'authenticated') {
+            if (!staffAuth || staffAuth !== 'true') {
                 window.location.replace('staff-knowledge-base.html');
                 return;
-            }
-            
-            // Check if authentication is expired (24 hours)
-            if (staffAuthTime) {
-                const authTime = parseInt(staffAuthTime);
-                const currentTime = Date.now();
-                const timeLimit = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
-                
-                if (currentTime - authTime > timeLimit) {
-                    localStorage.removeItem('staffAuth');
-                    localStorage.removeItem('staffAuthTime');
-                    window.location.replace('staff-knowledge-base.html');
-                    return;
-                }
             }
         })();
     </script>
