@@ -2555,71 +2555,6 @@
                 </select>
             </div>
             
-            <!-- Therapy Equipment -->
-            <div class="item-row">
-                <div class="item-name">Access Laboratory Blood Draw Kit</div>
-                <input type="number" class="quantity-input" placeholder="0" data-vendor="office-inventory" data-item="Access Laboratory Blood Draw Kit">
-                <select class="unit-select">
-                    <option value="kit" selected>Kit</option>
-                    <option value="box">Box</option>
-                    <option value="individual">Individual</option>
-                </select>
-            </div>
-            <div class="item-row">
-                <div class="item-name">Vitamin B</div>
-                <input type="number" class="quantity-input" placeholder="0" data-vendor="office-inventory" data-item="Vitamin B">
-                <select class="unit-select">
-                    <option value="vial" selected>Vial</option>
-                    <option value="box">Box</option>
-                    <option value="individual">Individual</option>
-                </select>
-            </div>
-            <div class="item-row">
-                <div class="item-name">Glutathione</div>
-                <input type="number" class="quantity-input" placeholder="0" data-vendor="office-inventory" data-item="Glutathione">
-                <select class="unit-select">
-                    <option value="vial" selected>Vial</option>
-                    <option value="box">Box</option>
-                    <option value="individual">Individual</option>
-                </select>
-            </div>
-            <div class="item-row">
-                <div class="item-name">18 Gauge Fill Needles</div>
-                <input type="number" class="quantity-input" placeholder="0" data-vendor="office-inventory" data-item="18 Gauge Fill Needles">
-                <select class="unit-select">
-                    <option value="box" selected>Box</option>
-                    <option value="pack">Pack</option>
-                    <option value="individual">Individual</option>
-                </select>
-            </div>
-            <div class="item-row">
-                <div class="item-name">25 Gauge Injection Needles</div>
-                <input type="number" class="quantity-input" placeholder="0" data-vendor="office-inventory" data-item="25 Gauge Injection Needles">
-                <select class="unit-select">
-                    <option value="box" selected>Box</option>
-                    <option value="pack">Pack</option>
-                    <option value="individual">Individual</option>
-                </select>
-            </div>
-            <div class="item-row">
-                <div class="item-name">1 ML Syringes</div>
-                <input type="number" class="quantity-input" placeholder="0" data-vendor="office-inventory" data-item="1 ML Syringes">
-                <select class="unit-select">
-                    <option value="box" selected>Box</option>
-                    <option value="pack">Pack</option>
-                    <option value="individual">Individual</option>
-                </select>
-            </div>
-            <div class="item-row">
-                <div class="item-name">Insulin Syringes</div>
-                <input type="number" class="quantity-input" placeholder="0" data-vendor="office-inventory" data-item="Insulin Syringes">
-                <select class="unit-select">
-                    <option value="box" selected>Box</option>
-                    <option value="pack">Pack</option>
-                    <option value="individual">Individual</option>
-                </select>
-            </div>
-            
             <!-- Office Supplies -->
             <div class="item-row">
                 <div class="item-name">Sticky Notes</div>
@@ -2892,6 +2827,99 @@
             <button onclick="printVendor('office-inventory')" class="btn btn-print">Print Office Inventory Order</button>
             <button onclick="saveVendor('office-inventory')" class="btn btn-save">Save Order</button>
             <button onclick="clearVendor('office-inventory')" class="btn btn-clear">Clear</button>
+        </div>
+    </div>
+
+    <!-- THERAPY EQUIPMENT Vendor -->
+    <div class="vendor-section" id="therapy-equipment">
+        <div class="vendor-header">
+            <div class="vendor-name">THERAPY EQUIPMENT</div>
+            <div class="vendor-contact">
+                <div style="font-size: 14px; color: #666; margin-top: 5px;">
+                    📧 orders@therapyequipment.com | 📞 (555) 123-4567 | 🌐 www.therapyequipment.com
+                </div>
+            </div>
+            <div class="order-date">
+                <label>Order Date:</label>
+                <input type="date" id="therapy-equipment-date" value="">
+            </div>
+        </div>
+        
+        <div class="items-grid">
+            <div class="item-row">
+                <div class="item-name">Access Laboratory Blood Draw Kit</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="therapy-equipment" data-item="Access Laboratory Blood Draw Kit">
+                <select class="unit-select">
+                    <option value="kit" selected>Kit</option>
+                    <option value="box">Box</option>
+                    <option value="individual">Individual</option>
+                </select>
+            </div>
+            <div class="item-row">
+                <div class="item-name">Vitamin B</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="therapy-equipment" data-item="Vitamin B">
+                <select class="unit-select">
+                    <option value="vial" selected>Vial</option>
+                    <option value="box">Box</option>
+                    <option value="individual">Individual</option>
+                </select>
+            </div>
+            <div class="item-row">
+                <div class="item-name">Glutathione</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="therapy-equipment" data-item="Glutathione">
+                <select class="unit-select">
+                    <option value="vial" selected>Vial</option>
+                    <option value="box">Box</option>
+                    <option value="individual">Individual</option>
+                </select>
+            </div>
+            <div class="item-row">
+                <div class="item-name">18 Gauge Fill Needles</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="therapy-equipment" data-item="18 Gauge Fill Needles">
+                <select class="unit-select">
+                    <option value="box" selected>Box</option>
+                    <option value="pack">Pack</option>
+                    <option value="individual">Individual</option>
+                </select>
+            </div>
+            <div class="item-row">
+                <div class="item-name">25 Gauge Injection Needles</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="therapy-equipment" data-item="25 Gauge Injection Needles">
+                <select class="unit-select">
+                    <option value="box" selected>Box</option>
+                    <option value="pack">Pack</option>
+                    <option value="individual">Individual</option>
+                </select>
+            </div>
+            <div class="item-row">
+                <div class="item-name">1 ML Syringes</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="therapy-equipment" data-item="1 ML Syringes">
+                <select class="unit-select">
+                    <option value="box" selected>Box</option>
+                    <option value="pack">Pack</option>
+                    <option value="individual">Individual</option>
+                </select>
+            </div>
+            <div class="item-row">
+                <div class="item-name">Insulin Syringes</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="therapy-equipment" data-item="Insulin Syringes">
+                <select class="unit-select">
+                    <option value="box" selected>Box</option>
+                    <option value="pack">Pack</option>
+                    <option value="individual">Individual</option>
+                </select>
+            </div>
+        </div>
+        
+        <div class="notes-section">
+            <label>Notes:</label>
+            <textarea class="notes-input" id="therapy-equipment-notes" placeholder="Special instructions or notes for therapy equipment order..."></textarea>
+        </div>
+        
+        <div class="vendor-actions">
+            <button onclick="printVendor('therapy-equipment')" class="btn btn-print">Print THERAPY EQUIPMENT Order</button>
+            <button onclick="saveVendor('therapy-equipment')" class="btn btn-save">Save Order</button>
+            <button onclick="clearVendor('therapy-equipment')" class="btn btn-clear">Clear</button>
         </div>
     </div>
 
