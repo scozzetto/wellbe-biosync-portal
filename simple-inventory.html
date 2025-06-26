@@ -12,22 +12,29 @@
             max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
-            background: #f5f5f5;
+            background: var(--bg-color);
+            color: var(--text-color);
         }
         
         .header {
-            background: var(--primary-color);
-            color: white;
-            padding: 20px;
-            border-radius: 8px;
+            background: var(--card-bg);
+            color: var(--text-color);
+            padding: 20px 30px;
+            border-radius: 12px;
             margin-bottom: 30px;
             text-align: center;
+            border: 1px solid rgba(164, 124, 91, 0.2);
+        }
+        
+        .header h1 {
+            color: var(--primary-color);
+            margin: 0;
         }
         
         .vendor-section {
-            background: white;
-            border: 2px solid #ddd;
-            border-radius: 8px;
+            background: var(--card-bg);
+            border: 1px solid rgba(164, 124, 91, 0.2);
+            border-radius: 12px;
             margin-bottom: 30px;
             padding: 20px;
             page-break-inside: avoid;
@@ -39,7 +46,7 @@
             align-items: flex-start;
             margin-bottom: 20px;
             padding-bottom: 10px;
-            border-bottom: 2px solid var(--primary-color);
+            border-bottom: 1px solid rgba(164, 124, 91, 0.2);
         }
         
         .vendor-contact {
@@ -77,31 +84,33 @@
             gap: 15px;
             align-items: center;
             padding: 8px;
-            border-bottom: 1px solid #eee;
+            border-bottom: 1px solid rgba(164, 124, 91, 0.1);
         }
         
         .item-name {
             font-weight: 500;
-            color: #333;
+            color: var(--text-color);
         }
         
         .quantity-input {
             width: 100%;
             padding: 8px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
+            border: 1px solid rgba(164, 124, 91, 0.3);
+            border-radius: 6px;
             font-size: 16px;
             text-align: center;
+            background: var(--card-bg);
+            color: var(--text-color);
         }
         
         .unit-select {
             width: 100%;
             padding: 8px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
+            border: 1px solid rgba(164, 124, 91, 0.3);
+            border-radius: 6px;
             font-size: 14px;
-            background: white;
-            color: #333;
+            background: var(--card-bg);
+            color: var(--text-color);
         }
         
         .actions {
@@ -113,10 +122,15 @@
         .btn {
             padding: 10px 20px;
             border: none;
-            border-radius: 4px;
+            border-radius: 6px;
             cursor: pointer;
             font-size: 16px;
             font-weight: 600;
+            transition: var(--transition);
+        }
+        
+        .btn:hover {
+            transform: translateY(-1px);
         }
         
         .btn-print {
@@ -124,14 +138,26 @@
             color: white;
         }
         
+        .btn-print:hover {
+            background: var(--secondary-color);
+        }
+        
         .btn-save {
-            background: #28a745;
+            background: #22c55e;
             color: white;
         }
         
+        .btn-save:hover {
+            background: #16a34a;
+        }
+        
         .btn-clear {
-            background: #dc3545;
+            background: #ef4444;
             color: white;
+        }
+        
+        .btn-clear:hover {
+            background: #dc2626;
         }
         
         @media print {
@@ -264,22 +290,24 @@
         .notes-section {
             margin-top: 15px;
             padding-top: 15px;
-            border-top: 1px solid #ddd;
+            border-top: 1px solid rgba(164, 124, 91, 0.2);
         }
         
         .notes-label {
             font-weight: 600;
-            color: #333;
+            color: var(--text-color);
             margin-bottom: 5px;
         }
         
         .notes-input {
             width: 100%;
             padding: 8px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
+            border: 1px solid rgba(164, 124, 91, 0.3);
+            border-radius: 6px;
             font-size: 14px;
             min-height: 60px;
+            background: var(--card-bg);
+            color: var(--text-color);
         }
     </style>
 </head>
@@ -604,7 +632,7 @@
             </div>
             <div class="item-row">
                 <div class="item-name">Additional Item</div>
-                <input type="text" class="item-name" placeholder="Enter additional produce item..." style="padding: 8px; border: 1px solid #ccc; border-radius: 4px;" data-vendor="vacpak" data-type="custom-item">
+                <input type="text" class="item-name" placeholder="Enter additional produce item..." style="padding: 8px; border: 1px solid rgba(164, 124, 91, 0.3); border-radius: 6px; background: var(--card-bg); color: var(--text-color);" data-vendor="vacpak" data-type="custom-item">
                 <input type="number" class="quantity-input" placeholder="0" data-vendor="vacpak" data-type="custom-qty">
                 <select class="unit-select" data-vendor="vacpak" data-type="custom-unit">
                     <option value="case" selected>Case</option>
@@ -631,50 +659,50 @@
     
     <!-- BRADYPLUS (formerly BBC) Vendor -->
     <div class="vendor-section" id="bradyplus">
-        <div class="vendor-header" onclick="toggleVendorInfo('bradyplus')" style="cursor: pointer; border: 2px solid #007bff; border-radius: 8px; padding: 15px; background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);">
+        <div class="vendor-header" onclick="toggleVendorInfo('bradyplus')" style="cursor: pointer; border: 1px solid rgba(164, 124, 91, 0.3); border-radius: 8px; padding: 15px; background: rgba(164, 124, 91, 0.1);">
             <div class="vendor-name" style="display: flex; justify-content: space-between; align-items: center;">
-                <span style="color: #007bff; font-weight: bold; font-size: 18px;">📦 BRADYPLUS - Supplies + Support</span>
-                <span id="bradyplus-toggle" style="color: #007bff; font-size: 20px;">▼</span>
+                <span style="color: var(--primary-color); font-weight: bold; font-size: 18px;">📦 BRADYPLUS - Supplies + Support</span>
+                <span id="bradyplus-toggle" style="color: var(--primary-color); font-size: 20px;">▼</span>
             </div>
             
             <!-- Vendor Management Info (collapsible) -->
-            <div id="bradyplus-info" class="vendor-info" style="margin-top: 15px; padding: 15px; background: white; border-radius: 6px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); color: #333;">
+            <div id="bradyplus-info" class="vendor-info" style="margin-top: 15px; padding: 15px; background: var(--card-bg); border-radius: 6px; box-shadow: 0 2px 8px rgba(164, 124, 91, 0.1); color: var(--text-color);">
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 15px;">
                     <div>
-                        <h4 style="margin: 0 0 8px 0; color: #007bff;">📞 Contact Information</h4>
-                        <div style="background: #f8f9fa; padding: 10px; border-radius: 4px; color: #333;">
-                            <div><strong style="color: #333;">Company:</strong> BradyPLUS - Supplies + Support</div>
-                            <div><strong style="color: #333;">Phone:</strong> <a href="tel:877-788-7587" style="color: #007bff;">877-788-PLUS</a></div>
-                            <div><strong style="color: #333;">Website:</strong> <a href="https://supplies.bradyindustries.com/" style="color: #007bff;">supplies.bradyindustries.com</a></div>
-                            <div><strong style="color: #333;">Type:</strong> JanSan + Foodservice + Packaging (Dry Goods)</div>
+                        <h4 style="margin: 0 0 8px 0; color: var(--primary-color);">📞 Contact Information</h4>
+                        <div style="background: rgba(164, 124, 91, 0.05); padding: 10px; border-radius: 4px; color: var(--text-color);">
+                            <div><strong style="color: var(--text-color);">Company:</strong> BradyPLUS - Supplies + Support</div>
+                            <div><strong style="color: var(--text-color);">Phone:</strong> <a href="tel:877-788-7587" style="color: var(--primary-color);">877-788-PLUS</a></div>
+                            <div><strong style="color: var(--text-color);">Website:</strong> <a href="https://supplies.bradyindustries.com/" style="color: var(--primary-color);">supplies.bradyindustries.com</a></div>
+                            <div><strong style="color: var(--text-color);">Type:</strong> JanSan + Foodservice + Packaging (Dry Goods)</div>
                         </div>
                     </div>
                     <div>
-                        <h4 style="margin: 0 0 8px 0; color: #007bff;">📅 Delivery Schedule</h4>
-                        <div style="background: #f8f9fa; padding: 10px; border-radius: 4px; color: #333;">
-                            <div><strong style="color: #333;">Delivery:</strong> As needed</div>
-                            <div><strong style="color: #333;">Order Days:</strong> Any day</div>
-                            <div><strong style="color: #333;">Lead Time:</strong> 2-3 business days</div>
-                            <div><strong style="color: #333;">Shipping:</strong> UPS/FedEx</div>
+                        <h4 style="margin: 0 0 8px 0; color: var(--primary-color);">📅 Delivery Schedule</h4>
+                        <div style="background: rgba(164, 124, 91, 0.05); padding: 10px; border-radius: 4px; color: var(--text-color);">
+                            <div><strong style="color: var(--text-color);">Delivery:</strong> As needed</div>
+                            <div><strong style="color: var(--text-color);">Order Days:</strong> Any day</div>
+                            <div><strong style="color: var(--text-color);">Lead Time:</strong> 2-3 business days</div>
+                            <div><strong style="color: var(--text-color);">Shipping:</strong> UPS/FedEx</div>
                         </div>
                     </div>
                 </div>
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
                     <div>
-                        <h4 style="margin: 0 0 8px 0; color: #007bff;">💰 Order Requirements</h4>
-                        <div style="background: #f8f9fa; padding: 10px; border-radius: 4px; color: #333;">
-                            <div><strong style="color: #333;">Minimum Order:</strong> $50</div>
-                            <div><strong style="color: #333;">Payment Terms:</strong> Net 30</div>
-                            <div><strong style="color: #333;">Specialties:</strong> JanSan, Foodservice, Packaging</div>
+                        <h4 style="margin: 0 0 8px 0; color: var(--primary-color);">💰 Order Requirements</h4>
+                        <div style="background: rgba(164, 124, 91, 0.05); padding: 10px; border-radius: 4px; color: var(--text-color);">
+                            <div><strong style="color: var(--text-color);">Minimum Order:</strong> $50</div>
+                            <div><strong style="color: var(--text-color);">Payment Terms:</strong> Net 30</div>
+                            <div><strong style="color: var(--text-color);">Specialties:</strong> JanSan, Foodservice, Packaging</div>
                         </div>
                     </div>
                     <div>
-                        <h4 style="margin: 0 0 8px 0; color: #007bff;">📍 Service Locations</h4>
-                        <div style="background: #f8f9fa; padding: 10px; border-radius: 4px; color: #333;">
-                            <div style="color: #333;">✅ All Locations</div>
-                            <div style="color: #333;">✅ Birmingham</div>
-                            <div style="color: #333;">✅ UWM</div>
-                            <div style="color: #333;">✅ Berkeley</div>
+                        <h4 style="margin: 0 0 8px 0; color: var(--primary-color);">📍 Service Locations</h4>
+                        <div style="background: rgba(164, 124, 91, 0.05); padding: 10px; border-radius: 4px; color: var(--text-color);">
+                            <div style="color: var(--text-color);">✅ All Locations</div>
+                            <div style="color: var(--text-color);">✅ Birmingham</div>
+                            <div style="color: var(--text-color);">✅ UWM</div>
+                            <div style="color: var(--text-color);">✅ Berkeley</div>
                         </div>
                     </div>
                 </div>
