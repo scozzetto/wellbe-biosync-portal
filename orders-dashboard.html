@@ -501,13 +501,20 @@
             console.log('🖨️ Found order:', order.vendor, 'for', order.location);
             
             const printContent = `
-                <div style="font-family: Arial, sans-serif; padding: 5px; font-size: 12px; line-height: 1.1; background: white; color: black;">
-                    <h2 style="margin: 0 0 2px 0; font-size: 16px; color: black;">${order.vendor} - ${order.location.toUpperCase()}</h2>
-                    <p style="margin: 0 0 1px 0; color: black; font-size: 10px;">${new Date(order.timestamp).toLocaleDateString()} ${new Date(order.timestamp).toLocaleTimeString()}</p>
+                <div style="font-family: Arial, sans-serif; padding: 5px; font-size: 14px; line-height: 1.3; background: white; color: black;">
+                    <h2 style="margin: 0 0 2px 0; font-size: 18px; color: black;">${order.vendor} - ${order.location.toUpperCase()}</h2>
+                    <p style="margin: 0 0 1px 0; color: black; font-size: 12px;">${new Date(order.timestamp).toLocaleDateString()} ${new Date(order.timestamp).toLocaleTimeString()}</p>
                     <hr style="margin: 1px 0; border: 0.5px solid black;">
-                    ${order.items.map(item => `<div style="margin: 0.5px 0;"><span>${item.name}</span> &nbsp;&nbsp;-&nbsp;&nbsp; <strong>${item.quantity} ${item.unit}</strong></div>`).join('')}
+                    <table style="width: 100%; border-collapse: collapse;">
+                        ${order.items.map(item => `
+                            <tr>
+                                <td style="padding: 2px 0; border: none; text-align: left; width: 70%;">${item.name}</td>
+                                <td style="padding: 2px 0; border: none; text-align: right; width: 30%; font-weight: bold;">${item.quantity} ${item.unit}</td>
+                            </tr>
+                        `).join('')}
+                    </table>
                     <hr style="margin: 1px 0; border: 0.5px solid black;">
-                    <p style="margin: 0.5px 0; color: black; font-size: 10px;"><strong>Total: ${order.itemCount} items</strong>${order.notes ? ` | Notes: ${order.notes}` : ''}</p>
+                    <p style="margin: 0.5px 0; color: black; font-size: 12px;"><strong>Total: ${order.itemCount} items</strong>${order.notes ? ` | Notes: ${order.notes}` : ''}</p>
                 </div>
             `;
             
@@ -591,19 +598,26 @@
             });
             
             const printContent = `
-                <div style="font-family: Arial, sans-serif; padding: 5px; font-size: 12px; line-height: 1.1; background: white; color: black;">
-                    <h1 style="margin: 0 0 2px 0; font-size: 16px; color: black;">ORDERS SUMMARY - ${currentFilter === 'all' ? 'ALL LOCATIONS' : currentFilter.toUpperCase()}</h1>
-                    <p style="margin: 0 0 1px 0; color: black; font-size: 10px;">Generated: ${new Date().toLocaleString()}</p>
+                <div style="font-family: Arial, sans-serif; padding: 5px; font-size: 14px; line-height: 1.3; background: white; color: black;">
+                    <h1 style="margin: 0 0 2px 0; font-size: 18px; color: black;">ORDERS SUMMARY - ${currentFilter === 'all' ? 'ALL LOCATIONS' : currentFilter.toUpperCase()}</h1>
+                    <p style="margin: 0 0 1px 0; color: black; font-size: 12px;">Generated: ${new Date().toLocaleString()}</p>
                     <hr style="margin: 1px 0; border: 0.5px solid black;">
                     ${Object.values(groupedOrders).map(group => `
                         <div style="margin-bottom: 3px; page-break-inside: avoid;">
-                            <h3 style="margin: 1px 0; font-size: 14px; color: black;">${group.vendor} - ${group.location}</h3>
-                            ${Object.values(group.items).map(item => `<div style="margin: 0.5px 0;"><span>${item.name}</span> &nbsp;&nbsp;-&nbsp;&nbsp; <strong>${item.quantity} ${item.unit}</strong></div>`).join('')}
-                            ${group.notes.length > 0 ? `<p style="margin: 0.5px 0; font-size: 10px; color: #666;">Notes: ${[...new Set(group.notes)].join('; ')}</p>` : ''}
+                            <h3 style="margin: 1px 0; font-size: 16px; color: black;">${group.vendor} - ${group.location}</h3>
+                            <table style="width: 100%; border-collapse: collapse;">
+                                ${Object.values(group.items).map(item => `
+                                    <tr>
+                                        <td style="padding: 2px 0; border: none; text-align: left; width: 70%;">${item.name}</td>
+                                        <td style="padding: 2px 0; border: none; text-align: right; width: 30%; font-weight: bold;">${item.quantity} ${item.unit}</td>
+                                    </tr>
+                                `).join('')}
+                            </table>
+                            ${group.notes.length > 0 ? `<p style="margin: 0.5px 0; font-size: 12px; color: #666;">Notes: ${[...new Set(group.notes)].join('; ')}</p>` : ''}
                             <hr style="margin: 1px 0; border: 0.5px solid #ccc;">
                         </div>
                     `).join('')}
-                    <p style="margin: 0.5px 0; color: black; font-size: 10px;"><strong>Total Vendors: ${Object.keys(groupedOrders).length}</strong></p>
+                    <p style="margin: 0.5px 0; color: black; font-size: 12px;"><strong>Total Vendors: ${Object.keys(groupedOrders).length}</strong></p>
                 </div>
             `;
             
