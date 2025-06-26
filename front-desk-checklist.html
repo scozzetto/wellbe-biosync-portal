@@ -1,431 +1,95 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Front Desk Checklist - Be Well LifeStyle Centers</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        .checklist-container {
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 40px 20px;
-            background: var(--bg-color);
-            min-height: 100vh;
-            color: var(--text-color);
-        }
-        
-        .checklist-header {
-            text-align: center;
-            margin-bottom: 40px;
-            padding: 30px;
-            background: var(--card-bg);
-            border-radius: var(--border-radius);
-            border: 1px solid rgba(164, 124, 91, 0.3);
-        }
-        
-        .checklist-header h1 {
-            color: var(--primary-color);
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-            font-weight: 700;
-        }
-        
-        .progress-bar {
-            background: rgba(164, 124, 91, 0.2);
-            height: 8px;
-            border-radius: 4px;
-            margin: 20px 0;
-            overflow: hidden;
-        }
-        
-        .progress-fill {
-            background: var(--primary-color);
-            height: 100%;
-            width: 0%;
-            transition: width 0.3s ease;
-            border-radius: 4px;
-        }
-        
-        .progress-text {
-            text-align: center;
-            margin-top: 10px;
-            font-weight: 600;
-            color: var(--primary-color);
-        }
-        
-        .checklist-section {
-            background: var(--card-bg);
-            border: 1px solid rgba(164, 124, 91, 0.3);
-            border-radius: var(--border-radius);
-            margin-bottom: 25px;
-            overflow: hidden;
-        }
-        
-        .section-header {
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            color: white;
-            padding: 15px 20px;
-            display: flex;
-            justify-content: flex-start;
-            align-items: center;
-            font-weight: 600;
-        }
-        
-        .section-title {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 1.1rem;
-        }
-        
-        .section-content {
-            padding: 20px;
-            display: block;
-        }
-        
-        .checklist-item {
-            padding: 8px 0;
-            border-bottom: 1px solid rgba(164, 124, 91, 0.1);
-            line-height: 1.6;
-            color: var(--text-color);
-        }
-        
-        .checklist-item:last-child {
-            border-bottom: none;
-        }
-        
-        .text-template {
-            background: rgba(62, 91, 61, 0.1);
-            border: 1px solid rgba(62, 91, 61, 0.3);
-            border-radius: 6px;
-            padding: 15px;
-            margin: 10px 0;
-            font-family: 'Courier New', monospace;
-            font-size: 0.9rem;
-            line-height: 1.4;
-        }
-        
-        .template-label {
-            font-weight: 600;
-            color: var(--accent-color);
-            margin-bottom: 8px;
-            display: block;
-        }
-        
-        .back-button {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            background: var(--card-bg);
-            color: var(--text-color);
-            border: 1px solid rgba(164, 124, 91, 0.3);
-            padding: 12px 20px;
-            border-radius: 6px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            z-index: 1000;
-        }
-        
-        .back-button:hover {
-            background: var(--primary-color);
-            color: white;
-            transform: translateX(-2px);
-        }
-        
-        .action-buttons {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            display: flex;
-            gap: 10px;
-            z-index: 1000;
-        }
-        
-        .action-btn {
-            background: var(--accent-color);
-            color: white;
-            border: none;
-            padding: 12px 16px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
-        
-        .action-btn:hover {
-            background: var(--secondary-color);
-            transform: scale(1.05);
-        }
-        
-        @media (max-width: 768px) {
-            .checklist-container {
-                padding: 20px 10px;
-            }
-            
-            .checklist-header h1 {
-                font-size: 2rem;
-            }
-            
-            .back-button, .action-buttons {
-                position: relative;
-                top: auto;
-                left: auto;
-                right: auto;
-                margin-bottom: 20px;
-            }
-            
-            .action-buttons {
-                justify-content: center;
-            }
-        }
+        body { font-family: Arial, sans-serif; margin: 40px; line-height: 1.4; color: #333; font-size: 10px; }
+        h1 { color: #2c7a7b; }
+        h2 { color: #1a5963; margin-top: 25px; font-size: 14px; }
+        ul { margin-top: 8px; margin-left: 20px; list-style-type: none; padding-left: 0; }
+        li { margin-bottom: 6px; }
+        input[type="checkbox"] { margin-right: 8px; transform: scale(1.2); }
+        textarea { width: 100%; font-size: 10px; padding: 6px; border: 1px solid #ccc; border-radius: 4px; margin-top: 8px; box-sizing: border-box; resize: both; overflow: hidden; }
     </style>
 </head>
 <body>
-    <a href="checklist-hub.html" class="back-button">
-        <i class="fas fa-arrow-left"></i> Back to Checklist Hub
-    </a>
+    <h1>Front Desk Simple Checklist – Be Well LifeStyle Centers</h1>
 
-    <div class="action-buttons">
-        <button class="action-btn" onclick="printChecklist()">
-            <i class="fas fa-print"></i> Print
-        </button>
-    </div>
+    <p><strong>Date:</strong> <input type="date" style="font-size: 10px; padding: 4px;"></p>
 
-    <div class="checklist-container">
-        <div class="checklist-header">
-            <h1><i class="fas fa-clipboard-check"></i> Front Desk Simple Checklist – Be Well LifeStyle Centers</h1>
-            <div style="margin: 20px 0; display: flex; align-items: center; gap: 10px;">
-                <label style="font-weight: 600; color: var(--primary-color);">Date:</label>
-                <input type="date" id="checklistDate" style="padding: 8px; border: 1px solid rgba(164, 124, 91, 0.3); border-radius: 4px; background: var(--card-bg); color: var(--text-color);">
-            </div>
-        </div>
+    <h2>🔍 Today's Important To-Do's</h2>
+    <textarea rows="3" placeholder="Type today's important to-do items here..."></textarea>
 
-        <!-- Today's Important To-Do's -->
-        <div class="checklist-section">
-            <div class="section-header">
-                <div class="section-title">
-                    <span>🔍</span>
-                    <span>Today's Important To-Do's</span>
-                </div>
-            </div>
-            <div class="section-content">
-                <textarea style="width: 100%; min-height: 80px; padding: 12px; border: 1px solid rgba(164, 124, 91, 0.3); border-radius: 6px; background: var(--card-bg); color: var(--text-color); font-family: inherit; resize: vertical;" placeholder="Type today's important to-do items here..." id="todayNotes"></textarea>
-            </div>
-        </div>
+    <h2>🏠 Opening Duties</h2>
+    <ul>
+        <li>• Lights on (front desk, back office, chiro room LED remote, traction lamp)</li>
+        <li>• Turn on iPads – Password: 063069</li>
+        <li>• Play "Nido Del Aguila Radio" on big iPad</li>
+        <li>• Turn on front desk computer – Password: Well</li>
+        <li>• Open from Chrome bookmarks (Square, Check In, Google Keep, IntakeQ, Salesforce, 8x8 Work)</li>
+        <li>• THURSDAY - Remind the Cafe' to take boxes to the corner for pickup</li>
+        <li>• Pull file templates (SOAP notes, Scratch Sheets) and prep clipboards</li>
+        <li>• Text Silvio 20 minutes before we open to alert of clients</li>
+    </ul>
 
-        <!-- Opening Duties -->
-        <div class="checklist-section">
-            <div class="section-header">
-                <div class="section-title">
-                    <span>🏠</span>
-                    <span>Opening Duties</span>
-                </div>
-            </div>
-            <div class="section-content">
-                <div class="checklist-item">• Lights on (front desk, back office, chiro room LED remote, traction lamp)</div>
-                <div class="checklist-item">• Turn on iPads – Password: 063069</div>
-                <div class="checklist-item">• Play "Nido Del Aguila Radio" on big iPad</div>
-                <div class="checklist-item">• Turn on front desk computer – Password: Well</div>
-                <div class="checklist-item">• Open from Chrome bookmarks (Square, Check In, Google Keep, IntakeQ, Salesforce, 8x8 Work)</div>
-                <div class="checklist-item">• THURSDAY - Remind the Cafe' to take boxes to the corner for pickup</div>
-                <div class="checklist-item">• Pull file templates (SOAP notes, Scratch Sheets) and prep clipboards</div>
-                <div class="checklist-item">• Text Silvio 20 minutes before we open to alert of clients</div>
-            </div>
-        </div>
+    <h2>📞 Text & Communication Workflow</h2>
+    <ul>
+        <li>• Check and respond to all 8x8 messages, voicemails, Square messages</li>
+        <li>• Text patients from today's Google Keep notes</li>
+        <li>• Log into Salesforce > Omni Channel > Set to Messaging: Available</li>
+    </ul>
 
-        <!-- Communication Workflow -->
-        <div class="checklist-section">
-            <div class="section-header">
-                <div class="section-title">
-                    <span>📞</span>
-                    <span>Text & Communication Workflow</span>
-                </div>
-            </div>
-            <div class="section-content">
-                <div class="checklist-item">• Check and respond to all 8x8 messages, voicemails, Square messages</div>
-                <div class="checklist-item">• Text patients from today's Google Keep notes</div>
-                <div class="checklist-item">• Log into Salesforce > Omni Channel > Set to Messaging: Available</div>
-            </div>
-        </div>
+    <h2>🌐 Patient Flow (Chiro, Massage, Colon, IV/Botox)</h2>
+    <ul>
+        <li>• <strong>Chiro:</strong> Follow arrival and sign-in protocol, use Scratch and Sticker sheets</li>
+        <li>• <strong>Massage:</strong> Determine unit counts, chiro treatment including massage, cupping, dry needling and the handling, collect payment if needed</li>
+        <li>• <strong>Colon:</strong> Check-in, Sticky note, paperwork, payment, let them know we accept insurance for some of our other services, give them the special cards and rebook them for their next colon</li>
+        <li>• <strong>IV/Botox/Emsculpt:</strong> Consent form, notify nurse, confirm procedures, rebooking</li>
+    </ul>
 
-        <!-- Patient Flow -->
-        <div class="checklist-section">
-            <div class="section-header">
-                <div class="section-title">
-                    <span>🌐</span>
-                    <span>Patient Flow (Chiro, Massage, Colon, IV/Botox)</span>
-                </div>
-            </div>
-            <div class="section-content">
-                <div class="checklist-item">• <strong>Chiro:</strong> Follow arrival and sign-in protocol, use Scratch and Sticker sheets</div>
-                <div class="checklist-item">• <strong>Massage:</strong> Determine unit counts, chiro treatment including massage, cupping, dry needling and the handling, collect payment if needed</div>
-                <div class="checklist-item">• <strong>Colon:</strong> Check-in, Sticky note, paperwork, payment, let them know we accept insurance for some of our other services, give them the special cards and rebook them for their next colon</div>
-                <div class="checklist-item">• <strong>IV/Botox/Emsculpt:</strong> Consent form, notify nurse, confirm procedures, rebooking</div>
-            </div>
-        </div>
+    <h2>📚 Busy Work Protocol</h2>
+    <ul>
+        <li>• <strong>Chiro:</strong> Text past patients that fell off the schedule (1 week back)</li>
+        <li>• <strong>IV/Botox:</strong> Text previous patients (2 weeks back)</li>
+        <li>• <strong>Colon:</strong> Text all 4 weeks back who haven't returned</li>
+    </ul>
 
-        <!-- Busy Work Protocol -->
-        <div class="checklist-section">
-            <div class="section-header">
-                <div class="section-title">
-                    <span>📚</span>
-                    <span>Busy Work Protocol</span>
-                </div>
-            </div>
-            <div class="section-content">
-                <div class="checklist-item">• <strong>Chiro:</strong> Text past patients that fell off the schedule (1 week back)</div>
-                <div class="checklist-item">• <strong>IV/Botox:</strong> Text previous patients (2 weeks back)</div>
-                <div class="checklist-item">• <strong>Colon:</strong> Text all 4 weeks back who haven't returned</div>
-            </div>
-        </div>
+    <h2>📧 Email & Docs</h2>
+    <ul>
+        <li>• Open Gmail (birmingham@bewelllifestylecenters)</li>
+        <li>• Forward legal/payments to Silvio, billing questions and statements to Billing, print Zellis payments</li>
+        <li>• Delete junk (Amazon, spam, voicemails)</li>
+    </ul>
 
-        <!-- Email & Docs -->
-        <div class="checklist-section">
-            <div class="section-header">
-                <div class="section-title">
-                    <span>📧</span>
-                    <span>Email & Docs</span>
-                </div>
-            </div>
-            <div class="section-content">
-                <div class="checklist-item">• Open Gmail (birmingham@bewelllifestylecenters)</div>
-                <div class="checklist-item">• Forward legal/payments to Silvio, billing questions and statements to Billing, print Zellis payments</div>
-                <div class="checklist-item">• Delete junk (Amazon, spam, voicemails)</div>
-            </div>
-        </div>
+    <h2>⚖️ Massage Slot Priority (Next Day)</h2>
+    <textarea rows="3" placeholder="Type open massage slots to fill for tomorrow..."></textarea>
 
-        <!-- Massage Slot Priority -->
-        <div class="checklist-section">
-            <div class="section-header">
-                <div class="section-title">
-                    <span>⚖️</span>
-                    <span>Massage Slot Priority (Next Day)</span>
-                </div>
-            </div>
-            <div class="section-content">
-                <textarea style="width: 100%; min-height: 80px; padding: 12px; border: 1px solid rgba(164, 124, 91, 0.3); border-radius: 6px; background: var(--card-bg); color: var(--text-color); font-family: inherit; resize: vertical;" placeholder="Type open massage slots to fill for tomorrow..." id="massageSlots"></textarea>
-            </div>
-        </div>
+    <h2>✉️ Text Templates (Google Keep)</h2>
+    <ul>
+        <li>• SMS Opt-In</li>
+        <li>• Massage / IV Follow-Up</li>
+        <li>• Chiro / UWM / Colon Retention</li>
+        <li>• Botox / Peptides / Lifestyle Programs</li>
+    </ul>
 
-        <!-- Text Templates -->
-        <div class="checklist-section">
-            <div class="section-header">
-                <div class="section-title">
-                    <span>✉️</span>
-                    <span>Text Templates (Google Keep)</span>
-                </div>
-            </div>
-            <div class="section-content">
-                <div class="checklist-item">• SMS Opt-In</div>
-                <div class="checklist-item">• Massage / IV Follow-Up</div>
-                <div class="checklist-item">• Chiro / UWM / Colon Retention</div>
-                <div class="checklist-item">• Botox / Peptides / Lifestyle Programs</div>
-            </div>
-        </div>
-
-        <!-- End of Day -->
-        <div class="checklist-section">
-            <div class="section-header">
-                <div class="section-title">
-                    <span>💼</span>
-                    <span>End of Day</span>
-                </div>
-            </div>
-            <div class="section-content">
-                <div class="checklist-item">• Update upcoming Massage schedule on Google Keeps</div>
-                <div class="checklist-item">• Ask Silvio for billing sheet</div>
-                <div class="checklist-item">• Match sticker sheet with billing list</div>
-                <div class="checklist-item">• Report mismatches or unlisted patients and check Berkley patients and give to Silvio to fix</div>
-                <div class="checklist-item">• Send next-day appointment confirmations (Square)</div>
-                <div class="checklist-item">• Print check-ins report, massage schedules, SOAPs, Scratch sheets</div>
-                <div class="checklist-item">• Leave reports in top wire basket on front desk paper-clipped</div>
-                <div class="checklist-item">• Take out trash (unless Thursday), shut down devices, turn off lights</div>
-                <div class="checklist-item">• LOCK DOORS (or leave masseuse note)</div>
-            </div>
-        </div>
-    </div>
+    <h2>💼 End of Day</h2>
+    <ul>
+        <li>• Update upcoming Massage schedule on Google Keeps</li>
+        <li>• Ask Silvio for billing sheet</li>
+        <li>• Match sticker sheet with billing list</li>
+        <li>• Report mismatches or unlisted patients and check Berkley patients and give to Silvio to fix</li>
+        <li>• Send next-day appointment confirmations (Square)</li>
+        <li>• Print check-ins report, massage schedules, SOAPs, Scratch sheets</li>
+        <li>• Leave reports in top wire basket on front desk paper-clipped</li>
+        <li>• Take out trash (unless Thursday), shut down devices, turn off lights</li>
+        <li>• LOCK DOORS (or leave masseuse note)</li>
+    </ul>
 
     <script>
-        // Load saved progress
+        // Set today's date as default
         document.addEventListener('DOMContentLoaded', function() {
-            // Set today's date as default
             const today = new Date().toISOString().split('T')[0];
-            document.getElementById('checklistDate').value = today;
-            
-            loadProgress();
-        });
-
-        function printChecklist() {
-            window.print();
-        }
-
-        function saveProgress() {
-            const data = {
-                todayNotes: document.getElementById('todayNotes')?.value || '',
-                massageSlots: document.getElementById('massageSlots')?.value || '',
-                checklistDate: document.getElementById('checklistDate')?.value || ''
-            };
-            
-            localStorage.setItem('frontDeskChecklistProgress', JSON.stringify(data));
-        }
-
-        function loadProgress() {
-            const saved = localStorage.getItem('frontDeskChecklistProgress');
-            if (saved) {
-                const data = JSON.parse(saved);
-                
-                // Load textarea values and date
-                if (document.getElementById('todayNotes')) {
-                    document.getElementById('todayNotes').value = data.todayNotes || '';
-                }
-                if (document.getElementById('massageSlots')) {
-                    document.getElementById('massageSlots').value = data.massageSlots || '';
-                }
-                if (document.getElementById('checklistDate') && data.checklistDate) {
-                    document.getElementById('checklistDate').value = data.checklistDate;
-                }
-            }
-        }
-
-        // Auto-save every 30 seconds
-        setInterval(saveProgress, 30000);
-        
-        // Add event listeners for textareas and date input to auto-save on change
-        document.addEventListener('DOMContentLoaded', function() {
-            const textareas = document.querySelectorAll('textarea');
-            textareas.forEach(textarea => {
-                textarea.addEventListener('input', saveProgress);
-            });
-            
-            const dateInput = document.getElementById('checklistDate');
-            if (dateInput) {
-                dateInput.addEventListener('change', saveProgress);
-            }
+            document.querySelector('input[type="date"]').value = today;
         });
     </script>
-
-    <style>
-        @media print {
-            .back-button, .action-buttons {
-                display: none;
-            }
-            
-            .checklist-container {
-                padding: 20px;
-            }
-            
-            .section-content {
-                display: block !important;
-            }
-            
-            .checklist-section {
-                page-break-inside: avoid;
-                margin-bottom: 20px;
-            }
-        }
-    </style>
 </body>
 </html>
