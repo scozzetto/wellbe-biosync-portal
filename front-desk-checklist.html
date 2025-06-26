@@ -85,6 +85,38 @@
     </ul>
 
     <script>
+        // Check staff portal authentication
+        function checkStaffAuth() {
+            const staffAuth = localStorage.getItem('staffAuth');
+            const staffAuthTime = localStorage.getItem('staffAuthTime');
+            
+            if (!staffAuth || staffAuth !== 'authenticated') {
+                window.location.href = 'staff-knowledge-base.html';
+                return false;
+            }
+            
+            // Check if authentication is expired (24 hours)
+            if (staffAuthTime) {
+                const authTime = parseInt(staffAuthTime);
+                const currentTime = Date.now();
+                const timeLimit = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+                
+                if (currentTime - authTime > timeLimit) {
+                    localStorage.removeItem('staffAuth');
+                    localStorage.removeItem('staffAuthTime');
+                    window.location.href = 'staff-knowledge-base.html';
+                    return false;
+                }
+            }
+            
+            return true;
+        }
+
+        // Check authentication on page load
+        if (!checkStaffAuth()) {
+            return;
+        }
+
         // Set today's date as default
         document.addEventListener('DOMContentLoaded', function() {
             const today = new Date().toISOString().split('T')[0];

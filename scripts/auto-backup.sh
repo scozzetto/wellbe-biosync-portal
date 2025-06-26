@@ -14,9 +14,21 @@ echo "🔄 Starting auto-backup at $TIMESTAMP"
 # Create backup directory
 mkdir -p "$BACKUP_DIR"
 
-# Copy entire project
+# Copy entire project (excluding large/unnecessary files)
 echo "📁 Copying project files..."
-cp -r "$PROJECT_DIR" "$BACKUP_DIR/"
+rsync -av --progress \
+  --exclude='node_modules/' \
+  --exclude='.git/objects/' \
+  --exclude='*.zip' \
+  --exclude='*.mp4' \
+  --exclude='*.mov' \
+  --exclude='*.avi' \
+  --exclude='.DS_Store' \
+  --exclude='dist/' \
+  --exclude='build/' \
+  --exclude='*.log' \
+  --exclude='package-lock.json' \
+  "$PROJECT_DIR/" "$BACKUP_DIR/wellbe/"
 
 # Create git status backup
 cd "$PROJECT_DIR"
@@ -41,7 +53,12 @@ ln -s "$BACKUP_DIR" "$LATEST_LINK"
 cd "$BACKUP_BASE"
 ls -dt auto-backup-* | tail -n +21 | xargs rm -rf
 
+# Report backup size and file count
+BACKUP_SIZE=$(du -sh "$BACKUP_DIR" | cut -f1)
+FILE_COUNT=$(find "$BACKUP_DIR" -type f | wc -l | xargs)
+
 echo "✅ Backup complete: $BACKUP_DIR"
+echo "📊 Backup size: $BACKUP_SIZE with $FILE_COUNT files"
 echo "🔗 Latest backup link updated"
 
 # Log to central backup log
