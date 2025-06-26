@@ -2366,6 +2366,433 @@
             <button onclick="clearVendor('muffits')" class="btn btn-clear">Clear</button>
         </div>
     </div>
+    
+    <!-- OFFICE INVENTORY Section -->
+    <div class="vendor-section" id="office-inventory">
+        <div class="vendor-header" style="border: 2px solid #6c757d; border-radius: 8px; padding: 15px; background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);">
+            <div class="vendor-name" style="color: #6c757d; font-weight: bold; font-size: 18px;">🏢 OFFICE INVENTORY - Internal Supplies</div>
+            <div class="order-date" style="margin-top: 15px;">
+                <label>Order Date:</label>
+                <input type="date" id="office-inventory-date" value="">
+            </div>
+        </div>
+        
+        <div class="items-grid">
+            <!-- Paper & Printing Supplies -->
+            <div class="item-row">
+                <div class="item-name">Printer Paper</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="office-inventory" data-item="Printer Paper">
+                <select class="unit-select">
+                    <option value="ream" selected>Ream</option>
+                    <option value="case">Case</option>
+                    <option value="box">Box</option>
+                </select>
+            </div>
+            <div class="item-row">
+                <div class="item-name">Printer Ink</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="office-inventory" data-item="Printer Ink">
+                <select class="unit-select">
+                    <option value="cartridge" selected>Cartridge</option>
+                    <option value="set">Set</option>
+                    <option value="box">Box</option>
+                </select>
+            </div>
+            <div class="item-row">
+                <div class="item-name">Laminating Plastic</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="office-inventory" data-item="Laminating Plastic">
+                <select class="unit-select">
+                    <option value="pack" selected>Pack</option>
+                    <option value="roll">Roll</option>
+                    <option value="box">Box</option>
+                </select>
+            </div>
+            
+            <!-- Business Cards & Marketing Materials -->
+            <div class="item-row">
+                <div class="item-name">Massage Discount Cards</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="office-inventory" data-item="Massage Discount Cards">
+                <select class="unit-select">
+                    <option value="pack" selected>Pack</option>
+                    <option value="box">Box</option>
+                    <option value="individual">Individual</option>
+                </select>
+            </div>
+            <div class="item-row">
+                <div class="item-name">IV Discount Cards</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="office-inventory" data-item="IV Discount Cards">
+                <select class="unit-select">
+                    <option value="pack" selected>Pack</option>
+                    <option value="box">Box</option>
+                    <option value="individual">Individual</option>
+                </select>
+            </div>
+            <div class="item-row">
+                <div class="item-name">Website QR Code Cards</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="office-inventory" data-item="Website QR Code Cards">
+                <select class="unit-select">
+                    <option value="pack" selected>Pack</option>
+                    <option value="box">Box</option>
+                    <option value="individual">Individual</option>
+                </select>
+            </div>
+            <div class="item-row">
+                <div class="item-name">Silvio Business Cards</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="office-inventory" data-item="Silvio Business Cards">
+                <select class="unit-select">
+                    <option value="box" selected>Box</option>
+                    <option value="pack">Pack</option>
+                    <option value="individual">Individual</option>
+                </select>
+            </div>
+            <div class="item-row">
+                <div class="item-name">Kenny Business Cards</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="office-inventory" data-item="Kenny Business Cards">
+                <select class="unit-select">
+                    <option value="box" selected>Box</option>
+                    <option value="pack">Pack</option>
+                    <option value="individual">Individual</option>
+                </select>
+            </div>
+            <div class="item-row">
+                <div class="item-name">Be Well Trifolds</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="office-inventory" data-item="Be Well Trifolds">
+                <select class="unit-select">
+                    <option value="pack" selected>Pack</option>
+                    <option value="box">Box</option>
+                    <option value="individual">Individual</option>
+                </select>
+            </div>
+            <div class="item-row">
+                <div class="item-name">30 Minute Free Massage Cards</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="office-inventory" data-item="30 Minute Free Massage Cards">
+                <select class="unit-select">
+                    <option value="pack" selected>Pack</option>
+                    <option value="box">Box</option>
+                    <option value="individual">Individual</option>
+                </select>
+            </div>
+            <div class="item-row">
+                <div class="item-name">Massage with Insurance QR Code</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="office-inventory" data-item="Massage with Insurance QR Code">
+                <select class="unit-select">
+                    <option value="pack" selected>Pack</option>
+                    <option value="box">Box</option>
+                    <option value="individual">Individual</option>
+                </select>
+            </div>
+            <div class="item-row">
+                <div class="item-name">You Are Special Cards</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="office-inventory" data-item="You Are Special Cards">
+                <select class="unit-select">
+                    <option value="pack" selected>Pack</option>
+                    <option value="box">Box</option>
+                    <option value="individual">Individual</option>
+                </select>
+            </div>
+            
+            <!-- Treatment Supplies -->
+            <div class="item-row">
+                <div class="item-name">Chiropractic Face Paper</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="office-inventory" data-item="Chiropractic Face Paper">
+                <select class="unit-select">
+                    <option value="roll" selected>Roll</option>
+                    <option value="case">Case</option>
+                    <option value="box">Box</option>
+                </select>
+            </div>
+            <div class="item-row">
+                <div class="item-name">Massage Oil</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="office-inventory" data-item="Massage Oil">
+                <select class="unit-select">
+                    <option value="bottle" selected>Bottle</option>
+                    <option value="case">Case</option>
+                    <option value="gallon">Gallon</option>
+                </select>
+            </div>
+            <div class="item-row">
+                <div class="item-name">Kolon HydroTherapy Checkout</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="office-inventory" data-item="Kolon HydroTherapy Checkout">
+                <select class="unit-select">
+                    <option value="pack" selected>Pack</option>
+                    <option value="box">Box</option>
+                    <option value="individual">Individual</option>
+                </select>
+            </div>
+            
+            <!-- Office Supplies -->
+            <div class="item-row">
+                <div class="item-name">Sticky Notes</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="office-inventory" data-item="Sticky Notes">
+                <select class="unit-select">
+                    <option value="pack" selected>Pack</option>
+                    <option value="box">Box</option>
+                    <option value="individual">Individual</option>
+                </select>
+            </div>
+            <div class="item-row">
+                <div class="item-name">Dry Erase Markers</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="office-inventory" data-item="Dry Erase Markers">
+                <select class="unit-select">
+                    <option value="pack" selected>Pack</option>
+                    <option value="box">Box</option>
+                    <option value="individual">Individual</option>
+                </select>
+            </div>
+            <div class="item-row">
+                <div class="item-name">Highlighters</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="office-inventory" data-item="Highlighters">
+                <select class="unit-select">
+                    <option value="pack" selected>Pack</option>
+                    <option value="box">Box</option>
+                    <option value="individual">Individual</option>
+                </select>
+            </div>
+            <div class="item-row">
+                <div class="item-name">Sharpie Markers</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="office-inventory" data-item="Sharpie Markers">
+                <select class="unit-select">
+                    <option value="pack" selected>Pack</option>
+                    <option value="box">Box</option>
+                    <option value="individual">Individual</option>
+                </select>
+            </div>
+            <div class="item-row">
+                <div class="item-name">Be Well Pens</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="office-inventory" data-item="Be Well Pens">
+                <select class="unit-select">
+                    <option value="box" selected>Box</option>
+                    <option value="pack">Pack</option>
+                    <option value="individual">Individual</option>
+                </select>
+            </div>
+            <div class="item-row">
+                <div class="item-name">Big Pens</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="office-inventory" data-item="Big Pens">
+                <select class="unit-select">
+                    <option value="box" selected>Box</option>
+                    <option value="pack">Pack</option>
+                    <option value="individual">Individual</option>
+                </select>
+            </div>
+            
+            <!-- Envelopes & Packaging -->
+            <div class="item-row">
+                <div class="item-name">Mini Manila Envelopes (Tips)</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="office-inventory" data-item="Mini Manila Envelopes (Tips)">
+                <select class="unit-select">
+                    <option value="pack" selected>Pack</option>
+                    <option value="box">Box</option>
+                    <option value="individual">Individual</option>
+                </select>
+            </div>
+            <div class="item-row">
+                <div class="item-name">Mini Black Envelopes (Gift Cards)</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="office-inventory" data-item="Mini Black Envelopes (Gift Cards)">
+                <select class="unit-select">
+                    <option value="pack" selected>Pack</option>
+                    <option value="box">Box</option>
+                    <option value="individual">Individual</option>
+                </select>
+            </div>
+            <div class="item-row">
+                <div class="item-name">White Envelopes</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="office-inventory" data-item="White Envelopes">
+                <select class="unit-select">
+                    <option value="box" selected>Box</option>
+                    <option value="pack">Pack</option>
+                    <option value="individual">Individual</option>
+                </select>
+            </div>
+            <div class="item-row">
+                <div class="item-name">Regular Manila Envelopes (Large)</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="office-inventory" data-item="Regular Manila Envelopes (Large)">
+                <select class="unit-select">
+                    <option value="box" selected>Box</option>
+                    <option value="pack">Pack</option>
+                    <option value="individual">Individual</option>
+                </select>
+            </div>
+            <div class="item-row">
+                <div class="item-name">Mini Gift Bags</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="office-inventory" data-item="Mini Gift Bags">
+                <select class="unit-select">
+                    <option value="pack" selected>Pack</option>
+                    <option value="box">Box</option>
+                    <option value="individual">Individual</option>
+                </select>
+            </div>
+            
+            <!-- Gift Cards & Stickers -->
+            <div class="item-row">
+                <div class="item-name">Be Well Gift Cards</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="office-inventory" data-item="Be Well Gift Cards">
+                <select class="unit-select">
+                    <option value="pack" selected>Pack</option>
+                    <option value="box">Box</option>
+                    <option value="individual">Individual</option>
+                </select>
+            </div>
+            <div class="item-row">
+                <div class="item-name">Be Well Logo Circular Stickers (Small)</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="office-inventory" data-item="Be Well Logo Circular Stickers (Small)">
+                <select class="unit-select">
+                    <option value="roll" selected>Roll</option>
+                    <option value="sheet">Sheet</option>
+                    <option value="box">Box</option>
+                </select>
+            </div>
+            <div class="item-row">
+                <div class="item-name">Be Well Logo Rectangular Stickers (Large)</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="office-inventory" data-item="Be Well Logo Rectangular Stickers (Large)">
+                <select class="unit-select">
+                    <option value="roll" selected>Roll</option>
+                    <option value="sheet">Sheet</option>
+                    <option value="box">Box</option>
+                </select>
+            </div>
+            
+            <!-- Office Organization -->
+            <div class="item-row">
+                <div class="item-name">Paper Clips</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="office-inventory" data-item="Paper Clips">
+                <select class="unit-select">
+                    <option value="box" selected>Box</option>
+                    <option value="pack">Pack</option>
+                </select>
+            </div>
+            <div class="item-row">
+                <div class="item-name">Binder Clips</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="office-inventory" data-item="Binder Clips">
+                <select class="unit-select">
+                    <option value="box" selected>Box</option>
+                    <option value="pack">Pack</option>
+                </select>
+            </div>
+            <div class="item-row">
+                <div class="item-name">Rubber Bands</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="office-inventory" data-item="Rubber Bands">
+                <select class="unit-select">
+                    <option value="box" selected>Box</option>
+                    <option value="bag">Bag</option>
+                    <option value="pack">Pack</option>
+                </select>
+            </div>
+            <div class="item-row">
+                <div class="item-name">Staples</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="office-inventory" data-item="Staples">
+                <select class="unit-select">
+                    <option value="box" selected>Box</option>
+                    <option value="pack">Pack</option>
+                </select>
+            </div>
+            <div class="item-row">
+                <div class="item-name">Staple Remover</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="office-inventory" data-item="Staple Remover">
+                <select class="unit-select">
+                    <option value="individual" selected>Individual</option>
+                    <option value="pack">Pack</option>
+                </select>
+            </div>
+            
+            <!-- Tape & Adhesives -->
+            <div class="item-row">
+                <div class="item-name">Packing Tape</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="office-inventory" data-item="Packing Tape">
+                <select class="unit-select">
+                    <option value="roll" selected>Roll</option>
+                    <option value="pack">Pack</option>
+                    <option value="case">Case</option>
+                </select>
+            </div>
+            <div class="item-row">
+                <div class="item-name">Scotch Tape</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="office-inventory" data-item="Scotch Tape">
+                <select class="unit-select">
+                    <option value="roll" selected>Roll</option>
+                    <option value="pack">Pack</option>
+                    <option value="box">Box</option>
+                </select>
+            </div>
+            
+            <!-- Client Amenities -->
+            <div class="item-row">
+                <div class="item-name">Lollipops</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="office-inventory" data-item="Lollipops">
+                <select class="unit-select">
+                    <option value="bag" selected>Bag</option>
+                    <option value="box">Box</option>
+                    <option value="individual">Individual</option>
+                </select>
+            </div>
+            <div class="item-row">
+                <div class="item-name">Be Well Lip Balm</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="office-inventory" data-item="Be Well Lip Balm">
+                <select class="unit-select">
+                    <option value="box" selected>Box</option>
+                    <option value="pack">Pack</option>
+                    <option value="individual">Individual</option>
+                </select>
+            </div>
+            <div class="item-row">
+                <div class="item-name">Be Well Candles</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="office-inventory" data-item="Be Well Candles">
+                <select class="unit-select">
+                    <option value="individual" selected>Individual</option>
+                    <option value="box">Box</option>
+                    <option value="case">Case</option>
+                </select>
+            </div>
+            
+            <!-- Miscellaneous -->
+            <div class="item-row">
+                <div class="item-name">Batteries (All Sizes)</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="office-inventory" data-item="Batteries (All Sizes)">
+                <select class="unit-select">
+                    <option value="pack" selected>Pack</option>
+                    <option value="box">Box</option>
+                    <option value="individual">Individual</option>
+                </select>
+            </div>
+            <div class="item-row">
+                <div class="item-name">Sign In Sticker Sheets</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="office-inventory" data-item="Sign In Sticker Sheets">
+                <select class="unit-select">
+                    <option value="pack" selected>Pack</option>
+                    <option value="box">Box</option>
+                    <option value="sheet">Sheet</option>
+                </select>
+            </div>
+            <div class="item-row">
+                <div class="item-name">Clipboards</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="office-inventory" data-item="Clipboards">
+                <select class="unit-select">
+                    <option value="individual" selected>Individual</option>
+                    <option value="pack">Pack</option>
+                    <option value="box">Box</option>
+                </select>
+            </div>
+            <div class="item-row">
+                <div class="item-name">File Cabinet Organizers</div>
+                <input type="number" class="quantity-input" placeholder="0" data-vendor="office-inventory" data-item="File Cabinet Organizers">
+                <select class="unit-select">
+                    <option value="individual" selected>Individual</option>
+                    <option value="set">Set</option>
+                    <option value="pack">Pack</option>
+                </select>
+            </div>
+        </div>
+        
+        <div class="notes-section">
+            <label>Notes:</label>
+            <textarea class="notes-input" id="office-inventory-notes" placeholder="Special instructions or notes for office supply order..."></textarea>
+        </div>
+        
+        <div class="vendor-actions">
+            <button onclick="printVendor('office-inventory')" class="btn btn-print">Print Office Inventory Order</button>
+            <button onclick="saveVendor('office-inventory')" class="btn btn-save">Save Order</button>
+            <button onclick="clearVendor('office-inventory')" class="btn btn-clear">Clear</button>
+        </div>
+    </div>
 
     <script>
         // Set today's date as default
