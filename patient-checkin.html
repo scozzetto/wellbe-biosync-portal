@@ -209,11 +209,16 @@
             font-size: clamp(1.4rem, 3vw, 2.2rem);
             color: white;
             cursor: pointer;
-            transition: all 0.01s;
+            transition: none;
             display: flex;
             align-items: center;
             justify-content: center;
             min-height: 65px;
+            -webkit-transform: translate3d(0, 0, 0);
+            transform: translate3d(0, 0, 0);
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            will-change: transform;
         }
         
         .key:active {
@@ -569,18 +574,21 @@
             // Set timeout to prevent excessive updates during rapid typing
             nameUpdateTimeout = setTimeout(() => {
                 updateNameDisplay();
-            }, 50);
+            }, 10);
         }
         
         function updateNameDisplay() {
             const display = document.getElementById('nameDisplay');
-            if (formData.name) {
-                display.textContent = formData.name;
-                display.classList.remove('empty');
-            } else {
-                display.textContent = 'Type your name...';
-                display.classList.add('empty');
-            }
+            // Use requestAnimationFrame for smoother updates
+            requestAnimationFrame(() => {
+                if (formData.name) {
+                    display.textContent = formData.name;
+                    display.classList.remove('empty');
+                } else {
+                    display.textContent = 'Type your name...';
+                    display.classList.add('empty');
+                }
+            });
         }
         
         // Phone input with debouncing for better iPad performance
@@ -612,35 +620,38 @@
             // Set timeout to prevent excessive updates during rapid typing
             phoneUpdateTimeout = setTimeout(() => {
                 updatePhoneDisplay();
-            }, 50);
+            }, 10);
         }
         
         function updatePhoneDisplay() {
             const display = document.getElementById('phoneDisplay');
             const raw = formData.phoneRaw;
             
-            if (raw.length === 0) {
-                display.textContent = '(___) ___-____';
-                display.classList.add('empty');
-            } else {
-                let formatted = '(';
-                for (let i = 0; i < 10; i++) {
-                    if (i < raw.length) {
-                        formatted += raw[i];
-                    } else {
-                        formatted += '_';
+            // Use requestAnimationFrame for smoother updates
+            requestAnimationFrame(() => {
+                if (raw.length === 0) {
+                    display.textContent = '(___) ___-____';
+                    display.classList.add('empty');
+                } else {
+                    let formatted = '(';
+                    for (let i = 0; i < 10; i++) {
+                        if (i < raw.length) {
+                            formatted += raw[i];
+                        } else {
+                            formatted += '_';
+                        }
+                        if (i === 2) formatted += ') ';
+                        if (i === 5) formatted += '-';
                     }
-                    if (i === 2) formatted += ') ';
-                    if (i === 5) formatted += '-';
+                    display.textContent = formatted;
+                    display.classList.remove('empty');
+                    
+                    // Store formatted version
+                    if (raw.length === 10) {
+                        formData.phone = `(${raw.slice(0,3)}) ${raw.slice(3,6)}-${raw.slice(6,10)}`;
+                    }
                 }
-                display.textContent = formatted;
-                display.classList.remove('empty');
-                
-                // Store formatted version
-                if (raw.length === 10) {
-                    formData.phone = `(${raw.slice(0,3)}) ${raw.slice(3,6)}-${raw.slice(6,10)}`;
-                }
-            }
+            });
         }
         
         // First visit
