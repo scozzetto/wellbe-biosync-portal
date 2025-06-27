@@ -4662,7 +4662,7 @@
         
         // Clear all vendors at once (no individual confirmations)
         function clearAllVendors() {
-            ['bradyplus', 'gordon', 'webstaurant', 'gnarley', 'nuts', 'jennifers', 'faire', 'amazon', 'sabbathcoffee', 'greenrock', 'muffits', 'vacpak', 'naturalzing', 'unfi'].forEach(vendorId => {
+            ['vacpak', 'bradyplus', 'gordon', 'webstaurant', 'gnarley', 'nuts', 'jennifers', 'faire', 'amazon', 'sabbathcoffee', 'greenrock', 'muffits', 'office-inventory'].forEach(vendorId => {
                 const vendor = document.getElementById(vendorId);
                 if (vendor) {
                     vendor.querySelectorAll('.quantity-input').forEach(input => {
@@ -4688,17 +4688,34 @@
         
         // Send all orders to dashboard (consolidates with existing orders)
         function sendAllOrders() {
-            const location = document.getElementById('orderingLocation').value;
-            const allOrders = JSON.parse(localStorage.getItem('allOrders') || '[]');
-            let ordersModified = false;
-            
-            ['bradyplus', 'gordon', 'webstaurant', 'gnarley', 'nuts', 'jennifers', 'faire', 'amazon', 'sabbathcoffee', 'greenrock', 'muffits', 'vacpak', 'naturalzing', 'unfi'].forEach(vendorId => {
-                const vendor = document.getElementById(vendorId);
-                const newItems = [];
-                let hasItems = false;
+            try {
+                const location = document.getElementById('orderingLocation').value;
+                if (!location) {
+                    alert('Please select a location before sending orders.');
+                    return;
+                }
                 
-                // Get vendor name
-                const vendorName = vendor.querySelector('.vendor-name').textContent;
+                const allOrders = JSON.parse(localStorage.getItem('allOrders') || '[]');
+                let ordersModified = false;
+                
+                ['vacpak', 'bradyplus', 'gordon', 'webstaurant', 'gnarley', 'nuts', 'jennifers', 'faire', 'amazon', 'sabbathcoffee', 'greenrock', 'muffits', 'office-inventory'].forEach(vendorId => {
+                    try {
+                        const vendor = document.getElementById(vendorId);
+                        if (!vendor) {
+                            console.warn(`Vendor element not found: ${vendorId}`);
+                            return;
+                        }
+                        
+                        const newItems = [];
+                        let hasItems = false;
+                        
+                        // Get vendor name
+                        const vendorNameElement = vendor.querySelector('.vendor-name');
+                        if (!vendorNameElement) {
+                            console.warn(`Vendor name element not found for: ${vendorId}`);
+                            return;
+                        }
+                        const vendorName = vendorNameElement.textContent;
                 
                 // Collect items with quantities
                 vendor.querySelectorAll('.quantity-input').forEach(input => {
@@ -4797,6 +4814,8 @@
                         ordersModified = true;
                         console.log(`📦 Created new ${vendorName} order with ID: ${newOrder.id}`);
                     }
+                } catch (vendorError) {
+                    console.error(`Error processing vendor ${vendorId}:`, vendorError);
                 }
             });
             
@@ -4820,6 +4839,11 @@
             // Ask to clear the inventory form
             if (confirm('Clear this inventory form now?')) {
                 clearAllVendors();
+            }
+            
+            } catch (error) {
+                console.error('Error in sendAllOrders:', error);
+                alert('There was an error sending orders to the dashboard. Please check the console for details.');
             }
         }
     </script>
