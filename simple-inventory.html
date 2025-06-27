@@ -4591,6 +4591,7 @@
         
         // Print all orders
         function printAllOrders() {
+            alert('printAllOrders function called!'); // DEBUG
             // Check if any orders have quantities
             let hasAnyItems = false;
             document.querySelectorAll('.quantity-input').forEach(input => {
@@ -4707,6 +4708,7 @@
         
         // Clear all vendors with confirmation dialog
         function clearAllWithConfirmation() {
+            alert('clearAllWithConfirmation function called!'); // DEBUG
             if (confirm('Are you sure you want to clear everything in all vendor orders? This will remove all quantities and notes from every vendor. This action cannot be undone.')) {
                 clearAllVendors();
                 alert('All vendor orders have been cleared successfully!');
@@ -4715,6 +4717,7 @@
         
         // Send all orders to dashboard (consolidates with existing orders)
         function sendAllOrders() {
+            alert('sendAllOrders function called!'); // DEBUG
             try {
                 const location = document.getElementById('orderingLocation').value;
                 if (!location) {
