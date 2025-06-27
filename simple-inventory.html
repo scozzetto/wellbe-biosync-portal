@@ -8672,14 +8672,9 @@
             console.log('📦 localStorage allOrders:', JSON.stringify(allOrders, null, 2));
             
             // Ask if they want to view the dashboard
-            if (confirm(`Orders consolidated and sent to dashboard! Would you like to view the Orders Dashboard?`)) {
-                window.open('orders-dashboard.html', '_blank');
-            }
-            
-            // Ask to clear the inventory form
-            if (confirm('Clear this inventory form now?')) {
-                clearAllVendors();
-            }
+            // Show success message and open dashboard
+            alert('Orders consolidated and sent to dashboard!');
+            window.open('orders-dashboard.html', '_blank');
             
             } catch (error) {
                 console.error('Error in sendAllOrders:', error);
