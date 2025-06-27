@@ -17,11 +17,16 @@
             -webkit-tap-highlight-color: transparent;
         }
         
-        /* Allow interaction with buttons */
+        /* Allow interaction with buttons - iPad optimized */
         button, .key {
             -webkit-user-select: none;
             user-select: none;
             -webkit-touch-callout: none;
+            -webkit-transform: translate3d(0, 0, 0);
+            transform: translate3d(0, 0, 0);
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            will-change: transform;
         }
         
         body {
@@ -84,7 +89,7 @@
             margin-bottom: 20px;
         }
         
-        /* Input field */
+        /* Input field - iPad optimized */
         .input-display {
             width: 80%;
             max-width: 600px;
@@ -98,6 +103,10 @@
             margin-bottom: 30px;
             min-height: 100px;
             display: flex;
+            -webkit-transform: translate3d(0, 0, 0);
+            transform: translate3d(0, 0, 0);
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
             align-items: center;
             justify-content: center;
         }
@@ -533,17 +542,34 @@
             document.getElementById('backBtn').classList.toggle('hidden', currentStep === 1);
         }
         
-        // Name input
+        // Name input with debouncing for better iPad performance
+        let nameUpdateTimeout = null;
+        
         function addLetter(letter) {
             formData.name += letter;
-            updateNameDisplay();
+            debouncedUpdateNameDisplay();
             resetAutoTimer();
         }
         
         function backspace() {
             formData.name = formData.name.slice(0, -1);
-            updateNameDisplay();
+            debouncedUpdateNameDisplay();
             resetAutoTimer();
+        }
+        
+        function debouncedUpdateNameDisplay() {
+            // Clear existing timeout
+            if (nameUpdateTimeout) {
+                clearTimeout(nameUpdateTimeout);
+            }
+            
+            // Update immediately for responsive feel, but debounce rapid updates
+            updateNameDisplay();
+            
+            // Set timeout to prevent excessive updates during rapid typing
+            nameUpdateTimeout = setTimeout(() => {
+                updateNameDisplay();
+            }, 50);
         }
         
         function updateNameDisplay() {
@@ -557,19 +583,36 @@
             }
         }
         
-        // Phone input
+        // Phone input with debouncing for better iPad performance
+        let phoneUpdateTimeout = null;
+        
         function addNumber(num) {
             if (formData.phoneRaw.length < 10) {
                 formData.phoneRaw += num;
-                updatePhoneDisplay();
+                debouncedUpdatePhoneDisplay();
             }
             resetAutoTimer();
         }
         
         function backspacePhone() {
             formData.phoneRaw = formData.phoneRaw.slice(0, -1);
-            updatePhoneDisplay();
+            debouncedUpdatePhoneDisplay();
             resetAutoTimer();
+        }
+        
+        function debouncedUpdatePhoneDisplay() {
+            // Clear existing timeout
+            if (phoneUpdateTimeout) {
+                clearTimeout(phoneUpdateTimeout);
+            }
+            
+            // Update immediately for responsive feel, but debounce rapid updates
+            updatePhoneDisplay();
+            
+            // Set timeout to prevent excessive updates during rapid typing
+            phoneUpdateTimeout = setTimeout(() => {
+                updatePhoneDisplay();
+            }, 50);
         }
         
         function updatePhoneDisplay() {
