@@ -3530,6 +3530,25 @@
             
             // Load saved orders if any
             loadAllOrders();
+            
+            // Initialize vendor info as collapsed and make editable
+            const vendorInfos = document.querySelectorAll('.vendor-info');
+            vendorInfos.forEach(info => {
+                info.style.display = 'none';
+            });
+            
+            // Set toggle icons to collapsed state
+            const toggleIcons = document.querySelectorAll('[id$="-toggle"]');
+            toggleIcons.forEach(icon => {
+                icon.textContent = '▶';
+            });
+            
+            // Make all vendor info sections editable
+            const vendorIds = ['vacpak', 'bradyplus', 'gordon', 'webstaurant', 'gnarley', 'nuts', 'jennifers', 'faire', 'amazon', 'sabbathcoffee', 'greenrock', 'muffits', 'therapy-equipment'];
+            vendorIds.forEach(vendorId => {
+                makeVendorInfoEditable(vendorId);
+                loadVendorInfo(vendorId);
+            });
         });
         
         // Toggle vendor management information
@@ -3697,27 +3716,6 @@
             }
         }
         
-        // Initialize vendor info as collapsed and make editable
-        document.addEventListener('DOMContentLoaded', function() {
-            // Start with vendor info collapsed
-            const vendorInfos = document.querySelectorAll('.vendor-info');
-            vendorInfos.forEach(info => {
-                info.style.display = 'none';
-            });
-            
-            // Set toggle icons to collapsed state
-            const toggleIcons = document.querySelectorAll('[id$="-toggle"]');
-            toggleIcons.forEach(icon => {
-                icon.textContent = '▶';
-            });
-            
-            // Make all vendor info sections editable
-            const vendorIds = ['vacpak', 'bradyplus', 'gordon', 'webstaurant', 'gnarley', 'nuts', 'jennifers', 'faire', 'amazon', 'sabbathcoffee', 'greenrock', 'muffits', 'therapy-equipment'];
-            vendorIds.forEach(vendorId => {
-                makeVendorInfoEditable(vendorId);
-                loadVendorInfo(vendorId);
-            });
-        });
         
         // Save vendor order
         function saveVendor(vendorId) {
