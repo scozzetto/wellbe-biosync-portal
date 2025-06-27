@@ -307,52 +307,6 @@
         </div>
     </div>
 
-
-        // Add some interactive enhancements
-        document.addEventListener('DOMContentLoaded', function() {
-            // Animate cards on scroll
-            const cards = document.querySelectorAll('.checklist-card');
-            
-            const observerOptions = {
-                threshold: 0.1,
-                rootMargin: '0px 0px -100px 0px'
-            };
-
-            const observer = new IntersectionObserver(function(entries) {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.style.opacity = '1';
-                        entry.target.style.transform = 'translateY(0)';
-                    }
-                });
-            }, observerOptions);
-
-            cards.forEach((card, index) => {
-                card.style.opacity = '0';
-                card.style.transform = 'translateY(30px)';
-                card.style.transition = `opacity 0.6s ease ${index * 0.1}s, transform 0.6s ease ${index * 0.1}s`;
-                observer.observe(card);
-            });
-
-            // Add click analytics for coming soon items
-            document.querySelectorAll('.coming-soon').forEach(card => {
-                card.addEventListener('click', function() {
-                    const title = this.querySelector('.card-title').textContent;
-                    console.log(`Interest logged: ${title}`);
-                    
-                    // Optional: Show tooltip or notification
-                    const badge = this.querySelector('.coming-soon-badge');
-                    const originalText = badge.innerHTML;
-                    badge.innerHTML = '<i class="fas fa-heart"></i> Interest Noted!';
-                    badge.style.background = var('--accent-color');
-                    
-                    setTimeout(() => {
-                        badge.innerHTML = originalText;
-                        badge.style.background = '#666';
-                    }, 2000);
-                });
-            });
-        });
     </script>
 </body>
 </html>
