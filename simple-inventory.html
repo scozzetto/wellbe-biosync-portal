@@ -8773,10 +8773,10 @@
             console.log('📦 localStorage allOrders:', JSON.stringify(allOrders, null, 2));
             
             // Ask if they want to view the dashboard
-            // Show success message and open dashboard
+            // Show success message and navigate to dashboard
             alert('Orders consolidated and sent to dashboard!');
             clearDraft(); // Clear saved draft after successful submission
-            window.open('orders-dashboard.html', '_blank');
+            window.location.href = 'orders-dashboard.html';
             
             } catch (error) {
                 console.error('Error in sendAllOrders:', error);
