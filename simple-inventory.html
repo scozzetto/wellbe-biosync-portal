@@ -337,9 +337,6 @@
             <button onclick="window.open('orders-dashboard.html', '_blank')" class="btn" style="background: #8B3A7C; color: white; font-size: 18px; padding: 12px 24px;">
                 <i class="fas fa-clipboard-list"></i> View Orders Dashboard
             </button>
-            <button onclick="printAllOrders()" class="btn" style="background: #28a745; color: white; font-size: 18px; padding: 12px 24px;">
-                <i class="fas fa-print"></i> Print All Orders
-            </button>
             <button onclick="window.location.href='staff-knowledge-base.html'" class="btn" style="background: white; color: var(--primary-color);">
                 <i class="fas fa-arrow-left"></i> Back to Staff Portal
             </button>
@@ -8399,67 +8396,6 @@
             document.querySelectorAll('.item-row').forEach(row => {
                 row.style.display = 'flex';
             });
-        }
-        
-        // Print all orders
-        function printAllOrders() {
-            // Check if any orders have quantities
-            let hasAnyItems = false;
-            document.querySelectorAll('.quantity-input, .quantity-select').forEach(input => {
-                if (input.value && input.value > 0) {
-                    hasAnyItems = true;
-                }
-            });
-            
-            // Check custom items too
-            document.querySelectorAll('[data-type="custom-item"]').forEach(input => {
-                if (input.value && input.value.trim() !== '') {
-                    hasAnyItems = true;
-                }
-            });
-            
-            if (!hasAnyItems) {
-                alert('Please add some items to your orders before printing.');
-                return;
-            }
-            
-            // Hide empty rows for cleaner print
-            hideEmptyRowsForPrint();
-            
-            // Hide vendors that have no items
-            document.querySelectorAll('.vendor-section').forEach(section => {
-                const vendorId = section.id;
-                let hasItems = false;
-                
-                // Check regular items
-                section.querySelectorAll('.quantity-input, .quantity-select').forEach(input => {
-                    if (input.value && input.value > 0) {
-                        hasItems = true;
-                    }
-                });
-                
-                // Check custom items
-                section.querySelectorAll('[data-type="custom-item"]').forEach(input => {
-                    if (input.value && input.value.trim() !== '') {
-                        hasItems = true;
-                    }
-                });
-                
-                if (!hasItems) {
-                    section.style.display = 'none';
-                }
-            });
-            
-            // Print
-            window.print();
-            
-            // Show all vendors and rows again
-            setTimeout(() => {
-                document.querySelectorAll('.vendor-section').forEach(section => {
-                    section.style.display = 'block';
-                });
-                showAllRows();
-            }, 100);
         }
         
         // Clear vendor order
