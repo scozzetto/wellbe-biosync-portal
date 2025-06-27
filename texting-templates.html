@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            margin: 40px; 
+            line-height: 1.6; 
+            color: #333; 
+            font-size: 14px; 
+        }
+        h1 { 
+            color: #2c7a7b; 
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 24px;
+        }
+        h2 { 
+            color: #1a5963; 
+            margin-top: 30px; 
+            font-size: 18px;
+            border-bottom: 2px solid #2c7a7b;
+            padding-bottom: 5px;
+        }
+        .section {
+            margin-bottom: 30px;
+        }
+        .template-box {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+            font-style: italic;
+        }
+        .template-title {
+            font-weight: bold;
+            color: #1a5963;
+            margin-bottom: 10px;
+        }
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: var(--card-bg);
+            color: var(--text-color);
+            border: 1px solid rgba(164, 124, 91, 0.3);
+            padding: 12px 20px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+        .back-button:hover {
+            background: #A47C5B;
+            color: white;
+            transform: translateX(-2px);
+        }
+    </style>
+</head>
+<body>
+    <script>
+        // Immediate authentication check - runs before page content loads
+        (function() {
+            const staffAuth = sessionStorage.getItem('staffAuthenticated');
+            
+            if (!staffAuth || staffAuth !== 'true') {
+                window.location.replace('staff-knowledge-base.html');
+                return;
+            }
+        })();
+    </script>
+    
+    <a href="checklist-hub.html" class="back-button">
+        <i class="fas fa-arrow-left"></i> Back to Checklist Hub
+    </a>
+    
+    <h1>Texting Templates</h1>
+
+    <div class="section">
+        <h2>IV/Botox/Emsculpt Patient Follow-up</h2>
+        <div class="template-box">
+            <div class="template-title">Message for IV/Botox/Emsculpt patients</div>
+            Hey! Just reaching out to see how you're feeling! Let me know when a good day would be to get you back on schedule for an IV, Botox, or emsculpt treatment! We have availability 7 days a week and can be flexible on times per convenience to you! Looking forward to hearing from you :)
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Massage Patient Follow-up</h2>
+        <div class="template-box">
+            <div class="template-title">Message for massage patients</div>
+            Hey (patient name) - we have some massage availability open for next week - let me know a good day and time that works for you, and I will see what I can pull together :)<br><br>
+            I can also send the full available schedule if you would like to browse and pick one to get scheduled in for - just let me know!<br><br>
+            You can also book through here: https://squ.re/4c7kVu4 or call us at 248-792-6570 :)
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Colon Hydrotherapy Follow-up</h2>
+        <div class="template-box">
+            <div class="template-title">Message for colon patients</div>
+            Hey (patient name)! You're due for a colon hydrotherapy appointment! We do run those appointments 7 days a week so let me know when would be a good day for you to come in - and I will look at some availability for you :)<br><br>
+            You can also book through here: https://squ.re/4c7kVu4 or call us at 248-792-6570 :)
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Friday Evening Massage Notifications</h2>
+        <div class="template-box">
+            <div class="template-title">Message for 5pm/6pm massage patients on Fridays</div>
+            Hey (patient name) - I just wanted to reach out and let you know some things about your appointment tomorrow - we end chiro around 4:30 so we will not be here when 6pm comes around for your massage - we can however still bill it through your insurance per the inconvenience so you won't have to worry about payment. If you would like to come in earlier in the day or on Saturday to get your adjustment then, we can make that happen to compensate. Sorry for the long message!
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Insurance and Referrals</h2>
+        <div class="template-box">
+            <div class="template-title">Global referral text</div>
+            Hey! This is BeWell reaching out to let you know that we need a global referral!! This is so we are able to bill through your insurance - you can go to your primary care physician and let them know you need a global referral faxed to BeWell at 2487926574 or emailed to us at birmingham@bewelllifestylecenters.com<br><br>
+            This will allow us to bill your services through to your insurance and should change the current balance on your statement to a lower charge! Looking forward to seeing you soon :)<br><br>
+            And please make sure the referral is dated back to your first visit or to when you started with that insurance - I can look it up for you if you would like!
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Consultation Templates</h2>
+        <div class="template-box">
+            <div class="template-title">Consultation text (peptide)</div>
+            I can get you booked for a peptide consultation and get the paperwork sent over to you as well! The consultation runs $50, the nurse and doc will be going over the paperwork with you, along with creating a treatment plan for you to follow!! Let me know what day would work best to get you on schedule!
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Blood Lab Information</h2>
+        <div class="template-box">
+            <div class="template-title">Blood Lab/Insurance Answer</div>
+            Unfortunately since we recently introduced the labs at the beginning of the year, it is not eligible for insurance, but we can take HSA and FSA cards for payment! The pricing can also range from $200-$1000 depending on how extensive of a test you would like - in the consultation, Silvio will make sure to go over all pricing with you for full transparency!
+        </div>
+
+        <div class="template-box">
+            <div class="template-title">Blood Lab Breakdown for Patients</div>
+            No worries! And for our blood labs we have tons of different types - the way it would work consists of the following:<br><br>
+            
+            <strong>Step 1:</strong> We would send our BioSync paperwork over to you (this basically will tell us what you are interested in knowing, what you want to get tested, certain problems that may be happening etc)<br><br>
+            
+            <strong>Step 2:</strong> The doc will then look over everything once submitted, and see which areas are most important/prominent to be testing<br><br>
+            
+            <strong>Step 3:</strong> Once the paperwork has been reviewed - we will have you come in and get a consultation with our Nurse (and Silvio), to make sure everyone is on the same page with what is being tested, and to go over any questions you may have<br><br>
+            
+            <strong>Step 4:</strong> We can then get you set up with the nurse (normally same day as consultation) so she can draw your blood<br><br>
+            
+            <strong>Step 5:</strong> Once we send out the test, and get the results back, we will have you come in for a follow up appt to go over your results and findings<br><br>
+            
+            <strong>Step 6:</strong> After we get all of that out of the way, you can either choose to stop here or continue on to know more about our total transformation program, which will allow you to receive a full treatment plan, dietary restrictions and lists, recommended services/supplements, workout schedules and so much more!!
+        </div>
+    </div>
+</body>
+</html>
