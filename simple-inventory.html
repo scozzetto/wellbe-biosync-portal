@@ -4591,7 +4591,6 @@
         
         // Print all orders
         function printAllOrders() {
-            alert('printAllOrders function called!'); // DEBUG
             // Check if any orders have quantities
             let hasAnyItems = false;
             document.querySelectorAll('.quantity-input').forEach(input => {
@@ -4708,7 +4707,6 @@
         
         // Clear all vendors with confirmation dialog
         function clearAllWithConfirmation() {
-            alert('clearAllWithConfirmation function called!'); // DEBUG
             if (confirm('Are you sure you want to clear everything in all vendor orders? This will remove all quantities and notes from every vendor. This action cannot be undone.')) {
                 clearAllVendors();
                 alert('All vendor orders have been cleared successfully!');
@@ -4717,7 +4715,6 @@
         
         // Send all orders to dashboard (consolidates with existing orders)
         function sendAllOrders() {
-            alert('sendAllOrders function called!'); // DEBUG
             try {
                 const location = document.getElementById('orderingLocation').value;
                 if (!location) {
@@ -4746,107 +4743,108 @@
                             return;
                         }
                         const vendorName = vendorNameElement.textContent;
-                
-                // Collect items with quantities
-                vendor.querySelectorAll('.quantity-input').forEach(input => {
-                    if (input.value && input.value > 0) {
-                        const itemName = input.dataset.item;
-                        const quantity = parseInt(input.value);
-                        const unit = input.parentElement.querySelector('.unit-select').value || 'case';
                         
-                        newItems.push({
-                            name: itemName,
-                            quantity: quantity,
-                            unit: unit
-                        });
-                        hasItems = true;
-                    }
-                });
-                
-                // Collect custom items
-                vendor.querySelectorAll('[data-type="custom-item"]').forEach(input => {
-                    if (input.value && input.value.trim() !== '') {
-                        const itemName = input.value.trim();
-                        const qtyInput = input.parentElement.querySelector('[data-type="custom-qty"]');
-                        const quantity = parseInt(qtyInput.value) || 1;
-                        const unit = input.parentElement.querySelector('.unit-select').value || 'case';
-                        
-                        newItems.push({
-                            name: itemName,
-                            quantity: quantity,
-                            unit: unit
-                        });
-                        hasItems = true;
-                    }
-                });
-                
-                // If vendor has items, find existing order or create new one
-                if (hasItems) {
-                    console.log(`🔍 Looking for existing order: vendor="${vendorName}", location="${location}"`);
-                    console.log(`🔍 Current orders:`, allOrders.map(o => `${o.vendor}/${o.location}`));
-                    
-                    // Look for existing order for this vendor/location
-                    let existingOrder = allOrders.find(order => 
-                        order.vendor === vendorName && order.location === location
-                    );
-                    
-                    if (existingOrder) {
-                        console.log(`✅ Found existing order for ${vendorName}/${location}, consolidating...`);
-                        
-                        // Consolidate items into existing order
-                        newItems.forEach(newItem => {
-                            // Check if item already exists in order
-                            const existingItem = existingOrder.items.find(item => 
-                                item.name === newItem.name && item.unit === newItem.unit
-                            );
-                            
-                            if (existingItem) {
-                                // Add to existing quantity
-                                console.log(`📊 Adding ${newItem.quantity} to existing ${newItem.name} (was ${existingItem.quantity})`);
-                                existingItem.quantity += newItem.quantity;
-                            } else {
-                                // Add new item to order
-                                console.log(`➕ Adding new item: ${newItem.name} (${newItem.quantity} ${newItem.unit})`);
-                                existingOrder.items.push(newItem);
+                        // Collect items with quantities
+                        vendor.querySelectorAll('.quantity-input').forEach(input => {
+                            if (input.value && input.value > 0) {
+                                const itemName = input.dataset.item;
+                                const quantity = parseInt(input.value);
+                                const unit = input.parentElement.querySelector('.unit-select').value || 'case';
+                                
+                                newItems.push({
+                                    name: itemName,
+                                    quantity: quantity,
+                                    unit: unit
+                                });
+                                hasItems = true;
                             }
                         });
                         
-                        // Update order metadata
-                        existingOrder.itemCount = existingOrder.items.length;
-                        existingOrder.date = new Date().toLocaleDateString();
-                        existingOrder.timestamp = new Date().toISOString();
+                        // Collect custom items
+                        vendor.querySelectorAll('[data-type="custom-item"]').forEach(input => {
+                            if (input.value && input.value.trim() !== '') {
+                                const itemName = input.value.trim();
+                                const qtyInput = input.parentElement.querySelector('[data-type="custom-qty"]');
+                                const quantity = parseInt(qtyInput.value) || 1;
+                                const unit = input.parentElement.querySelector('.unit-select').value || 'case';
+                                
+                                newItems.push({
+                                    name: itemName,
+                                    quantity: quantity,
+                                    unit: unit
+                                });
+                                hasItems = true;
+                            }
+                        });
                         
-                        // Append new notes if any
-                        const newNotes = vendor.querySelector(`#${vendorId}-notes`).value || '';
-                        if (newNotes && !existingOrder.notes.includes(newNotes)) {
-                            existingOrder.notes = existingOrder.notes ? 
-                                existingOrder.notes + '\n' + newNotes : newNotes;
+                        // If vendor has items, find existing order or create new one
+                        if (hasItems) {
+                            console.log(`🔍 Looking for existing order: vendor="${vendorName}", location="${location}"`);
+                            console.log(`🔍 Current orders:`, allOrders.map(o => `${o.vendor}/${o.location}`));
+                            
+                            // Look for existing order for this vendor/location
+                            let existingOrder = allOrders.find(order => 
+                                order.vendor === vendorName && order.location === location
+                            );
+                            
+                            if (existingOrder) {
+                                console.log(`✅ Found existing order for ${vendorName}/${location}, consolidating...`);
+                                
+                                // Consolidate items into existing order
+                                newItems.forEach(newItem => {
+                                    // Check if item already exists in order
+                                    const existingItem = existingOrder.items.find(item => 
+                                        item.name === newItem.name && item.unit === newItem.unit
+                                    );
+                                    
+                                    if (existingItem) {
+                                        // Add to existing quantity
+                                        console.log(`📊 Adding ${newItem.quantity} to existing ${newItem.name} (was ${existingItem.quantity})`);
+                                        existingItem.quantity += newItem.quantity;
+                                    } else {
+                                        // Add new item to order
+                                        console.log(`➕ Adding new item: ${newItem.name} (${newItem.quantity} ${newItem.unit})`);
+                                        existingOrder.items.push(newItem);
+                                    }
+                                });
+                                
+                                // Update order metadata
+                                existingOrder.itemCount = existingOrder.items.length;
+                                existingOrder.date = new Date().toLocaleDateString();
+                                existingOrder.timestamp = new Date().toISOString();
+                                
+                                // Append new notes if any
+                                const newNotes = vendor.querySelector(`#${vendorId}-notes`).value || '';
+                                if (newNotes && !existingOrder.notes.includes(newNotes)) {
+                                    existingOrder.notes = existingOrder.notes ? 
+                                        existingOrder.notes + '\n' + newNotes : newNotes;
+                                }
+                                
+                                ordersModified = true;
+                                console.log(`📦 Successfully consolidated items into existing ${vendorName} order`);
+                            } else {
+                                console.log(`🆕 No existing order found, creating new ${vendorName}/${location} order`);
+                                
+                                // Create new order
+                                const newOrder = {
+                                    id: `order-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+                                    vendor: vendorName,
+                                    location: location,
+                                    items: newItems,
+                                    itemCount: newItems.length,
+                                    date: new Date().toLocaleDateString(),
+                                    timestamp: new Date().toISOString(),
+                                    notes: vendor.querySelector(`#${vendorId}-notes`).value || ''
+                                };
+                                
+                                allOrders.push(newOrder);
+                                ordersModified = true;
+                                console.log(`📦 Created new ${vendorName} order with ID: ${newOrder.id}`);
+                            }
                         }
-                        
-                        ordersModified = true;
-                        console.log(`📦 Successfully consolidated items into existing ${vendorName} order`);
-                    } else {
-                        console.log(`🆕 No existing order found, creating new ${vendorName}/${location} order`);
-                        
-                        // Create new order
-                        const newOrder = {
-                            id: `order-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
-                            vendor: vendorName,
-                            location: location,
-                            items: newItems,
-                            itemCount: newItems.length,
-                            date: new Date().toLocaleDateString(),
-                            timestamp: new Date().toISOString(),
-                            notes: vendor.querySelector(`#${vendorId}-notes`).value || ''
-                        };
-                        
-                        allOrders.push(newOrder);
-                        ordersModified = true;
-                        console.log(`📦 Created new ${vendorName} order with ID: ${newOrder.id}`);
+                    } catch (vendorError) {
+                        console.error(`Error processing vendor ${vendorId}:`, vendorError);
                     }
-                } catch (vendorError) {
-                    console.error(`Error processing vendor ${vendorId}:`, vendorError);
-                }
             });
             
             if (!ordersModified) {
