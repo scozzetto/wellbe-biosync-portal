@@ -4305,7 +4305,7 @@
             });
             
             // Make all vendor info sections editable
-            const vendorIds = ['vacpak', 'bradyplus', 'gordon', 'webstaurant', 'gnarley', 'nuts', 'jennifers', 'faire', 'amazon', 'sabbathcoffee', 'greenrock', 'muffits', 'therapy-equipment'];
+            const vendorIds = ['vacpak', 'bradyplus', 'gordon', 'webstaurant', 'gnarley', 'nuts', 'jennifers', 'faire', 'amazon', 'sabbathcoffee', 'greenrock', 'muffits', 'office-inventory'];
             vendorIds.forEach(vendorId => {
                 makeVendorInfoEditable(vendorId);
                 loadVendorInfo(vendorId);
@@ -4562,6 +4562,33 @@
             }, 100);
         }
         
+        // Helper function to hide empty rows for printing
+        function hideEmptyRowsForPrint() {
+            document.querySelectorAll('.item-row').forEach(row => {
+                const input = row.querySelector('.quantity-input');
+                const customInput = row.querySelector('[data-type="custom-item"]');
+                
+                let hasContent = false;
+                if (input && input.value && input.value > 0) {
+                    hasContent = true;
+                }
+                if (customInput && customInput.value && customInput.value.trim() !== '') {
+                    hasContent = true;
+                }
+                
+                if (!hasContent) {
+                    row.style.display = 'none';
+                }
+            });
+        }
+        
+        // Helper function to show all rows after printing
+        function showAllRows() {
+            document.querySelectorAll('.item-row').forEach(row => {
+                row.style.display = 'flex';
+            });
+        }
+        
         // Print all orders
         function printAllOrders() {
             // Check if any orders have quantities
@@ -4637,7 +4664,7 @@
         
         // Load all saved orders
         function loadAllOrders() {
-            ['bradyplus', 'gordon', 'webstaurant', 'gnarley', 'nuts', 'jennifers', 'faire', 'amazon', 'sabbathcoffee', 'greenrock', 'muffits', 'vacpak', 'naturalzing', 'unfi'].forEach(vendorId => {
+            ['vacpak', 'bradyplus', 'gordon', 'webstaurant', 'gnarley', 'nuts', 'jennifers', 'faire', 'amazon', 'sabbathcoffee', 'greenrock', 'muffits', 'office-inventory'].forEach(vendorId => {
                 const savedOrder = localStorage.getItem(`order-${vendorId}`);
                 if (savedOrder) {
                     const orderData = JSON.parse(savedOrder);
