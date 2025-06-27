@@ -92,7 +92,7 @@
             color: var(--text-color);
         }
         
-        .quantity-input {
+        .quantity-input, .quantity-select {
             width: 100%;
             padding: 8px;
             border: 1px solid rgba(164, 124, 91, 0.3);
@@ -404,7 +404,19 @@
         <div class="items-grid">
             <div class="item-row">
                 <div class="item-name">Green Bananas</div>
-                <input type="number" class="quantity-input" placeholder="0" data-vendor="vacpak" data-item="Green Bananas">
+                <select class="quantity-select" data-vendor="vacpak" data-item="Green Bananas">
+                    <option value="">0</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                </select>
                 <select class="unit-select">
                     <option value="case" selected>Case</option>
                     <option value="bunch">Bunch</option>
@@ -414,7 +426,19 @@
             </div>
             <div class="item-row">
                 <div class="item-name">Yellow Bananas</div>
-                <input type="number" class="quantity-input" placeholder="0" data-vendor="vacpak" data-item="Yellow Bananas">
+                <select class="quantity-select" data-vendor="vacpak" data-item="Yellow Bananas">
+                    <option value="">0</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                </select>
                 <select class="unit-select">
                     <option value="case" selected>Case</option>
                     <option value="bunch">Bunch</option>
@@ -424,7 +448,19 @@
             </div>
             <div class="item-row">
                 <div class="item-name">Ripe Bananas</div>
-                <input type="number" class="quantity-input" placeholder="0" data-vendor="vacpak" data-item="Ripe Bananas">
+                <select class="quantity-select" data-vendor="vacpak" data-item="Ripe Bananas">
+                    <option value="">0</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                </select>
                 <select class="unit-select">
                     <option value="case" selected>Case</option>
                     <option value="bunch">Bunch</option>
@@ -4481,7 +4517,7 @@
             const notes = vendor.querySelector(`#${vendorId}-notes`).value;
             const items = {};
             
-            vendor.querySelectorAll('.quantity-input').forEach(input => {
+            vendor.querySelectorAll('.quantity-input, .quantity-select').forEach(input => {
                 if (input.value) {
                     items[input.dataset.item] = input.value;
                 }
@@ -4502,7 +4538,7 @@
         // Hide empty rows for printing
         function hideEmptyRowsForPrint() {
             document.querySelectorAll('.item-row').forEach(row => {
-                const quantityInput = row.querySelector('.quantity-input');
+                const quantityInput = row.querySelector('.quantity-input, .quantity-select');
                 const customItem = row.querySelector('[data-type="custom-item"]');
                 const customQty = row.querySelector('[data-type="custom-qty"]');
                 
@@ -4561,7 +4597,7 @@
         // Helper function to hide empty rows for printing
         function hideEmptyRowsForPrint() {
             document.querySelectorAll('.item-row').forEach(row => {
-                const input = row.querySelector('.quantity-input');
+                const input = row.querySelector('.quantity-input, .quantity-select');
                 const customInput = row.querySelector('[data-type="custom-item"]');
                 
                 let hasContent = false;
@@ -4589,7 +4625,7 @@
         function printAllOrders() {
             // Check if any orders have quantities
             let hasAnyItems = false;
-            document.querySelectorAll('.quantity-input').forEach(input => {
+            document.querySelectorAll('.quantity-input, .quantity-select').forEach(input => {
                 if (input.value && input.value > 0) {
                     hasAnyItems = true;
                 }
@@ -4616,7 +4652,7 @@
                 let hasItems = false;
                 
                 // Check regular items
-                section.querySelectorAll('.quantity-input').forEach(input => {
+                section.querySelectorAll('.quantity-input, .quantity-select').forEach(input => {
                     if (input.value && input.value > 0) {
                         hasItems = true;
                     }
@@ -4650,7 +4686,7 @@
         function clearVendor(vendorId) {
             if (confirm(`Clear all items for ${vendorId.toUpperCase()}?`)) {
                 const vendor = document.getElementById(vendorId);
-                vendor.querySelectorAll('.quantity-input').forEach(input => {
+                vendor.querySelectorAll('.quantity-input, .quantity-select').forEach(input => {
                     input.value = '';
                 });
                 vendor.querySelector(`#${vendorId}-notes`).value = '';
@@ -4688,7 +4724,7 @@
             ['vacpak', 'bradyplus', 'gordon', 'webstaurant', 'gnarley', 'nuts', 'jennifers', 'faire', 'amazon', 'sabbathcoffee', 'greenrock', 'muffits', 'office-inventory'].forEach(vendorId => {
                 const vendor = document.getElementById(vendorId);
                 if (vendor) {
-                    vendor.querySelectorAll('.quantity-input').forEach(input => {
+                    vendor.querySelectorAll('.quantity-input, .quantity-select').forEach(input => {
                         input.value = '';
                     });
                     const notesField = vendor.querySelector(`#${vendorId}-notes`);
@@ -4741,7 +4777,7 @@
                         const vendorName = vendorNameElement.textContent;
                         
                         // Collect items with quantities
-                        vendor.querySelectorAll('.quantity-input').forEach(input => {
+                        vendor.querySelectorAll('.quantity-input, .quantity-select').forEach(input => {
                             if (input.value && input.value > 0) {
                                 const itemName = input.dataset.item;
                                 const quantity = parseInt(input.value);
