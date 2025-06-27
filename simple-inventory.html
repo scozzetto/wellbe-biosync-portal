@@ -8470,6 +8470,7 @@
             const draftData = {
                 location: document.getElementById('orderingLocation').value,
                 quantities: {},
+                units: {},
                 customItems: {},
                 notes: {},
                 timestamp: new Date().toISOString()
@@ -8480,6 +8481,18 @@
                 if (select.value && select.value !== '') {
                     const key = `${select.dataset.vendor}-${select.dataset.item || select.dataset.type}`;
                     draftData.quantities[key] = select.value;
+                }
+            });
+            
+            // Save all unit selections
+            document.querySelectorAll('.unit-select').forEach(select => {
+                if (select.value && select.value !== '') {
+                    // Find the associated quantity element to get the item name
+                    const quantityElement = select.parentElement.querySelector('.quantity-select');
+                    if (quantityElement) {
+                        const key = `${quantityElement.dataset.vendor}-${quantityElement.dataset.item || quantityElement.dataset.type}`;
+                        draftData.units[key] = select.value;
+                    }
                 }
             });
             
@@ -8527,6 +8540,22 @@
                     if (select) {
                         select.value = value;
                         restoredItems++;
+                    }
+                });
+                
+                // Restore unit selections
+                Object.entries(draftData.units || {}).forEach(([key, value]) => {
+                    const [vendor, item] = key.split('-', 2);
+                    const quantitySelector = item === 'custom-qty' ? 
+                        `[data-vendor="${vendor}"][data-type="custom-qty"]` :
+                        `[data-vendor="${vendor}"][data-item="${item.replace(vendor + '-', '')}"]`;
+                    const quantityElement = document.querySelector(quantitySelector);
+                    if (quantityElement) {
+                        const unitElement = quantityElement.parentElement.querySelector('.unit-select');
+                        if (unitElement) {
+                            unitElement.value = value;
+                            restoredItems++;
+                        }
                     }
                 });
                 
