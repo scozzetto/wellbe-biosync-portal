@@ -334,7 +334,7 @@
             <button onclick="sendAllOrders()" class="btn" style="background: #007bff; color: white; font-size: 18px; padding: 12px 24px;">
                 <i class="fas fa-paper-plane"></i> Send Orders to Dashboard
             </button>
-            <button onclick="window.location.href='orders-dashboard.html'" class="btn" style="background: #8B3A7C; color: white; font-size: 18px; padding: 12px 24px;">
+            <button onclick="saveDraftAndNavigate()" class="btn" style="background: #8B3A7C; color: white; font-size: 18px; padding: 12px 24px;">
                 <i class="fas fa-clipboard-list"></i> View Orders Dashboard
             </button>
             <button onclick="window.location.href='staff-knowledge-base.html'" class="btn" style="background: white; color: var(--primary-color);">
@@ -8119,6 +8119,9 @@
                 makeVendorInfoEditable(vendorId);
                 loadVendorInfo(vendorId);
             });
+            
+            // Load saved draft if any
+            loadDraft();
         });
         
         // Toggle vendor management information
@@ -8457,8 +8460,141 @@
         function clearAllWithConfirmation() {
             if (confirm('Are you sure you want to clear everything in all vendor orders? This will remove all quantities and notes from every vendor. This action cannot be undone.')) {
                 clearAllVendors();
+                clearDraft(); // Clear saved draft when clearing all orders
                 alert('All vendor orders have been cleared successfully!');
             }
+        }
+        
+        // Save current form state as draft
+        function saveDraft() {
+            const draftData = {
+                location: document.getElementById('orderingLocation').value,
+                quantities: {},
+                customItems: {},
+                notes: {},
+                timestamp: new Date().toISOString()
+            };
+            
+            // Save all quantity selections
+            document.querySelectorAll('.quantity-select').forEach(select => {
+                if (select.value && select.value !== '') {
+                    const key = `${select.dataset.vendor}-${select.dataset.item || select.dataset.type}`;
+                    draftData.quantities[key] = select.value;
+                }
+            });
+            
+            // Save all custom item inputs
+            document.querySelectorAll('[data-type="custom-item"]').forEach(input => {
+                if (input.value && input.value.trim() !== '') {
+                    const key = `${input.dataset.vendor}-custom-item-${Array.from(input.parentElement.parentElement.children).indexOf(input.parentElement)}`;
+                    draftData.customItems[key] = input.value;
+                }
+            });
+            
+            // Save all notes
+            ['vacpak', 'bradyplus', 'gordon', 'webstaurant', 'gnarley', 'nuts', 'jennifers', 'faire', 'amazon', 'sabbathcoffee', 'greenrock', 'muffits', 'office-inventory'].forEach(vendorId => {
+                const notesField = document.getElementById(`${vendorId}-notes`);
+                if (notesField && notesField.value) {
+                    draftData.notes[vendorId] = notesField.value;
+                }
+            });
+            
+            localStorage.setItem('inventory-draft', JSON.stringify(draftData));
+            console.log('📝 Draft saved');
+        }
+        
+        // Load saved draft
+        function loadDraft() {
+            const savedDraft = localStorage.getItem('inventory-draft');
+            if (!savedDraft) return false;
+            
+            try {
+                const draftData = JSON.parse(savedDraft);
+                let restoredItems = 0;
+                
+                // Restore location selection
+                if (draftData.location) {
+                    document.getElementById('orderingLocation').value = draftData.location;
+                }
+                
+                // Restore quantities
+                Object.entries(draftData.quantities || {}).forEach(([key, value]) => {
+                    const [vendor, item] = key.split('-', 2);
+                    const selector = item === 'custom-qty' ? 
+                        `[data-vendor="${vendor}"][data-type="custom-qty"]` :
+                        `[data-vendor="${vendor}"][data-item="${item.replace(vendor + '-', '')}"]`;
+                    const select = document.querySelector(selector);
+                    if (select) {
+                        select.value = value;
+                        restoredItems++;
+                    }
+                });
+                
+                // Restore custom items
+                Object.entries(draftData.customItems || {}).forEach(([key, value]) => {
+                    const vendor = key.split('-')[0];
+                    const inputs = document.querySelectorAll(`[data-vendor="${vendor}"][data-type="custom-item"]`);
+                    const index = parseInt(key.split('-').pop());
+                    if (inputs[index]) {
+                        inputs[index].value = value;
+                        restoredItems++;
+                    }
+                });
+                
+                // Restore notes
+                Object.entries(draftData.notes || {}).forEach(([vendorId, value]) => {
+                    const notesField = document.getElementById(`${vendorId}-notes`);
+                    if (notesField) {
+                        notesField.value = value;
+                        restoredItems++;
+                    }
+                });
+                
+                if (restoredItems > 0) {
+                    showDraftRestoredMessage(restoredItems);
+                    return true;
+                }
+            } catch (error) {
+                console.error('Error loading draft:', error);
+                localStorage.removeItem('inventory-draft');
+            }
+            return false;
+        }
+        
+        // Show draft restored message
+        function showDraftRestoredMessage(itemCount) {
+            const messageDiv = document.createElement('div');
+            messageDiv.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: #28a745;
+                color: white;
+                padding: 12px 20px;
+                border-radius: 6px;
+                box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+                z-index: 10000;
+                font-size: 14px;
+                font-weight: 500;
+            `;
+            messageDiv.innerHTML = `<i class="fas fa-check-circle"></i> Draft restored (${itemCount} items)`;
+            document.body.appendChild(messageDiv);
+            
+            setTimeout(() => {
+                messageDiv.remove();
+            }, 4000);
+        }
+        
+        // Save draft and navigate to dashboard
+        function saveDraftAndNavigate() {
+            saveDraft();
+            window.location.href = 'orders-dashboard.html';
+        }
+        
+        // Clear draft after successful order submission
+        function clearDraft() {
+            localStorage.removeItem('inventory-draft');
+            console.log('📝 Draft cleared');
         }
         
         // Send all orders to dashboard (consolidates with existing orders)
@@ -8610,6 +8746,7 @@
             // Ask if they want to view the dashboard
             // Show success message and open dashboard
             alert('Orders consolidated and sent to dashboard!');
+            clearDraft(); // Clear saved draft after successful submission
             window.open('orders-dashboard.html', '_blank');
             
             } catch (error) {
