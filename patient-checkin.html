@@ -118,6 +118,18 @@
             margin-top: 0px; /* Remove all custom positioning, use natural centering */
         }
         
+        /* Step 1 specific - move everything under the title down 15px */
+        #step1 .input-display,
+        #step1 .keyboard-container {
+            margin-top: 15px; /* Move input and keyboard down 15px */
+        }
+        
+        /* Step 2 specific - move everything under "Your Phone Number" down 15px */
+        #step2 .input-display,
+        #step2 .keyboard-container {
+            margin-top: 15px; /* Move phone input and number pad down 15px */
+        }
+        
         .question-area p {
             font-size: clamp(1rem, 3vw, 1.5rem);
             opacity: 0.8;
@@ -357,7 +369,7 @@
         /* Back button */
         .back-btn {
             position: absolute;
-            top: 20px; /* Position back button normally at top */
+            top: 35px; /* Move back button down a little bit (15px more) */
             left: 20px;
             padding: 15px 30px;
             background: rgba(255, 255, 255, 0.03);
