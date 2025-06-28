@@ -107,12 +107,12 @@
             padding: 5px 20px;
             text-align: center;
             min-height: 0; /* Allow shrinking */
-            margin-top: -60px; /* Move content up for first screen - 2 inches */
+            margin-top: 20px; /* Reset to original spacing */
         }
         
         /* Step 2 (phone) specific adjustment - move content up */
         #step2 .question-area {
-            margin-top: -54px; /* Raise phone screen elements - 1.5 inches for title */
+            margin-top: 20px; /* Reset to normal spacing */
         }
         
         .question-area h1 {
@@ -122,14 +122,14 @@
             color: #A47C5B;
         }
         
-        /* Step 1 specific - raise title additional 2 inches */
+        /* Step 1 specific - raise title just half an inch */
         #step1 .question-area h1 {
-            margin-bottom: -60px; /* Raise "Please Enter Your First And Last Name" up 2 inches */
+            margin-top: -12px; /* Raise "Please Enter Your First And Last Name" up 0.5 inches */
         }
         
-        /* Step 2 specific - raise elements */
+        /* Step 2 specific - raise "Your Phone Number" title half an inch */
         #step2 .question-area h1 {
-            margin-bottom: -24px; /* Raise "Your Phone Number" up 1.5 inches */
+            margin-top: -12px; /* Raise "Your Phone Number" up 0.5 inches */
         }
         
         .question-area p {
@@ -158,16 +158,6 @@
             backface-visibility: hidden;
             align-items: center;
             justify-content: center;
-        }
-        
-        /* Step 1 specific - raise input and everything else 1 inch */
-        #step1 .input-display {
-            margin-top: -24px; /* Raise input field up 1 inch */
-        }
-        
-        /* Step 2 specific - raise phone number display 1 inch */
-        #step2 .input-display {
-            margin-top: -24px; /* Raise phone number display up 1 inch */
         }
         
         .input-display.empty {
@@ -251,7 +241,6 @@
             border-top: none; /* Remove black line across keyboard */
             flex-shrink: 0; /* Don't shrink keyboard */
             touch-action: manipulation;
-            margin-top: -24px; /* Raise keyboard up 1 inch */
         }
         
         .keyboard {
@@ -382,7 +371,7 @@
         /* Back button */
         .back-btn {
             position: absolute;
-            top: 51px;
+            top: 39px; /* Raise back button up half an inch (12px) */
             left: 20px;
             padding: 15px 30px;
             background: rgba(255, 255, 255, 0.03);
