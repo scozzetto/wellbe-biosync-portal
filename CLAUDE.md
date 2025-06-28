@@ -49,7 +49,7 @@ grep "WELLBE-BIOSYNC-2025" CLAUDE.md  # Should return this unique ID
 5. Load full project context and current system status
 
 
-## 🚀 CURRENT STATE (Last Updated: June 27, 2025 - v2.0 STABLE CHECKPOINT)
+## 🚀 CURRENT STATE (Last Updated: June 27, 2025 - v2.1 ENHANCED INVENTORY SYSTEM)
 - Splash screen: 4-second video with white disc logo
 - Header: Transparent luxury design with white text
 - Hero: "It's Time to Transform"
@@ -82,6 +82,10 @@ grep "WELLBE-BIOSYNC-2025" CLAUDE.md  # Should return this unique ID
 - **✅ INVENTORY UI CONSISTENCY COMPLETE:** All additional item inputs standardized with black text and consistent styling
 - **✅ ALL MISSING INVENTORY ITEMS ADDED:** 13 missing items added across all vendors (Gordon Foods, FAIRE, Nuts, Distribution, Amazon)
 - **✅ SLEEVE AND ROLL UNIT OPTIONS:** Added to all 400+ unit selector dropdowns throughout entire inventory system
+- **🎯 COLLAPSIBLE VENDOR SECTIONS:** Click "Items & Ordering" to expand/collapse each vendor's ordering interface for compact view
+- **🔍 REAL-TIME SEARCH:** Search across all vendors and items with live filtering, highlighting, and smart auto-expand
+- **🔄 COLLAPSE ALL/EXPAND ALL:** One-click toggle to manage all vendor sections at once
+- **🎨 VENDOR COLOR CODING:** Each vendor has unique colors (Green VACPAK, Blue BRADYPLUS, Red GORDON, etc.) matching across inventory and orders platforms
 
 ## 💳 STRIPE PAYMENT LINKS
 - **Restore ($149):** https://buy.stripe.com/eVq6oI3KEbHrais8DtgQE01
@@ -142,6 +146,113 @@ grep "WELLBE-BIOSYNC-2025" CLAUDE.md  # Should return this unique ID
 - **Previous Stable**: cae07f2 - "Add all missing inventory items to vendors"
 
 **🏆 THIS IS THE GOLD STANDARD VERSION - REVERT HERE IF ANY ISSUES**
+
+## 🎯 v2.1 ENHANCED INVENTORY SYSTEM (June 27, 2025 - Collapsible Vendors & Search)
+
+### ✅ **NEW UX FEATURES ADDED (Commit: c3037de)**
+
+#### 🔍 **REAL-TIME SEARCH FUNCTIONALITY:**
+- **Live Search**: Type in search box to instantly filter vendors and items
+- **Smart Highlighting**: Matching text highlighted with yellow background
+- **Auto-Expand**: Search results automatically expand relevant vendor sections
+- **Search Stats**: Shows "Found X vendor(s) and Y item(s) matching 'query'"
+- **Reset**: Clear search to show all vendors and items again
+
+#### 📦 **COLLAPSIBLE VENDOR SECTIONS:**
+- **Individual Collapse**: Click "📦 Items & Ordering" on each vendor to collapse/expand their ordering interface
+- **Compact View**: When collapsed, only vendor header with contact toggle and collapse button are visible
+- **Smooth Animations**: CSS transitions for professional expand/collapse effect
+- **Visual Indicators**: ▼ (expanded) and ▶ (collapsed) icons with rotation animation
+
+#### 🔄 **BULK OPERATIONS:**
+- **Collapse All/Expand All Button**: One-click to toggle all vendor sections at once
+- **Smart Toggle**: Button text changes based on current state
+- **Efficient Management**: Quickly organize interface for specific workflow needs
+
+#### 🛡️ **FUNCTIONALITY PRESERVATION:**
+- **Zero Breaking Changes**: All existing ordering, localStorage, and printing functionality intact
+- **Independent Systems**: New collapse controls don't interfere with existing vendor contact toggles
+- **Backward Compatible**: All saved orders, dropdowns, and form inputs work exactly as before
+
+### 📊 **TECHNICAL IMPLEMENTATION:**
+```javascript
+// New Functions Added:
+- toggleVendorItems(vendorId) // Individual vendor collapse/expand
+- toggleAllVendors() // Bulk collapse/expand all vendors
+- performSearch() // Real-time search with highlighting
+- highlightText(element, query) // Smart text highlighting
+- removeHighlight(element) // Clean highlight removal
+- showAllVendors() // Reset search view
+```
+
+```css
+// New CSS Classes Added:
+- .search-container // Search input styling
+- .vendor-collapse-toggle // Collapse button styling  
+- .vendor-items-wrapper // Wrapper for collapsible content
+- .collapsed/.expanded // Animation states
+- .collapse-icon // Icon rotation animations
+```
+
+### 🎯 **USER EXPERIENCE BENEFITS:**
+1. **Cleaner Interface**: Only see vendors you're actively using
+2. **Faster Navigation**: Instantly find specific items or vendors
+3. **Reduced Scroll**: Compact view when not ordering from specific vendors
+4. **Enhanced Workflow**: Focus on relevant vendors without distraction
+5. **Professional UX**: Smooth animations and visual feedback
+
+### 💾 **RECOVERY INFORMATION:**
+- **Stable Commit**: c3037de - "Add collapsible vendor sections and search functionality"
+- **GitHub Status**: Successfully pushed to main branch
+- **Backup**: Full Dropbox backup completed at 2025-06-27T21-45-54
+
+**🔒 RECOVERY COMMITS IF PROBLEMS:**
+- **Latest Enhanced**: c3037de - "Add collapsible vendor sections and search functionality"
+- **Previous Stable**: 8a3cb3f - "Mark v2.0 as stable checkpoint for complete inventory system"
+
+## 🎨 v2.2 VENDOR COLOR-CODING SYSTEM (June 27, 2025 - Visual Organization)
+
+### ✅ **COMPREHENSIVE COLOR SYSTEM IMPLEMENTED (Commit: af687a2)**
+
+#### 🌈 **VENDOR COLOR PALETTE:**
+```css
+🥬 VACPAK - Fresh Green (#28a745)          📦 BRADYPLUS - Professional Blue (#007bff)
+🍖 GORDON - Classic Red (#dc3545)          🍽️ WEBSTAURANT - Orange (#fd7e14)
+🌿 GNARLEY - Purple (#6f42c1)              🥜 NUTS - Brown (#795548)
+🌸 JENNIFERS - Pink (#e91e63)              🛍️ FAIRE - Teal (#20c997)
+📦 AMAZON - Amazon Orange (#ff9900)        ☕ SABBATHCOFFEE - Coffee Brown (#3e2723)
+🌱 GREENROCK - Deep Green (#2e7d32)        🧁 MUFFITS - Golden Yellow (#ffc107)
+🏢 OFFICE-INVENTORY - Indigo (#3f51b5)     🏥 THERAPY-EQUIPMENT - Medical Cyan (#00bcd4)
+```
+
+#### 🎯 **COMPLETE STYLING COVERAGE:**
+- **Vendor Headers**: Colored borders and gradient backgrounds
+- **Item Names**: Color-matched to vendor with bold font weight
+- **Collapse Toggles**: Vendor-specific colors with hover effects
+- **Print Buttons**: Styled with vendor colors and hover states
+- **Search Highlights**: Maintain color coding in search results
+
+#### 📊 **ORDERS DASHBOARD INTEGRATION:**
+- **Color-Coded Rows**: Left border stripes in vendor colors
+- **Visual Continuity**: Same colors from inventory to orders
+- **Vendor Headers**: Order details maintain color coding
+- **Automatic Classification**: vendorId passed with order data
+
+### 🎯 **USER EXPERIENCE BENEFITS:**
+1. **Instant Recognition**: Spot vendors immediately by color
+2. **Visual Organization**: Clear separation of vendor sections
+3. **Cross-Platform Consistency**: Same colors in inventory and orders
+4. **Professional Appearance**: Coordinated color scheme
+5. **Enhanced Search**: Color-coded search results
+
+### 💾 **RECOVERY INFORMATION:**
+- **Stable Commit**: af687a2 - "Add comprehensive color-coding system"
+- **GitHub Status**: Successfully pushed to main branch
+- **Backup**: Full Dropbox backup completed at 2025-06-27T21-58-25
+
+**🔒 LATEST RECOVERY COMMITS:**
+- **Latest Enhanced**: af687a2 - "Add comprehensive color-coding system to inventory and orders platforms"
+- **Previous Enhanced**: c3037de - "Add collapsible vendor sections and search functionality"
 
 ## 📅 PREVIOUS WORK LOG (June 27, 2025 - Texting Templates & Knowledge Base Updates)
 
