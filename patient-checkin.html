@@ -714,7 +714,7 @@
             secondaryService: ''
         };
         
-        // Auto-reset timer (30 seconds of inactivity)
+        // Auto-reset timer (60 seconds of inactivity)
         let autoResetTimer = null;
         
         // Welcome screen functionality
@@ -743,7 +743,7 @@
                 autoResetTimer = setTimeout(() => {
                     console.log('Auto-resetting due to inactivity');
                     resetToStart();
-                }, 30000); // 30 seconds
+                }, 60000); // 60 seconds (1 minute)
             }
         }
         
