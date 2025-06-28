@@ -159,7 +159,7 @@
         .order-row {
             display: grid;
             grid-template-columns: 180px 130px 120px 120px 1fr 140px;
-            padding: 8px 15px;
+            padding: 8px 20px;
             border-bottom: 1px solid rgba(164, 124, 91, 0.2);
             align-items: center;
             gap: 8px;
@@ -176,8 +176,8 @@
         .order-details {
             grid-column: 1 / -1;
             background: rgba(164, 124, 91, 0.03);
-            padding: 12px;
-            margin: 0 -15px;
+            padding: 12px 20px;
+            margin: 0 -20px;
             border-top: 2px solid rgba(164, 124, 91, 0.2);
             display: none;
         }
@@ -490,7 +490,6 @@
                     </div>
                     ${order.notes ? `<p><strong>Notes:</strong> ${order.notes}</p>` : ''}
                     <p><strong>Order Date:</strong> ${order.date || new Date(order.timestamp).toLocaleDateString()}</p>
-                    <p style="font-size: 0.8rem; color: #666;"><strong>Debug:</strong> ${order.items ? order.items.length : 0} items, ID: ${order.id}</p>
                 </div>
             `).join('');
             
