@@ -5414,8 +5414,7 @@
             // Load saved draft if any
             loadDraft();
             
-            // Start all vendor sections in collapsed state
-            const vendorIds = ['vacpak', 'bradyplus', 'gordon', 'webstaurant', 'gnarley', 'nuts', 'jennifers', 'faire', 'amazon', 'sabbathcoffee', 'greenrock', 'muffits', 'office-inventory'];
+            // Start all vendor sections in collapsed state  
             vendorIds.forEach(vendorId => {
                 const wrapper = document.getElementById(vendorId + '-items');
                 const icon = document.getElementById(vendorId + '-collapse-icon');
