@@ -35,11 +35,9 @@
             color: white;
             overflow: hidden; /* No scroll bars anywhere */
             position: fixed;
-            width: 100%;
-            height: 100vh; /* Use full viewport height */
+            width: 100vw;
+            height: 100vh;
             touch-action: manipulation;
-            margin: 0;
-            padding: 0;
         }
         
         /* Hide iPad status bar and create fullscreen experience */
@@ -48,21 +46,12 @@
             -ms-text-size-adjust: 100%;
         }
         
-        /* Force fullscreen and hide status bar elements */
+        /* Force fullscreen and no scrolling */
         html, body {
             height: 100vh;
-            height: -webkit-fill-available;
             margin: 0;
             padding: 0;
-            padding-top: env(safe-area-inset-top, 20px);
-        }
-        
-        /* Additional status bar hiding attempts */
-        body {
-            -webkit-appearance: none;
-            -webkit-user-select: none;
-            position: relative;
-            top: env(safe-area-inset-top, 0);
+            overflow: hidden; /* Prevent any scrolling */
         }
         
         /* Remove status bar overlay - user wants to see status bar without black line */
@@ -81,10 +70,13 @@
             display: flex;
             flex-direction: column;
             height: 100vh;
-            max-height: 100vh;
+            width: 100vw;
             padding: 0;
-            padding-top: 60px; /* Reduce top padding to find middle */
+            margin: 0;
             overflow: hidden; /* Ensure no scroll bars */
+            position: fixed;
+            top: 0;
+            left: 0;
         }
         
         /* Progress bar - hidden */
