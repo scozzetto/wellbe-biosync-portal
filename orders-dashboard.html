@@ -404,11 +404,19 @@
         let expandedOrders = new Set();
 
         // Initialize dashboard
+        let timeInterval, ordersInterval;
+        
         document.addEventListener('DOMContentLoaded', function() {
             updateTime();
-            setInterval(updateTime, 1000);
+            timeInterval = setInterval(updateTime, 1000);
             loadOrders();
-            setInterval(loadOrders, 5000); // Auto-refresh every 5 seconds
+            ordersInterval = setInterval(loadOrders, 5000); // Auto-refresh every 5 seconds
+        });
+        
+        // Cleanup function to prevent memory leaks
+        window.addEventListener('beforeunload', function() {
+            if (timeInterval) clearInterval(timeInterval);
+            if (ordersInterval) clearInterval(ordersInterval);
         });
 
         function updateTime() {

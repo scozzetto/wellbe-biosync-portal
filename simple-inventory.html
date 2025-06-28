@@ -537,8 +537,8 @@
                    id="searchInput" 
                    class="search-input" 
                    placeholder="🔍 Search vendors or items..." 
-                   oninput="performSearch()"
-                   onkeyup="performSearch()">
+                   oninput="debouncedSearch()"
+                   onkeyup="debouncedSearch()">
             <div id="searchStats" class="search-stats">Search across all vendors and items</div>
         </div>
         
@@ -3801,9 +3801,25 @@
         }
         
         // NEW: Search functionality
+        // Cache DOM elements for better performance
+        let cachedVendorSections = null;
+        let searchTimeout = null;
+        
+        // Debounced search function for better performance
+        function debouncedSearch() {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(performSearch, 300); // 300ms delay
+        }
+        
         function performSearch() {
             const searchInput = document.getElementById('searchInput');
             const searchStats = document.getElementById('searchStats');
+            
+            if (!searchInput || !searchStats) {
+                console.error('Search elements not found');
+                return;
+            }
+            
             const query = searchInput.value.toLowerCase().trim();
             
             if (!query) {
@@ -3816,8 +3832,11 @@
             let matchingVendors = 0;
             let matchingItems = 0;
             
-            // Get all vendor sections
-            const vendorSections = document.querySelectorAll('.vendor-section');
+            // Cache vendor sections for better performance
+            if (!cachedVendorSections) {
+                cachedVendorSections = document.querySelectorAll('.vendor-section');
+            }
+            const vendorSections = cachedVendorSections;
             
             vendorSections.forEach(vendorSection => {
                 const vendorName = vendorSection.querySelector('.vendor-name span');
@@ -3913,7 +3932,9 @@
             const originalText = element.dataset.originalText || element.textContent;
             element.dataset.originalText = originalText;
             
-            const regex = new RegExp(`(${query})`, 'gi');
+            // Escape special regex characters to prevent ReDoS attacks
+            const escapedQuery = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+            const regex = new RegExp(`(${escapedQuery})`, 'gi');
             const highlightedText = originalText.replace(regex, '<mark style="background: #ffff99; color: #000; padding: 1px 2px; border-radius: 2px;">$1</mark>');
             element.innerHTML = highlightedText;
         }
