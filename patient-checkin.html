@@ -45,7 +45,8 @@
             flex-direction: column;
             height: 100vh;
             max-height: 100vh;
-            padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+            padding: 0;
+            padding-top: 10px;
             overflow: hidden;
         }
         
@@ -71,9 +72,10 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 10px 20px;
+            padding: 5px 20px;
             text-align: center;
             min-height: 0; /* Allow shrinking */
+            margin-top: -20px; /* Pull content up */
         }
         
         .question-area h1 {
@@ -187,7 +189,8 @@
         /* Keyboard */
         .keyboard-container {
             background: rgba(0, 0, 0, 0.8);
-            padding: 25px;
+            padding: 15px;
+            padding-bottom: 10px;
             border-top: 1px solid rgba(164, 124, 91, 0.3);
             flex-shrink: 0; /* Don't shrink keyboard */
             touch-action: manipulation;
@@ -196,7 +199,7 @@
         .keyboard {
             display: grid;
             grid-template-columns: repeat(10, 1fr);
-            gap: 12px;
+            gap: 10px;
             max-width: 1000px;
             margin: 0 auto;
         }
@@ -205,7 +208,7 @@
             background: rgba(255, 255, 255, 0.1);
             border: 1px solid rgba(255, 255, 255, 0.2);
             border-radius: 8px;
-            padding: 22px 8px;
+            padding: 18px 8px;
             font-size: clamp(1.4rem, 3vw, 2.2rem);
             color: white;
             cursor: pointer;
@@ -213,7 +216,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            min-height: 65px;
+            min-height: 55px;
             -webkit-transform: translate3d(0, 0, 0);
             transform: translate3d(0, 0, 0);
             -webkit-backface-visibility: hidden;
@@ -307,7 +310,7 @@
         /* Logo */
         .logo-header {
             position: absolute;
-            top: 23px;
+            top: 15px;
             right: 20px;
             z-index: 10;
         }
@@ -321,7 +324,7 @@
         /* Back button */
         .back-btn {
             position: absolute;
-            top: 23px;
+            top: 15px;
             left: 20px;
             padding: 15px 30px;
             background: rgba(255, 255, 255, 0.1);
@@ -541,17 +544,7 @@
         <div class="welcome-overlay"></div>
         
         <!-- Floating Particles -->
-        <div class="welcome-particles">
-            <div class="particle"></div>
-            <div class="particle"></div>
-            <div class="particle"></div>
-            <div class="particle"></div>
-            <div class="particle"></div>
-            <div class="particle"></div>
-            <div class="particle"></div>
-            <div class="particle"></div>
-            <div class="particle"></div>
-        </div>
+        <!-- Particles removed per user request -->
         
         <!-- Welcome Content -->
         <div class="welcome-content">
@@ -825,10 +818,10 @@
             // Update immediately for responsive feel, but debounce rapid updates
             updateNameDisplay();
             
-            // Reduced timeout for more responsive typing
-            nameUpdateTimeout = setTimeout(() => {
-                updateNameDisplay();
-            }, 5);
+            // Remove timeout completely for instant response
+            // nameUpdateTimeout = setTimeout(() => {
+            //     updateNameDisplay();
+            // }, 5);
         }
         
         function updateNameDisplay() {
@@ -871,10 +864,10 @@
             // Update immediately for responsive feel, but debounce rapid updates
             updatePhoneDisplay();
             
-            // Reduced timeout for more responsive typing
-            phoneUpdateTimeout = setTimeout(() => {
-                updatePhoneDisplay();
-            }, 5);
+            // Remove timeout completely for instant response
+            // phoneUpdateTimeout = setTimeout(() => {
+            //     updatePhoneDisplay();
+            // }, 5);
         }
         
         function updatePhoneDisplay() {
