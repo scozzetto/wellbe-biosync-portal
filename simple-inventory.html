@@ -5426,6 +5426,23 @@
                     icon.classList.add('rotated');
                 }
             });
+            
+            // Auto-save draft when values change
+            document.addEventListener('input', function(event) {
+                if (event.target.classList.contains('quantity-input') || 
+                    event.target.classList.contains('unit-select') ||
+                    event.target.classList.contains('item-name') ||
+                    event.target.id === 'orderingLocation') {
+                    saveDraft();
+                }
+            });
+            
+            document.addEventListener('change', function(event) {
+                if (event.target.classList.contains('unit-select') || 
+                    event.target.id === 'orderingLocation') {
+                    saveDraft();
+                }
+            });
         });
         
         // Toggle vendor management information
@@ -6025,23 +6042,25 @@
                 
                 // Restore quantities
                 Object.entries(draftData.quantities || {}).forEach(([key, value]) => {
-                    const [vendor, item] = key.split('-', 2);
+                    const [vendor, ...itemParts] = key.split('-');
+                    const item = itemParts.join('-'); // Rejoin in case item name has dashes
                     const selector = item === 'custom-qty' ? 
                         `[data-vendor="${vendor}"][data-type="custom-qty"]` :
-                        `[data-vendor="${vendor}"][data-item="${item.replace(vendor + '-', '')}"]`;
-                    const select = document.querySelector(selector);
-                    if (select) {
-                        select.value = value;
+                        `[data-vendor="${vendor}"][data-item="${item}"]`;
+                    const input = document.querySelector(selector);
+                    if (input) {
+                        input.value = value;
                         restoredItems++;
                     }
                 });
                 
                 // Restore unit selections
                 Object.entries(draftData.units || {}).forEach(([key, value]) => {
-                    const [vendor, item] = key.split('-', 2);
+                    const [vendor, ...itemParts] = key.split('-');
+                    const item = itemParts.join('-'); // Rejoin in case item name has dashes
                     const quantitySelector = item === 'custom-qty' ? 
                         `[data-vendor="${vendor}"][data-type="custom-qty"]` :
-                        `[data-vendor="${vendor}"][data-item="${item.replace(vendor + '-', '')}"]`;
+                        `[data-vendor="${vendor}"][data-item="${item}"]`;
                     const quantityElement = document.querySelector(quantitySelector);
                     if (quantityElement) {
                         const unitElement = quantityElement.parentElement.querySelector('.unit-select');
