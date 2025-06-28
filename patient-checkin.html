@@ -50,12 +50,9 @@
             overflow: hidden;
         }
         
-        /* Progress bar */
+        /* Progress bar - hidden */
         .progress-bar {
-            height: 8px;
-            background: rgba(164, 124, 91, 0.2);
-            position: relative;
-            overflow: hidden;
+            display: none;
         }
         
         .progress-fill {
@@ -75,12 +72,12 @@
             padding: 5px 20px;
             text-align: center;
             min-height: 0; /* Allow shrinking */
-            margin-top: 50px; /* Bigger space between progress bar and content */
+            margin-top: 20px; /* Space from top without progress bar */
         }
         
         /* Step 2 (phone) specific adjustment - move content up */
         #step2 .question-area {
-            margin-top: -20px; /* Move phone screen content up by ~1 inch */
+            margin-top: -10px; /* Slight adjustment for phone screen */
         }
         
         .question-area h1 {
