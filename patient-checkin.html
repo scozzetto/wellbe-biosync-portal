@@ -307,7 +307,7 @@
         /* Logo */
         .logo-header {
             position: absolute;
-            top: 20px;
+            top: 23px;
             right: 20px;
             z-index: 10;
         }
@@ -321,7 +321,7 @@
         /* Back button */
         .back-btn {
             position: absolute;
-            top: 20px;
+            top: 23px;
             left: 20px;
             padding: 15px 30px;
             background: rgba(255, 255, 255, 0.1);
@@ -781,6 +781,9 @@
             updatePhoneDisplay();
             updateProgress();
             
+            // Show progress bar again
+            document.querySelector('.progress-bar').style.display = 'block';
+            
             // Clear timer
             if (autoResetTimer) {
                 clearTimeout(autoResetTimer);
@@ -822,10 +825,10 @@
             // Update immediately for responsive feel, but debounce rapid updates
             updateNameDisplay();
             
-            // Set timeout to prevent excessive updates during rapid typing
+            // Reduced timeout for more responsive typing
             nameUpdateTimeout = setTimeout(() => {
                 updateNameDisplay();
-            }, 10);
+            }, 5);
         }
         
         function updateNameDisplay() {
@@ -868,10 +871,10 @@
             // Update immediately for responsive feel, but debounce rapid updates
             updatePhoneDisplay();
             
-            // Set timeout to prevent excessive updates during rapid typing
+            // Reduced timeout for more responsive typing
             phoneUpdateTimeout = setTimeout(() => {
                 updatePhoneDisplay();
-            }, 10);
+            }, 5);
         }
         
         function updatePhoneDisplay() {
@@ -1164,9 +1167,11 @@
             playCheckInAlert();
             
             // Show success screen
-            document.getElementById('wizardContainer').style.display = 'none';
+            document.getElementById('step5').classList.add('hidden');
             document.getElementById('successScreen').style.display = 'flex';
             document.getElementById('backBtn').style.display = 'none';
+            // Hide progress bar
+            document.querySelector('.progress-bar').style.display = 'none';
             
             // Countdown and reset
             let countdown = 5;
