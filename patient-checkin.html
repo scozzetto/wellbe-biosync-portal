@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="theme-color" content="#1C2630">
     <title>Be Well Check-In</title>
@@ -61,6 +61,29 @@
             -webkit-user-select: none;
             position: relative;
             top: env(safe-area-inset-top, 0);
+        }
+        
+        /* Aggressive status bar hiding */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 44px; /* Standard iOS status bar height */
+            background: #0f1419;
+            z-index: 9999;
+            pointer-events: none;
+        }
+        
+        /* Hide specific iOS status bar elements */
+        [class*="status-bar"],
+        [id*="status-bar"],
+        .status-bar,
+        #status-bar {
+            display: none !important;
+            visibility: hidden !important;
+            opacity: 0 !important;
         }
         
         .wizard-container {
@@ -766,6 +789,38 @@
     </div> <!-- End Main Interface -->
     
     <script>
+        // Hide status bar elements on load
+        function hideStatusBar() {
+            // Try to hide common status bar selectors
+            const statusSelectors = [
+                '.status-bar', '#status-bar', '[class*="status-bar"]',
+                '.statusbar', '#statusbar', '[class*="statusbar"]',
+                '.ios-status-bar', '.mobile-status-bar',
+                '.status-bar-overlay', '.status-bar-background'
+            ];
+            
+            statusSelectors.forEach(selector => {
+                const elements = document.querySelectorAll(selector);
+                elements.forEach(el => {
+                    el.style.display = 'none';
+                    el.style.visibility = 'hidden';
+                    el.style.opacity = '0';
+                });
+            });
+            
+            // Force fullscreen
+            if (document.documentElement.requestFullscreen) {
+                document.documentElement.requestFullscreen().catch(() => {});
+            } else if (document.documentElement.webkitRequestFullscreen) {
+                document.documentElement.webkitRequestFullscreen().catch(() => {});
+            }
+        }
+        
+        // Run on load and periodically
+        document.addEventListener('DOMContentLoaded', hideStatusBar);
+        window.addEventListener('load', hideStatusBar);
+        setInterval(hideStatusBar, 1000);
+        
         let currentStep = 1;
         let formData = {
             name: '',
