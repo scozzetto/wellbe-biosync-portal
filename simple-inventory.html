@@ -309,6 +309,82 @@
             background: var(--card-bg);
             color: var(--text-color);
         }
+        
+        /* Search functionality */
+        .search-container {
+            margin: 20px 0;
+            text-align: center;
+            background: var(--card-bg);
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid rgba(164, 124, 91, 0.2);
+        }
+        
+        .search-input {
+            width: 100%;
+            max-width: 400px;
+            padding: 12px 15px;
+            font-size: 16px;
+            border: 2px solid var(--primary-color);
+            border-radius: 6px;
+            background: var(--card-bg);
+            color: var(--text-color);
+            margin-bottom: 10px;
+        }
+        
+        .search-input:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(164, 124, 91, 0.2);
+        }
+        
+        .search-stats {
+            font-size: 14px;
+            color: var(--text-color);
+            opacity: 0.8;
+        }
+        
+        /* Vendor collapse functionality */
+        .vendor-collapse-toggle {
+            background: rgba(164, 124, 91, 0.1);
+            border: 1px solid rgba(164, 124, 91, 0.3);
+            border-radius: 6px;
+            padding: 8px 12px;
+            margin: 10px 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+        
+        .vendor-collapse-toggle:hover {
+            background: rgba(164, 124, 91, 0.2);
+            border-color: var(--primary-color);
+        }
+        
+        .vendor-items-wrapper {
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+        
+        .vendor-items-wrapper.collapsed {
+            max-height: 0;
+        }
+        
+        .vendor-items-wrapper.expanded {
+            max-height: 2000px;
+        }
+        
+        .collapse-icon {
+            font-size: 16px;
+            transition: transform 0.3s ease;
+        }
+        
+        .collapse-icon.rotated {
+            transform: rotate(90deg);
+        }
     </style>
 </head>
 <body>
@@ -327,6 +403,17 @@
             </select>
         </div>
         
+        <!-- Search Functionality -->
+        <div class="search-container">
+            <input type="text" 
+                   id="searchInput" 
+                   class="search-input" 
+                   placeholder="🔍 Search vendors or items..." 
+                   oninput="performSearch()"
+                   onkeyup="performSearch()">
+            <div id="searchStats" class="search-stats">Search across all vendors and items</div>
+        </div>
+        
         <div style="display: flex; gap: 15px; justify-content: center; margin-top: 15px; flex-wrap: wrap;">
             <button onclick="clearAllWithConfirmation()" class="btn" style="background: #dc3545; color: white; font-size: 18px; padding: 12px 24px;">
                 <i class="fas fa-trash-alt"></i> Clear All Orders
@@ -339,6 +426,9 @@
             </button>
             <button onclick="window.location.href='staff-knowledge-base.html'" class="btn" style="background: white; color: var(--primary-color);">
                 <i class="fas fa-arrow-left"></i> Back to Staff Portal
+            </button>
+            <button onclick="toggleAllVendors()" class="btn" style="background: var(--primary-color); color: white; font-size: 16px; padding: 10px 20px;">
+                <i class="fas fa-compress-arrows-alt"></i> Collapse All Vendors
             </button>
         </div>
     </div>
@@ -398,7 +488,15 @@
             </div>
         </div>
         
-        <div class="items-grid">
+        <!-- Vendor Collapse Toggle -->
+        <div class="vendor-collapse-toggle" onclick="toggleVendorItems('vacpak')">
+            <span>📦 Items & Ordering</span>
+            <span id="vacpak-collapse-icon" class="collapse-icon">▼</span>
+        </div>
+        
+        <!-- Vendor Items Wrapper (collapsible) -->
+        <div class="vendor-items-wrapper expanded" id="vacpak-items">
+            <div class="items-grid">
             <div class="item-row">
                 <div class="item-name">Green Bananas</div>
                 <select class="quantity-select" data-vendor="vacpak" data-item="Green Bananas">
@@ -1054,10 +1152,11 @@
             <textarea class="notes-input" id="vacpak-notes" placeholder="Special instructions or notes for this order..."></textarea>
         </div>
         
-        <div class="vendor-actions">
-            <button onclick="printVendor('vacpak')" class="btn btn-print">Print VACPAK Order</button>
-            <button onclick="saveVendor('vacpak')" class="btn btn-save">Save Order</button>
-            <button onclick="clearVendor('vacpak')" class="btn btn-clear">Clear</button>
+            <div class="vendor-actions">
+                <button onclick="printVendor('vacpak')" class="btn btn-print">Print VACPAK Order</button>
+                <button onclick="saveVendor('vacpak')" class="btn btn-save">Save Order</button>
+                <button onclick="clearVendor('vacpak')" class="btn btn-clear">Clear</button>
+            </div>
         </div>
     </div>
     
@@ -1118,7 +1217,15 @@
             </div>
         </div>
         
-        <div class="items-grid">
+        <!-- Vendor Collapse Toggle -->
+        <div class="vendor-collapse-toggle" onclick="toggleVendorItems('bradyplus')">
+            <span>📦 Items & Ordering</span>
+            <span id="bradyplus-collapse-icon" class="collapse-icon">▼</span>
+        </div>
+        
+        <!-- Vendor Items Wrapper (collapsible) -->
+        <div class="vendor-items-wrapper expanded" id="bradyplus-items">
+            <div class="items-grid">
             <div class="item-row">
                 <div class="item-name">16 oz Bowls (Acai bowls) - CTR16BFIFS</div>
                 <select class="quantity-select" data-vendor="bradyplus" data-item="16 oz Bowls (Acai bowls)">
@@ -2321,6 +2428,7 @@
             <button onclick="saveVendor('bradyplus')" class="btn btn-save">Save Order</button>
             <button onclick="clearVendor('bradyplus')" class="btn btn-clear">Clear</button>
         </div>
+        </div>
     </div>
     
     <!-- Gordon Foods Vendor -->
@@ -2389,7 +2497,15 @@
             </div>
         </div>
         
-        <div class="items-grid">
+        <!-- Vendor Collapse Toggle -->
+        <div class="vendor-collapse-toggle" onclick="toggleVendorItems('gordon')">
+            <span>📦 Items & Ordering</span>
+            <span id="gordon-collapse-icon" class="collapse-icon">▼</span>
+        </div>
+        
+        <!-- Vendor Items Wrapper (collapsible) -->
+        <div class="vendor-items-wrapper expanded" id="gordon-items">
+            <div class="items-grid">
             <div class="item-row">
                 <div class="item-name">4oz Hamburger Patties</div>
                 <select class="quantity-select" data-vendor="gordon" data-item="4oz Hamburger Patties">
@@ -3349,6 +3465,7 @@
             <button onclick="saveVendor('gordon')" class="btn btn-save">Save Order</button>
             <button onclick="clearVendor('gordon')" class="btn btn-clear">Clear</button>
         </div>
+        </div>
     </div>
     
     <!-- WEBSTAURANT Vendor -->
@@ -3406,7 +3523,15 @@
             </div>
         </div>
         
-        <div class="items-grid">
+        <!-- Vendor Collapse Toggle -->
+        <div class="vendor-collapse-toggle" onclick="toggleVendorItems('webstaurant')">
+            <span>📦 Items & Ordering</span>
+            <span id="webstaurant-collapse-icon" class="collapse-icon">▼</span>
+        </div>
+        
+        <!-- Vendor Items Wrapper (collapsible) -->
+        <div class="vendor-items-wrapper expanded" id="webstaurant-items">
+            <div class="items-grid">
             <div class="item-row">
                 <div class="item-name">Almond Milk</div>
                 <select class="quantity-select" data-vendor="webstaurant" data-item="Almond Milk">
@@ -4021,6 +4146,7 @@
             <button onclick="saveVendor('webstaurant')" class="btn btn-save">Save Order</button>
             <button onclick="clearVendor('webstaurant')" class="btn btn-clear">Clear</button>
         </div>
+        </div>
     </div>
     
     <!-- GNARLEY Vendor -->
@@ -4079,7 +4205,15 @@
             </div>
         </div>
         
-        <div class="items-grid">
+        <!-- Vendor Collapse Toggle -->
+        <div class="vendor-collapse-toggle" onclick="toggleVendorItems('gnarley')">
+            <span>📦 Items & Ordering</span>
+            <span id="gnarley-collapse-icon" class="collapse-icon">▼</span>
+        </div>
+        
+        <!-- Vendor Items Wrapper (collapsible) -->
+        <div class="vendor-items-wrapper expanded" id="gnarley-items">
+            <div class="items-grid">
             <div class="item-row">
                 <div class="item-name">Chocolate Protein Powder</div>
                 <select class="quantity-select" data-vendor="gnarley" data-item="Chocolate Protein Powder">
@@ -4187,6 +4321,7 @@
             <button onclick="saveVendor('gnarley')" class="btn btn-save">Save Order</button>
             <button onclick="clearVendor('gnarley')" class="btn btn-clear">Clear</button>
         </div>
+        </div>
     </div>
     
     <!-- NUTS.COM Vendor -->
@@ -4244,7 +4379,15 @@
             </div>
         </div>
         
-        <div class="items-grid">
+        <!-- Vendor Collapse Toggle -->
+        <div class="vendor-collapse-toggle" onclick="toggleVendorItems('nuts')">
+            <span>📦 Items & Ordering</span>
+            <span id="nuts-collapse-icon" class="collapse-icon">▼</span>
+        </div>
+        
+        <!-- Vendor Items Wrapper (collapsible) -->
+        <div class="vendor-items-wrapper expanded" id="nuts-items">
+            <div class="items-grid">
             <div class="item-row">
                 <div class="item-name">Regular Granola</div>
                 <select class="quantity-select" data-vendor="nuts" data-item="Regular Granola">
@@ -4353,6 +4496,7 @@
             <button onclick="saveVendor('nuts')" class="btn btn-save">Save Order</button>
             <button onclick="clearVendor('nuts')" class="btn btn-clear">Clear</button>
         </div>
+        </div>
     </div>
     
     <!-- JENNIFER'S Vendor -->
@@ -4411,7 +4555,15 @@
             </div>
         </div>
         
-        <div class="items-grid">
+        <!-- Vendor Collapse Toggle -->
+        <div class="vendor-collapse-toggle" onclick="toggleVendorItems('jennifers')">
+            <span>📦 Items & Ordering</span>
+            <span id="jennifers-collapse-icon" class="collapse-icon">▼</span>
+        </div>
+        
+        <!-- Vendor Items Wrapper (collapsible) -->
+        <div class="vendor-items-wrapper expanded" id="jennifers-items">
+            <div class="items-grid">
             <div class="item-row">
                 <div class="item-name">20 LB Bulk Vanilla Maple Granola (Gluten-Free)</div>
                 <select class="quantity-select" data-vendor="jennifers" data-item="20 LB Bulk Vanilla Maple Granola (Gluten-Free)">
@@ -4520,6 +4672,7 @@
             <button onclick="saveVendor('jennifers')" class="btn btn-save">Save Order</button>
             <button onclick="clearVendor('jennifers')" class="btn btn-clear">Clear</button>
         </div>
+        </div>
     </div>
     
     <!-- FAIRE Vendor -->
@@ -4578,7 +4731,15 @@
             </div>
         </div>
         
-        <div class="items-grid">
+        <!-- Vendor Collapse Toggle -->
+        <div class="vendor-collapse-toggle" onclick="toggleVendorItems('faire')">
+            <span>📦 Items & Ordering</span>
+            <span id="faire-collapse-icon" class="collapse-icon">▼</span>
+        </div>
+        
+        <!-- Vendor Items Wrapper (collapsible) -->
+        <div class="vendor-items-wrapper expanded" id="faire-items">
+            <div class="items-grid">
             <!-- Nutsack Category -->
             <div style="background: rgba(164, 124, 91, 0.05); padding: 10px; margin: 15px 0; border-radius: 6px;">
                 <h4 style="margin: 0 0 10px 0; color: var(--primary-color); font-size: 16px;">🥜 Nutsack Premium Nuts</h4>
@@ -5306,6 +5467,7 @@
             <button onclick="saveVendor('faire')" class="btn btn-save">Save Order</button>
             <button onclick="clearVendor('faire')" class="btn btn-clear">Clear</button>
         </div>
+        </div>
     </div>
     
     <!-- AMAZON Vendor -->
@@ -5364,7 +5526,15 @@
             </div>
         </div>
         
-        <div class="items-grid">
+        <!-- Vendor Collapse Toggle -->
+        <div class="vendor-collapse-toggle" onclick="toggleVendorItems('amazon')">
+            <span>📦 Items & Ordering</span>
+            <span id="amazon-collapse-icon" class="collapse-icon">▼</span>
+        </div>
+        
+        <!-- Vendor Items Wrapper (collapsible) -->
+        <div class="vendor-items-wrapper expanded" id="amazon-items">
+            <div class="items-grid">
             <div class="item-row">
                 <div class="item-name">Spirulina (Supplement)</div>
                 <select class="quantity-select" data-vendor="amazon" data-item="Spirulina (Supplement)">
@@ -6987,6 +7157,7 @@
             <button onclick="saveVendor('amazon')" class="btn btn-save">Save Order</button>
             <button onclick="clearVendor('amazon')" class="btn btn-clear">Clear</button>
         </div>
+        </div>
     </div>
     
     <!-- SABBATH COFFEE Vendor -->
@@ -7045,7 +7216,15 @@
             </div>
         </div>
         
-        <div class="items-grid">
+        <!-- Vendor Collapse Toggle -->
+        <div class="vendor-collapse-toggle" onclick="toggleVendorItems('sabbathcoffee')">
+            <span>📦 Items & Ordering</span>
+            <span id="sabbathcoffee-collapse-icon" class="collapse-icon">▼</span>
+        </div>
+        
+        <!-- Vendor Items Wrapper (collapsible) -->
+        <div class="vendor-items-wrapper expanded" id="sabbathcoffee-items">
+            <div class="items-grid">
             <div class="item-row">
                 <div class="item-name">Lunar Dark Roast 12oz (Espresso)</div>
                 <select class="quantity-select" data-vendor="sabbathcoffee" data-item="Lunar Dark Roast 12oz (Espresso)">
@@ -7177,6 +7356,7 @@
             <button onclick="saveVendor('sabbathcoffee')" class="btn btn-save">Save Order</button>
             <button onclick="clearVendor('sabbathcoffee')" class="btn btn-clear">Clear</button>
         </div>
+        </div>
     </div>
     
     <!-- GREEN ROCK DISTRIBUTION (NAKEE Butter & WHY Bars) Vendor -->
@@ -7235,7 +7415,15 @@
             </div>
         </div>
         
-        <div class="items-grid">
+        <!-- Vendor Collapse Toggle -->
+        <div class="vendor-collapse-toggle" onclick="toggleVendorItems('greenrock')">
+            <span>📦 Items & Ordering</span>
+            <span id="greenrock-collapse-icon" class="collapse-icon">▼</span>
+        </div>
+        
+        <!-- Vendor Items Wrapper (collapsible) -->
+        <div class="vendor-items-wrapper expanded" id="greenrock-items">
+            <div class="items-grid">
             <div class="item-row">
                 <div class="item-name">WHY Bar - Blueberry</div>
                 <select class="quantity-select" data-vendor="greenrock" data-item="WHY Bar - Blueberry">
@@ -7455,6 +7643,7 @@
             <button onclick="saveVendor('greenrock')" class="btn btn-save">Save Order</button>
             <button onclick="clearVendor('greenrock')" class="btn btn-clear">Clear</button>
         </div>
+        </div>
     </div>
     
     <!-- MUFFITS (Debbie Schemansky) Vendor -->
@@ -7513,7 +7702,15 @@
             </div>
         </div>
         
-        <div class="items-grid">
+        <!-- Vendor Collapse Toggle -->
+        <div class="vendor-collapse-toggle" onclick="toggleVendorItems('muffits')">
+            <span>📦 Items & Ordering</span>
+            <span id="muffits-collapse-icon" class="collapse-icon">▼</span>
+        </div>
+        
+        <!-- Vendor Items Wrapper (collapsible) -->
+        <div class="vendor-items-wrapper expanded" id="muffits-items">
+            <div class="items-grid">
             <div class="item-row">
                 <div class="item-name">MUFFITS - Chocolate</div>
                 <select class="quantity-select" data-vendor="muffits" data-item="MUFFITS - Chocolate">
@@ -7646,6 +7843,7 @@
             <button onclick="saveVendor('muffits')" class="btn btn-save">Save Order</button>
             <button onclick="clearVendor('muffits')" class="btn btn-clear">Clear</button>
         </div>
+        </div>
     </div>
     
     <!-- OFFICE INVENTORY Section -->
@@ -7658,7 +7856,15 @@
             </div>
         </div>
         
-        <div class="items-grid">
+        <!-- Vendor Collapse Toggle -->
+        <div class="vendor-collapse-toggle" onclick="toggleVendorItems('office-inventory')">
+            <span>📦 Items & Ordering</span>
+            <span id="office-inventory-collapse-icon" class="collapse-icon">▼</span>
+        </div>
+        
+        <!-- Vendor Items Wrapper (collapsible) -->
+        <div class="vendor-items-wrapper expanded" id="office-inventory-items">
+            <div class="items-grid">
             <!-- Paper & Printing Supplies -->
             <div class="item-row">
                 <div class="item-name">Printer Paper</div>
@@ -8694,6 +8900,7 @@
             <button onclick="saveVendor('office-inventory')" class="btn btn-save">Save Order</button>
             <button onclick="clearVendor('office-inventory')" class="btn btn-clear">Clear</button>
         </div>
+        </div>
     </div>
 
     <!-- THERAPY EQUIPMENT Vendor -->
@@ -8752,7 +8959,15 @@
             </div>
         </div>
         
-        <div class="items-grid">
+        <!-- Vendor Collapse Toggle -->
+        <div class="vendor-collapse-toggle" onclick="toggleVendorItems('therapy-equipment')">
+            <span>📦 Items & Ordering</span>
+            <span id="therapy-equipment-collapse-icon" class="collapse-icon">▼</span>
+        </div>
+        
+        <!-- Vendor Items Wrapper (collapsible) -->
+        <div class="vendor-items-wrapper expanded" id="therapy-equipment-items">
+            <div class="items-grid">
             <div class="item-row">
                 <div class="item-name">Access Laboratory Blood Draw Kit</div>
                 <select class="quantity-select" data-vendor="therapy-equipment" data-item="Access Laboratory Blood Draw Kit">
@@ -9353,6 +9568,7 @@
             <button onclick="saveVendor('therapy-equipment')" class="btn btn-save">Save Order</button>
             <button onclick="clearVendor('therapy-equipment')" class="btn btn-clear">Clear</button>
         </div>
+        </div>
     </div>
 
     <script>
@@ -9400,6 +9616,195 @@
             } else {
                 infoDiv.style.display = 'none';
                 toggleIcon.textContent = '▶';
+            }
+        }
+        
+        // NEW: Toggle vendor items section (collapse/expand items and ordering)
+        function toggleVendorItems(vendorId) {
+            const itemsWrapper = document.getElementById(vendorId + '-items');
+            const collapseIcon = document.getElementById(vendorId + '-collapse-icon');
+            
+            if (!itemsWrapper || !collapseIcon) return;
+            
+            if (itemsWrapper.classList.contains('collapsed')) {
+                // Expand
+                itemsWrapper.classList.remove('collapsed');
+                itemsWrapper.classList.add('expanded');
+                collapseIcon.textContent = '▼';
+                collapseIcon.classList.remove('rotated');
+            } else {
+                // Collapse
+                itemsWrapper.classList.remove('expanded');
+                itemsWrapper.classList.add('collapsed');
+                collapseIcon.textContent = '▶';
+                collapseIcon.classList.add('rotated');
+            }
+        }
+        
+        // NEW: Toggle all vendors at once
+        function toggleAllVendors() {
+            const vendorIds = ['vacpak', 'bradyplus', 'gordon', 'webstaurant', 'gnarley', 'nuts', 'jennifers', 'faire', 'amazon', 'sabbathcoffee', 'greenrock', 'muffits', 'office-inventory'];
+            const button = event.target;
+            
+            // Check if any vendor is currently expanded
+            const anyExpanded = vendorIds.some(vendorId => {
+                const wrapper = document.getElementById(vendorId + '-items');
+                return wrapper && wrapper.classList.contains('expanded');
+            });
+            
+            // If any are expanded, collapse all. If all are collapsed, expand all.
+            const action = anyExpanded ? 'collapse' : 'expand';
+            
+            vendorIds.forEach(vendorId => {
+                const wrapper = document.getElementById(vendorId + '-items');
+                const icon = document.getElementById(vendorId + '-collapse-icon');
+                
+                if (wrapper && icon) {
+                    if (action === 'collapse') {
+                        wrapper.classList.remove('expanded');
+                        wrapper.classList.add('collapsed');
+                        icon.textContent = '▶';
+                        icon.classList.add('rotated');
+                    } else {
+                        wrapper.classList.remove('collapsed');
+                        wrapper.classList.add('expanded');
+                        icon.textContent = '▼';
+                        icon.classList.remove('rotated');
+                    }
+                }
+            });
+            
+            // Update button text
+            button.innerHTML = action === 'collapse' 
+                ? '<i class="fas fa-expand-arrows-alt"></i> Expand All Vendors'
+                : '<i class="fas fa-compress-arrows-alt"></i> Collapse All Vendors';
+        }
+        
+        // NEW: Search functionality
+        function performSearch() {
+            const searchInput = document.getElementById('searchInput');
+            const searchStats = document.getElementById('searchStats');
+            const query = searchInput.value.toLowerCase().trim();
+            
+            if (!query) {
+                // Show all vendors when search is empty
+                showAllVendors();
+                searchStats.textContent = 'Search across all vendors and items';
+                return;
+            }
+            
+            let matchingVendors = 0;
+            let matchingItems = 0;
+            
+            // Get all vendor sections
+            const vendorSections = document.querySelectorAll('.vendor-section');
+            
+            vendorSections.forEach(vendorSection => {
+                const vendorName = vendorSection.querySelector('.vendor-name span');
+                const vendorNameText = vendorName ? vendorName.textContent.toLowerCase() : '';
+                
+                // Check if vendor name matches
+                const vendorMatches = vendorNameText.includes(query);
+                
+                // Check items within this vendor
+                const itemRows = vendorSection.querySelectorAll('.item-row');
+                let hasMatchingItems = false;
+                
+                itemRows.forEach(row => {
+                    const itemName = row.querySelector('.item-name');
+                    if (itemName) {
+                        const itemText = itemName.textContent.toLowerCase();
+                        const itemMatches = itemText.includes(query);
+                        
+                        if (itemMatches) {
+                            hasMatchingItems = true;
+                            matchingItems++;
+                            row.style.display = 'grid';
+                            // Highlight matching text
+                            highlightText(itemName, query);
+                        } else {
+                            row.style.display = 'none';
+                            removeHighlight(itemName);
+                        }
+                    }
+                });
+                
+                // Show/hide vendor section based on matches
+                if (vendorMatches || hasMatchingItems) {
+                    vendorSection.style.display = 'block';
+                    matchingVendors++;
+                    
+                    // Auto-expand vendor items if it has matching items
+                    if (hasMatchingItems) {
+                        const vendorId = vendorSection.id;
+                        const itemsWrapper = document.getElementById(vendorId + '-items');
+                        const collapseIcon = document.getElementById(vendorId + '-collapse-icon');
+                        
+                        if (itemsWrapper && itemsWrapper.classList.contains('collapsed')) {
+                            toggleVendorItems(vendorId);
+                        }
+                    }
+                    
+                    // Highlight vendor name if it matches
+                    if (vendorMatches && vendorName) {
+                        highlightText(vendorName, query);
+                    } else if (vendorName) {
+                        removeHighlight(vendorName);
+                    }
+                } else {
+                    vendorSection.style.display = 'none';
+                    // Remove highlights when vendor is hidden
+                    if (vendorName) removeHighlight(vendorName);
+                }
+            });
+            
+            // Update search stats
+            if (matchingVendors === 0 && matchingItems === 0) {
+                searchStats.textContent = 'No matches found';
+            } else {
+                searchStats.textContent = `Found ${matchingVendors} vendor(s) and ${matchingItems} item(s) matching "${query}"`;
+            }
+        }
+        
+        // Helper function to show all vendors
+        function showAllVendors() {
+            const vendorSections = document.querySelectorAll('.vendor-section');
+            vendorSections.forEach(section => {
+                section.style.display = 'block';
+                
+                // Show all item rows
+                const itemRows = section.querySelectorAll('.item-row');
+                itemRows.forEach(row => {
+                    row.style.display = 'grid';
+                    const itemName = row.querySelector('.item-name');
+                    if (itemName) removeHighlight(itemName);
+                });
+                
+                // Remove vendor name highlights
+                const vendorName = section.querySelector('.vendor-name span');
+                if (vendorName) removeHighlight(vendorName);
+            });
+        }
+        
+        // Helper function to highlight matching text
+        function highlightText(element, query) {
+            if (!element || !query) return;
+            
+            const originalText = element.dataset.originalText || element.textContent;
+            element.dataset.originalText = originalText;
+            
+            const regex = new RegExp(`(${query})`, 'gi');
+            const highlightedText = originalText.replace(regex, '<mark style="background: #ffff99; color: #000; padding: 1px 2px; border-radius: 2px;">$1</mark>');
+            element.innerHTML = highlightedText;
+        }
+        
+        // Helper function to remove highlights
+        function removeHighlight(element) {
+            if (!element) return;
+            
+            if (element.dataset.originalText) {
+                element.textContent = element.dataset.originalText;
+                delete element.dataset.originalText;
             }
         }
         
