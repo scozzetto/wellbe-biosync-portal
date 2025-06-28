@@ -549,7 +549,7 @@
             <button onclick="sendAllOrders()" class="btn" style="background: #007bff; color: white; font-size: 18px; padding: 12px 24px;">
                 <i class="fas fa-paper-plane"></i> Send Orders to Dashboard
             </button>
-            <button onclick="window.location.href='orders-dashboard.html'" class="btn" style="background: #8B3A7C; color: white; font-size: 18px; padding: 12px 24px;">
+            <button onclick="saveDraftAndNavigate()" class="btn" style="background: #8B3A7C; color: white; font-size: 18px; padding: 12px 24px;">
                 <i class="fas fa-clipboard-list"></i> View Orders Dashboard
             </button>
             <button onclick="window.location.href='staff-knowledge-base.html'" class="btn" style="background: white; color: var(--primary-color);">
@@ -4263,6 +4263,7 @@
                 units: {},
                 customItems: {},
                 notes: {},
+                expandedVendors: [],
                 timestamp: new Date().toISOString()
             };
             
@@ -4276,12 +4277,12 @@
             
             // Save all unit selections
             document.querySelectorAll('.unit-input').forEach(input => {
-                if (select.value && select.value !== '') {
+                if (input.value && input.value !== '') {
                     // Find the associated quantity element to get the item name
-                    const quantityElement = select.parentElement.querySelector('.quantity-input');
+                    const quantityElement = input.parentElement.querySelector('.quantity-input');
                     if (quantityElement) {
                         const key = `${quantityElement.dataset.vendor}-${quantityElement.dataset.item || quantityElement.dataset.type}`;
-                        draftData.units[key] = select.value;
+                        draftData.units[key] = input.value;
                     }
                 }
             });
@@ -4299,6 +4300,13 @@
                 const notesField = document.getElementById(`${vendorId}-notes`);
                 if (notesField && notesField.value) {
                     draftData.notes[vendorId] = notesField.value;
+                }
+            });
+            
+            // Save expanded vendors
+            document.querySelectorAll('.vendor-items-wrapper').forEach(wrapper => {
+                if (wrapper.classList.contains('expanded')) {
+                    draftData.expandedVendors.push(wrapper.id);
                 }
             });
             
@@ -4370,6 +4378,25 @@
                         restoredItems++;
                     }
                 });
+                
+                // Restore expanded vendors
+                if (draftData.expandedVendors && draftData.expandedVendors.length > 0) {
+                    draftData.expandedVendors.forEach(vendorId => {
+                        const wrapper = document.getElementById(vendorId);
+                        if (wrapper) {
+                            wrapper.classList.remove('collapsed');
+                            wrapper.classList.add('expanded');
+                            // Update the toggle icon
+                            const vendorSection = wrapper.closest('.vendor-section');
+                            if (vendorSection) {
+                                const icon = vendorSection.querySelector('.collapse-icon');
+                                if (icon) {
+                                    icon.textContent = '▼';
+                                }
+                            }
+                        }
+                    });
+                }
                 
                 if (restoredItems > 0) {
                     showDraftRestoredMessage(restoredItems);
