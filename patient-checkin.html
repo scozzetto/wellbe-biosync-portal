@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="theme-color" content="#1C2630">
     <title>Be Well Check-In</title>
@@ -52,7 +52,15 @@
             height: -webkit-fill-available;
             margin: 0;
             padding: 0;
-            padding-top: env(safe-area-inset-top, 0);
+            padding-top: env(safe-area-inset-top, 20px);
+        }
+        
+        /* Additional status bar hiding attempts */
+        body {
+            -webkit-appearance: none;
+            -webkit-user-select: none;
+            position: relative;
+            top: env(safe-area-inset-top, 0);
         }
         
         .wizard-container {
