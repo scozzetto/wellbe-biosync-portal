@@ -731,6 +731,9 @@
             currentStep = 1;
             document.getElementById('step1').classList.remove('hidden');
             updateProgress();
+            
+            // Start the auto-reset timer immediately when check-in begins
+            resetAutoTimer();
         }
         
         function resetAutoTimer() {
@@ -738,8 +741,8 @@
                 clearTimeout(autoResetTimer);
             }
             
-            // Only start timer if we're not on step 1 (welcome screen)
-            if (currentStep > 1) {
+            // Start timer if we're in any step (1-5), not on welcome screen (0)
+            if (currentStep >= 1) {
                 autoResetTimer = setTimeout(() => {
                     console.log('Auto-resetting due to inactivity');
                     resetToStart();
