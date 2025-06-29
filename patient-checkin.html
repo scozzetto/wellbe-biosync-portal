@@ -9,6 +9,8 @@
     <meta name="theme-color" content="#1C2630">
     <title>Be Well Check-In</title>
     <link rel="apple-touch-icon" href="logo.svg">
+    <!-- Font Awesome for professional icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         * {
             margin: 0;
@@ -507,28 +509,45 @@
             text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
         }
         
+        /* Professional tap instruction styling */
         .tap-instruction {
-            font-size: clamp(1.2rem, 3vw, 2rem);
-            color: rgba(255, 255, 255, 0.9);
-            background: rgba(164, 124, 91, 0.2);
-            padding: 20px 40px;
-            border-radius: 50px;
-            border: 2px solid #A47C5B;
-            display: inline-block;
-            animation: tapBlink 2s ease-in-out infinite;
-            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #ffffff;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+            margin-top: 30px;
+            animation: pulse 2s infinite;
         }
         
-        @keyframes tapBlink {
-            0%, 100% { 
-                opacity: 1; 
-                transform: scale(1);
-            }
-            50% { 
-                opacity: 0.7;
-                transform: scale(1.02);
-            }
+        .tap-icon {
+            width: 50px;
+            height: 50px;
+            background: rgba(164, 124, 91, 0.8);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+            font-size: 1.5rem;
+            animation: bounce 2s infinite;
+            box-shadow: 0 4px 12px rgba(164, 124, 91, 0.4);
         }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-8px); }
+            60% { transform: translateY(-4px); }
+        }
+        
         
         /* Floating particles animation */
         .welcome-particles {
@@ -627,7 +646,13 @@
             <h1 class="welcome-title">Welcome to Be Well</h1>
             <p class="welcome-subtitle">LifeStyle Centers</p>
             <div class="tap-instruction">
-                👆 Please Sign In - Tap Here 👆
+                <div class="tap-icon">
+                    <i class="fas fa-hand-pointer"></i>
+                </div>
+                <span>Please Sign In - Tap Here</span>
+                <div class="tap-icon">
+                    <i class="fas fa-hand-pointer"></i>
+                </div>
             </div>
         </div>
     </div>
