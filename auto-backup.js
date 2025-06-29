@@ -139,32 +139,8 @@
     `;
     document.head.appendChild(style);
     
-    // Manual backup button (floating)
-    const backupButton = document.createElement('button');
-    backupButton.innerHTML = '💾';
-    backupButton.title = 'Backup conversation now';
-    backupButton.style.cssText = `
-        position: fixed;
-        bottom: 80px;
-        right: 20px;
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
-        background: #2196F3;
-        color: white;
-        border: none;
-        font-size: 24px;
-        cursor: pointer;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-        z-index: 9999;
-        transition: transform 0.2s;
-    `;
-    
-    backupButton.onmouseover = () => backupButton.style.transform = 'scale(1.1)';
-    backupButton.onmouseout = () => backupButton.style.transform = 'scale(1)';
-    backupButton.onclick = performBackup;
-    
-    document.body.appendChild(backupButton);
+    // Manual backup button removed for production
+    // Auto-backup still runs in the background without UI
     
     // Auto-backup on page unload
     window.addEventListener('beforeunload', () => {
