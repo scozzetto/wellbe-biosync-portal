@@ -89,7 +89,9 @@ grep "WELLBE-BIOSYNC-2025" CLAUDE.md  # Should return this unique ID
 - **🚀 AGGRESSIVE LOCAL SEO OPTIMIZATION:** Comprehensive schema markup, location-specific content, FAQ structured data, and marketing genius implementation for top Google rankings
 - **✅ IPAD CHECK-IN INTERFACE OPTIMIZED:** Perfect spacing adjustments - raised all elements for proper screen utilization, removed keyboard black lines, eliminated status bar overlay
 - **✅ v2.5 INTERFACE OPTIMIZATION COMPLETE:** Professional icon design, multi-location foundation, navigation workflow optimization
+- **✅ DISCRETE VERSION DISPLAY:** Homepage footer shows "VERS. 2.5" in bottom-right corner (9px, 30% opacity, fixed position)
 - **🎯 PLANNED: Generic Location Selector System** - Front Desk Dashboard & Check-in Kiosk will become generic buttons with location picker (Birmingham | UWM | Berkeley)
+- **📋 VERSION UPDATE PROTOCOL:** Always update version number in index.html line 2993 with each new release
 
 ## 💳 STRIPE PAYMENT LINKS
 - **Restore ($149):** https://buy.stripe.com/eVq6oI3KEbHrais8DtgQE01
@@ -609,6 +611,12 @@ Long-tail Keywords:
 - **Generic Button Strategy** - Front Desk Dashboard & Check-in Kiosk will become location-agnostic
 - **Location Selector Modal** - Click button → Choose location → Redirect to appropriate system
 - **100% Easy Implementation** - Current architecture already supports this enhancement
+
+#### 🎨 **Version Display System:**
+- **Homepage Footer Version** - Discrete "VERS. 2.5" display in bottom-right corner
+- **Styling**: 9px monospace font, 30% opacity white, fixed positioning
+- **Update Location**: index.html line 2993 - must update with each version release
+- **Purpose**: Track live version for debugging and reference
 
 ### 💾 **Version 2.5 Recovery Information:**
 - **Stable Tag**: v2.5-interface-optimization
