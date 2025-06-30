@@ -126,6 +126,9 @@
                     <button onclick="clearCompleted()" style="padding: 10px 20px; border: 1px solid #dc3545; border-radius: 6px; background: transparent; color: #dc3545; cursor: pointer; font-weight: 600;">
                         <i class="fas fa-trash"></i> Clear Completed
                     </button>
+                    <button onclick="clearAllTasks()" style="padding: 10px 20px; border: 1px solid #6c757d; border-radius: 6px; background: transparent; color: #6c757d; cursor: pointer; font-weight: 600; margin-left: 10px;">
+                        <i class="fas fa-trash-alt"></i> Clear All (Reset Demo)
+                    </button>
                 </div>
             </div>
         </div>
@@ -193,11 +196,81 @@
             const savedTasks = localStorage.getItem('staffTasks');
             if (savedTasks) {
                 staffTasks = JSON.parse(savedTasks);
+                
+                // If we only have a few tasks (or they got wiped), ensure we have sample tasks
+                if (staffTasks.length < 3) {
+                    const sampleTasks = [
+                        {
+                            id: 'sample-1',
+                            description: 'Update patient intake forms for new IV therapy protocols',
+                            priority: 'urgent',
+                            dueDate: '2025-06-29',
+                            completed: false,
+                            createdAt: '2025-06-28T10:00:00.000Z',
+                            createdBy: 'Dr. Sarah',
+                            completedAt: null,
+                            completedBy: null
+                        },
+                        {
+                            id: 'sample-2', 
+                            description: 'Order new massage table linens for Birmingham location',
+                            priority: 'normal',
+                            dueDate: '2025-07-05',
+                            completed: false,
+                            createdAt: '2025-06-27T14:30:00.000Z',
+                            createdBy: 'Jennifer',
+                            completedAt: null,
+                            completedBy: null
+                        },
+                        {
+                            id: 'sample-3',
+                            description: 'Schedule staff training for new cupping techniques',
+                            priority: 'low',
+                            dueDate: '2025-07-10',
+                            completed: true,
+                            createdAt: '2025-06-25T09:15:00.000Z',
+                            createdBy: 'Michael',
+                            completedAt: '2025-06-26T16:45:00.000Z',
+                            completedBy: 'Sarah'
+                        },
+                        {
+                            id: 'sample-4',
+                            description: 'Restock colon hydrotherapy supplies - URGENT',
+                            priority: 'urgent',
+                            dueDate: '2025-06-30',
+                            completed: false,
+                            createdAt: '2025-06-26T11:20:00.000Z',
+                            createdBy: 'Admin',
+                            completedAt: null,
+                            completedBy: null
+                        },
+                        {
+                            id: 'sample-5',
+                            description: 'Update website with new NAD+ IV pricing',
+                            priority: 'normal',
+                            dueDate: null,
+                            completed: false,
+                            createdAt: '2025-06-24T13:10:00.000Z',
+                            createdBy: 'Marketing Team',
+                            completedAt: null,
+                            completedBy: null
+                        }
+                    ];
+                    
+                    // Add sample tasks that don't already exist
+                    sampleTasks.forEach(sampleTask => {
+                        if (!staffTasks.find(task => task.id === sampleTask.id)) {
+                            staffTasks.push(sampleTask);
+                        }
+                    });
+                    
+                    saveTasks();
+                }
             } else {
-                // Add sample tasks for testing the interface
+                // First time - add sample tasks
                 staffTasks = [
                     {
-                        id: '1',
+                        id: 'sample-1',
                         description: 'Update patient intake forms for new IV therapy protocols',
                         priority: 'urgent',
                         dueDate: '2025-06-29',
@@ -208,7 +281,7 @@
                         completedBy: null
                     },
                     {
-                        id: '2', 
+                        id: 'sample-2', 
                         description: 'Order new massage table linens for Birmingham location',
                         priority: 'normal',
                         dueDate: '2025-07-05',
@@ -219,7 +292,7 @@
                         completedBy: null
                     },
                     {
-                        id: '3',
+                        id: 'sample-3',
                         description: 'Schedule staff training for new cupping techniques',
                         priority: 'low',
                         dueDate: '2025-07-10',
@@ -230,7 +303,7 @@
                         completedBy: 'Sarah'
                     },
                     {
-                        id: '4',
+                        id: 'sample-4',
                         description: 'Restock colon hydrotherapy supplies - URGENT',
                         priority: 'urgent',
                         dueDate: '2025-06-30',
@@ -241,7 +314,7 @@
                         completedBy: null
                     },
                     {
-                        id: '5',
+                        id: 'sample-5',
                         description: 'Update website with new NAD+ IV pricing',
                         priority: 'normal',
                         dueDate: null,
@@ -569,6 +642,18 @@
                 saveTasks();
                 renderTasks();
                 showNotification(`${completedCount} tasks cleared`, 'success');
+            }
+        }
+        
+        // Clear all tasks and reset demo
+        function clearAllTasks() {
+            if (confirm('Clear all tasks and reset the demo? This will reload the sample tasks.')) {
+                localStorage.removeItem('staffTasks');
+                staffTasks = [];
+                selectedTasks.clear();
+                loadTasks(); // This will reload the sample tasks
+                renderTasks();
+                showNotification('Demo reset with fresh sample tasks!', 'success');
             }
         }
         
