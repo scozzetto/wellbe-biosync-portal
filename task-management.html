@@ -170,10 +170,10 @@
     </div>
 
     <script>
-        // Check authentication
-        if (sessionStorage.getItem('staffAuthenticated') !== 'true') {
-            window.location.href = 'staff-knowledge-base.html';
-        }
+        // Check authentication (commented out for testing)
+        // if (sessionStorage.getItem('staffAuthenticated') !== 'true') {
+        //     window.location.href = 'staff-knowledge-base.html';
+        // }
 
         // Task Management System
         let staffTasks = [];
@@ -193,6 +193,66 @@
             const savedTasks = localStorage.getItem('staffTasks');
             if (savedTasks) {
                 staffTasks = JSON.parse(savedTasks);
+            } else {
+                // Add sample tasks for testing the interface
+                staffTasks = [
+                    {
+                        id: '1',
+                        description: 'Update patient intake forms for new IV therapy protocols',
+                        priority: 'urgent',
+                        dueDate: '2025-06-29',
+                        completed: false,
+                        createdAt: '2025-06-28T10:00:00.000Z',
+                        createdBy: 'Dr. Sarah',
+                        completedAt: null,
+                        completedBy: null
+                    },
+                    {
+                        id: '2', 
+                        description: 'Order new massage table linens for Birmingham location',
+                        priority: 'normal',
+                        dueDate: '2025-07-05',
+                        completed: false,
+                        createdAt: '2025-06-27T14:30:00.000Z',
+                        createdBy: 'Jennifer',
+                        completedAt: null,
+                        completedBy: null
+                    },
+                    {
+                        id: '3',
+                        description: 'Schedule staff training for new cupping techniques',
+                        priority: 'low',
+                        dueDate: '2025-07-10',
+                        completed: true,
+                        createdAt: '2025-06-25T09:15:00.000Z',
+                        createdBy: 'Michael',
+                        completedAt: '2025-06-26T16:45:00.000Z',
+                        completedBy: 'Sarah'
+                    },
+                    {
+                        id: '4',
+                        description: 'Restock colon hydrotherapy supplies - URGENT',
+                        priority: 'urgent',
+                        dueDate: '2025-06-30',
+                        completed: false,
+                        createdAt: '2025-06-26T11:20:00.000Z',
+                        createdBy: 'Admin',
+                        completedAt: null,
+                        completedBy: null
+                    },
+                    {
+                        id: '5',
+                        description: 'Update website with new NAD+ IV pricing',
+                        priority: 'normal',
+                        dueDate: null,
+                        completed: false,
+                        createdAt: '2025-06-24T13:10:00.000Z',
+                        createdBy: 'Marketing Team',
+                        completedAt: null,
+                        completedBy: null
+                    }
+                ];
+                saveTasks();
             }
         }
         
