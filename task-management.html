@@ -137,7 +137,7 @@
                 <i class="fas fa-info-circle" style="margin-right: 6px;"></i>
                 Click any card to select for printing • Use action buttons to complete, edit, or delete tasks
             </p>
-            <div id="tasksList" style="max-height: 700px; overflow-y: auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(400px, 1fr)); gap: 20px; padding: 10px;">
+            <div id="tasksList" style="max-height: 700px; overflow-y: auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; padding: 8px;">
                 <!-- Tasks will be populated here -->
             </div>
         </div>
@@ -398,9 +398,9 @@
         function generatePrintPage(tasks) {
             const printWindow = window.open('', '_blank');
             const priorityColors = {
-                urgent: '#dc3545',
-                normal: '#ffc107', 
-                low: '#28a745'
+                urgent: { bg: '#dc3545', text: 'white' },
+                normal: { bg: '#ffc107', text: '#000' },
+                low: { bg: '#28a745', text: 'white' }
             };
             
             printWindow.document.write(`
@@ -441,7 +441,7 @@
                                 <div class="task-header">
                                     <div class="task-checkbox"></div>
                                     <div class="task-description">${task.description}</div>
-                                    <div class="task-priority" style="background: ${priorityColors[task.priority]};">${task.priority}</div>
+                                    <div class="task-priority" style="background: ${priorityColors[task.priority].bg}; color: ${priorityColors[task.priority].text};">${task.priority}</div>
                                     ${overdue ? '<span class="overdue-badge">OVERDUE</span>' : ''}
                                 </div>
                                 <div class="task-details">
@@ -577,31 +577,40 @@
                     const taskElement = document.createElement('div');
                     const overdue = isOverdue(task);
                     
+                    const cardColor = priorityColors[task.priority];
+                    const isSelected = selectedTasks.has(task.id);
+                    
                     taskElement.style.cssText = `
-                        background: var(--card-bg);
-                        border: 2px solid ${selectedTasks.has(task.id) ? 'var(--primary-color)' : (overdue ? 'rgba(220, 53, 69, 0.5)' : 'rgba(164, 124, 91, 0.2)')};
-                        border-radius: 12px;
+                        background: ${cardColor.bg};
+                        color: ${cardColor.text};
+                        border: 3px solid ${isSelected ? '#A47C5B' : cardColor.border};
+                        border-radius: 16px;
                         padding: 20px;
-                        margin-bottom: 20px;
-                        transition: all 0.3s ease;
+                        margin-bottom: 0;
+                        transition: all 0.2s ease;
                         cursor: pointer;
                         position: relative;
-                        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+                        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+                        min-height: 140px;
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: space-between;
+                        ${task.completed ? 'opacity: 0.8; filter: saturate(0.6);' : ''}
                     `;
                     
                     taskElement.onmouseover = () => {
-                        if (!selectedTasks.has(task.id)) {
-                            taskElement.style.borderColor = 'var(--primary-color)';
-                            taskElement.style.transform = 'translateY(-2px)';
-                            taskElement.style.boxShadow = '0 4px 16px rgba(164, 124, 91, 0.2)';
+                        taskElement.style.transform = 'translateY(-4px) scale(1.02)';
+                        taskElement.style.boxShadow = '0 8px 25px rgba(0, 0, 0, 0.15), 0 4px 10px rgba(0, 0, 0, 0.1)';
+                        if (!isSelected) {
+                            taskElement.style.borderColor = '#A47C5B';
                         }
                     };
                     
                     taskElement.onmouseleave = () => {
-                        if (!selectedTasks.has(task.id)) {
-                            taskElement.style.borderColor = overdue ? 'rgba(220, 53, 69, 0.5)' : 'rgba(164, 124, 91, 0.2)';
-                            taskElement.style.transform = 'translateY(0)';
-                            taskElement.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.1)';
+                        taskElement.style.transform = 'translateY(0) scale(1)';
+                        taskElement.style.boxShadow = '0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24)';
+                        if (!isSelected) {
+                            taskElement.style.borderColor = cardColor.border;
                         }
                     };
                     
@@ -614,73 +623,64 @@
                     };
                     
                     const priorityColors = {
-                        urgent: '#dc3545',
-                        normal: '#ffc107',
-                        low: '#28a745'
+                        urgent: { bg: '#dc3545', text: 'white', border: '#b02a37' },
+                        normal: { bg: '#ffc107', text: '#000', border: '#e0a800' },
+                        low: { bg: '#28a745', text: 'white', border: '#1e7e34' }
                     };
                     
                     taskElement.innerHTML = `
-                        <!-- Selection indicator -->
-                        ${selectedTasks.has(task.id) ? '<div style="position: absolute; top: 15px; left: 15px; background: var(--primary-color); color: white; border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 600;"><i class="fas fa-check"></i></div>' : ''}
+                        <!-- Selection indicator (top-left corner) -->
+                        ${isSelected ? `<div style="position: absolute; top: 8px; left: 8px; background: #A47C5B; color: white; border-radius: 50%; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; font-weight: 600; box-shadow: 0 2px 4px rgba(0,0,0,0.2);"><i class="fas fa-check"></i></div>` : ''}
                         
-                        <!-- Task status badge -->
-                        <div style="position: absolute; top: 15px; right: 15px; display: flex; gap: 8px; align-items: center;">
-                            ${task.completed ? '<span style="background: #28a745; color: white; padding: 4px 8px; border-radius: 12px; font-size: 0.75rem; font-weight: 600;"><i class="fas fa-check-circle" style="margin-right: 4px;"></i>COMPLETED</span>' : '<span style="background: #ffc107; color: #000; padding: 4px 8px; border-radius: 12px; font-size: 0.75rem; font-weight: 600;"><i class="fas fa-clock" style="margin-right: 4px;"></i>PENDING</span>'}
-                            ${overdue ? '<span style="background: #dc3545; color: white; padding: 4px 8px; border-radius: 12px; font-size: 0.75rem; font-weight: 600;"><i class="fas fa-exclamation-triangle" style="margin-right: 4px;"></i>OVERDUE</span>' : ''}
-                        </div>
-                        
-                        <!-- Task content -->
-                        <div style="margin-top: 35px;">
-                            <div style="display: flex; align-items: flex-start; gap: 15px; margin-bottom: 15px;">
-                                <div style="flex: 1;">
-                                    <h3 style="${task.completed ? 'text-decoration: line-through; opacity: 0.6;' : ''} color: var(--text-color); font-size: 1.3rem; margin: 0 0 8px 0; font-weight: 600;">
-                                        ${task.description}
-                                    </h3>
-                                    
-                                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
-                                        <span style="background: ${priorityColors[task.priority]}; color: white; padding: 6px 12px; border-radius: 6px; font-size: 0.85rem; text-transform: uppercase; font-weight: 600;">
-                                            <i class="fas fa-flag" style="margin-right: 4px;"></i>${task.priority} PRIORITY
-                                        </span>
-                                        ${task.dueDate ? `<span style="color: var(--text-color); opacity: 0.8; font-size: 0.9rem;"><i class="fas fa-calendar-check" style="margin-right: 4px;"></i>Due: ${new Date(task.dueDate).toLocaleDateString()}</span>` : ''}
-                                    </div>
-                                    
-                                    <div style="font-size: 0.9rem; color: var(--text-color); opacity: 0.7; line-height: 1.4;">
-                                        <div style="margin-bottom: 4px;">
-                                            <i class="fas fa-user-plus" style="margin-right: 6px;"></i>Created by <strong>${task.createdBy}</strong> on ${new Date(task.createdAt).toLocaleDateString()}
-                                        </div>
-                                        ${task.completed ? `<div><i class="fas fa-user-check" style="margin-right: 6px;"></i>Completed by <strong>${task.completedBy}</strong> on ${new Date(task.completedAt).toLocaleDateString()}</div>` : ''}
-                                    </div>
-                                </div>
+                        <!-- Task header -->
+                        <div style="flex: 1; padding-right: ${isSelected ? '30px' : '0'};">
+                            <!-- Main task description -->
+                            <h3 style="${task.completed ? 'text-decoration: line-through; opacity: 0.7;' : ''} color: ${cardColor.text}; font-size: 1.1rem; margin: 0 0 12px 0; font-weight: 500; line-height: 1.3; word-wrap: break-word;">
+                                ${task.description}
+                            </h3>
+                            
+                            <!-- Task metadata -->
+                            <div style="font-size: 0.8rem; color: ${cardColor.text}; opacity: 0.8; margin-bottom: 8px;">
+                                ${task.dueDate ? `<div style="margin-bottom: 4px;"><i class="fas fa-calendar" style="margin-right: 6px; width: 12px;"></i>Due: ${new Date(task.dueDate).toLocaleDateString()}</div>` : ''}
+                                <div><i class="fas fa-user" style="margin-right: 6px; width: 12px;"></i>Created by ${task.createdBy}</div>
+                                ${task.completed ? `<div style="margin-top: 4px;"><i class="fas fa-check-circle" style="margin-right: 6px; width: 12px;"></i>Completed by ${task.completedBy}</div>` : ''}
                             </div>
                             
-                            <!-- Action buttons -->
-                            <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(164, 124, 91, 0.2); padding-top: 15px;">
-                                <div style="display: flex; gap: 10px;">
-                                    <button onclick="event.stopPropagation(); toggleTask('${task.id}')" 
-                                            style="background: ${task.completed ? '#6c757d' : '#28a745'}; color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-size: 0.9rem; font-weight: 600; transition: all 0.3s ease;"
-                                            onmouseover="this.style.transform='translateY(-1px)'"
-                                            onmouseout="this.style.transform='translateY(0)'">
-                                        <i class="fas fa-${task.completed ? 'undo' : 'check'}" style="margin-right: 6px;"></i>
-                                        ${task.completed ? 'Mark Pending' : 'Mark Complete'}
-                                    </button>
-                                    
-                                    <button onclick="event.stopPropagation(); editTask('${task.id}')" 
-                                            style="background: transparent; border: 1px solid #28a745; color: #28a745; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-size: 0.9rem; font-weight: 600; transition: all 0.3s ease;"
-                                            onmouseover="this.style.background='#28a745'; this.style.color='white'; this.style.transform='translateY(-1px)'"
-                                            onmouseout="this.style.background='transparent'; this.style.color='#28a745'; this.style.transform='translateY(0)'"
-                                            title="Edit Task">
-                                        <i class="fas fa-edit" style="margin-right: 6px;"></i>Edit
-                                    </button>
-                                </div>
-                                
-                                <button onclick="event.stopPropagation(); deleteTask('${task.id}')" 
-                                        style="background: transparent; border: 1px solid #dc3545; color: #dc3545; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-size: 0.9rem; font-weight: 600; transition: all 0.3s ease;"
-                                        onmouseover="this.style.background='#dc3545'; this.style.color='white'; this.style.transform='translateY(-1px)'"
-                                        onmouseout="this.style.background='transparent'; this.style.color='#dc3545'; this.style.transform='translateY(0)'"
-                                        title="Delete Task">
-                                    <i class="fas fa-trash" style="margin-right: 6px;"></i>Delete
-                                </button>
+                            <!-- Status indicators -->
+                            <div style="display: flex; gap: 6px; align-items: center; margin-bottom: 15px;">
+                                ${task.completed ? 
+                                    `<span style="background: rgba(255,255,255,0.2); color: ${cardColor.text}; padding: 3px 8px; border-radius: 12px; font-size: 0.7rem; font-weight: 600; text-transform: uppercase;"><i class="fas fa-check-circle" style="margin-right: 3px;"></i>Completed</span>` : 
+                                    `<span style="background: rgba(255,255,255,0.2); color: ${cardColor.text}; padding: 3px 8px; border-radius: 12px; font-size: 0.7rem; font-weight: 600; text-transform: uppercase;"><i class="fas fa-clock" style="margin-right: 3px;"></i>Pending</span>`
+                                }
+                                ${overdue ? `<span style="background: rgba(0,0,0,0.3); color: white; padding: 3px 8px; border-radius: 12px; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; animation: pulse 2s infinite;"><i class="fas fa-exclamation-triangle" style="margin-right: 3px;"></i>Overdue</span>` : ''}
                             </div>
+                        </div>
+                        
+                        <!-- Action buttons (bottom) -->
+                        <div style="display: flex; gap: 8px; justify-content: flex-end; opacity: 0.8;">
+                            <button onclick="event.stopPropagation(); toggleTask('${task.id}')" 
+                                    style="background: rgba(255,255,255,0.2); color: ${cardColor.text}; border: none; padding: 6px 10px; border-radius: 20px; cursor: pointer; font-size: 0.75rem; font-weight: 600; transition: all 0.2s ease; backdrop-filter: blur(10px);"
+                                    onmouseover="this.style.background='rgba(255,255,255,0.3)'; this.style.transform='scale(1.05)'"
+                                    onmouseout="this.style.background='rgba(255,255,255,0.2)'; this.style.transform='scale(1)'"
+                                    title="${task.completed ? 'Mark as pending' : 'Mark as complete'}">
+                                <i class="fas fa-${task.completed ? 'undo' : 'check'}"></i>
+                            </button>
+                            
+                            <button onclick="event.stopPropagation(); editTask('${task.id}')" 
+                                    style="background: rgba(255,255,255,0.2); color: ${cardColor.text}; border: none; padding: 6px 10px; border-radius: 20px; cursor: pointer; font-size: 0.75rem; font-weight: 600; transition: all 0.2s ease; backdrop-filter: blur(10px);"
+                                    onmouseover="this.style.background='rgba(255,255,255,0.3)'; this.style.transform='scale(1.05)'"
+                                    onmouseout="this.style.background='rgba(255,255,255,0.2)'; this.style.transform='scale(1)'"
+                                    title="Edit task">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            
+                            <button onclick="event.stopPropagation(); deleteTask('${task.id}')" 
+                                    style="background: rgba(255,255,255,0.2); color: ${cardColor.text}; border: none; padding: 6px 10px; border-radius: 20px; cursor: pointer; font-size: 0.75rem; font-weight: 600; transition: all 0.2s ease; backdrop-filter: blur(10px);"
+                                    onmouseover="this.style.background='rgba(255,255,255,0.3)'; this.style.transform='scale(1.05)'"
+                                    onmouseout="this.style.background='rgba(255,255,255,0.2)'; this.style.transform='scale(1)'"
+                                    title="Delete task">
+                                <i class="fas fa-trash"></i>
+                            </button>
                         </div>
                     `;
                     
@@ -746,6 +746,11 @@
             @keyframes slideUp {
                 from { transform: translate(-50%, 0); opacity: 1; }
                 to { transform: translate(-50%, -100%); opacity: 0; }
+            }
+            @keyframes pulse {
+                0% { opacity: 1; }
+                50% { opacity: 0.7; }
+                100% { opacity: 1; }
             }
         `;
         document.head.appendChild(style);
