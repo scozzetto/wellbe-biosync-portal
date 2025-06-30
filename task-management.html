@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Management - Be Well LifeStyle Centers</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            background: var(--bg-color);
+            color: var(--text-color);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .task-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .task-header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--primary-color);
+        }
+        
+        .task-header h1 {
+            color: var(--primary-color);
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .task-filter-btn {
+            transition: all 0.3s ease;
+        }
+        
+        .task-filter-btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        .back-home-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--primary-color);
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .back-home-btn:hover {
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <a href="staff-knowledge-base.html" class="back-home-btn">
+        <i class="fas fa-arrow-left"></i> Back to Knowledge Base
+    </a>
+    
+    <div class="task-container">
+        <div class="task-header">
+            <h1><i class="fas fa-tasks"></i> Staff Task Management</h1>
+            <p style="color: #9ca3af; font-size: 1.1rem;">Organize and track daily tasks across all Be Well locations</p>
+        </div>
+
+        <!-- Add New Task -->
+        <div style="background: var(--card-bg); padding: 25px; border-radius: 12px; margin-bottom: 30px; border: 1px solid rgba(164, 124, 91, 0.2);">
+            <h3 style="color: var(--primary-color); margin-bottom: 20px;"><i class="fas fa-plus-circle"></i> Add New Task</h3>
+            <form id="addTaskForm" onsubmit="addTask(event)" style="display: flex; gap: 15px; flex-wrap: wrap; align-items: flex-end;">
+                <div style="flex: 1; min-width: 300px;">
+                    <label style="display: block; margin-bottom: 8px; color: var(--text-color); font-size: 0.9rem; font-weight: 600;">Task Description</label>
+                    <input type="text" id="taskDescription" placeholder="Enter task description..." required 
+                           style="width: 100%; padding: 12px; border: 1px solid rgba(164, 124, 91, 0.3); border-radius: 6px; background: rgba(255, 255, 255, 0.1); color: var(--text-color); font-size: 1rem;">
+                </div>
+                <div style="min-width: 150px;">
+                    <label style="display: block; margin-bottom: 8px; color: var(--text-color); font-size: 0.9rem; font-weight: 600;">Priority</label>
+                    <select id="taskPriority" style="width: 100%; padding: 12px; border: 1px solid rgba(164, 124, 91, 0.3); border-radius: 6px; background: rgba(255, 255, 255, 0.1); color: var(--text-color); font-size: 1rem;">
+                        <option value="low">Low Priority</option>
+                        <option value="normal" selected>Normal Priority</option>
+                        <option value="urgent">Urgent Priority</option>
+                    </select>
+                </div>
+                <div style="min-width: 150px;">
+                    <label style="display: block; margin-bottom: 8px; color: var(--text-color); font-size: 0.9rem; font-weight: 600;">Due Date (Optional)</label>
+                    <input type="date" id="taskDueDate" 
+                           style="width: 100%; padding: 12px; border: 1px solid rgba(164, 124, 91, 0.3); border-radius: 6px; background: rgba(255, 255, 255, 0.1); color: var(--text-color); font-size: 1rem;">
+                </div>
+                <button type="submit" style="background: var(--primary-color); color: white; padding: 12px 24px; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 1rem;">
+                    <i class="fas fa-plus"></i> Add Task
+                </button>
+            </form>
+        </div>
+
+        <!-- Task Filters -->
+        <div style="background: var(--card-bg); padding: 20px; border-radius: 12px; margin-bottom: 30px; border: 1px solid rgba(164, 124, 91, 0.2);">
+            <div style="display: flex; gap: 10px; flex-wrap: wrap; align-items: center;">
+                <button onclick="filterTasks('all')" class="task-filter-btn active" style="padding: 10px 20px; border: 1px solid var(--primary-color); border-radius: 6px; background: var(--primary-color); color: white; cursor: pointer; font-weight: 600;">
+                    <i class="fas fa-list"></i> All Tasks
+                </button>
+                <button onclick="filterTasks('pending')" class="task-filter-btn" style="padding: 10px 20px; border: 1px solid var(--primary-color); border-radius: 6px; background: transparent; color: var(--primary-color); cursor: pointer; font-weight: 600;">
+                    <i class="fas fa-clock"></i> Pending
+                </button>
+                <button onclick="filterTasks('completed')" class="task-filter-btn" style="padding: 10px 20px; border: 1px solid var(--primary-color); border-radius: 6px; background: transparent; color: var(--primary-color); cursor: pointer; font-weight: 600;">
+                    <i class="fas fa-check-circle"></i> Completed
+                </button>
+                <button onclick="filterTasks('overdue')" class="task-filter-btn" style="padding: 10px 20px; border: 1px solid #dc3545; border-radius: 6px; background: transparent; color: #dc3545; cursor: pointer; font-weight: 600;">
+                    <i class="fas fa-exclamation-triangle"></i> Overdue
+                </button>
+                <button onclick="clearCompleted()" style="margin-left: auto; padding: 10px 20px; border: 1px solid #dc3545; border-radius: 6px; background: transparent; color: #dc3545; cursor: pointer; font-weight: 600;">
+                    <i class="fas fa-trash"></i> Clear Completed
+                </button>
+            </div>
+        </div>
+
+        <!-- Tasks List -->
+        <div style="background: var(--card-bg); padding: 25px; border-radius: 12px; border: 1px solid rgba(164, 124, 91, 0.2);">
+            <h3 style="color: var(--primary-color); margin-bottom: 20px;"><i class="fas fa-clipboard-list"></i> Task List</h3>
+            <div id="tasksList" style="max-height: 600px; overflow-y: auto;">
+                <!-- Tasks will be populated here -->
+            </div>
+        </div>
+
+        <!-- Task Stats -->
+        <div style="margin-top: 30px; padding: 20px; background: var(--card-bg); border-radius: 12px; text-align: center; border: 1px solid rgba(164, 124, 91, 0.2);">
+            <div style="display: flex; justify-content: center; gap: 40px; flex-wrap: wrap;">
+                <div>
+                    <i class="fas fa-list" style="font-size: 2rem; color: var(--primary-color); margin-bottom: 10px; display: block;"></i>
+                    <strong style="font-size: 1.5rem; color: var(--primary-color);"><span id="totalTasks">0</span></strong>
+                    <p style="color: var(--text-color); margin-top: 5px;">Total Tasks</p>
+                </div>
+                <div>
+                    <i class="fas fa-clock" style="font-size: 2rem; color: #ffc107; margin-bottom: 10px; display: block;"></i>
+                    <strong style="font-size: 1.5rem; color: #ffc107;"><span id="pendingTasks">0</span></strong>
+                    <p style="color: var(--text-color); margin-top: 5px;">Pending</p>
+                </div>
+                <div>
+                    <i class="fas fa-check-circle" style="font-size: 2rem; color: #28a745; margin-bottom: 10px; display: block;"></i>
+                    <strong style="font-size: 1.5rem; color: #28a745;"><span id="completedTasks">0</span></strong>
+                    <p style="color: var(--text-color); margin-top: 5px;">Completed</p>
+                </div>
+                <div>
+                    <i class="fas fa-exclamation-triangle" style="font-size: 2rem; color: #dc3545; margin-bottom: 10px; display: block;"></i>
+                    <strong style="font-size: 1.5rem; color: #dc3545;"><span id="overdueTasks">0</span></strong>
+                    <p style="color: var(--text-color); margin-top: 5px;">Overdue</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Check authentication
+        if (sessionStorage.getItem('staffAuthenticated') !== 'true') {
+            window.location.href = 'staff-knowledge-base.html';
+        }
+
+        // Task Management System
+        let staffTasks = [];
+        let currentFilter = 'all';
+        let currentUser = JSON.parse(sessionStorage.getItem('currentUser') || '{}');
+        
+        // Initialize on load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadTasks();
+            renderTasks();
+        });
+        
+        // Load tasks from localStorage
+        function loadTasks() {
+            const savedTasks = localStorage.getItem('staffTasks');
+            if (savedTasks) {
+                staffTasks = JSON.parse(savedTasks);
+            }
+        }
+        
+        // Save tasks to localStorage
+        function saveTasks() {
+            localStorage.setItem('staffTasks', JSON.stringify(staffTasks));
+        }
+        
+        // Add new task
+        function addTask(event) {
+            event.preventDefault();
+            
+            const description = document.getElementById('taskDescription').value.trim();
+            const priority = document.getElementById('taskPriority').value;
+            const dueDate = document.getElementById('taskDueDate').value;
+            
+            if (!description) return;
+            
+            const newTask = {
+                id: Date.now().toString(),
+                description: description,
+                priority: priority,
+                dueDate: dueDate,
+                completed: false,
+                createdAt: new Date().toISOString(),
+                createdBy: currentUser.name || 'Staff',
+                completedAt: null,
+                completedBy: null
+            };
+            
+            staffTasks.unshift(newTask);
+            saveTasks();
+            renderTasks();
+            
+            // Reset form
+            document.getElementById('taskDescription').value = '';
+            document.getElementById('taskPriority').value = 'normal';
+            document.getElementById('taskDueDate').value = '';
+            
+            // Show success
+            showNotification('Task added successfully!', 'success');
+        }
+        
+        // Toggle task completion
+        function toggleTask(taskId) {
+            const task = staffTasks.find(t => t.id === taskId);
+            if (!task) return;
+            
+            task.completed = !task.completed;
+            if (task.completed) {
+                task.completedAt = new Date().toISOString();
+                task.completedBy = currentUser.name || 'Staff';
+            } else {
+                task.completedAt = null;
+                task.completedBy = null;
+            }
+            
+            saveTasks();
+            renderTasks();
+        }
+        
+        // Delete task
+        function deleteTask(taskId) {
+            if (!confirm('Delete this task?')) return;
+            
+            staffTasks = staffTasks.filter(t => t.id !== taskId);
+            saveTasks();
+            renderTasks();
+            showNotification('Task deleted', 'info');
+        }
+        
+        // Filter tasks
+        function filterTasks(filter) {
+            currentFilter = filter;
+            
+            // Update button states
+            document.querySelectorAll('.task-filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+                btn.style.background = 'transparent';
+                if (btn.textContent.toLowerCase().includes('overdue')) {
+                    btn.style.color = '#dc3545';
+                } else {
+                    btn.style.color = 'var(--primary-color)';
+                }
+            });
+            
+            event.target.classList.add('active');
+            event.target.style.background = event.target.textContent.toLowerCase().includes('overdue') ? '#dc3545' : 'var(--primary-color)';
+            event.target.style.color = 'white';
+            
+            renderTasks();
+        }
+        
+        // Clear completed tasks
+        function clearCompleted() {
+            const completedCount = staffTasks.filter(t => t.completed).length;
+            if (completedCount === 0) {
+                showNotification('No completed tasks to clear', 'warning');
+                return;
+            }
+            
+            if (confirm(`Clear ${completedCount} completed task${completedCount > 1 ? 's' : ''}?`)) {
+                staffTasks = staffTasks.filter(t => !t.completed);
+                saveTasks();
+                renderTasks();
+                showNotification(`${completedCount} tasks cleared`, 'success');
+            }
+        }
+        
+        // Check if task is overdue
+        function isOverdue(task) {
+            if (!task.dueDate || task.completed) return false;
+            return new Date(task.dueDate) < new Date().setHours(0, 0, 0, 0);
+        }
+        
+        // Render tasks
+        function renderTasks() {
+            const tasksList = document.getElementById('tasksList');
+            
+            // Filter tasks
+            let filteredTasks = [...staffTasks];
+            if (currentFilter === 'pending') {
+                filteredTasks = staffTasks.filter(t => !t.completed);
+            } else if (currentFilter === 'completed') {
+                filteredTasks = staffTasks.filter(t => t.completed);
+            } else if (currentFilter === 'overdue') {
+                filteredTasks = staffTasks.filter(t => isOverdue(t));
+            }
+            
+            // Sort tasks
+            filteredTasks.sort((a, b) => {
+                // Completed tasks go to bottom
+                if (a.completed !== b.completed) return a.completed ? 1 : -1;
+                // Overdue tasks at top
+                if (isOverdue(a) !== isOverdue(b)) return isOverdue(a) ? -1 : 1;
+                // Then by priority
+                const priorityOrder = { urgent: 0, normal: 1, low: 2 };
+                if (a.priority !== b.priority) return priorityOrder[a.priority] - priorityOrder[b.priority];
+                // Then by due date
+                if (a.dueDate && b.dueDate) return new Date(a.dueDate) - new Date(b.dueDate);
+                // Then by creation date (newest first)
+                return new Date(b.createdAt) - new Date(a.createdAt);
+            });
+            
+            // Render tasks
+            tasksList.innerHTML = '';
+            
+            if (filteredTasks.length === 0) {
+                tasksList.innerHTML = `
+                    <div style="text-align: center; padding: 60px; color: var(--text-color); opacity: 0.6;">
+                        <i class="fas fa-clipboard-list" style="font-size: 4rem; margin-bottom: 15px; display: block;"></i>
+                        <p style="font-size: 1.2rem;">No tasks ${currentFilter !== 'all' ? currentFilter : ''}</p>
+                    </div>
+                `;
+            } else {
+                filteredTasks.forEach(task => {
+                    const taskElement = document.createElement('div');
+                    const overdue = isOverdue(task);
+                    
+                    taskElement.style.cssText = `
+                        background: rgba(255, 255, 255, 0.05);
+                        border: 1px solid ${overdue ? 'rgba(220, 53, 69, 0.5)' : 'rgba(164, 124, 91, 0.2)'};
+                        border-radius: 8px;
+                        padding: 20px;
+                        margin-bottom: 15px;
+                        display: flex;
+                        align-items: center;
+                        gap: 15px;
+                        transition: all 0.3s ease;
+                    `;
+                    
+                    const priorityColors = {
+                        urgent: '#dc3545',
+                        normal: '#ffc107',
+                        low: '#28a745'
+                    };
+                    
+                    taskElement.innerHTML = `
+                        <input type="checkbox" 
+                               ${task.completed ? 'checked' : ''} 
+                               onchange="toggleTask('${task.id}')"
+                               style="width: 24px; height: 24px; cursor: pointer; flex-shrink: 0;">
+                        
+                        <div style="flex: 1;">
+                            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+                                <span style="${task.completed ? 'text-decoration: line-through; opacity: 0.6;' : ''} color: var(--text-color); font-size: 1.1rem;">
+                                    ${task.description}
+                                </span>
+                                <span style="background: ${priorityColors[task.priority]}; color: white; padding: 3px 10px; border-radius: 4px; font-size: 0.85rem; text-transform: uppercase; font-weight: 600;">
+                                    ${task.priority}
+                                </span>
+                                ${overdue ? '<span style="background: #dc3545; color: white; padding: 3px 10px; border-radius: 4px; font-size: 0.85rem; font-weight: 600;">OVERDUE</span>' : ''}
+                            </div>
+                            <div style="font-size: 0.9rem; color: var(--text-color); opacity: 0.7;">
+                                <i class="fas fa-user"></i> ${task.createdBy} • 
+                                <i class="fas fa-calendar"></i> ${new Date(task.createdAt).toLocaleDateString()}
+                                ${task.dueDate ? ` • <i class="fas fa-calendar-check"></i> Due: ${new Date(task.dueDate).toLocaleDateString()}` : ''}
+                                ${task.completed ? ` • <i class="fas fa-check"></i> Completed by ${task.completedBy} on ${new Date(task.completedAt).toLocaleDateString()}` : ''}
+                            </div>
+                        </div>
+                        
+                        <button onclick="deleteTask('${task.id}')" 
+                                style="background: transparent; border: none; color: #dc3545; cursor: pointer; padding: 8px; font-size: 1.2rem;">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    `;
+                    
+                    tasksList.appendChild(taskElement);
+                });
+            }
+            
+            // Update stats
+            const totalTasks = staffTasks.length;
+            const pendingTasks = staffTasks.filter(t => !t.completed).length;
+            const completedTasks = staffTasks.filter(t => t.completed).length;
+            const overdueTasks = staffTasks.filter(t => isOverdue(t)).length;
+            
+            document.getElementById('totalTasks').textContent = totalTasks;
+            document.getElementById('pendingTasks').textContent = pendingTasks;
+            document.getElementById('completedTasks').textContent = completedTasks;
+            document.getElementById('overdueTasks').textContent = overdueTasks;
+        }
+        
+        // Show notification
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            const colors = {
+                success: '#28a745',
+                error: '#dc3545',
+                warning: '#ffc107',
+                info: '#17a2b8'
+            };
+            
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                left: 50%;
+                transform: translateX(-50%);
+                background: ${colors[type]};
+                color: white;
+                padding: 15px 25px;
+                border-radius: 6px;
+                font-weight: 600;
+                z-index: 1000;
+                animation: slideDown 0.3s ease;
+            `;
+            
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'slideUp 0.3s ease';
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
+        
+        // Add animations
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideDown {
+                from { transform: translate(-50%, -100%); opacity: 0; }
+                to { transform: translate(-50%, 0); opacity: 1; }
+            }
+            @keyframes slideUp {
+                from { transform: translate(-50%, 0); opacity: 1; }
+                to { transform: translate(-50%, -100%); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
