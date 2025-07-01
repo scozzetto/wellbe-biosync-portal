@@ -193,17 +193,13 @@
         
         // Load tasks from localStorage
         function loadTasks() {
-            console.log('loadTasks() called');
             const savedTasks = localStorage.getItem('staffTasks');
-            console.log('Saved tasks from localStorage:', savedTasks);
             
             if (savedTasks) {
                 staffTasks = JSON.parse(savedTasks);
-                console.log('Parsed tasks:', staffTasks.length, 'tasks loaded');
                 
                 // If we only have a few tasks (or they got wiped), ensure we have sample tasks
                 if (staffTasks.length < 3) {
-                    console.log('Less than 3 tasks found, adding sample tasks');
                     const sampleTasks = [
                         {
                             id: 'sample-1',
@@ -347,12 +343,7 @@
             const priority = document.getElementById('taskPriority').value;
             const dueDate = document.getElementById('taskDueDate').value;
             
-            console.log('Adding task:', { description, priority, dueDate });
-            
-            if (!description) {
-                console.log('No description provided');
-                return;
-            }
+            if (!description) return;
             
             if (editingTaskId) {
                 // Update existing task
@@ -387,14 +378,11 @@
                 };
                 
                 staffTasks.unshift(newTask);
-                console.log('Task added. Total tasks:', staffTasks.length);
                 showNotification('Task added successfully!', 'success');
             }
             
             saveTasks();
-            console.log('Tasks saved to localStorage');
             renderTasks();
-            console.log('renderTasks() called');
             
             // Reset form
             document.getElementById('taskDescription').value = '';
@@ -691,13 +679,18 @@
         
         // Render tasks
         function renderTasks() {
-            console.log('renderTasks() called with', staffTasks.length, 'total tasks');
             const tasksList = document.getElementById('tasksList');
             
             if (!tasksList) {
-                console.error('tasksList element not found!');
                 return;
             }
+            
+            // Define priority colors at the beginning
+            const priorityColors = {
+                urgent: { bg: '#dc3545', text: 'white', border: '#b02a37' },
+                normal: { bg: '#ffc107', text: '#000', border: '#e0a800' },
+                low: { bg: '#28a745', text: 'white', border: '#1e7e34' }
+            };
             
             // Filter tasks
             let filteredTasks = [...staffTasks];
@@ -708,8 +701,6 @@
             } else if (currentFilter === 'overdue') {
                 filteredTasks = staffTasks.filter(t => isOverdue(t));
             }
-            
-            console.log('Filtered tasks:', filteredTasks.length, 'for filter:', currentFilter);
             
             // Sort tasks
             filteredTasks.sort((a, b) => {
@@ -786,12 +777,6 @@
                             toggleTaskSelection(task.id);
                             renderTasks();
                         }
-                    };
-                    
-                    const priorityColors = {
-                        urgent: { bg: '#dc3545', text: 'white', border: '#b02a37' },
-                        normal: { bg: '#ffc107', text: '#000', border: '#e0a800' },
-                        low: { bg: '#28a745', text: 'white', border: '#1e7e34' }
                     };
                     
                     taskElement.innerHTML = `
