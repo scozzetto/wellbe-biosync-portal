@@ -286,9 +286,12 @@
         
         // Initialize on load
         document.addEventListener('DOMContentLoaded', function() {
+            console.log('Initializing task management...');
             loadTasks();
+            console.log('Tasks loaded:', staffTasks.length);
             cleanupExpiredSnoozes();
             renderTasks();
+            console.log('Tasks rendered');
             requestNotificationPermission();
             setupNotificationSystem();
             checkOverdueTasks();
@@ -737,11 +740,14 @@
         
         // Render tasks
         function renderTasks() {
+            console.log('renderTasks called, staffTasks:', staffTasks);
             const tasksList = document.getElementById('tasksList');
             
             if (!tasksList) {
+                console.error('tasksList element not found!');
                 return;
             }
+            console.log('tasksList element found');
             
             // Define priority colors at the beginning
             const priorityColors = {
