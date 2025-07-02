@@ -129,6 +129,9 @@
                     <button onclick="clearAllTasks()" style="padding: 10px 20px; border: 1px solid #6c757d; border-radius: 6px; background: transparent; color: #6c757d; cursor: pointer; font-weight: 600; margin-left: 10px;">
                         <i class="fas fa-trash-alt"></i> Clear All (Reset Demo)
                     </button>
+                    <button onclick="openNotificationSettings()" style="padding: 10px 20px; border: 1px solid #17a2b8; border-radius: 6px; background: transparent; color: #17a2b8; cursor: pointer; font-weight: 600; margin-left: 10px;">
+                        <i class="fas fa-bell"></i> Notifications
+                    </button>
                 </div>
             </div>
         </div>
@@ -172,6 +175,58 @@
         </div>
     </div>
 
+    <!-- Notification Settings Modal -->
+    <div id="notificationModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center;">
+        <div style="background: var(--card-bg); padding: 30px; border-radius: 12px; max-width: 500px; width: 90%; max-height: 80vh; overflow-y: auto;">
+            <h2 style="color: var(--primary-color); margin-bottom: 20px;"><i class="fas fa-bell"></i> Notification Settings</h2>
+            
+            <div style="margin-bottom: 20px;">
+                <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
+                    <input type="checkbox" id="enableNotifications" style="width: 20px; height: 20px;" onchange="toggleNotifications()">
+                    <span style="font-size: 1.1rem;">Enable Browser Notifications</span>
+                </label>
+            </div>
+            
+            <div style="margin-bottom: 20px;">
+                <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
+                    <input type="checkbox" id="enableSound" style="width: 20px; height: 20px;" onchange="toggleSound()">
+                    <span style="font-size: 1.1rem;">Enable Sound Alerts</span>
+                </label>
+            </div>
+            
+            <div style="margin-bottom: 20px;">
+                <label style="display: block; margin-bottom: 8px; font-weight: 600;">Daily Summary Time:</label>
+                <input type="time" id="dailySummaryTimeInput" style="width: 100%; padding: 10px; border: 1px solid rgba(164, 124, 91, 0.3); border-radius: 6px; background: rgba(255, 255, 255, 0.1); color: var(--text-color);">
+            </div>
+            
+            <div style="margin-bottom: 20px;">
+                <h4 style="margin-bottom: 10px;">Reminder Settings:</h4>
+                <p style="font-size: 0.9rem; opacity: 0.8; margin-bottom: 10px;">Get notified before tasks are due</p>
+                <label style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                    <input type="checkbox" id="remind15min" style="width: 18px; height: 18px;">
+                    <span>15 minutes before</span>
+                </label>
+                <label style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                    <input type="checkbox" id="remind1hour" style="width: 18px; height: 18px;">
+                    <span>1 hour before</span>
+                </label>
+                <label style="display: flex; align-items: center; gap: 10px;">
+                    <input type="checkbox" id="remind1day" style="width: 18px; height: 18px;">
+                    <span>1 day before</span>
+                </label>
+            </div>
+            
+            <div style="display: flex; gap: 10px; justify-content: flex-end;">
+                <button onclick="saveNotificationSettings()" style="background: var(--primary-color); color: white; padding: 10px 20px; border: none; border-radius: 6px; cursor: pointer; font-weight: 600;">
+                    Save Settings
+                </button>
+                <button onclick="closeNotificationSettings()" style="background: #6c757d; color: white; padding: 10px 20px; border: none; border-radius: 6px; cursor: pointer; font-weight: 600;">
+                    Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+
     <script>
         // Check authentication (commented out for testing)
         // if (sessionStorage.getItem('staffAuthenticated') !== 'true') {
@@ -185,10 +240,25 @@
         let selectedTasks = new Set();
         let editingTaskId = null;
         
+        // Notification System Variables
+        let notificationPermission = false;
+        let soundEnabled = localStorage.getItem('taskSoundEnabled') !== 'false';
+        let dailySummaryTime = localStorage.getItem('dailySummaryTime') || '09:00';
+        let snoozedTasks = JSON.parse(localStorage.getItem('snoozedTasks') || '{}');
+        let notificationTimers = new Map();
+        
+        // Create notification sound
+        const notificationSound = new Audio('data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTGH0fPTgjMGHm7A7+OZURE');
+        notificationSound.volume = 0.5;
+        
         // Initialize on load
         document.addEventListener('DOMContentLoaded', function() {
             loadTasks();
             renderTasks();
+            requestNotificationPermission();
+            setupNotificationSystem();
+            checkOverdueTasks();
+            setInterval(checkOverdueTasks, 60000); // Check every minute
         });
         
         // Load tasks from localStorage
@@ -262,6 +332,11 @@
         // Save tasks to localStorage
         function saveTasks() {
             localStorage.setItem('staffTasks', JSON.stringify(staffTasks));
+            
+            // Reschedule notifications for all tasks
+            if (typeof setupNotificationSystem === 'function') {
+                setupNotificationSystem();
+            }
         }
         
         // Add or update task
@@ -663,6 +738,7 @@
                     const cardColor = priorityColors[task.priority];
                     const isSelected = selectedTasks.has(task.id);
                     
+                    taskElement.setAttribute('data-task-id', task.id);
                     taskElement.style.cssText = `
                         background: ${cardColor.bg};
                         color: ${cardColor.text};
@@ -738,7 +814,13 @@
                                     `<span style="background: rgba(255,255,255,0.2); color: ${cardColor.text}; padding: 3px 8px; border-radius: 12px; font-size: 0.7rem; font-weight: 600; text-transform: uppercase;"><i class="fas fa-check-circle" style="margin-right: 3px;"></i>Completed</span>` : 
                                     `<span style="background: rgba(255,255,255,0.2); color: ${cardColor.text}; padding: 3px 8px; border-radius: 12px; font-size: 0.7rem; font-weight: 600; text-transform: uppercase;"><i class="fas fa-clock" style="margin-right: 3px;"></i>Pending</span>`
                                 }
-                                ${overdue ? `<span style="background: rgba(0,0,0,0.3); color: white; padding: 3px 8px; border-radius: 12px; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; animation: pulse 2s infinite;"><i class="fas fa-exclamation-triangle" style="margin-right: 3px;"></i>Overdue</span>` : ''}
+                                ${overdue && !snoozedTasks[task.id] ? `<span style="background: rgba(0,0,0,0.3); color: white; padding: 3px 8px; border-radius: 12px; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; animation: pulse 2s infinite;"><i class="fas fa-exclamation-triangle" style="margin-right: 3px;"></i>Overdue</span>` : ''}
+                                ${overdue && !snoozedTasks[task.id] ? `
+                                    <button onclick="event.stopPropagation(); snoozeTask('${task.id}', 30)" 
+                                            style="background: rgba(255,255,255,0.2); color: ${cardColor.text}; border: none; padding: 2px 6px; border-radius: 10px; cursor: pointer; font-size: 0.65rem; font-weight: 600;"
+                                            title="Snooze for 30 minutes">
+                                        <i class="fas fa-clock"></i> Snooze
+                                    </button>` : ''}
                             </div>
                         </div>
                         
@@ -841,6 +923,230 @@
             }
         `;
         document.head.appendChild(style);
+        
+        // Notification System Functions
+        function requestNotificationPermission() {
+            if ('Notification' in window && Notification.permission === 'default') {
+                Notification.requestPermission().then(permission => {
+                    notificationPermission = permission === 'granted';
+                    localStorage.setItem('notificationPermission', notificationPermission);
+                });
+            }
+        }
+        
+        function setupNotificationSystem() {
+            // Load saved settings
+            notificationPermission = localStorage.getItem('notificationPermission') === 'true';
+            
+            // Setup daily summary
+            scheduleDailySummary();
+            
+            // Setup task reminders
+            staffTasks.forEach(task => {
+                if (!task.completed && task.dueDate) {
+                    scheduleTaskReminders(task);
+                }
+            });
+        }
+        
+        function checkOverdueTasks() {
+            const now = new Date();
+            let overdueCount = 0;
+            
+            staffTasks.forEach(task => {
+                if (!task.completed && task.dueDate) {
+                    const dueDate = new Date(task.dueDate);
+                    if (dueDate < now && !snoozedTasks[task.id]) {
+                        overdueCount++;
+                        
+                        // Flash animation for overdue tasks
+                        const taskElement = document.querySelector(`[data-task-id="${task.id}"]`);
+                        if (taskElement) {
+                            taskElement.style.animation = 'flash 1s ease-in-out 3';
+                        }
+                    }
+                }
+            });
+            
+            if (overdueCount > 0 && notificationPermission) {
+                sendNotification('Overdue Tasks!', `You have ${overdueCount} overdue task${overdueCount > 1 ? 's' : ''}`, true);
+            }
+        }
+        
+        function sendNotification(title, body, playSound = false) {
+            if (notificationPermission && 'Notification' in window) {
+                const notification = new Notification(title, {
+                    body: body,
+                    icon: '/logo.png',
+                    badge: '/logo.png',
+                    tag: 'task-notification',
+                    renotify: true,
+                    actions: [
+                        { action: 'view', title: 'View Tasks' },
+                        { action: 'snooze', title: 'Snooze 30min' }
+                    ]
+                });
+                
+                notification.onclick = () => {
+                    window.focus();
+                    notification.close();
+                };
+                
+                if (playSound && soundEnabled) {
+                    notificationSound.play();
+                }
+            }
+        }
+        
+        function scheduleTaskReminders(task) {
+            if (!task.dueDate) return;
+            
+            const dueDate = new Date(task.dueDate);
+            const now = new Date();
+            
+            // Clear existing timers for this task
+            if (notificationTimers.has(task.id)) {
+                clearTimeout(notificationTimers.get(task.id));
+            }
+            
+            // Schedule reminders based on settings
+            const reminders = [];
+            if (localStorage.getItem('remind15min') === 'true') {
+                reminders.push({ time: 15 * 60 * 1000, text: '15 minutes' });
+            }
+            if (localStorage.getItem('remind1hour') === 'true') {
+                reminders.push({ time: 60 * 60 * 1000, text: '1 hour' });
+            }
+            if (localStorage.getItem('remind1day') === 'true') {
+                reminders.push({ time: 24 * 60 * 60 * 1000, text: '1 day' });
+            }
+            
+            reminders.forEach(reminder => {
+                const reminderTime = dueDate.getTime() - reminder.time;
+                if (reminderTime > now.getTime()) {
+                    setTimeout(() => {
+                        sendNotification(
+                            `Task Due in ${reminder.text}`,
+                            task.description,
+                            true
+                        );
+                    }, reminderTime - now.getTime());
+                }
+            });
+        }
+        
+        function scheduleDailySummary() {
+            const now = new Date();
+            const [hours, minutes] = dailySummaryTime.split(':');
+            const summaryTime = new Date();
+            summaryTime.setHours(parseInt(hours), parseInt(minutes), 0, 0);
+            
+            if (summaryTime < now) {
+                summaryTime.setDate(summaryTime.getDate() + 1);
+            }
+            
+            const timeout = summaryTime.getTime() - now.getTime();
+            setTimeout(() => {
+                sendDailySummary();
+                scheduleDailySummary(); // Reschedule for next day
+            }, timeout);
+        }
+        
+        function sendDailySummary() {
+            const today = new Date().toDateString();
+            const todaysTasks = staffTasks.filter(task => {
+                if (task.completed) return false;
+                if (!task.dueDate) return false;
+                return new Date(task.dueDate).toDateString() === today;
+            });
+            
+            const overdueTasks = staffTasks.filter(task => {
+                if (task.completed) return false;
+                if (!task.dueDate) return false;
+                return new Date(task.dueDate) < new Date();
+            });
+            
+            const summary = `Today: ${todaysTasks.length} tasks, Overdue: ${overdueTasks.length} tasks`;
+            sendNotification('Daily Task Summary', summary, true);
+        }
+        
+        function openNotificationSettings() {
+            const modal = document.getElementById('notificationModal');
+            modal.style.display = 'flex';
+            
+            // Load current settings
+            document.getElementById('enableNotifications').checked = notificationPermission;
+            document.getElementById('enableSound').checked = soundEnabled;
+            document.getElementById('dailySummaryTimeInput').value = dailySummaryTime;
+            document.getElementById('remind15min').checked = localStorage.getItem('remind15min') === 'true';
+            document.getElementById('remind1hour').checked = localStorage.getItem('remind1hour') === 'true';
+            document.getElementById('remind1day').checked = localStorage.getItem('remind1day') === 'true';
+        }
+        
+        function closeNotificationSettings() {
+            document.getElementById('notificationModal').style.display = 'none';
+        }
+        
+        function saveNotificationSettings() {
+            dailySummaryTime = document.getElementById('dailySummaryTimeInput').value;
+            localStorage.setItem('dailySummaryTime', dailySummaryTime);
+            localStorage.setItem('remind15min', document.getElementById('remind15min').checked);
+            localStorage.setItem('remind1hour', document.getElementById('remind1hour').checked);
+            localStorage.setItem('remind1day', document.getElementById('remind1day').checked);
+            
+            closeNotificationSettings();
+            showNotification('Settings saved successfully!', 'success');
+            
+            // Reschedule notifications
+            setupNotificationSystem();
+        }
+        
+        function toggleNotifications() {
+            const enabled = document.getElementById('enableNotifications').checked;
+            if (enabled) {
+                requestNotificationPermission();
+            } else {
+                notificationPermission = false;
+                localStorage.setItem('notificationPermission', false);
+            }
+        }
+        
+        function toggleSound() {
+            soundEnabled = document.getElementById('enableSound').checked;
+            localStorage.setItem('taskSoundEnabled', soundEnabled);
+            
+            // Play test sound if enabling
+            if (soundEnabled) {
+                notificationSound.play();
+            }
+        }
+        
+        function snoozeTask(taskId, minutes = 30) {
+            const snoozeUntil = new Date();
+            snoozeUntil.setMinutes(snoozeUntil.getMinutes() + minutes);
+            
+            snoozedTasks[taskId] = snoozeUntil.getTime();
+            localStorage.setItem('snoozedTasks', JSON.stringify(snoozedTasks));
+            
+            showNotification(`Task snoozed for ${minutes} minutes`, 'info');
+            
+            // Remove snooze after time expires
+            setTimeout(() => {
+                delete snoozedTasks[taskId];
+                localStorage.setItem('snoozedTasks', JSON.stringify(snoozedTasks));
+                checkOverdueTasks();
+            }, minutes * 60 * 1000);
+        }
+        
+        // Add flash animation
+        const flashStyle = document.createElement('style');
+        flashStyle.textContent = `
+            @keyframes flash {
+                0%, 100% { opacity: 1; }
+                50% { opacity: 0.3; }
+            }
+        `;
+        document.head.appendChild(flashStyle);
     </script>
 </body>
 </html>
