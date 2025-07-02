@@ -302,10 +302,18 @@
         // Load tasks from localStorage
         function loadTasks() {
             const savedTasks = localStorage.getItem('staffTasks');
+            console.log('savedTasks from localStorage:', savedTasks);
             if (savedTasks) {
-                staffTasks = JSON.parse(savedTasks);
+                try {
+                    staffTasks = JSON.parse(savedTasks);
+                    console.log('Parsed saved tasks:', staffTasks);
+                } catch (e) {
+                    console.error('Error parsing saved tasks:', e);
+                    staffTasks = [];
+                }
             } else {
                 // Only load sample tasks if no saved tasks exist
+                console.log('No saved tasks, loading sample tasks');
                 staffTasks = [
                     {
                         id: 'sample-1',
@@ -363,8 +371,10 @@
                         completedBy: null
                     }
                 ];
+                console.log('Sample tasks created:', staffTasks);
                 saveTasks();
             }
+            console.log('loadTasks completed, staffTasks length:', staffTasks.length);
         }
         
         // Save tasks to localStorage
