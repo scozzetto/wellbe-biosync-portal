@@ -201,19 +201,45 @@
             
             <div style="margin-bottom: 20px;">
                 <h4 style="margin-bottom: 10px;">Reminder Settings:</h4>
-                <p style="font-size: 0.9rem; opacity: 0.8; margin-bottom: 10px;">Get notified before tasks are due</p>
-                <label style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
-                    <input type="checkbox" id="remind15min" style="width: 18px; height: 18px;">
-                    <span>15 minutes before</span>
-                </label>
-                <label style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
-                    <input type="checkbox" id="remind1hour" style="width: 18px; height: 18px;">
-                    <span>1 hour before</span>
-                </label>
-                <label style="display: flex; align-items: center; gap: 10px;">
-                    <input type="checkbox" id="remind1day" style="width: 18px; height: 18px;">
-                    <span>1 day before</span>
-                </label>
+                <p style="font-size: 0.9rem; opacity: 0.8; margin-bottom: 15px;">Get notified before tasks are due</p>
+                
+                <div style="display: grid; gap: 12px;">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <input type="checkbox" id="remind1" style="width: 18px; height: 18px;">
+                        <select id="remind1Time" style="padding: 6px; border: 1px solid rgba(164, 124, 91, 0.3); border-radius: 4px; background: rgba(255, 255, 255, 0.1); color: var(--text-color);">
+                            <option value="5">5 minutes</option>
+                            <option value="10">10 minutes</option>
+                            <option value="15" selected>15 minutes</option>
+                            <option value="30">30 minutes</option>
+                            <option value="45">45 minutes</option>
+                        </select>
+                        <span>before</span>
+                    </div>
+                    
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <input type="checkbox" id="remind2" style="width: 18px; height: 18px;">
+                        <select id="remind2Time" style="padding: 6px; border: 1px solid rgba(164, 124, 91, 0.3); border-radius: 4px; background: rgba(255, 255, 255, 0.1); color: var(--text-color);">
+                            <option value="30">30 minutes</option>
+                            <option value="60" selected>1 hour</option>
+                            <option value="120">2 hours</option>
+                            <option value="180">3 hours</option>
+                            <option value="240">4 hours</option>
+                        </select>
+                        <span>before</span>
+                    </div>
+                    
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <input type="checkbox" id="remind3" style="width: 18px; height: 18px;">
+                        <select id="remind3Time" style="padding: 6px; border: 1px solid rgba(164, 124, 91, 0.3); border-radius: 4px; background: rgba(255, 255, 255, 0.1); color: var(--text-color);">
+                            <option value="720">12 hours</option>
+                            <option value="1440" selected>1 day</option>
+                            <option value="2880">2 days</option>
+                            <option value="4320">3 days</option>
+                            <option value="10080">1 week</option>
+                        </select>
+                        <span>before</span>
+                    </div>
+                </div>
             </div>
             
             <div style="display: flex; gap: 10px; justify-content: flex-end;">
@@ -1006,31 +1032,56 @@
             
             // Clear existing timers for this task
             if (notificationTimers.has(task.id)) {
-                clearTimeout(notificationTimers.get(task.id));
+                const timers = notificationTimers.get(task.id);
+                if (Array.isArray(timers)) {
+                    timers.forEach(timerId => clearTimeout(timerId));
+                } else {
+                    clearTimeout(timers);
+                }
+                notificationTimers.delete(task.id);
             }
             
             // Schedule reminders based on settings
             const reminders = [];
-            if (localStorage.getItem('remind15min') === 'true') {
-                reminders.push({ time: 15 * 60 * 1000, text: '15 minutes' });
+            
+            if (localStorage.getItem('remind1') === 'true') {
+                const minutes = parseInt(localStorage.getItem('remind1Time') || '15');
+                const timeText = minutes < 60 ? `${minutes} minutes` : `${minutes/60} hour${minutes/60 > 1 ? 's' : ''}`;
+                reminders.push({ time: minutes * 60 * 1000, text: timeText });
             }
-            if (localStorage.getItem('remind1hour') === 'true') {
-                reminders.push({ time: 60 * 60 * 1000, text: '1 hour' });
+            
+            if (localStorage.getItem('remind2') === 'true') {
+                const minutes = parseInt(localStorage.getItem('remind2Time') || '60');
+                const timeText = minutes < 60 ? `${minutes} minutes` : `${minutes/60} hour${minutes/60 > 1 ? 's' : ''}`;
+                reminders.push({ time: minutes * 60 * 1000, text: timeText });
             }
-            if (localStorage.getItem('remind1day') === 'true') {
-                reminders.push({ time: 24 * 60 * 60 * 1000, text: '1 day' });
+            
+            if (localStorage.getItem('remind3') === 'true') {
+                const minutes = parseInt(localStorage.getItem('remind3Time') || '1440');
+                const hours = minutes / 60;
+                const days = hours / 24;
+                const timeText = days >= 1 ? 
+                    (days === 7 ? '1 week' : `${days} day${days > 1 ? 's' : ''}`) : 
+                    `${hours} hour${hours > 1 ? 's' : ''}`;
+                reminders.push({ time: minutes * 60 * 1000, text: timeText });
             }
             
             reminders.forEach(reminder => {
                 const reminderTime = dueDate.getTime() - reminder.time;
                 if (reminderTime > now.getTime()) {
-                    setTimeout(() => {
+                    const timerId = setTimeout(() => {
                         sendNotification(
                             `Task Due in ${reminder.text}`,
                             task.description,
                             true
                         );
                     }, reminderTime - now.getTime());
+                    
+                    // Store timer ID for this task
+                    if (!notificationTimers.has(task.id)) {
+                        notificationTimers.set(task.id, []);
+                    }
+                    notificationTimers.get(task.id).push(timerId);
                 }
             });
         }
@@ -1078,9 +1129,16 @@
             document.getElementById('enableNotifications').checked = notificationPermission;
             document.getElementById('enableSound').checked = soundEnabled;
             document.getElementById('dailySummaryTimeInput').value = dailySummaryTime;
-            document.getElementById('remind15min').checked = localStorage.getItem('remind15min') === 'true';
-            document.getElementById('remind1hour').checked = localStorage.getItem('remind1hour') === 'true';
-            document.getElementById('remind1day').checked = localStorage.getItem('remind1day') === 'true';
+            
+            // Load reminder settings
+            document.getElementById('remind1').checked = localStorage.getItem('remind1') === 'true';
+            document.getElementById('remind1Time').value = localStorage.getItem('remind1Time') || '15';
+            
+            document.getElementById('remind2').checked = localStorage.getItem('remind2') === 'true';
+            document.getElementById('remind2Time').value = localStorage.getItem('remind2Time') || '60';
+            
+            document.getElementById('remind3').checked = localStorage.getItem('remind3') === 'true';
+            document.getElementById('remind3Time').value = localStorage.getItem('remind3Time') || '1440';
         }
         
         function closeNotificationSettings() {
@@ -1090,9 +1148,16 @@
         function saveNotificationSettings() {
             dailySummaryTime = document.getElementById('dailySummaryTimeInput').value;
             localStorage.setItem('dailySummaryTime', dailySummaryTime);
-            localStorage.setItem('remind15min', document.getElementById('remind15min').checked);
-            localStorage.setItem('remind1hour', document.getElementById('remind1hour').checked);
-            localStorage.setItem('remind1day', document.getElementById('remind1day').checked);
+            
+            // Save reminder settings
+            localStorage.setItem('remind1', document.getElementById('remind1').checked);
+            localStorage.setItem('remind1Time', document.getElementById('remind1Time').value);
+            
+            localStorage.setItem('remind2', document.getElementById('remind2').checked);
+            localStorage.setItem('remind2Time', document.getElementById('remind2Time').value);
+            
+            localStorage.setItem('remind3', document.getElementById('remind3').checked);
+            localStorage.setItem('remind3Time', document.getElementById('remind3Time').value);
             
             closeNotificationSettings();
             showNotification('Settings saved successfully!', 'success');
