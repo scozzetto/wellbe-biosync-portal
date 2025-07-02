@@ -282,7 +282,13 @@
         
         // Create notification sound
         const notificationSound = new Audio('data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTGH0fPTgjMGHm7A7+OZURE');
-        notificationSound.volume = 0.5;
+        notificationSound.volume = 0.3;
+        notificationSound.loop = false; // We'll manually loop for continuous play
+        
+        // Continuous notification variables
+        let continuousNotificationActive = false;
+        let continuousFlashInterval = null;
+        let continuousSoundInterval = null;
         
         // Initialize on load
         document.addEventListener('DOMContentLoaded', function() {
@@ -1081,14 +1087,8 @@
                 // Show a summary of missed notifications
                 showNotification(`You have ${notificationCount} missed notification${notificationCount > 1 ? 's' : ''}`, 'warning');
                 
-                // Flash the page briefly to draw attention
-                document.body.style.background = '#ff6b6b';
-                setTimeout(() => {
-                    document.body.style.background = '';
-                }, 200);
-                
-                // Play notification sound
-                playNotificationSound();
+                // Start continuous notification alerts
+                startContinuousNotification();
                 
                 // Show each missed notification briefly
                 missedNotifications.forEach((notification, index) => {
@@ -1097,9 +1097,95 @@
                     }, (index + 1) * 1000);
                 });
                 
+                // Create dismiss button
+                createDismissButton();
+                
                 // Clear missed notifications
                 missedNotifications = [];
             }
+        }
+        
+        function startContinuousNotification() {
+            if (continuousNotificationActive) return;
+            
+            continuousNotificationActive = true;
+            
+            // Start continuous flashing
+            continuousFlashInterval = setInterval(() => {
+                document.body.style.background = document.body.style.background === 'rgb(255, 107, 107)' ? '' : '#ff6b6b';
+            }, 800); // Flash every 800ms
+            
+            // Start continuous sound (if enabled)
+            if (soundEnabled) {
+                playNotificationSoundContinuous();
+                continuousSoundInterval = setInterval(() => {
+                    playNotificationSoundContinuous();
+                }, 3000); // Play sound every 3 seconds
+            }
+        }
+        
+        function stopContinuousNotification() {
+            continuousNotificationActive = false;
+            
+            // Stop flashing
+            if (continuousFlashInterval) {
+                clearInterval(continuousFlashInterval);
+                continuousFlashInterval = null;
+                document.body.style.background = ''; // Reset background
+            }
+            
+            // Stop sound
+            if (continuousSoundInterval) {
+                clearInterval(continuousSoundInterval);
+                continuousSoundInterval = null;
+                notificationSound.pause();
+                notificationSound.currentTime = 0;
+            }
+            
+            // Remove dismiss button
+            const dismissBtn = document.getElementById('dismissNotificationBtn');
+            if (dismissBtn) dismissBtn.remove();
+        }
+        
+        function playNotificationSoundContinuous() {
+            if (soundEnabled && notificationSound) {
+                notificationSound.currentTime = 0;
+                notificationSound.play().catch(e => console.log('Sound play failed:', e));
+            }
+        }
+        
+        function createDismissButton() {
+            // Remove existing button if present
+            const existingBtn = document.getElementById('dismissNotificationBtn');
+            if (existingBtn) existingBtn.remove();
+            
+            // Create dismiss button
+            const dismissBtn = document.createElement('button');
+            dismissBtn.id = 'dismissNotificationBtn';
+            dismissBtn.innerHTML = '<i class="fas fa-times"></i> Dismiss Alerts';
+            dismissBtn.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: #dc3545;
+                color: white;
+                padding: 12px 20px;
+                border: none;
+                border-radius: 6px;
+                font-weight: 600;
+                cursor: pointer;
+                z-index: 10000;
+                font-size: 1rem;
+                box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+                animation: pulse 2s infinite;
+            `;
+            
+            dismissBtn.onclick = () => {
+                stopContinuousNotification();
+                showNotification('Notification alerts dismissed', 'success');
+            };
+            
+            document.body.appendChild(dismissBtn);
         }
         
         function checkOverdueTasks() {
@@ -1431,12 +1517,17 @@
             }
         }
         
-        // Add flash animation
+        // Add flash animation and pulse animation
         const flashStyle = document.createElement('style');
         flashStyle.textContent = `
             @keyframes flash {
                 0%, 100% { opacity: 1; }
                 50% { opacity: 0.3; }
+            }
+            @keyframes pulse {
+                0% { transform: scale(1); }
+                50% { transform: scale(1.05); }
+                100% { transform: scale(1); }
             }
         `;
         document.head.appendChild(flashStyle);
