@@ -280,6 +280,7 @@
         // Initialize on load
         document.addEventListener('DOMContentLoaded', function() {
             loadTasks();
+            cleanupExpiredSnoozes();
             renderTasks();
             requestNotificationPermission();
             setupNotificationSystem();
@@ -842,11 +843,21 @@
                                 }
                                 ${overdue && !snoozedTasks[task.id] ? `<span style="background: rgba(0,0,0,0.3); color: white; padding: 3px 8px; border-radius: 12px; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; animation: pulse 2s infinite;"><i class="fas fa-exclamation-triangle" style="margin-right: 3px;"></i>Overdue</span>` : ''}
                                 ${overdue && !snoozedTasks[task.id] ? `
-                                    <button onclick="event.stopPropagation(); snoozeTask('${task.id}', 30)" 
-                                            style="background: rgba(255,255,255,0.2); color: ${cardColor.text}; border: none; padding: 2px 6px; border-radius: 10px; cursor: pointer; font-size: 0.65rem; font-weight: 600;"
-                                            title="Snooze for 30 minutes">
-                                        <i class="fas fa-clock"></i> Snooze
-                                    </button>` : ''}
+                                    <div style="position: relative; display: inline-block;">
+                                        <button onclick="event.stopPropagation(); toggleSnoozeMenu('${task.id}')" 
+                                                style="background: rgba(255,255,255,0.2); color: ${cardColor.text}; border: none; padding: 2px 6px; border-radius: 10px; cursor: pointer; font-size: 0.65rem; font-weight: 600;"
+                                                title="Snooze task">
+                                            <i class="fas fa-clock"></i> Snooze ▼
+                                        </button>
+                                        <div id="snooze-menu-${task.id}" style="display: none; position: absolute; top: 100%; left: 0; background: var(--card-bg); border: 1px solid rgba(164, 124, 91, 0.3); border-radius: 6px; padding: 4px; margin-top: 2px; z-index: 100; min-width: 120px; box-shadow: 0 2px 8px rgba(0,0,0,0.2);">
+                                            <button onclick="event.stopPropagation(); snoozeTask('${task.id}', 15); toggleSnoozeMenu('${task.id}');" style="display: block; width: 100%; background: transparent; border: none; padding: 4px 8px; text-align: left; cursor: pointer; font-size: 0.65rem; color: var(--text-color); hover: background: rgba(164, 124, 91, 0.1);" onmouseover="this.style.background='rgba(164, 124, 91, 0.1)'" onmouseout="this.style.background='transparent'">15 minutes</button>
+                                            <button onclick="event.stopPropagation(); snoozeTask('${task.id}', 30); toggleSnoozeMenu('${task.id}');" style="display: block; width: 100%; background: transparent; border: none; padding: 4px 8px; text-align: left; cursor: pointer; font-size: 0.65rem; color: var(--text-color);" onmouseover="this.style.background='rgba(164, 124, 91, 0.1)'" onmouseout="this.style.background='transparent'">30 minutes</button>
+                                            <button onclick="event.stopPropagation(); snoozeTask('${task.id}', 60); toggleSnoozeMenu('${task.id}');" style="display: block; width: 100%; background: transparent; border: none; padding: 4px 8px; text-align: left; cursor: pointer; font-size: 0.65rem; color: var(--text-color);" onmouseover="this.style.background='rgba(164, 124, 91, 0.1)'" onmouseout="this.style.background='transparent'">1 hour</button>
+                                            <button onclick="event.stopPropagation(); snoozeTask('${task.id}', 180); toggleSnoozeMenu('${task.id}');" style="display: block; width: 100%; background: transparent; border: none; padding: 4px 8px; text-align: left; cursor: pointer; font-size: 0.65rem; color: var(--text-color);" onmouseover="this.style.background='rgba(164, 124, 91, 0.1)'" onmouseout="this.style.background='transparent'">3 hours</button>
+                                            <button onclick="event.stopPropagation(); snoozeTask('${task.id}', 1440); toggleSnoozeMenu('${task.id}');" style="display: block; width: 100%; background: transparent; border: none; padding: 4px 8px; text-align: left; cursor: pointer; font-size: 0.65rem; color: var(--text-color);" onmouseover="this.style.background='rgba(164, 124, 91, 0.1)'" onmouseout="this.style.background='transparent'">Tomorrow</button>
+                                            <button onclick="event.stopPropagation(); snoozeTask('${task.id}', 10080); toggleSnoozeMenu('${task.id}');" style="display: block; width: 100%; background: transparent; border: none; padding: 4px 8px; text-align: left; cursor: pointer; font-size: 0.65rem; color: var(--text-color);" onmouseover="this.style.background='rgba(164, 124, 91, 0.1)'" onmouseout="this.style.background='transparent'">1 week</button>
+                                        </div>
+                                    </div>` : ''}
                             </div>
                         </div>
                         
@@ -1188,19 +1199,81 @@
         
         function snoozeTask(taskId, minutes = 30) {
             const snoozeUntil = new Date();
-            snoozeUntil.setMinutes(snoozeUntil.getMinutes() + minutes);
+            
+            // Handle different snooze durations
+            let snoozeText = '';
+            if (minutes < 60) {
+                snoozeText = `${minutes} minutes`;
+                snoozeUntil.setMinutes(snoozeUntil.getMinutes() + minutes);
+            } else if (minutes < 1440) {
+                const hours = minutes / 60;
+                snoozeText = `${hours} hour${hours > 1 ? 's' : ''}`;
+                snoozeUntil.setMinutes(snoozeUntil.getMinutes() + minutes);
+            } else if (minutes === 1440) {
+                snoozeText = 'tomorrow';
+                snoozeUntil.setDate(snoozeUntil.getDate() + 1);
+                snoozeUntil.setHours(9, 0, 0, 0); // Set to 9 AM tomorrow
+            } else if (minutes === 10080) {
+                snoozeText = '1 week';
+                snoozeUntil.setDate(snoozeUntil.getDate() + 7);
+            }
             
             snoozedTasks[taskId] = snoozeUntil.getTime();
             localStorage.setItem('snoozedTasks', JSON.stringify(snoozedTasks));
             
-            showNotification(`Task snoozed for ${minutes} minutes`, 'info');
+            showNotification(`Task snoozed for ${snoozeText}`, 'info');
             
             // Remove snooze after time expires
             setTimeout(() => {
                 delete snoozedTasks[taskId];
                 localStorage.setItem('snoozedTasks', JSON.stringify(snoozedTasks));
                 checkOverdueTasks();
-            }, minutes * 60 * 1000);
+            }, snoozeUntil.getTime() - new Date().getTime());
+            
+            renderTasks(); // Re-render to hide snooze button
+        }
+        
+        function toggleSnoozeMenu(taskId) {
+            const menu = document.getElementById(`snooze-menu-${taskId}`);
+            if (menu) {
+                // Close all other snooze menus
+                document.querySelectorAll('[id^="snooze-menu-"]').forEach(m => {
+                    if (m.id !== `snooze-menu-${taskId}`) {
+                        m.style.display = 'none';
+                    }
+                });
+                
+                // Toggle this menu
+                menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
+                
+                // Close menu when clicking outside
+                if (menu.style.display === 'block') {
+                    setTimeout(() => {
+                        document.addEventListener('click', function closeMenu(e) {
+                            if (!menu.contains(e.target) && !e.target.closest(`[onclick*="toggleSnoozeMenu('${taskId}')"]`)) {
+                                menu.style.display = 'none';
+                                document.removeEventListener('click', closeMenu);
+                            }
+                        });
+                    }, 10);
+                }
+            }
+        }
+        
+        function cleanupExpiredSnoozes() {
+            const now = new Date().getTime();
+            let hasChanges = false;
+            
+            for (const taskId in snoozedTasks) {
+                if (snoozedTasks[taskId] < now) {
+                    delete snoozedTasks[taskId];
+                    hasChanges = true;
+                }
+            }
+            
+            if (hasChanges) {
+                localStorage.setItem('snoozedTasks', JSON.stringify(snoozedTasks));
+            }
         }
         
         // Add flash animation
