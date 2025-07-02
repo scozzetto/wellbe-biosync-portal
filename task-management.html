@@ -90,10 +90,15 @@
                         <option value="urgent">Urgent Priority</option>
                     </select>
                 </div>
-                <div style="min-width: 150px;">
-                    <label style="display: block; margin-bottom: 8px; color: var(--text-color); font-size: 0.9rem; font-weight: 600;">Due Date (Optional)</label>
-                    <input type="date" id="taskDueDate" 
-                           style="width: 100%; padding: 12px; border: 1px solid rgba(164, 124, 91, 0.3); border-radius: 6px; background: rgba(255, 255, 255, 0.1); color: var(--text-color); font-size: 1rem;">
+                <div style="min-width: 300px;">
+                    <label style="display: block; margin-bottom: 8px; color: var(--text-color); font-size: 0.9rem; font-weight: 600;">Due Date & Time (Optional)</label>
+                    <div style="display: flex; gap: 8px;">
+                        <input type="date" id="taskDueDate" 
+                               style="flex: 2; padding: 12px; border: 1px solid rgba(164, 124, 91, 0.3); border-radius: 6px; background: rgba(255, 255, 255, 0.1); color: var(--text-color); font-size: 1rem;">
+                        <input type="time" id="taskDueTime" 
+                               style="flex: 1; padding: 12px; border: 1px solid rgba(164, 124, 91, 0.3); border-radius: 6px; background: rgba(255, 255, 255, 0.1); color: var(--text-color); font-size: 1rem;" 
+                               value="17:00">
+                    </div>
                 </div>
                 <button type="submit" style="background: var(--primary-color); color: white; padding: 12px 24px; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 1rem;">
                     <i class="fas fa-plus"></i> Add Task
@@ -373,8 +378,19 @@
             const description = document.getElementById('taskDescription').value.trim();
             const priority = document.getElementById('taskPriority').value;
             const dueDate = document.getElementById('taskDueDate').value;
+            const dueTime = document.getElementById('taskDueTime').value;
             
             if (!description) return;
+            
+            // Combine date and time if both are provided
+            let combinedDueDate = '';
+            if (dueDate) {
+                if (dueTime) {
+                    combinedDueDate = `${dueDate}T${dueTime}:00.000Z`;
+                } else {
+                    combinedDueDate = `${dueDate}T17:00:00.000Z`; // Default to 5 PM if no time
+                }
+            }
             
             if (editingTaskId) {
                 // Update existing task
@@ -384,7 +400,7 @@
                         ...staffTasks[taskIndex],
                         description: description,
                         priority: priority,
-                        dueDate: dueDate,
+                        dueDate: combinedDueDate,
                         updatedAt: new Date().toISOString(),
                         updatedBy: currentUser.name || 'Staff'
                     };
@@ -400,7 +416,7 @@
                     id: Date.now().toString(),
                     description: description,
                     priority: priority,
-                    dueDate: dueDate,
+                    dueDate: combinedDueDate,
                     completed: false,
                     createdAt: new Date().toISOString(),
                     createdBy: currentUser.name || 'Staff',
@@ -419,6 +435,7 @@
             document.getElementById('taskDescription').value = '';
             document.getElementById('taskPriority').value = 'normal';
             document.getElementById('taskDueDate').value = '';
+            document.getElementById('taskDueTime').value = '17:00';
         }
         
         // Toggle task completion
@@ -460,7 +477,16 @@
             // Fill form with current task data
             document.getElementById('taskDescription').value = task.description;
             document.getElementById('taskPriority').value = task.priority;
-            document.getElementById('taskDueDate').value = task.dueDate || '';
+            
+            // Parse date and time from dueDate
+            if (task.dueDate) {
+                const dueDateTime = new Date(task.dueDate);
+                document.getElementById('taskDueDate').value = dueDateTime.toISOString().split('T')[0];
+                document.getElementById('taskDueTime').value = dueDateTime.toTimeString().slice(0, 5);
+            } else {
+                document.getElementById('taskDueDate').value = '';
+                document.getElementById('taskDueTime').value = '17:00';
+            }
             
             // Change button text
             const submitBtn = document.querySelector('#addTaskForm button[type="submit"]');
@@ -493,6 +519,7 @@
             document.getElementById('taskDescription').value = '';
             document.getElementById('taskPriority').value = 'normal';
             document.getElementById('taskDueDate').value = '';
+            document.getElementById('taskDueTime').value = '17:00';
             
             // Reset button
             const submitBtn = document.querySelector('#addTaskForm button[type="submit"]');
@@ -830,7 +857,7 @@
                             
                             <!-- Task metadata -->
                             <div style="font-size: 0.8rem; color: ${cardColor.text}; opacity: 0.8; margin-bottom: 8px;">
-                                ${task.dueDate ? `<div style="margin-bottom: 4px;"><i class="fas fa-calendar" style="margin-right: 6px; width: 12px;"></i>Due: ${new Date(task.dueDate).toLocaleDateString()}</div>` : ''}
+                                ${task.dueDate ? `<div style="margin-bottom: 4px;"><i class="fas fa-calendar" style="margin-right: 6px; width: 12px;"></i>Due: ${new Date(task.dueDate).toLocaleDateString()} at ${new Date(task.dueDate).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</div>` : ''}
                                 <div><i class="fas fa-user" style="margin-right: 6px; width: 12px;"></i>Created by ${task.createdBy}</div>
                                 ${task.completed ? `<div style="margin-top: 4px;"><i class="fas fa-check-circle" style="margin-right: 6px; width: 12px;"></i>Completed by ${task.completedBy}</div>` : ''}
                             </div>
