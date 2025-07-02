@@ -290,6 +290,21 @@
         let continuousFlashInterval = null;
         let continuousSoundInterval = null;
         
+        // Test function for continuous notifications (call from console)
+        function testContinuousNotification() {
+            console.log('Testing continuous notification...');
+            missedNotifications = [{
+                title: 'Test Notification',
+                body: 'This is a test',
+                message: 'Test: This is a test notification',
+                timestamp: Date.now()
+            }];
+            checkMissedNotifications();
+        }
+        
+        // Make test function globally available
+        window.testContinuousNotification = testContinuousNotification;
+        
         // Initialize on load
         document.addEventListener('DOMContentLoaded', function() {
             console.log('Initializing task management...');
@@ -303,6 +318,8 @@
             checkOverdueTasks();
             checkMissedNotifications();
             setInterval(checkOverdueTasks, 60000); // Check every minute
+            
+            console.log('You can test continuous notifications by typing: testContinuousNotification()');
         });
         
         // Load tasks from localStorage
@@ -1106,25 +1123,30 @@
         }
         
         function startContinuousNotification() {
+            console.log('Starting continuous notification, active:', continuousNotificationActive);
             if (continuousNotificationActive) return;
             
             continuousNotificationActive = true;
             
             // Start continuous flashing
+            let flashState = false;
             continuousFlashInterval = setInterval(() => {
-                document.body.style.background = document.body.style.background === 'rgb(255, 107, 107)' ? '' : '#ff6b6b';
+                flashState = !flashState;
+                document.body.style.background = flashState ? '#ff6b6b' : 'var(--bg-color)';
+                console.log('Flash state:', flashState, 'Background:', document.body.style.background);
             }, 800); // Flash every 800ms
             
-            // Start continuous sound (if enabled)
-            if (soundEnabled) {
+            // Start continuous sound (always enabled for notifications)
+            console.log('Starting continuous sound, soundEnabled:', soundEnabled);
+            playNotificationSoundContinuous();
+            continuousSoundInterval = setInterval(() => {
+                console.log('Playing continuous sound');
                 playNotificationSoundContinuous();
-                continuousSoundInterval = setInterval(() => {
-                    playNotificationSoundContinuous();
-                }, 3000); // Play sound every 3 seconds
-            }
+            }, 3000); // Play sound every 3 seconds
         }
         
         function stopContinuousNotification() {
+            console.log('Stopping continuous notification');
             continuousNotificationActive = false;
             
             // Stop flashing
@@ -1132,14 +1154,18 @@
                 clearInterval(continuousFlashInterval);
                 continuousFlashInterval = null;
                 document.body.style.background = ''; // Reset background
+                console.log('Stopped flashing');
             }
             
             // Stop sound
             if (continuousSoundInterval) {
                 clearInterval(continuousSoundInterval);
                 continuousSoundInterval = null;
-                notificationSound.pause();
-                notificationSound.currentTime = 0;
+                if (notificationSound) {
+                    notificationSound.pause();
+                    notificationSound.currentTime = 0;
+                }
+                console.log('Stopped sound');
             }
             
             // Remove dismiss button
@@ -1148,9 +1174,20 @@
         }
         
         function playNotificationSoundContinuous() {
-            if (soundEnabled && notificationSound) {
+            console.log('Attempting to play sound, soundEnabled:', soundEnabled, 'notificationSound:', !!notificationSound);
+            if (notificationSound) {
                 notificationSound.currentTime = 0;
-                notificationSound.play().catch(e => console.log('Sound play failed:', e));
+                notificationSound.volume = 0.5;
+                console.log('Playing notification sound...');
+                notificationSound.play()
+                    .then(() => console.log('Sound played successfully'))
+                    .catch(e => {
+                        console.error('Sound play failed:', e);
+                        // Try to enable audio by user interaction
+                        showNotification('Click anywhere to enable notification sounds', 'warning');
+                    });
+            } else {
+                console.error('notificationSound not available');
             }
         }
         
