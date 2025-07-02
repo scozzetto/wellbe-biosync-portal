@@ -293,7 +293,6 @@
             setupNotificationSystem();
             checkOverdueTasks();
             checkMissedNotifications();
-            setupActivityTracking();
             setInterval(checkOverdueTasks, 60000); // Check every minute
         });
         
@@ -1018,11 +1017,13 @@
             scheduleDailySummary();
             
             // Setup task reminders
-            staffTasks.forEach(task => {
-                if (!task.completed && task.dueDate) {
-                    scheduleTaskReminders(task);
-                }
-            });
+            if (staffTasks && staffTasks.length > 0) {
+                staffTasks.forEach(task => {
+                    if (!task.completed && task.dueDate) {
+                        scheduleTaskReminders(task);
+                    }
+                });
+            }
         }
         
         function setupActivityTracking() {
