@@ -482,9 +482,9 @@
             let combinedDueDate = '';
             if (dueDate) {
                 if (dueTime) {
-                    combinedDueDate = `${dueDate}T${dueTime}:00.000Z`;
+                    combinedDueDate = `${dueDate}T${dueTime}:00`;
                 } else {
-                    combinedDueDate = `${dueDate}T17:00:00.000Z`; // Default to 5 PM if no time
+                    combinedDueDate = `${dueDate}T17:00:00`; // Default to 5 PM if no time
                 }
             }
             
@@ -576,9 +576,15 @@
             
             // Parse date and time from dueDate
             if (task.dueDate) {
-                const dueDateTime = new Date(task.dueDate);
-                document.getElementById('taskDueDate').value = dueDateTime.toISOString().split('T')[0];
-                document.getElementById('taskDueTime').value = dueDateTime.toTimeString().slice(0, 5);
+                // Handle local datetime without timezone conversion
+                if (task.dueDate.includes('T')) {
+                    const [datePart, timePart] = task.dueDate.split('T');
+                    document.getElementById('taskDueDate').value = datePart;
+                    document.getElementById('taskDueTime').value = timePart.slice(0, 5);
+                } else {
+                    document.getElementById('taskDueDate').value = task.dueDate;
+                    document.getElementById('taskDueTime').value = '17:00';
+                }
             } else {
                 document.getElementById('taskDueDate').value = '';
                 document.getElementById('taskDueTime').value = '17:00';
