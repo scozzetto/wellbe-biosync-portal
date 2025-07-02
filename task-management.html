@@ -194,87 +194,16 @@
         // Load tasks from localStorage
         function loadTasks() {
             const savedTasks = localStorage.getItem('staffTasks');
-            
             if (savedTasks) {
                 staffTasks = JSON.parse(savedTasks);
-                
-                // If we only have a few tasks (or they got wiped), ensure we have sample tasks
-                if (staffTasks.length < 3) {
-                    const sampleTasks = [
-                        {
-                            id: 'sample-1',
-                            description: 'Update patient intake forms for new IV therapy protocols',
-                            priority: 'urgent',
-                            dueDate: '2025-06-29',
-                            completed: false,
-                            createdAt: '2025-06-28T10:00:00.000Z',
-                            createdBy: 'Dr. Sarah',
-                            completedAt: null,
-                            completedBy: null
-                        },
-                        {
-                            id: 'sample-2', 
-                            description: 'Order new massage table linens for Birmingham location',
-                            priority: 'normal',
-                            dueDate: '2025-07-05',
-                            completed: false,
-                            createdAt: '2025-06-27T14:30:00.000Z',
-                            createdBy: 'Jennifer',
-                            completedAt: null,
-                            completedBy: null
-                        },
-                        {
-                            id: 'sample-3',
-                            description: 'Schedule staff training for new cupping techniques',
-                            priority: 'low',
-                            dueDate: '2025-07-10',
-                            completed: true,
-                            createdAt: '2025-06-25T09:15:00.000Z',
-                            createdBy: 'Michael',
-                            completedAt: '2025-06-26T16:45:00.000Z',
-                            completedBy: 'Sarah'
-                        },
-                        {
-                            id: 'sample-4',
-                            description: 'Restock colon hydrotherapy supplies - URGENT',
-                            priority: 'urgent',
-                            dueDate: '2025-06-30',
-                            completed: false,
-                            createdAt: '2025-06-26T11:20:00.000Z',
-                            createdBy: 'Admin',
-                            completedAt: null,
-                            completedBy: null
-                        },
-                        {
-                            id: 'sample-5',
-                            description: 'Update website with new NAD+ IV pricing',
-                            priority: 'normal',
-                            dueDate: null,
-                            completed: false,
-                            createdAt: '2025-06-24T13:10:00.000Z',
-                            createdBy: 'Marketing Team',
-                            completedAt: null,
-                            completedBy: null
-                        }
-                    ];
-                    
-                    // Add sample tasks that don't already exist
-                    sampleTasks.forEach(sampleTask => {
-                        if (!staffTasks.find(task => task.id === sampleTask.id)) {
-                            staffTasks.push(sampleTask);
-                        }
-                    });
-                    
-                    saveTasks();
-                }
             } else {
-                // First time - add sample tasks
+                // Only load sample tasks if no saved tasks exist
                 staffTasks = [
                     {
                         id: 'sample-1',
-                        description: 'Update patient intake forms for new IV therapy protocols',
+                        description: 'Review new patient intake forms for compliance',
                         priority: 'urgent',
-                        dueDate: '2025-06-29',
+                        dueDate: '2025-07-02',
                         completed: false,
                         createdAt: '2025-06-28T10:00:00.000Z',
                         createdBy: 'Dr. Sarah',
@@ -648,13 +577,13 @@
         
         // Clear all tasks and reset demo
         function clearAllTasks() {
-            if (confirm('Clear all tasks and reset the demo? This will reload the sample tasks.')) {
-                localStorage.removeItem('staffTasks');
+            if (confirm('Clear all tasks and start fresh? This will remove all tasks.')) {
                 staffTasks = [];
                 selectedTasks.clear();
-                loadTasks(); // This will reload the sample tasks
+                localStorage.removeItem('staffTasks');
+                saveTasks();
                 renderTasks();
-                showNotification('Demo reset with fresh sample tasks!', 'success');
+                showNotification('All tasks cleared! Starting fresh.', 'success');
             }
         }
         
@@ -781,7 +710,10 @@
                     
                     taskElement.innerHTML = `
                         <!-- Selection indicator (top-left corner) -->
-                        ${isSelected ? `<div style="position: absolute; top: 8px; left: 8px; background: #A47C5B; color: white; border-radius: 50%; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; font-weight: 600; box-shadow: 0 2px 4px rgba(0,0,0,0.2);"><i class="fas fa-check"></i></div>` : ''}
+                        ${isSelected ? 
+                            `<div style="position: absolute; top: 8px; left: 8px; background: #fff; color: #A47C5B; border: 2px solid #A47C5B; border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 700; box-shadow: 0 2px 6px rgba(0,0,0,0.3); z-index: 10;"><i class="fas fa-check"></i></div>` : 
+                            `<div style="position: absolute; top: 8px; left: 8px; background: rgba(255,255,255,0.3); border: 2px solid rgba(255,255,255,0.5); border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; cursor: pointer; transition: all 0.2s ease; z-index: 10;" onmouseover="this.style.background='rgba(255,255,255,0.5)'; this.style.borderColor='rgba(255,255,255,0.8)';" onmouseout="this.style.background='rgba(255,255,255,0.3)'; this.style.borderColor='rgba(255,255,255,0.5)';"></div>`
+                        }
                         
                         <!-- Task header -->
                         <div style="flex: 1; padding-right: ${isSelected ? '30px' : '0'};">
