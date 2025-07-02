@@ -280,30 +280,46 @@
         let missedNotifications = JSON.parse(localStorage.getItem('missedNotifications') || '[]');
         let lastActiveTime = Date.now();
         
-        // Create notification sound
-        const notificationSound = new Audio('data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTGH0fPTgjMGHm7A7+OZURE');
-        notificationSound.volume = 0.3;
-        notificationSound.loop = false; // We'll manually loop for continuous play
+        // Simple notification sound - basic beep
+        function createNotificationSound() {
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            oscillator.frequency.setValueAtTime(800, audioContext.currentTime); // 800Hz tone
+            oscillator.type = 'sine';
+            
+            gainNode.gain.setValueAtTime(0, audioContext.currentTime);
+            gainNode.gain.linearRampToValueAtTime(0.3, audioContext.currentTime + 0.01);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+            
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + 0.5);
+        }
         
         // Continuous notification variables
         let continuousNotificationActive = false;
         let continuousFlashInterval = null;
         let continuousSoundInterval = null;
+        let activeNotificationTaskId = null;
         
-        // Test function for continuous notifications (call from console)
-        function testContinuousNotification() {
-            console.log('Testing continuous notification...');
-            missedNotifications = [{
-                title: 'Test Notification',
-                body: 'This is a test',
-                message: 'Test: This is a test notification',
-                timestamp: Date.now()
-            }];
-            checkMissedNotifications();
+        // Test function for task notifications (call from console)
+        function testTaskNotification() {
+            console.log('Testing task notification...');
+            const testTask = {
+                id: 'test-123',
+                description: 'Test Overdue Task Notification',
+                dueDate: new Date(Date.now() - 60000).toISOString(), // 1 minute ago
+                completed: false
+            };
+            startTaskNotification(testTask);
         }
         
         // Make test function globally available
-        window.testContinuousNotification = testContinuousNotification;
+        window.testTaskNotification = testTaskNotification;
         
         // Initialize on load
         document.addEventListener('DOMContentLoaded', function() {
@@ -319,7 +335,7 @@
             checkMissedNotifications();
             setInterval(checkOverdueTasks, 60000); // Check every minute
             
-            console.log('You can test continuous notifications by typing: testContinuousNotification()');
+            console.log('You can test task notifications by typing: testTaskNotification()');
         });
         
         // Load tasks from localStorage
@@ -1100,24 +1116,7 @@
         function checkMissedNotifications() {
             if (missedNotifications.length > 0) {
                 const notificationCount = missedNotifications.length;
-                
-                // Show a summary of missed notifications
                 showNotification(`You have ${notificationCount} missed notification${notificationCount > 1 ? 's' : ''}`, 'warning');
-                
-                // Start continuous notification alerts
-                startContinuousNotification();
-                
-                // Show each missed notification briefly
-                missedNotifications.forEach((notification, index) => {
-                    setTimeout(() => {
-                        showNotification(notification.message, 'info');
-                    }, (index + 1) * 1000);
-                });
-                
-                // Create dismiss button
-                createDismissButton();
-                
-                // Clear missed notifications
                 missedNotifications = [];
             }
         }
@@ -1148,29 +1147,58 @@
         function stopContinuousNotification() {
             console.log('Stopping continuous notification');
             continuousNotificationActive = false;
+            activeNotificationTaskId = null;
             
             // Stop flashing
             if (continuousFlashInterval) {
                 clearInterval(continuousFlashInterval);
                 continuousFlashInterval = null;
                 document.body.style.background = ''; // Reset background
-                console.log('Stopped flashing');
             }
             
             // Stop sound
             if (continuousSoundInterval) {
                 clearInterval(continuousSoundInterval);
                 continuousSoundInterval = null;
-                if (notificationSound) {
-                    notificationSound.pause();
-                    notificationSound.currentTime = 0;
-                }
-                console.log('Stopped sound');
             }
             
             // Remove dismiss button
             const dismissBtn = document.getElementById('dismissNotificationBtn');
             if (dismissBtn) dismissBtn.remove();
+        }
+        
+        function createTaskNotificationDismiss(task) {
+            // Remove existing button
+            const existingBtn = document.getElementById('dismissNotificationBtn');
+            if (existingBtn) existingBtn.remove();
+            
+            const dismissBtn = document.createElement('button');
+            dismissBtn.id = 'dismissNotificationBtn';
+            dismissBtn.innerHTML = `<i class="fas fa-times"></i> Dismiss Alert: ${task.description.substring(0, 30)}...`;
+            dismissBtn.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: #dc3545;
+                color: white;
+                padding: 15px 25px;
+                border: none;
+                border-radius: 8px;
+                font-weight: 600;
+                cursor: pointer;
+                z-index: 10000;
+                font-size: 1rem;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+                max-width: 300px;
+                animation: pulse 2s infinite;
+            `;
+            
+            dismissBtn.onclick = () => {
+                stopContinuousNotification();
+                showNotification('Task notification dismissed', 'success');
+            };
+            
+            document.body.appendChild(dismissBtn);
         }
         
         function playNotificationSoundContinuous() {
@@ -1191,62 +1219,53 @@
             }
         }
         
-        function createDismissButton() {
-            // Remove existing button if present
-            const existingBtn = document.getElementById('dismissNotificationBtn');
-            if (existingBtn) existingBtn.remove();
-            
-            // Create dismiss button
-            const dismissBtn = document.createElement('button');
-            dismissBtn.id = 'dismissNotificationBtn';
-            dismissBtn.innerHTML = '<i class="fas fa-times"></i> Dismiss Alerts';
-            dismissBtn.style.cssText = `
-                position: fixed;
-                top: 20px;
-                right: 20px;
-                background: #dc3545;
-                color: white;
-                padding: 12px 20px;
-                border: none;
-                border-radius: 6px;
-                font-weight: 600;
-                cursor: pointer;
-                z-index: 10000;
-                font-size: 1rem;
-                box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-                animation: pulse 2s infinite;
-            `;
-            
-            dismissBtn.onclick = () => {
-                stopContinuousNotification();
-                showNotification('Notification alerts dismissed', 'success');
-            };
-            
-            document.body.appendChild(dismissBtn);
-        }
+        // Removed old createDismissButton - using createTaskNotificationDismiss instead
         
         function checkOverdueTasks() {
             const now = new Date();
-            let overdueCount = 0;
             
             staffTasks.forEach(task => {
-                if (!task.completed && task.dueDate) {
+                if (!task.completed && task.dueDate && !snoozedTasks[task.id]) {
                     const dueDate = new Date(task.dueDate);
-                    if (dueDate < now && !snoozedTasks[task.id]) {
-                        overdueCount++;
-                        
-                        // Flash animation for overdue tasks
-                        const taskElement = document.querySelector(`[data-task-id="${task.id}"]`);
-                        if (taskElement) {
-                            taskElement.style.animation = 'flash 1s ease-in-out 3';
+                    if (dueDate < now) {
+                        // Check if this task just became overdue (within last minute)
+                        const minutesOverdue = (now - dueDate) / (1000 * 60);
+                        if (minutesOverdue <= 1 && activeNotificationTaskId !== task.id) {
+                            // This task just became overdue - start continuous notification
+                            activeNotificationTaskId = task.id;
+                            startTaskNotification(task);
                         }
                     }
                 }
             });
+        }
+        
+        function startTaskNotification(task) {
+            console.log('Starting notification for task:', task.description);
             
-            if (overdueCount > 0 && notificationPermission) {
-                sendNotification('Overdue Tasks!', `You have ${overdueCount} overdue task${overdueCount > 1 ? 's' : ''}`, true);
-            }
+            // Stop any existing notification
+            stopContinuousNotification();
+            
+            continuousNotificationActive = true;
+            
+            // Show initial notification
+            showNotification(`Task Overdue: ${task.description}`, 'error');
+            
+            // Start continuous flashing of page background
+            let flashState = false;
+            continuousFlashInterval = setInterval(() => {
+                flashState = !flashState;
+                document.body.style.background = flashState ? '#ff4444' : '';
+            }, 1000); // Flash every second
+            
+            // Start continuous sound every 5 seconds
+            createNotificationSound(); // Play immediately
+            continuousSoundInterval = setInterval(() => {
+                createNotificationSound();
+            }, 5000);
+            
+            // Create dismiss button
+            createTaskNotificationDismiss(task);
         }
         
         function sendNotification(title, body, playSound = false) {
