@@ -280,27 +280,34 @@
         let missedNotifications = JSON.parse(localStorage.getItem('missedNotifications') || '[]');
         let lastActiveTime = Date.now();
         
-        // Simple sound using basic Audio with data URL
-        function playBeep() {
-            try {
-                // Create a simple beep sound
-                const audio = new Audio('data:audio/wav;base64,UklGRn4AAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YVoAAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTGH0fPTgjMGHm7A7+OZURE=');
-                audio.volume = 0.5;
-                audio.play().catch(e => {
-                    console.log('Audio play failed, trying alternate method');
-                    // Fallback - try to play a system beep
-                    if (window.speechSynthesis) {
-                        const utterance = new SpeechSynthesisUtterance('beep');
-                        utterance.rate = 10;
-                        utterance.pitch = 2;
-                        utterance.volume = 0.1;
-                        window.speechSynthesis.speak(utterance);
-                    }
-                });
-                console.log('Beep sound played');
-            } catch (error) {
-                console.error('Sound error:', error);
+        // Working audio solution - create audio context on user interaction
+        let audioContext = null;
+        
+        function initAudio() {
+            if (!audioContext) {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                console.log('Audio context initialized');
             }
+        }
+        
+        function playBeep() {
+            initAudio();
+            if (!audioContext) return;
+            
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            oscillator.frequency.value = 800; // 800Hz tone
+            oscillator.type = 'sine';
+            gainNode.gain.value = 0.3;
+            
+            oscillator.start();
+            oscillator.stop(audioContext.currentTime + 0.2); // 200ms beep
+            
+            console.log('BEEP!');
         }
         
         // Continuous notification variables
@@ -322,14 +329,24 @@
             startTaskNotification(testTask);
         }
         
-        // FORCE IMMEDIATE TEST - call this too
+        // FORCE IMMEDIATE TEST
         function forceTest() {
-            console.log('🔥 FORCE TEST - IMMEDIATE FLASH AND SOUND');
-            document.body.style.background = '#ff0000';
-            playBeep();
-            setTimeout(() => {
-                document.body.style.background = '';
-            }, 1000);
+            console.log('FORCE TEST ACTIVATED');
+            initAudio();
+            
+            // Create test task that's overdue
+            const testTask = {
+                id: 'force-test',
+                description: 'URGENT: Test Alert System',
+                dueDate: new Date(Date.now() - 3600000).toISOString(), // 1 hour ago
+                completed: false
+            };
+            
+            // Clear any previous notification flag
+            localStorage.removeItem('notified_force-test');
+            
+            // Force start notification
+            startTaskNotification(testTask);
         }
         
         // Make test functions globally available
@@ -339,22 +356,27 @@
         
         // Initialize on load
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('Initializing task management...');
+            console.log('Task Management System Initializing...');
             loadTasks();
-            console.log('Tasks loaded:', staffTasks.length);
             cleanupExpiredSnoozes();
             renderTasks();
-            console.log('Tasks rendered');
             requestNotificationPermission();
             setupNotificationSystem();
-            checkOverdueTasks();
-            checkMissedNotifications();
-            setInterval(checkOverdueTasks, 60000); // Check every minute
             
-            console.log('🚨 TEST COMMANDS AVAILABLE:');
-            console.log('testTaskNotification() - Full notification test');
-            console.log('forceTest() - Immediate flash + sound test');
-            console.log('playBeep() - Just sound test');
+            // Initialize audio context on first click
+            document.addEventListener('click', initAudio, { once: true });
+            document.addEventListener('keydown', initAudio, { once: true });
+            
+            // Check overdue tasks immediately and every 30 seconds
+            checkOverdueTasks();
+            setInterval(checkOverdueTasks, 30000);
+            
+            checkMissedNotifications();
+            
+            console.log('COMMANDS:');
+            console.log('testTaskNotification() - Test notification');
+            console.log('forceTest() - Force test');
+            console.log('playBeep() - Test sound');
         });
         
         // Load tasks from localStorage
@@ -1164,7 +1186,7 @@
         }
         
         function stopContinuousNotification() {
-            console.log('Stopping continuous notification');
+            console.log('Stopping notification');
             continuousNotificationActive = false;
             activeNotificationTaskId = null;
             
@@ -1172,14 +1194,21 @@
             if (continuousFlashInterval) {
                 clearInterval(continuousFlashInterval);
                 continuousFlashInterval = null;
-                document.body.style.background = ''; // Reset background
             }
+            
+            // Remove flasher overlay
+            const flasher = document.getElementById('notification-flasher');
+            if (flasher) flasher.remove();
             
             // Stop sound
             if (continuousSoundInterval) {
                 clearInterval(continuousSoundInterval);
                 continuousSoundInterval = null;
             }
+            
+            // Remove alert box
+            const alertBox = document.getElementById('notification-alert');
+            if (alertBox) alertBox.remove();
             
             // Remove dismiss button
             const dismissBtn = document.getElementById('dismissNotificationBtn');
@@ -1242,15 +1271,21 @@
         
         function checkOverdueTasks() {
             const now = new Date();
+            console.log('Checking overdue tasks at:', now.toLocaleString());
             
             staffTasks.forEach(task => {
                 if (!task.completed && task.dueDate && !snoozedTasks[task.id]) {
                     const dueDate = new Date(task.dueDate);
+                    
+                    // Check if overdue
                     if (dueDate < now) {
-                        // Check if this task just became overdue (within last minute)
-                        const minutesOverdue = (now - dueDate) / (1000 * 60);
-                        if (minutesOverdue <= 1 && activeNotificationTaskId !== task.id) {
-                            // This task just became overdue - start continuous notification
+                        console.log('Task overdue:', task.description, 'Due:', dueDate.toLocaleString());
+                        
+                        // Check if we haven't notified for this task yet
+                        const notifiedKey = `notified_${task.id}`;
+                        if (!localStorage.getItem(notifiedKey)) {
+                            console.log('TRIGGERING NOTIFICATION for:', task.description);
+                            localStorage.setItem(notifiedKey, 'true');
                             activeNotificationTaskId = task.id;
                             startTaskNotification(task);
                         }
@@ -1260,38 +1295,60 @@
         }
         
         function startTaskNotification(task) {
-            console.log('🚨 STARTING NOTIFICATION for task:', task.description);
+            console.log('NOTIFICATION STARTING for:', task.description);
             
-            // Stop any existing notification
-            stopContinuousNotification();
+            // Initialize audio on first user interaction
+            initAudio();
             
             continuousNotificationActive = true;
             
-            // Show initial notification
-            showNotification(`🚨 TASK OVERDUE: ${task.description}`, 'error');
+            // Create flashing element overlay instead of body background
+            const flasher = document.createElement('div');
+            flasher.id = 'notification-flasher';
+            flasher.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: red;
+                opacity: 0;
+                z-index: 9999;
+                pointer-events: none;
+                transition: opacity 0.3s;
+            `;
+            document.body.appendChild(flasher);
             
-            // IMMEDIATE BACKGROUND FLASH - force it
-            document.body.style.background = '#ff0000';
-            console.log('🔴 BACKGROUND SET TO RED');
-            
-            // Start continuous flashing of page background
+            // Flash the overlay
+            let flashOn = false;
             continuousFlashInterval = setInterval(() => {
-                const currentBg = document.body.style.background;
-                const isRed = currentBg.includes('rgb(255, 0, 0)') || currentBg.includes('#ff0000') || currentBg === 'red';
-                document.body.style.background = isRed ? '' : '#ff0000';
-                console.log('🔄 Flash toggle - now:', document.body.style.background);
-            }, 500); // Flash every half second
+                flashOn = !flashOn;
+                flasher.style.opacity = flashOn ? '0.3' : '0';
+            }, 500);
             
-            // Start continuous sound - PLAY IMMEDIATELY
-            console.log('🔊 PLAYING SOUND NOW');
+            // Play sound immediately and repeat
             playBeep();
-            continuousSoundInterval = setInterval(() => {
-                console.log('🔊 REPEAT BEEP');
-                playBeep();
-            }, 2000); // Every 2 seconds
+            continuousSoundInterval = setInterval(playBeep, 3000);
             
-            // Create dismiss button
-            createTaskNotificationDismiss(task);
+            // Show notification message
+            const alertBox = document.createElement('div');
+            alertBox.id = 'notification-alert';
+            alertBox.innerHTML = `
+                <div style="background: #dc3545; color: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.3); max-width: 400px;">
+                    <h3 style="margin: 0 0 10px 0;">⏰ TASK OVERDUE!</h3>
+                    <p style="margin: 0 0 15px 0;">${task.description}</p>
+                    <p style="margin: 0 0 15px 0; font-size: 0.9em; opacity: 0.9;">Due: ${new Date(task.dueDate).toLocaleString()}</p>
+                    <button onclick="stopContinuousNotification()" style="background: white; color: #dc3545; border: none; padding: 10px 20px; border-radius: 6px; font-weight: bold; cursor: pointer;">DISMISS ALERT</button>
+                </div>
+            `;
+            alertBox.style.cssText = `
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                z-index: 10000;
+            `;
+            document.body.appendChild(alertBox);
         }
         
         function sendNotification(title, body, playSound = false) {
