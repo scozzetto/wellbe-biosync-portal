@@ -1007,10 +1007,10 @@
         `;
         document.head.appendChild(style);
         
-        // Notification System Variables
-        let missedNotifications = [];
-        let lastActiveTime = Date.now();
-        let isPageVisible = !document.hidden;
+        // Notification System Variables (already declared above)
+        // let missedNotifications = []; // REMOVED - already declared at line 280
+        lastActiveTime = Date.now();
+        isPageVisible = !document.hidden;
         
         // Notification System Functions
         function requestNotificationPermission() {
