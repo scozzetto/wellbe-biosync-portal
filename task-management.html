@@ -945,13 +945,15 @@
                             
                             <!-- Task metadata -->
                             <div style="font-size: 0.8rem; color: ${cardColor.text}; opacity: 0.8; margin-bottom: 8px;">
-                                ${task.dueDate ? `<div style="margin-bottom: 4px;"><i class="fas fa-calendar" style="margin-right: 6px; width: 12px;"></i>Due: ${new Date(task.dueDate).toLocaleDateString()} at ${new Date(task.dueDate).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</div>` : ''}
-                                <div><i class="fas fa-user" style="margin-right: 6px; width: 12px;"></i>Created by ${task.createdBy}</div>
+                                <div style="display: flex; flex-wrap: wrap; gap: 12px; align-items: center;">
+                                    <span><i class="fas fa-user" style="margin-right: 6px; width: 12px;"></i>Created by ${task.createdBy}</span>
+                                    ${task.dueDate ? `<span><i class="fas fa-calendar" style="margin-right: 6px; width: 12px;"></i>Due: ${new Date(task.dueDate).toLocaleDateString()} at ${new Date(task.dueDate).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>` : ''}
+                                </div>
                                 ${task.completed ? `<div style="margin-top: 4px;"><i class="fas fa-check-circle" style="margin-right: 6px; width: 12px;"></i>Completed by ${task.completedBy}</div>` : ''}
                             </div>
                             
                             <!-- Status indicators -->
-                            <div style="display: flex; gap: 6px; align-items: center; margin-bottom: 15px;">
+                            <div style="display: flex; gap: 6px; align-items: center; margin-bottom: 15px; flex-wrap: wrap;">
                                 ${task.completed ? 
                                     `<span style="background: rgba(255,255,255,0.2); color: ${cardColor.text}; padding: 3px 8px; border-radius: 12px; font-size: 0.7rem; font-weight: 600; text-transform: uppercase;"><i class="fas fa-check-circle" style="margin-right: 3px;"></i>Completed</span>` : 
                                     `<span style="background: rgba(255,255,255,0.2); color: ${cardColor.text}; padding: 3px 8px; border-radius: 12px; font-size: 0.7rem; font-weight: 600; text-transform: uppercase;"><i class="fas fa-clock" style="margin-right: 3px;"></i>Pending</span>`
