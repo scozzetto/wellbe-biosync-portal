@@ -653,7 +653,8 @@
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF0a2Zjd2RtbXdheXp5aXhscHVtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTE2NTIzODYsImV4cCI6MjA2NzIyODM4Nn0.VkFA1SIOLgddP-P_KjFdvDyiNdUSgYfbcP5UvOardKI';
         
         // Initialize Supabase
-        const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        const { createClient } = supabase;
+        const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
         
         // Global variables
         let currentUser = null;
@@ -690,7 +691,7 @@
         // Load staff members
         async function loadStaff() {
             try {
-                const { data, error } = await supabase
+                const { data, error } = await supabaseClientClient
                     .from('staff')
                     .select('*')
                     .eq('active', true)
@@ -726,7 +727,7 @@
         // Load tasks
         async function loadTasks() {
             try {
-                const { data, error } = await supabase
+                const { data, error } = await supabaseClientClient
                     .from('tasks')
                     .select('*')
                     .order('created_at', { ascending: false });
@@ -752,11 +753,11 @@
         function setupRealtimeSubscription() {
             // Clean up existing subscription
             if (realtimeChannel) {
-                supabase.removeChannel(realtimeChannel);
+                supabaseClient.removeChannel(realtimeChannel);
             }
             
             // Create new channel
-            realtimeChannel = supabase
+            realtimeChannel = supabaseClient
                 .channel('tasks-channel')
                 .on('postgres_changes', 
                     { event: '*', schema: 'public', table: 'tasks' }, 
@@ -932,7 +933,7 @@
             try {
                 if (taskId) {
                     // Update existing task
-                    const { error } = await supabase
+                    const { error } = await supabaseClient
                         .from('tasks')
                         .update({
                             ...taskData,
@@ -944,7 +945,7 @@
                     
                 } else {
                     // Create new task
-                    const { error } = await supabase
+                    const { error } = await supabaseClient
                         .from('tasks')
                         .insert({
                             ...taskData,
@@ -989,7 +990,7 @@
             if (!confirm('Mark this task as completed?')) return;
             
             try {
-                const { error } = await supabase
+                const { error } = await supabaseClient
                     .from('tasks')
                     .update({
                         completed: true,
@@ -1014,7 +1015,7 @@
             if (!confirm('Are you sure you want to delete this task?')) return;
             
             try {
-                const { error } = await supabase
+                const { error } = await supabaseClient
                     .from('tasks')
                     .delete()
                     .eq('id', taskId);
