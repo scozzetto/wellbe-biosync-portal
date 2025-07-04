@@ -691,7 +691,7 @@
         // Load staff members
         async function loadStaff() {
             try {
-                const { data, error } = await supabaseClientClient
+                const { data, error } = await supabaseClient
                     .from('staff')
                     .select('*')
                     .eq('active', true)
@@ -727,7 +727,7 @@
         // Load tasks
         async function loadTasks() {
             try {
-                const { data, error } = await supabaseClientClient
+                const { data, error } = await supabaseClient
                     .from('tasks')
                     .select('*')
                     .order('created_at', { ascending: false });
