@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Supabase Connection</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+    <h1>Supabase Connection Test</h1>
+    <button onclick="testConnection()">Test Connection</button>
+    <button onclick="testDirectFetch()">Test Direct Fetch</button>
+    <div id="result"></div>
+
+    <script>
+        const SUPABASE_URL = 'https://atkfcwdmmwayzyixlpum.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF0a2Zjd2RtbXdheXp5aXhscHVtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTE2NTIzODYsImV4cCI6MjA2NzIyODM4Nn0.VkFA1SIOLgddP-P_KjFdvDyiNdUSgYfbcP5UvOardKI';
+        
+        const { createClient } = supabase;
+        const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        async function testConnection() {
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = '<p>Testing Supabase connection...</p>';
+            
+            try {
+                // Test 1: Simple select
+                console.log('Testing simple select...');
+                const { data, error } = await supabaseClient
+                    .from('staff')
+                    .select('*');
+                
+                if (error) {
+                    resultDiv.innerHTML += `<p style="color:red">Error: ${error.message}</p>`;
+                    console.error('Supabase error:', error);
+                } else {
+                    resultDiv.innerHTML += `<p style="color:green">Success! Found ${data.length} staff members</p>`;
+                    console.log('Data:', data);
+                }
+            } catch (err) {
+                resultDiv.innerHTML += `<p style="color:red">Catch error: ${err.message}</p>`;
+                console.error('Catch error:', err);
+            }
+        }
+
+        async function testDirectFetch() {
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = '<p>Testing direct fetch...</p>';
+            
+            try {
+                const response = await fetch(`${SUPABASE_URL}/rest/v1/staff?select=*`, {
+                    headers: {
+                        'apikey': SUPABASE_ANON_KEY,
+                        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+                        'Content-Type': 'application/json',
+                        'Prefer': 'return=minimal'
+                    }
+                });
+                
+                resultDiv.innerHTML += `<p>Response status: ${response.status}</p>`;
+                
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    resultDiv.innerHTML += `<p style="color:red">Error: ${errorText}</p>`;
+                } else {
+                    const data = await response.json();
+                    resultDiv.innerHTML += `<p style="color:green">Success! Found ${data.length} staff members</p>`;
+                }
+            } catch (err) {
+                resultDiv.innerHTML += `<p style="color:red">Fetch error: ${err.message}</p>`;
+            }
+        }
+    </script>
+</body>
+</html>
