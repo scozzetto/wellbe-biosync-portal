@@ -310,7 +310,7 @@
             loadStaff();
         };
         
-        function addStaff() {
+        async function addStaff() {
             // Get values
             const fullname = document.getElementById('fullname').value.trim();
             const username = document.getElementById('username').value.trim();
@@ -341,65 +341,136 @@
                 password = 'BeWell2024!' + Math.random().toString(36).substring(2, 8).toUpperCase();
             }
             
-            // Create staff object
-            const newStaff = {
-                id: 'staff-' + Date.now(),
-                username: username,
-                full_name: fullname,
-                email: email,
-                role: role,
-                password: password,
-                active: true,
-                created: new Date().toISOString()
-            };
-            
-            // Get existing staff
-            const existing = JSON.parse(localStorage.getItem('created_users') || '[]');
-            
-            // Check if username exists
-            if (existing.some(s => s.username === username)) {
-                alert('Username already exists!');
-                return;
+            try {
+                // First try server-based creation using auth system
+                if (window.authSystem) {
+                    const result = await window.authSystem.createUser({
+                        username: username,
+                        full_name: fullname,
+                        email: email,
+                        role: role,
+                        password: password
+                    });
+                    
+                    if (result.success) {
+                        // Show result
+                        const resultDiv = document.getElementById('result');
+                        resultDiv.style.display = 'block';
+                        resultDiv.innerHTML = `
+                            <strong>✅ Staff member created on server!</strong><br><br>
+                            <strong>Username:</strong> ${username}<br>
+                            <strong>Password:</strong> ${password}<br><br>
+                            <em>This account can now be used from anywhere worldwide.</em>
+                        `;
+                        
+                        // Clear form
+                        document.getElementById('fullname').value = '';
+                        document.getElementById('username').value = '';
+                        document.getElementById('email').value = '';
+                        document.getElementById('role').value = '';
+                        document.getElementById('password').value = '';
+                        
+                        // Reload list
+                        loadStaff();
+                        return;
+                    } else {
+                        throw new Error(result.error || 'Server creation failed');
+                    }
+                }
+                
+                throw new Error('Auth system not available');
+                
+            } catch (error) {
+                console.warn('Server creation failed, using local fallback:', error);
+                
+                // Fallback to localStorage
+                const newStaff = {
+                    id: 'staff-' + Date.now(),
+                    username: username,
+                    full_name: fullname,
+                    email: email,
+                    role: role,
+                    password: password,
+                    active: true,
+                    created: new Date().toISOString()
+                };
+                
+                // Get existing staff
+                const existing = JSON.parse(localStorage.getItem('created_users') || '[]');
+                
+                // Check if username exists
+                if (existing.some(s => s.username === username)) {
+                    alert('Username already exists!');
+                    return;
+                }
+                
+                // Add new staff
+                existing.push(newStaff);
+                localStorage.setItem('created_users', JSON.stringify(existing));
+                
+                // Show result
+                const resultDiv = document.getElementById('result');
+                resultDiv.style.display = 'block';
+                resultDiv.innerHTML = `
+                    <strong>⚠️ Staff member created locally!</strong><br><br>
+                    <strong>Username:</strong> ${username}<br>
+                    <strong>Password:</strong> ${password}<br><br>
+                    <em>Note: This is local-only. Server creation failed: ${error.message}</em>
+                `;
+                
+                // Clear form
+                document.getElementById('fullname').value = '';
+                document.getElementById('username').value = '';
+                document.getElementById('email').value = '';
+                document.getElementById('role').value = '';
+                document.getElementById('password').value = '';
+                
+                // Reload list
+                loadStaff();
             }
-            
-            // Add new staff
-            existing.push(newStaff);
-            localStorage.setItem('created_users', JSON.stringify(existing));
-            
-            // Show result
-            const resultDiv = document.getElementById('result');
-            resultDiv.style.display = 'block';
-            resultDiv.innerHTML = `
-                <strong>✅ Staff member created!</strong><br><br>
-                <strong>Username:</strong> ${username}<br>
-                <strong>Password:</strong> ${password}<br><br>
-                <em>Please save these credentials securely.</em>
-            `;
-            
-            // Clear form
-            document.getElementById('fullname').value = '';
-            document.getElementById('username').value = '';
-            document.getElementById('email').value = '';
-            document.getElementById('role').value = '';
-            document.getElementById('password').value = '';
-            
-            // Reload list
-            loadStaff();
         }
         
-        function loadStaff() {
+        async function loadStaff() {
             const staffList = document.getElementById('staff-list');
-            const users = JSON.parse(localStorage.getItem('created_users') || '[]');
             
-            // Check if current user is management (for demo, we'll check localStorage)
-            const currentUser = JSON.parse(localStorage.getItem('bewell_current_user') || '{}');
-            const isManagement = currentUser.role === 'management' || window.location.search.includes('management=true');
+            // Check if current user is management
+            const currentUser = window.authSystem ? window.authSystem.getCurrentUser() : 
+                               JSON.parse(localStorage.getItem('bewell_current_user') || '{}');
+            const isManagement = currentUser && (currentUser.role === 'management' || window.location.search.includes('management=true'));
             
             // Show/hide management note
             document.getElementById('management-note').style.display = isManagement ? 'block' : 'none';
             
-            // Default staff
-            const allStaff = [
+            let serverStaff = [];
+            let localStaff = [];
+            
+            // Try to load from server first
+            try {
+                const supabaseUrl = 'https://atkfcwdmmwayzyixlpum.supabase.co';
+                const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF0a2Zjd2RtbXdheXp5aXhscHVtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTE2NTIzODYsImV4cCI6MjA2NzIyODM4Nn0.VkFA1SIOLgddP-P_KjFdvDyiNdUSgYfbcP5UvOardKI';
+                
+                const response = await fetch(`${supabaseUrl}/rest/v1/staff?select=*`, {
+                    headers: {
+                        'apikey': supabaseKey,
+                        'Authorization': `Bearer ${supabaseKey}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                if (response.ok) {
+                    serverStaff = await response.json();
+                    console.log('✅ Loaded staff from server:', serverStaff.length, 'users');
+                }
+            } catch (error) {
+                console.warn('Could not load from server, using local only:', error);
+            }
+            
+            // Load local staff as fallback
+            localStaff = JSON.parse(localStorage.getItem('created_users') || '[]')
+                .filter(u => u.username && u.full_name && u.full_name !== 'undefined');
+            
+            // Default demo staff
+            const demoStaff = [
                 {
                     id: 'master-admin',
                     username: 'admin',
@@ -407,7 +478,8 @@
                     email: 'admin@bewelllifestylecenters.com',
                     role: 'management',
                     active: true,
-                    isDemo: true
+                    isDemo: true,
+                    source: 'demo'
                 },
                 {
                     id: 'demo-staff',
@@ -416,17 +488,36 @@
                     email: 'staff@bewelllifestylecenters.com',
                     role: 'staff',
                     active: true,
-                    isDemo: true
-                },
-                ...users.filter(u => u.username && u.full_name && u.full_name !== 'undefined')
+                    isDemo: true,
+                    source: 'demo'
+                }
             ];
             
-            staffList.innerHTML = allStaff.map(s => `
+            // Combine all staff (server first, then local, then demo)
+            const allStaff = [
+                ...demoStaff,
+                ...serverStaff.map(s => ({...s, source: 'server'})),
+                ...localStaff.map(s => ({...s, source: 'local'}))
+            ];
+            
+            // Remove duplicates by username (server takes precedence)
+            const uniqueStaff = [];
+            const seenUsernames = new Set();
+            
+            for (const staff of allStaff) {
+                if (!seenUsernames.has(staff.username)) {
+                    uniqueStaff.push(staff);
+                    seenUsernames.add(staff.username);
+                }
+            }
+            
+            staffList.innerHTML = uniqueStaff.map(s => `
                 <div class="staff-item ${s.active === false ? 'inactive' : ''} ${s.archived ? 'archived' : ''}">
                     <div class="staff-info">
                         <strong>${s.full_name}</strong> - ${s.username} (${s.role})
                         ${s.active === false ? ' - INACTIVE' : ''}
                         ${s.archived ? ' - ARCHIVED' : ''}
+                        <br><small style="color: #666;">Source: ${s.source || 'unknown'}</small>
                     </div>
                     ${isManagement && !s.isDemo ? `
                         <div class="staff-actions">
