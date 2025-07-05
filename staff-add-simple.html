@@ -128,6 +128,16 @@
             color: white;
         }
         
+        .btn-edit {
+            background: #2196F3;
+            color: white;
+        }
+        
+        .btn-archive {
+            background: #9E9E9E;
+            color: white;
+        }
+        
         .inactive {
             opacity: 0.6;
             font-style: italic;
@@ -140,6 +150,54 @@
             border-radius: 5px;
             margin-bottom: 10px;
             font-size: 14px;
+        }
+        
+        .archived {
+            background: #f5f5f5;
+            opacity: 0.7;
+        }
+        
+        .edit-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+        }
+        
+        .edit-modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 500px;
+        }
+        
+        .edit-modal h3 {
+            margin-bottom: 20px;
+            color: #A47C5B;
+        }
+        
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
         }
         
         .back-link {
@@ -202,6 +260,48 @@
     
     <div class="back-link">
         <a href="staff-portal-clean.html">← Back to Staff Portal</a>
+    </div>
+    
+    <!-- Edit Modal -->
+    <div id="edit-modal" class="edit-modal">
+        <div class="edit-modal-content">
+            <h3>Edit Staff Member</h3>
+            
+            <div class="field">
+                <label>Full Name</label>
+                <input type="text" id="edit-fullname" placeholder="John Smith">
+            </div>
+            
+            <div class="field">
+                <label>Username</label>
+                <input type="text" id="edit-username" placeholder="jsmith">
+            </div>
+            
+            <div class="field">
+                <label>Email</label>
+                <input type="text" id="edit-email" placeholder="jsmith@bewelllifestylecenters.com">
+            </div>
+            
+            <div class="field">
+                <label>Role</label>
+                <select id="edit-role">
+                    <option value="">Select Role</option>
+                    <option value="staff">Staff</option>
+                    <option value="admin">Admin</option>
+                    <option value="management">Management</option>
+                </select>
+            </div>
+            
+            <div class="field">
+                <label>New Password (leave blank to keep current)</label>
+                <input type="text" id="edit-password" placeholder="Enter new password or leave blank">
+            </div>
+            
+            <div class="modal-buttons">
+                <button onclick="saveEdit()" style="background: #A47C5B; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">Save Changes</button>
+                <button class="btn-secondary" onclick="closeEditModal()">Cancel</button>
+            </div>
+        </div>
     </div>
     
     <script>
@@ -322,17 +422,24 @@
             ];
             
             staffList.innerHTML = allStaff.map(s => `
-                <div class="staff-item ${s.active === false ? 'inactive' : ''}">
+                <div class="staff-item ${s.active === false ? 'inactive' : ''} ${s.archived ? 'archived' : ''}">
                     <div class="staff-info">
                         <strong>${s.full_name}</strong> - ${s.username} (${s.role})
                         ${s.active === false ? ' - INACTIVE' : ''}
+                        ${s.archived ? ' - ARCHIVED' : ''}
                     </div>
                     ${isManagement && !s.isDemo ? `
                         <div class="staff-actions">
+                            <button class="btn-small btn-edit" onclick="editStaff('${s.id}')">Edit</button>
                             ${s.active !== false ? `
                                 <button class="btn-small btn-deactivate" onclick="toggleStaff('${s.id}', false)">Deactivate</button>
                             ` : `
                                 <button class="btn-small btn-activate" onclick="toggleStaff('${s.id}', true)">Activate</button>
+                            `}
+                            ${!s.archived ? `
+                                <button class="btn-small btn-archive" onclick="archiveStaff('${s.id}', '${s.username}')">Archive</button>
+                            ` : `
+                                <button class="btn-small btn-activate" onclick="unarchiveStaff('${s.id}', '${s.username}')">Unarchive</button>
                             `}
                             <button class="btn-small btn-delete" onclick="deleteStaff('${s.id}', '${s.username}')">Delete</button>
                         </div>
@@ -354,12 +461,116 @@
         }
         
         function deleteStaff(staffId, username) {
-            if (confirm(`Are you sure you want to delete ${username}? This cannot be undone.`)) {
+            if (confirm(`Are you sure you want to DELETE ${username}? This cannot be undone.`)) {
                 let users = JSON.parse(localStorage.getItem('created_users') || '[]');
                 users = users.filter(u => u.id !== staffId);
                 localStorage.setItem('created_users', JSON.stringify(users));
                 loadStaff();
                 alert('Staff member deleted successfully!');
+            }
+        }
+        
+        let currentEditId = null;
+        
+        function editStaff(staffId) {
+            const users = JSON.parse(localStorage.getItem('created_users') || '[]');
+            const user = users.find(u => u.id === staffId);
+            
+            if (!user) {
+                alert('Staff member not found!');
+                return;
+            }
+            
+            currentEditId = staffId;
+            
+            // Populate modal fields
+            document.getElementById('edit-fullname').value = user.full_name || '';
+            document.getElementById('edit-username').value = user.username || '';
+            document.getElementById('edit-email').value = user.email || '';
+            document.getElementById('edit-role').value = user.role || '';
+            document.getElementById('edit-password').value = '';
+            
+            // Show modal
+            document.getElementById('edit-modal').style.display = 'block';
+        }
+        
+        function closeEditModal() {
+            document.getElementById('edit-modal').style.display = 'none';
+            currentEditId = null;
+        }
+        
+        function saveEdit() {
+            if (!currentEditId) return;
+            
+            const fullname = document.getElementById('edit-fullname').value.trim();
+            const username = document.getElementById('edit-username').value.trim();
+            const email = document.getElementById('edit-email').value.trim();
+            const role = document.getElementById('edit-role').value;
+            const newPassword = document.getElementById('edit-password').value.trim();
+            
+            if (!fullname || !username || !email || !role) {
+                alert('Please fill in all required fields');
+                return;
+            }
+            
+            let users = JSON.parse(localStorage.getItem('created_users') || '[]');
+            const userIndex = users.findIndex(u => u.id === currentEditId);
+            
+            if (userIndex === -1) {
+                alert('Staff member not found!');
+                return;
+            }
+            
+            // Check if username is taken by another user
+            const existingUser = users.find(u => u.username === username && u.id !== currentEditId);
+            if (existingUser) {
+                alert('Username already exists!');
+                return;
+            }
+            
+            // Update user
+            users[userIndex].full_name = fullname;
+            users[userIndex].username = username;
+            users[userIndex].email = email;
+            users[userIndex].role = role;
+            users[userIndex].updated = new Date().toISOString();
+            
+            // Update password if provided
+            if (newPassword) {
+                users[userIndex].password = newPassword;
+            }
+            
+            localStorage.setItem('created_users', JSON.stringify(users));
+            closeEditModal();
+            loadStaff();
+            alert('Staff member updated successfully!');
+        }
+        
+        function archiveStaff(staffId, username) {
+            if (confirm(`Archive ${username}? They will be hidden but not deleted.`)) {
+                const users = JSON.parse(localStorage.getItem('created_users') || '[]');
+                const userIndex = users.findIndex(u => u.id === staffId);
+                
+                if (userIndex !== -1) {
+                    users[userIndex].archived = true;
+                    users[userIndex].active = false; // Also deactivate when archiving
+                    localStorage.setItem('created_users', JSON.stringify(users));
+                    loadStaff();
+                    alert('Staff member archived successfully!');
+                }
+            }
+        }
+        
+        function unarchiveStaff(staffId, username) {
+            const users = JSON.parse(localStorage.getItem('created_users') || '[]');
+            const userIndex = users.findIndex(u => u.id === staffId);
+            
+            if (userIndex !== -1) {
+                users[userIndex].archived = false;
+                users[userIndex].active = true; // Activate when unarchiving
+                localStorage.setItem('created_users', JSON.stringify(users));
+                loadStaff();
+                alert(`${username} unarchived and activated!`);
             }
         }
     </script>
