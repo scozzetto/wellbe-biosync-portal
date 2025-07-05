@@ -134,6 +134,28 @@ class AuthSystem {
                 if (demoUser && demoUser.password === password) {
                     user = demoUser;
                 }
+                
+                // Also check localStorage for created users
+                if (!user) {
+                    const localUsers = JSON.parse(localStorage.getItem('created_users') || '[]');
+                    const localUser = localUsers.find(u => u.username === username && u.active !== false);
+                    
+                    if (localUser) {
+                        // For locally created users, check against generated password pattern
+                        // Password format: BeWell2024! + random characters
+                        if (password.startsWith('BeWell2024!') || password === localUser.password) {
+                            user = {
+                                id: localUser.id,
+                                username: localUser.username,
+                                full_name: localUser.full_name,
+                                email: localUser.email,
+                                role: localUser.role,
+                                active: localUser.active !== false,
+                                password: password // Store the actual password for local users
+                            };
+                        }
+                    }
+                }
             }
             
             // If no user found
