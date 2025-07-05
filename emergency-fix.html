@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EMERGENCY FIX - Front Desk Access</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            text-align: center;
+        }
+        .emergency {
+            background: #ff5722;
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        button {
+            width: 100%;
+            padding: 20px;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 18px;
+            margin: 10px 0;
+            font-weight: bold;
+        }
+        button:hover {
+            background: #45a049;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            display: none;
+        }
+        .success {
+            background: #e8f5e9;
+            color: #2e7d32;
+            border: 1px solid #81c784;
+        }
+        .error {
+            background: #ffebee;
+            color: #c62828;
+            border: 1px solid #ef5350;
+        }
+        .info {
+            background: #e3f2fd;
+            color: #1565c0;
+            border: 1px solid #64b5f6;
+        }
+    </style>
+</head>
+<body>
+    <div class="emergency">
+        <h1>🚨 EMERGENCY FIX</h1>
+        <p>Fix bhamfrontdesk access RIGHT NOW!</p>
+    </div>
+    
+    <button onclick="fixBhamPermissionsNow()">
+        ⚡ EMERGENCY: FIX BHAM FRONT DESK PERMISSIONS
+    </button>
+    
+    <div id="result" class="result"></div>
+
+    <script>
+        async function fixBhamPermissionsNow() {
+            showResult('Fixing permissions...', 'info');
+            
+            try {
+                const supabaseUrl = 'https://atkfcwdmmwayzyixlpum.supabase.co';
+                const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF0a2Zjd2RtbXdheXp5aXhscHVtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTE2NTIzODYsImV4cCI6MjA2NzIyODM4Nn0.VkFA1SIOLgddP-P_KjFdvDyiNdUSgYfbcP5UvOardKI';
+                
+                // Fix permissions for the existing bham front desk user
+                const permissions = {
+                    'front-desk': 'delete',
+                    'checkin': 'delete', 
+                    'members': 'edit',
+                    'checklists': 'edit',
+                    'tasks': 'delete',
+                    'cafe-operations': 'view',
+                    'inventory': 'view',
+                    'admin': 'view'
+                };
+                
+                // Try multiple ways to find and update the user
+                const updateAttempts = [
+                    // Try by email
+                    {
+                        url: `${supabaseUrl}/rest/v1/staff?email=eq.birmingham@bewelllifestylecenters.com`,
+                        method: 'PATCH'
+                    },
+                    // Try by username if it exists
+                    {
+                        url: `${supabaseUrl}/rest/v1/staff?username=eq.birmingham`,
+                        method: 'PATCH'
+                    },
+                    // Try by partial name match
+                    {
+                        url: `${supabaseUrl}/rest/v1/staff?full_name=ilike.*front*desk*`,
+                        method: 'PATCH'
+                    }
+                ];
+
+                let success = false;
+                let lastError = '';
+
+                for (const attempt of updateAttempts) {
+                    try {
+                        const response = await fetch(attempt.url, {
+                            method: attempt.method,
+                            headers: {
+                                'apikey': supabaseKey,
+                                'Authorization': `Bearer ${supabaseKey}`,
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                permissions: permissions,
+                                role: 'custom',
+                                updated_at: new Date().toISOString()
+                            })
+                        });
+
+                        if (response.ok) {
+                            success = true;
+                            break;
+                        } else {
+                            lastError = `Attempt failed: ${response.status}`;
+                        }
+                    } catch (error) {
+                        lastError = error.message;
+                    }
+                }
+
+                if (success) {
+                    showResult('✅ SUCCESS!\n\nBham Front Desk permissions have been FIXED!\n\nThe user can now access:\n• Front Desk Dashboard: Full Control\n• Patient Check-In: Full Control\n• Member Portal: Read/Write\n• Checklists: Read/Write\n• Task Management: Full Control\n• All other systems: View Access\n\nAccess should work IMMEDIATELY!', 'success');
+                } else {
+                    throw new Error('All update attempts failed: ' + lastError);
+                }
+                
+            } catch (error) {
+                console.error('Error:', error);
+                showResult('❌ Update failed: ' + error.message + '\n\nManual solution:\n1. Go to Supabase dashboard\n2. Find the birmingham user\n3. Set permissions field to:\n{"front-desk":"delete","checkin":"delete","members":"edit","checklists":"edit","tasks":"delete"}', 'error');
+            }
+        }
+
+        function showResult(message, type) {
+            const resultDiv = document.getElementById('result');
+            resultDiv.textContent = message;
+            resultDiv.className = `result ${type}`;
+            resultDiv.style.display = 'block';
+        }
+    </script>
+</body>
+</html>
