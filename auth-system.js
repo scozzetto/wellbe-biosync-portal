@@ -111,12 +111,12 @@ class AuthSystem {
                 const demoAccounts = {
                     'admin': {
                         username: 'admin',
-                        password: 'BeWell2024!Admin',
-                        full_name: 'System Administrator',
+                        password: '$Be7926570!',
+                        full_name: 'Master Administrator',
                         email: 'admin@bewelllifestylecenters.com',
                         role: 'management',
                         active: true,
-                        id: 'demo-admin-001'
+                        id: 'master-admin-001'
                     },
                     'staff': {
                         username: 'staff',
