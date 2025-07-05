@@ -240,7 +240,7 @@
         // Get redirect URL from query params
         function getRedirectUrl() {
             const params = new URLSearchParams(window.location.search);
-            return params.get('redirect') || '/staff-knowledge-base.html';
+            return params.get('redirect') || '/staff-portal-clean.html';
         }
 
         // Login function
@@ -270,7 +270,7 @@
                     
                     // Redirect after short delay
                     setTimeout(() => {
-                        window.location.href = 'staff-portal.html';
+                        window.location.href = 'staff-portal-clean.html';
                     }, 1000);
                 } else {
                     throw new Error(result.error || 'Authentication failed');
