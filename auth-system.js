@@ -283,15 +283,43 @@ class AuthSystem {
         }
         
         const userRole = this.currentUser.role;
-        const rolePermissions = this.permissions[userRole];
-        
-        if (!rolePermissions) {
-            return false;
-        }
         
         // Management has access to everything
         if (userRole === 'management') {
             return true;
+        }
+        
+        // Handle CUSTOM role users with granular permissions
+        if (userRole === 'custom' || userRole === 'CUSTOM') {
+            const userPermissions = this.currentUser.permissions || {};
+            
+            // Map page names to permission keys
+            const pagePermissionMap = {
+                'cafe-operations-portal': 'cafe-operations',
+                'simple-inventory': 'inventory',
+                'inventory-management': 'inventory', 
+                'task-management': 'tasks',
+                'front-desk-dashboard': 'front-desk',
+                'patient-checkin': 'checkin',
+                'member-portal': 'members',
+                'checklist-hub': 'checklists',
+                'admin-dashboard': 'admin',
+                'staff-portal': 'staff-management',
+                'staff-knowledge-base': 'staff-management'
+            };
+            
+            const permissionKey = pagePermissionMap[pageName] || pageName;
+            const hasPermission = userPermissions[permissionKey];
+            
+            // Any permission level (view, edit, delete) grants access
+            return hasPermission && hasPermission !== '';
+        }
+        
+        // Check role-based permissions for standard roles
+        const rolePermissions = this.permissions[userRole];
+        
+        if (!rolePermissions) {
+            return false;
         }
         
         // Check specific page permissions
@@ -307,6 +335,42 @@ class AuthSystem {
         }
         
         const userRole = this.currentUser.role;
+        
+        // Management has access to everything
+        if (userRole === 'management') {
+            return true;
+        }
+        
+        // Handle CUSTOM role users with granular permissions
+        if (userRole === 'custom' || userRole === 'CUSTOM') {
+            const userPermissions = this.currentUser.permissions || {};
+            
+            // For custom users, check if they have any permissions at all
+            // Actions are based on permission levels: view, edit, delete
+            const hasAnyPermission = Object.values(userPermissions).some(level => level && level !== '');
+            
+            if (!hasAnyPermission) {
+                return false;
+            }
+            
+            // Map actions to permission levels
+            switch (action) {
+                case 'read':
+                case 'view':
+                    return Object.values(userPermissions).some(level => ['view', 'edit', 'delete'].includes(level));
+                case 'write':
+                case 'edit':
+                case 'create':
+                case 'update':
+                    return Object.values(userPermissions).some(level => ['edit', 'delete'].includes(level));
+                case 'delete':
+                    return Object.values(userPermissions).some(level => level === 'delete');
+                default:
+                    return hasAnyPermission;
+            }
+        }
+        
+        // Check role-based permissions for standard roles
         const rolePermissions = this.permissions[userRole];
         
         if (!rolePermissions) {

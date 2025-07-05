@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fix Birmingham Front Desk Permissions</title>
+    <script src="auth-system.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        .container {
+            background: #f5f5f5;
+            padding: 30px;
+            border-radius: 10px;
+        }
+        button {
+            width: 100%;
+            padding: 15px;
+            background: #A47C5B;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 0;
+        }
+        button:hover {
+            background: #8a6a4a;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            display: none;
+        }
+        .success {
+            background: #e8f5e9;
+            color: #2e7d32;
+            border: 1px solid #81c784;
+        }
+        .error {
+            background: #ffebee;
+            color: #c62828;
+            border: 1px solid #ef5350;
+        }
+        .info {
+            background: #e3f2fd;
+            color: #1565c0;
+            border: 1px solid #64b5f6;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Fix Birmingham Front Desk Permissions</h1>
+        <p>This will update the Birmingham Front Desk user with proper permissions for front desk operations.</p>
+        
+        <button onclick="fixBirminghamPermissions()">Fix Birmingham Front Desk Permissions</button>
+        <button onclick="checkCurrentPermissions()">Check Current Permissions</button>
+        
+        <div id="result" class="result"></div>
+    </div>
+
+    <script>
+        async function fixBirminghamPermissions() {
+            showResult('Updating Birmingham Front Desk permissions...', 'info');
+            
+            try {
+                // Define proper front desk permissions
+                const frontDeskPermissions = {
+                    'front-desk': 'delete',      // Full control of front desk dashboard
+                    'checkin': 'edit',           // Can check in patients
+                    'checklists': 'view',        // Can view checklists
+                    'tasks': 'edit',             // Can manage tasks
+                    'members': 'view',           // Can view member info
+                    'cafe-operations': 'view'    // Can view café operations
+                };
+                
+                // Update via Supabase directly
+                const supabaseUrl = 'https://atkfcwdmmwayzyixlpum.supabase.co';
+                const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF0a2Zjd2RtbXdheXp5aXhscHVtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTE2NTIzODYsImV4cCI6MjA2NzIyODM4Nn0.VkFA1SIOLgddP-P_KjFdvDyiNdUSgYfbcP5UvOardKI';
+                
+                const response = await fetch(`${supabaseUrl}/rest/v1/staff?username=eq.birmingham`, {
+                    method: 'PATCH',
+                    headers: {
+                        'apikey': supabaseKey,
+                        'Authorization': `Bearer ${supabaseKey}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        permissions: frontDeskPermissions,
+                        role: 'custom',
+                        updated_at: new Date().toISOString()
+                    })
+                });
+                
+                if (response.ok) {
+                    showResult('✅ Birmingham Front Desk permissions updated successfully!\n\nPermissions granted:\n- Front Desk Dashboard: Full Control\n- Patient Check-in: Read/Write\n- Checklists: View Only\n- Task Management: Read/Write\n- Member Portal: View Only\n- Café Operations: View Only\n\nYou can now access the front desk dashboard and other permitted areas.', 'success');
+                } else {
+                    throw new Error('Failed to update permissions: ' + response.status);
+                }
+                
+            } catch (error) {
+                console.error('Permission update error:', error);
+                showResult('❌ Error updating permissions: ' + error.message, 'error');
+            }
+        }
+        
+        async function checkCurrentPermissions() {
+            showResult('Checking current permissions...', 'info');
+            
+            try {
+                const supabaseUrl = 'https://atkfcwdmmwayzyixlpum.supabase.co';
+                const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF0a2Zjd2RtbXdheXp5aXhscHVtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTE2NTIzODYsImV4cCI6MjA2NzIyODM4Nn0.VkFA1SIOLgddP-P_KjFdvDyiNdUSgYfbcP5UvOardKI';
+                
+                const response = await fetch(`${supabaseUrl}/rest/v1/staff?username=eq.birmingham`, {
+                    headers: {
+                        'apikey': supabaseKey,
+                        'Authorization': `Bearer ${supabaseKey}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                if (response.ok) {
+                    const users = await response.json();
+                    if (users.length > 0) {
+                        const user = users[0];
+                        let output = `Current Birmingham Front Desk User Info:\n\n`;
+                        output += `Name: ${user.full_name}\n`;
+                        output += `Username: ${user.username}\n`;
+                        output += `Email: ${user.email}\n`;
+                        output += `Role: ${user.role}\n`;
+                        output += `Active: ${user.active}\n\n`;
+                        output += `Permissions:\n${JSON.stringify(user.permissions, null, 2)}`;
+                        
+                        showResult(output, 'info');
+                    } else {
+                        showResult('❌ Birmingham Front Desk user not found', 'error');
+                    }
+                } else {
+                    throw new Error('Failed to fetch user data: ' + response.status);
+                }
+                
+            } catch (error) {
+                console.error('Check permissions error:', error);
+                showResult('❌ Error checking permissions: ' + error.message, 'error');
+            }
+        }
+        
+        function showResult(message, type) {
+            const resultDiv = document.getElementById('result');
+            resultDiv.textContent = message;
+            resultDiv.className = `result ${type}`;
+            resultDiv.style.display = 'block';
+        }
+    </script>
+</body>
+</html>

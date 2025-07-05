@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug User Permissions</title>
+    <script src="auth-system.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        .user-info {
+            background: #f5f5f5;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        .permissions {
+            background: #e8f5e9;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        .error {
+            background: #ffebee;
+            color: #c62828;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        pre {
+            background: #f9f9f9;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-size: 12px;
+        }
+        button {
+            padding: 10px 20px;
+            background: #A47C5B;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        .test-results {
+            background: #fff3cd;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Debug User Permissions</h1>
+    
+    <div id="user-info" class="user-info">
+        <h2>Current User Information</h2>
+        <div id="user-details"></div>
+    </div>
+    
+    <div id="permissions-info" class="permissions">
+        <h2>User Permissions</h2>
+        <div id="permissions-details"></div>
+    </div>
+    
+    <div>
+        <h2>Test Page Access</h2>
+        <button onclick="testPagePermission('front-desk-dashboard')">Test Front Desk Dashboard</button>
+        <button onclick="testPagePermission('cafe-operations-portal')">Test Café Operations</button>
+        <button onclick="testPagePermission('patient-checkin')">Test Patient Check-in</button>
+        <button onclick="testPagePermission('inventory-management')">Test Inventory</button>
+        <button onclick="testPagePermission('admin-dashboard')">Test Admin Dashboard</button>
+        <button onclick="testAllPermissions()">Test All Pages</button>
+    </div>
+    
+    <div id="test-results" class="test-results" style="display: none;">
+        <h2>Test Results</h2>
+        <div id="test-output"></div>
+    </div>
+    
+    <div style="margin-top: 20px;">
+        <button onclick="loadUserInfo()">Refresh User Info</button>
+        <button onclick="showRawSession()">Show Raw Session Data</button>
+    </div>
+
+    <script>
+        function loadUserInfo() {
+            const currentUser = window.authSystem.getCurrentUser();
+            const userDetailsDiv = document.getElementById('user-details');
+            const permissionsDetailsDiv = document.getElementById('permissions-details');
+            
+            if (!currentUser) {
+                userDetailsDiv.innerHTML = '<div class="error">No user logged in</div>';
+                permissionsDetailsDiv.innerHTML = '<div class="error">No permissions to display</div>';
+                return;
+            }
+            
+            userDetailsDiv.innerHTML = `
+                <strong>Name:</strong> ${currentUser.full_name || 'Unknown'}<br>
+                <strong>Username:</strong> ${currentUser.username || 'Unknown'}<br>
+                <strong>Email:</strong> ${currentUser.email || 'Unknown'}<br>
+                <strong>Role:</strong> ${currentUser.role || 'Unknown'}<br>
+                <strong>Active:</strong> ${currentUser.active !== false ? 'Yes' : 'No'}<br>
+                <strong>User ID:</strong> ${currentUser.id || 'Unknown'}
+            `;
+            
+            // Show permissions
+            const permissions = currentUser.permissions || {};
+            let permissionsHtml = '<strong>Granular Permissions:</strong><br>';
+            
+            if (typeof permissions === 'string') {
+                try {
+                    const parsedPermissions = JSON.parse(permissions);
+                    permissionsHtml += '<pre>' + JSON.stringify(parsedPermissions, null, 2) + '</pre>';
+                } catch (e) {
+                    permissionsHtml += 'Error parsing permissions: ' + permissions;
+                }
+            } else {
+                permissionsHtml += '<pre>' + JSON.stringify(permissions, null, 2) + '</pre>';
+            }
+            
+            permissionsDetailsDiv.innerHTML = permissionsHtml;
+        }
+        
+        function testPagePermission(pageName) {
+            const hasPermission = window.authSystem.hasPagePermission(pageName);
+            const user = window.authSystem.getCurrentUser();
+            
+            console.log(`Testing page permission for: ${pageName}`);
+            console.log(`User role: ${user?.role}`);
+            console.log(`User permissions:`, user?.permissions);
+            console.log(`Has permission: ${hasPermission}`);
+            
+            alert(`Page: ${pageName}\nHas Permission: ${hasPermission ? 'YES' : 'NO'}`);
+        }
+        
+        function testAllPermissions() {
+            const pages = [
+                'front-desk-dashboard',
+                'cafe-operations-portal', 
+                'patient-checkin',
+                'inventory-management',
+                'simple-inventory',
+                'task-management',
+                'member-portal',
+                'checklist-hub',
+                'admin-dashboard',
+                'staff-portal'
+            ];
+            
+            let results = 'Permission Test Results:\n\n';
+            
+            pages.forEach(page => {
+                const hasPermission = window.authSystem.hasPagePermission(page);
+                results += `${page}: ${hasPermission ? 'ALLOWED' : 'DENIED'}\n`;
+            });
+            
+            document.getElementById('test-output').innerHTML = '<pre>' + results + '</pre>';
+            document.getElementById('test-results').style.display = 'block';
+        }
+        
+        function showRawSession() {
+            const sessionData = localStorage.getItem('bewell_staff_session');
+            if (sessionData) {
+                try {
+                    const decrypted = atob(sessionData);
+                    const session = JSON.parse(decrypted);
+                    alert('Raw Session Data:\n\n' + JSON.stringify(session, null, 2));
+                } catch (e) {
+                    alert('Error reading session: ' + e.message);
+                }
+            } else {
+                alert('No session data found');
+            }
+        }
+        
+        // Load user info on page load
+        window.onload = function() {
+            loadUserInfo();
+        };
+    </script>
+</body>
+</html>
