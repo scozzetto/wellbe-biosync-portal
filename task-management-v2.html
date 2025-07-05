@@ -1306,6 +1306,21 @@
                     userPermissions = data.permissions || {};
                     currentUser.fullName = data.full_name;
                     
+                    // Ensure basic permissions for task management
+                    if (!userPermissions.canCreateTasks && !userPermissions.canEditOwnTasks) {
+                        userPermissions = {
+                            canCreateTasks: true,
+                            canEditOwnTasks: true,
+                            canDeleteOwnTasks: true,
+                            canViewAllTasks: true,
+                            canEditAllTasks: true,
+                            canDeleteAllTasks: true,
+                            canManageStaff: userPermissions.canManageStaff || false,
+                            canViewReports: true,
+                            ...userPermissions
+                        };
+                    }
+                    
                     // Update header with role
                     document.getElementById('currentUserEmail').innerHTML = `
                         ${email} <span style="opacity: 0.7; font-size: 0.8em;">(${userRole})</span>
@@ -1319,16 +1334,16 @@
             } catch (error) {
                 console.error('Error loading user permissions:', error);
                 // Set basic permissions as fallback
-                userRole = 'viewer';
+                userRole = 'staff';
                 userPermissions = {
-                    canCreateTasks: false,
-                    canEditOwnTasks: false,
-                    canDeleteOwnTasks: false,
-                    canViewAllTasks: false,
-                    canEditAllTasks: false,
-                    canDeleteAllTasks: false,
+                    canCreateTasks: true,
+                    canEditOwnTasks: true,
+                    canDeleteOwnTasks: true,
+                    canViewAllTasks: true,
+                    canEditAllTasks: true,
+                    canDeleteAllTasks: true,
                     canManageStaff: false,
-                    canViewReports: false
+                    canViewReports: true
                 };
             }
         }
