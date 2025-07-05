@@ -662,6 +662,95 @@
             background: rgba(164, 124, 91, 0.1);
         }
 
+        /* Staff Management Styles */
+        .staff-card {
+            background: var(--card-bg);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: var(--shadow);
+            border-left: 4px solid var(--primary-color);
+        }
+        
+        .staff-card.management {
+            border-left-color: #dc3545;
+        }
+        
+        .staff-card.admin {
+            border-left-color: #fd7e14;
+        }
+        
+        .staff-card.staff {
+            border-left-color: #28a745;
+        }
+        
+        .staff-card.viewer {
+            border-left-color: #6c757d;
+        }
+        
+        .role-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.75em;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: white;
+        }
+        
+        .role-badge.management {
+            background: #dc3545;
+        }
+        
+        .role-badge.admin {
+            background: #fd7e14;
+        }
+        
+        .role-badge.staff {
+            background: #28a745;
+        }
+        
+        .role-badge.viewer {
+            background: #6c757d;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.75em;
+            font-weight: 600;
+            color: white;
+        }
+        
+        .status-badge.active {
+            background: #28a745;
+        }
+        
+        .status-badge.inactive {
+            background: #dc3545;
+        }
+        
+        .permission-denied {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+        
+        .permission-info {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 6px;
+            padding: 10px;
+            margin-bottom: 15px;
+            font-size: 0.9em;
+            color: #666;
+        }
+        
+        .permission-info i {
+            color: var(--primary-color);
+            margin-right: 5px;
+        }
+
         /* Print Styles */
         @media print {
             .header, .action-bar, .filter-section, .task-actions, .logout-btn {
@@ -732,8 +821,11 @@
 
         <!-- Action Bar -->
         <div class="action-bar">
-            <button class="btn" onclick="showCreateModal()">
+            <button class="btn" id="createTaskBtn" onclick="showCreateModal()" style="display: none;">
                 <i class="fas fa-plus"></i> Create Task
+            </button>
+            <button class="btn btn-secondary" id="manageStaffBtn" onclick="showStaffManagement()" style="display: none;">
+                <i class="fas fa-users"></i> Manage Staff
             </button>
             <button class="btn btn-secondary" onclick="syncTasks()">
                 <i class="fas fa-sync"></i> Sync
@@ -748,6 +840,12 @@
                 <i class="fas fa-search"></i>
                 <input type="text" id="searchInput" placeholder="Search tasks..." oninput="filterTasks()">
             </div>
+        </div>
+
+        <!-- Permission Info (if limited access) -->
+        <div id="permissionInfo" class="permission-info" style="display: none;">
+            <i class="fas fa-info-circle"></i>
+            <span id="permissionText">Your access is limited based on your role.</span>
         </div>
 
         <!-- Filter Section -->
@@ -915,6 +1013,80 @@
         </div>
     </div>
 
+    <!-- Staff Management Modal -->
+    <div class="modal" id="staffModal">
+        <div class="modal-content" style="max-width: 800px;">
+            <div class="modal-header">
+                <h2 class="modal-title"><i class="fas fa-users"></i> Staff Management</h2>
+                <button class="close-modal" onclick="closeStaffModal()">&times;</button>
+            </div>
+            
+            <div style="margin-bottom: 20px;">
+                <button class="btn" onclick="showAddStaffForm()">
+                    <i class="fas fa-plus"></i> Add New Staff
+                </button>
+            </div>
+            
+            <div id="staffList" style="max-height: 400px; overflow-y: auto;">
+                <div class="loading">
+                    <div class="loading-spinner"></div>
+                    <p>Loading staff...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add/Edit Staff Modal -->
+    <div class="modal" id="addStaffModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="staffModalTitle">Add New Staff</h2>
+                <button class="close-modal" onclick="closeAddStaffModal()">&times;</button>
+            </div>
+            <form id="staffForm" onsubmit="saveStaff(event)">
+                <input type="hidden" id="staffId">
+                
+                <div class="form-group">
+                    <label>Full Name *</label>
+                    <input type="text" id="staffFullName" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Email *</label>
+                    <input type="email" id="staffEmail" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Role *</label>
+                    <select id="staffRole" required>
+                        <option value="viewer">Viewer - Read-only access to assigned tasks</option>
+                        <option value="staff">Staff - Can create/edit own tasks, view assigned tasks</option>
+                        <option value="admin">Admin - Full task access, limited staff management</option>
+                        <option value="management">Management - Full access including staff management</option>
+                    </select>
+                    <div style="margin-top: 10px; padding: 10px; background: #f8f9fa; border-radius: 6px; font-size: 0.85em; color: #666;">
+                        <strong>Role Permissions:</strong><br>
+                        <div id="rolePermissionDescription">Select a role to see permissions</div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label style="display: flex; align-items: center; gap: 10px;">
+                        <input type="checkbox" id="staffActive" checked>
+                        <span>Active</span>
+                    </label>
+                </div>
+                
+                <div style="display: flex; gap: 10px; justify-content: flex-end;">
+                    <button type="button" class="btn btn-secondary" onclick="closeAddStaffModal()">Cancel</button>
+                    <button type="submit" class="btn">
+                        <i class="fas fa-save"></i> Save Staff
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <script>
         // Supabase Configuration
         const SUPABASE_URL = 'https://atkfcwdmmwayzyixlpum.supabase.co';
@@ -926,6 +1098,8 @@
         
         // Global variables
         let currentUser = null;
+        let userRole = null;
+        let userPermissions = null;
         let tasks = [];
         let staff = [];
         let realtimeChannel = null;
@@ -970,16 +1144,185 @@
             
             checkMissedNotifications();
         });
+        
+        // =====================================
+        // PERMISSION VALIDATION FUNCTIONS
+        // =====================================
+        
+        // Check if user can create tasks
+        function canCreateTask(user) {
+            return userPermissions?.canCreateTasks === true;
+        }
+        
+        // Check if user can edit a specific task
+        function canEditTask(user, task) {
+            if (!task) return false;
+            
+            // Management and admin roles can edit all tasks
+            if (userPermissions?.canEditAllTasks === true) {
+                return true;
+            }
+            
+            // Users can edit their own tasks if they have permission
+            if (userPermissions?.canEditOwnTasks === true) {
+                return task.assigned_to === user.email || task.created_by === user.email;
+            }
+            
+            return false;
+        }
+        
+        // Check if user can delete a specific task
+        function canDeleteTask(user, task) {
+            if (!task) return false;
+            
+            // Management and admin roles can delete all tasks
+            if (userPermissions?.canDeleteAllTasks === true) {
+                return true;
+            }
+            
+            // Users can delete their own tasks if they have permission
+            if (userPermissions?.canDeleteOwnTasks === true) {
+                return task.assigned_to === user.email || task.created_by === user.email;
+            }
+            
+            return false;
+        }
+        
+        // Check if user can manage staff
+        function canManageStaff(user) {
+            return userPermissions?.canManageStaff === true;
+        }
+        
+        // Check if user can view all tasks
+        function canViewAllTasks(user) {
+            return userPermissions?.canViewAllTasks === true;
+        }
+        
+        // Update UI based on user permissions
+        function updateUIForPermissions() {
+            // Show/hide create task button
+            const createBtn = document.getElementById('createTaskBtn');
+            if (canCreateTask(currentUser)) {
+                createBtn.style.display = 'flex';
+            } else {
+                createBtn.style.display = 'none';
+            }
+            
+            // Show/hide staff management button
+            const manageStaffBtn = document.getElementById('manageStaffBtn');
+            if (canManageStaff(currentUser)) {
+                manageStaffBtn.style.display = 'flex';
+            } else {
+                manageStaffBtn.style.display = 'none';
+            }
+            
+            // Show permission info for limited access users
+            const permissionInfo = document.getElementById('permissionInfo');
+            const permissionText = document.getElementById('permissionText');
+            
+            if (userRole === 'viewer') {
+                permissionInfo.style.display = 'block';
+                permissionText.textContent = 'You have read-only access to your assigned tasks only.';
+            } else if (userRole === 'staff') {
+                permissionInfo.style.display = 'block';
+                permissionText.textContent = 'You can create and manage your own tasks. You can only view tasks assigned to you.';
+            } else if (userRole === 'admin') {
+                permissionInfo.style.display = 'block';
+                permissionText.textContent = 'You have full access to all tasks but limited staff management capabilities.';
+            } else {
+                permissionInfo.style.display = 'none';
+            }
+            
+            // Update filter options based on permissions
+            updateFilterOptions();
+        }
+        
+        // Update filter options based on permissions
+        function updateFilterOptions() {
+            const filterSelect = document.getElementById('filterAssignee');
+            const currentValue = filterSelect.value;
+            
+            // Clear and rebuild options
+            filterSelect.innerHTML = '';
+            
+            if (canViewAllTasks(currentUser)) {
+                filterSelect.innerHTML += '<option value="">All Users</option>';
+            }
+            
+            filterSelect.innerHTML += '<option value="mine">My Tasks</option>';
+            
+            if (canViewAllTasks(currentUser)) {
+                // Add staff options for users who can view all tasks
+                staff.forEach(member => {
+                    filterSelect.innerHTML += `<option value="${member.email}">${member.full_name}</option>`;
+                });
+            }
+            
+            // Restore previous selection if valid
+            if (currentValue && Array.from(filterSelect.options).some(opt => opt.value === currentValue)) {
+                filterSelect.value = currentValue;
+            }
+        }
 
-        // Check authentication
+        // Check authentication and load user permissions
         async function checkAuth() {
             const savedEmail = localStorage.getItem('currentUserEmail');
             if (savedEmail) {
                 currentUser = { email: savedEmail };
                 document.getElementById('currentUserEmail').textContent = savedEmail;
+                
+                // Load user role and permissions
+                await loadUserPermissions(savedEmail);
+                
+                // Update UI based on permissions
+                updateUIForPermissions();
             } else {
                 // Redirect to login
                 window.location.href = '/staff-auth.html?redirect=task-management-v2.html';
+            }
+        }
+        
+        // Load user permissions from database
+        async function loadUserPermissions(email) {
+            try {
+                const { data, error } = await supabaseClient
+                    .from('staff')
+                    .select('role, permissions, full_name')
+                    .eq('email', email)
+                    .eq('active', true)
+                    .single();
+                
+                if (error) throw error;
+                
+                if (data) {
+                    userRole = data.role;
+                    userPermissions = data.permissions || {};
+                    currentUser.fullName = data.full_name;
+                    
+                    // Update header with role
+                    document.getElementById('currentUserEmail').innerHTML = `
+                        ${email} <span style="opacity: 0.7; font-size: 0.8em;">(${userRole})</span>
+                    `;
+                } else {
+                    // User not found in staff table
+                    alert('User not found in staff directory. Please contact an administrator.');
+                    logout();
+                }
+                
+            } catch (error) {
+                console.error('Error loading user permissions:', error);
+                // Set basic permissions as fallback
+                userRole = 'viewer';
+                userPermissions = {
+                    canCreateTasks: false,
+                    canEditOwnTasks: false,
+                    canDeleteOwnTasks: false,
+                    canViewAllTasks: false,
+                    canEditAllTasks: false,
+                    canDeleteAllTasks: false,
+                    canManageStaff: false,
+                    canViewReports: false
+                };
             }
         }
 
@@ -1146,17 +1489,21 @@
                         </div>
                         
                         <div class="task-actions">
-                            ${!task.completed ? `
+                            ${!task.completed && canEditTask(currentUser, task) ? `
                                 <button class="task-btn" onclick="completeTask('${task.id}')">
                                     <i class="fas fa-check"></i> Complete Task
                                 </button>
                             ` : ''}
-                            <button class="task-btn" onclick="editTask('${task.id}')">
-                                <i class="fas fa-edit"></i> Edit
-                            </button>
-                            <button class="task-btn" onclick="deleteTask('${task.id}')">
-                                <i class="fas fa-trash"></i> Delete
-                            </button>
+                            ${canEditTask(currentUser, task) ? `
+                                <button class="task-btn" onclick="editTask('${task.id}')">
+                                    <i class="fas fa-edit"></i> Edit
+                                </button>
+                            ` : ''}
+                            ${canDeleteTask(currentUser, task) ? `
+                                <button class="task-btn" onclick="deleteTask('${task.id}')">
+                                    <i class="fas fa-trash"></i> Delete
+                                </button>
+                            ` : ''}
                         </div>
                         
                         <div class="created-by-section">
@@ -1170,9 +1517,18 @@
             container.innerHTML = `<div class="tasks-grid">${tasksHTML}</div>`;
         }
 
-        // Get filtered tasks
+        // Get filtered tasks based on permissions
         function getFilteredTasks() {
             let filtered = [...tasks];
+            
+            // Apply permission-based filtering first
+            if (!canViewAllTasks(currentUser)) {
+                // If user can't view all tasks, only show assigned tasks
+                filtered = filtered.filter(task => 
+                    task.assigned_to === currentUser.email || 
+                    task.created_by === currentUser.email
+                );
+            }
             
             // Search filter
             const searchTerm = document.getElementById('searchInput').value.toLowerCase();
@@ -1213,19 +1569,34 @@
             return filtered;
         }
 
-        // Update statistics
+        // Update statistics based on permissions
         function updateStats() {
-            document.getElementById('totalTasks').textContent = tasks.length;
+            let visibleTasks = tasks;
+            
+            // If user can't view all tasks, only count their assigned tasks
+            if (!canViewAllTasks(currentUser)) {
+                visibleTasks = tasks.filter(t => 
+                    t.assigned_to === currentUser.email || 
+                    t.created_by === currentUser.email
+                );
+            }
+            
+            document.getElementById('totalTasks').textContent = visibleTasks.length;
             document.getElementById('myTasks').textContent = tasks.filter(t => t.assigned_to === currentUser?.email).length;
-            document.getElementById('pendingTasks').textContent = tasks.filter(t => !t.completed).length;
-            document.getElementById('completedTasks').textContent = tasks.filter(t => t.completed).length;
-            document.getElementById('overdueTasks').textContent = tasks.filter(t => {
+            document.getElementById('pendingTasks').textContent = visibleTasks.filter(t => !t.completed).length;
+            document.getElementById('completedTasks').textContent = visibleTasks.filter(t => t.completed).length;
+            document.getElementById('overdueTasks').textContent = visibleTasks.filter(t => {
                 return t.due_date && new Date(t.due_date) < new Date() && !t.completed;
             }).length;
         }
 
         // Show create modal
         function showCreateModal() {
+            if (!canCreateTask(currentUser)) {
+                alert('You do not have permission to create tasks.');
+                return;
+            }
+            
             document.getElementById('modalTitle').textContent = 'Create Task';
             document.getElementById('taskForm').reset();
             document.getElementById('taskId').value = '';
@@ -1292,6 +1663,11 @@
             const task = tasks.find(t => t.id === taskId);
             if (!task) return;
             
+            if (!canEditTask(currentUser, task)) {
+                alert('You do not have permission to edit this task.');
+                return;
+            }
+            
             document.getElementById('modalTitle').textContent = 'Edit Task';
             document.getElementById('taskId').value = task.id;
             document.getElementById('taskDescription').value = task.description;
@@ -1309,6 +1685,14 @@
 
         // Complete task
         async function completeTask(taskId) {
+            const task = tasks.find(t => t.id === taskId);
+            if (!task) return;
+            
+            if (!canEditTask(currentUser, task)) {
+                alert('You do not have permission to complete this task.');
+                return;
+            }
+            
             if (!confirm('Mark this task as completed?')) return;
             
             try {
@@ -1334,6 +1718,14 @@
 
         // Delete task
         async function deleteTask(taskId) {
+            const task = tasks.find(t => t.id === taskId);
+            if (!task) return;
+            
+            if (!canDeleteTask(currentUser, task)) {
+                alert('You do not have permission to delete this task.');
+                return;
+            }
+            
             if (!confirm('Are you sure you want to delete this task?')) return;
             
             try {
@@ -1409,6 +1801,14 @@
             const notifModal = document.getElementById('notificationModal');
             if (event.target === notifModal) {
                 closeNotificationSettings();
+            }
+            const staffModal = document.getElementById('staffModal');
+            if (event.target === staffModal) {
+                closeStaffModal();
+            }
+            const addStaffModal = document.getElementById('addStaffModal');
+            if (event.target === addStaffModal) {
+                closeAddStaffModal();
             }
         }
 
@@ -1982,6 +2382,322 @@
             // Play test sound if enabling
             if (soundEnabled) {
                 playBeep();
+            }
+        }
+        
+        // =====================================
+        // STAFF MANAGEMENT FUNCTIONS
+        // =====================================
+        
+        // Show staff management modal
+        function showStaffManagement() {
+            if (!canManageStaff(currentUser)) {
+                alert('You do not have permission to manage staff.');
+                return;
+            }
+            
+            document.getElementById('staffModal').classList.add('active');
+            loadStaffForManagement();
+        }
+        
+        // Close staff management modal
+        function closeStaffModal() {
+            document.getElementById('staffModal').classList.remove('active');
+        }
+        
+        // Load staff for management interface
+        async function loadStaffForManagement() {
+            try {
+                const { data, error } = await supabaseClient
+                    .from('staff')
+                    .select('*')
+                    .order('full_name');
+                
+                if (error) throw error;
+                
+                renderStaffList(data || []);
+                
+            } catch (error) {
+                console.error('Error loading staff:', error);
+                document.getElementById('staffList').innerHTML = `
+                    <div class="alert alert-error">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        Error loading staff. Please try again.
+                    </div>
+                `;
+            }
+        }
+        
+        // Render staff list
+        function renderStaffList(staffData) {
+            const staffList = document.getElementById('staffList');
+            
+            if (staffData.length === 0) {
+                staffList.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-users"></i>
+                        <h3>No staff members found</h3>
+                        <p>Add your first staff member to get started.</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            const staffHTML = staffData.map(member => {
+                const roleColor = {
+                    'management': '#dc3545',
+                    'admin': '#fd7e14',
+                    'staff': '#28a745',
+                    'viewer': '#6c757d'
+                }[member.role] || '#6c757d';
+                
+                return `
+                    <div class="task-card" style="margin-bottom: 15px; background: white; border-left: 4px solid ${roleColor};">
+                        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px;">
+                            <div>
+                                <h4 style="margin: 0 0 5px 0; color: #333;">${escapeHtml(member.full_name)}</h4>
+                                <p style="margin: 0; color: #666; font-size: 0.9em;">${member.email}</p>
+                            </div>
+                            <div style="display: flex; gap: 5px; align-items: center;">
+                                <span style="background: ${roleColor}; color: white; padding: 2px 8px; border-radius: 12px; font-size: 0.75em; text-transform: uppercase; font-weight: 600;">
+                                    ${member.role}
+                                </span>
+                                <span style="background: ${member.active ? '#28a745' : '#dc3545'}; color: white; padding: 2px 8px; border-radius: 12px; font-size: 0.75em; font-weight: 600;">
+                                    ${member.active ? 'Active' : 'Inactive'}
+                                </span>
+                            </div>
+                        </div>
+                        
+                        <div style="display: flex; gap: 8px; justify-content: flex-end;">
+                            <button class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.85em;" onclick="editStaff('${member.id}')">
+                                <i class="fas fa-edit"></i> Edit
+                            </button>
+                            <button class="btn" style="padding: 6px 12px; font-size: 0.85em; background: ${member.active ? '#dc3545' : '#28a745'};" onclick="toggleStaffStatus('${member.id}', ${!member.active})">
+                                <i class="fas fa-${member.active ? 'ban' : 'check'}"></i> ${member.active ? 'Deactivate' : 'Activate'}
+                            </button>
+                        </div>
+                        
+                        <div style="font-size: 0.75em; color: #999; margin-top: 10px; padding-top: 10px; border-top: 1px solid #eee;">
+                            Created: ${new Date(member.created_at).toLocaleDateString()}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            
+            staffList.innerHTML = staffHTML;
+        }
+        
+        // Show add staff form
+        function showAddStaffForm() {
+            document.getElementById('staffModalTitle').textContent = 'Add New Staff';
+            document.getElementById('staffForm').reset();
+            document.getElementById('staffId').value = '';
+            document.getElementById('staffActive').checked = true;
+            
+            // Set up role change listener
+            document.getElementById('staffRole').addEventListener('change', updateRoleDescription);
+            updateRoleDescription(); // Set initial description
+            
+            document.getElementById('addStaffModal').classList.add('active');
+        }
+        
+        // Update role permission description
+        function updateRoleDescription() {
+            const role = document.getElementById('staffRole').value;
+            const descriptionDiv = document.getElementById('rolePermissionDescription');
+            
+            const roleDescriptions = {
+                'viewer': '• Read-only access to assigned tasks<br>• Cannot create, edit, or delete tasks<br>• Cannot access staff management<br>• Limited to viewing only',
+                'staff': '• Can create new tasks<br>• Can edit and delete own tasks<br>• Can view only assigned tasks<br>• Cannot view all tasks<br>• Cannot manage staff',
+                'admin': '• Can create, edit, and delete all tasks<br>• Can view all tasks<br>• Can complete any task<br>• Cannot manage staff accounts<br>• Can access reports',
+                'management': '• Full access to all tasks<br>• Can create, edit, and delete any task<br>• Can manage staff accounts<br>• Can add/remove staff members<br>• Can change staff roles and permissions<br>• Can deactivate/activate staff'
+            };
+            
+            descriptionDiv.innerHTML = roleDescriptions[role] || 'Select a role to see permissions';
+        }
+        
+        // Close add staff modal
+        function closeAddStaffModal() {
+            document.getElementById('addStaffModal').classList.remove('active');
+        }
+        
+        // Edit staff member
+        function editStaff(staffId) {
+            const staffMember = staff.find(s => s.id === staffId);
+            if (!staffMember) {
+                // Load from database if not in local array
+                loadStaffMemberForEdit(staffId);
+                return;
+            }
+            
+            document.getElementById('staffModalTitle').textContent = 'Edit Staff Member';
+            document.getElementById('staffId').value = staffMember.id;
+            document.getElementById('staffFullName').value = staffMember.full_name;
+            document.getElementById('staffEmail').value = staffMember.email;
+            document.getElementById('staffRole').value = staffMember.role;
+            document.getElementById('staffActive').checked = staffMember.active;
+            
+            // Set up role change listener and update description
+            document.getElementById('staffRole').addEventListener('change', updateRoleDescription);
+            updateRoleDescription(); // Set initial description
+            
+            document.getElementById('addStaffModal').classList.add('active');
+        }
+        
+        // Load staff member for editing
+        async function loadStaffMemberForEdit(staffId) {
+            try {
+                const { data, error } = await supabaseClient
+                    .from('staff')
+                    .select('*')
+                    .eq('id', staffId)
+                    .single();
+                
+                if (error) throw error;
+                
+                if (data) {
+                    document.getElementById('staffModalTitle').textContent = 'Edit Staff Member';
+                    document.getElementById('staffId').value = data.id;
+                    document.getElementById('staffFullName').value = data.full_name;
+                    document.getElementById('staffEmail').value = data.email;
+                    document.getElementById('staffRole').value = data.role;
+                    document.getElementById('staffActive').checked = data.active;
+                    
+                    // Set up role change listener and update description
+                    document.getElementById('staffRole').addEventListener('change', updateRoleDescription);
+                    updateRoleDescription(); // Set initial description
+                    
+                    document.getElementById('addStaffModal').classList.add('active');
+                }
+                
+            } catch (error) {
+                console.error('Error loading staff member:', error);
+                alert('Error loading staff member. Please try again.');
+            }
+        }
+        
+        // Save staff member
+        async function saveStaff(event) {
+            event.preventDefault();
+            
+            const staffId = document.getElementById('staffId').value;
+            const staffData = {
+                full_name: document.getElementById('staffFullName').value,
+                email: document.getElementById('staffEmail').value,
+                role: document.getElementById('staffRole').value,
+                active: document.getElementById('staffActive').checked
+            };
+            
+            // Set permissions based on role
+            const rolePermissions = {
+                'management': {
+                    canCreateTasks: true,
+                    canEditOwnTasks: true,
+                    canDeleteOwnTasks: true,
+                    canViewAllTasks: true,
+                    canEditAllTasks: true,
+                    canDeleteAllTasks: true,
+                    canManageStaff: true,
+                    canViewReports: true,
+                    canManagePermissions: true,
+                    canDeactivateStaff: true
+                },
+                'admin': {
+                    canCreateTasks: true,
+                    canEditOwnTasks: true,
+                    canDeleteOwnTasks: true,
+                    canViewAllTasks: true,
+                    canEditAllTasks: true,
+                    canDeleteAllTasks: true,
+                    canManageStaff: false,
+                    canViewReports: true
+                },
+                'staff': {
+                    canCreateTasks: true,
+                    canEditOwnTasks: true,
+                    canDeleteOwnTasks: true,
+                    canViewAllTasks: false,
+                    canEditAllTasks: false,
+                    canDeleteAllTasks: false,
+                    canManageStaff: false,
+                    canViewReports: false
+                },
+                'viewer': {
+                    canCreateTasks: false,
+                    canEditOwnTasks: false,
+                    canDeleteOwnTasks: false,
+                    canViewAllTasks: false,
+                    canEditAllTasks: false,
+                    canDeleteAllTasks: false,
+                    canManageStaff: false,
+                    canViewReports: false
+                }
+            };
+            
+            staffData.permissions = rolePermissions[staffData.role] || rolePermissions['viewer'];
+            
+            try {
+                if (staffId) {
+                    // Update existing staff member
+                    const { error } = await supabaseClient
+                        .from('staff')
+                        .update({
+                            ...staffData,
+                            updated_at: new Date().toISOString()
+                        })
+                        .eq('id', staffId);
+                    
+                    if (error) throw error;
+                    
+                } else {
+                    // Create new staff member
+                    const { error } = await supabaseClient
+                        .from('staff')
+                        .insert(staffData);
+                    
+                    if (error) throw error;
+                }
+                
+                closeAddStaffModal();
+                await loadStaff();
+                await loadStaffForManagement();
+                
+                showToast(staffId ? 'Staff member updated successfully!' : 'Staff member added successfully!', 'success');
+                
+            } catch (error) {
+                console.error('Error saving staff:', error);
+                if (error.code === '23505') {
+                    alert('A staff member with this email already exists.');
+                } else {
+                    alert('Error saving staff member. Please try again.');
+                }
+            }
+        }
+        
+        // Toggle staff status
+        async function toggleStaffStatus(staffId, newStatus) {
+            const action = newStatus ? 'activate' : 'deactivate';
+            if (!confirm(`Are you sure you want to ${action} this staff member?`)) return;
+            
+            try {
+                const { error } = await supabaseClient
+                    .from('staff')
+                    .update({
+                        active: newStatus,
+                        updated_at: new Date().toISOString()
+                    })
+                    .eq('id', staffId);
+                
+                if (error) throw error;
+                
+                await loadStaff();
+                await loadStaffForManagement();
+                
+                showToast(`Staff member ${action}d successfully!`, 'success');
+                
+            } catch (error) {
+                console.error('Error updating staff status:', error);
+                alert('Error updating staff status. Please try again.');
             }
         }
     </script>
