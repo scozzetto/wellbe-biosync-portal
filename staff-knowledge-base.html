@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Staff Knowledge Base - Be Well LifeStyle Centers</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="permissions-config.js"></script>
+    <script src="auth-system.js"></script>
     <style>
         .auth-container {
             display: flex;
@@ -226,6 +228,9 @@
     <!-- Knowledge Base Content -->
     <div id="knowledge-base" class="knowledge-base">
         <div style="position: fixed; top: 20px; right: 20px; display: flex; gap: 10px;">
+            <button id="adminSettingsBtn" class="logout-btn" onclick="window.location.href='admin-settings.html'" style="background: #dc3545; display: none;">
+                <i class="fas fa-cogs"></i> Admin Settings
+            </button>
             <button class="logout-btn" onclick="window.location.href='index.html'" style="background: var(--primary-color);">
                 <i class="fas fa-home"></i> Home
             </button>
@@ -277,7 +282,7 @@
                         <strong>Patient Check-In Kiosk</strong>
                         <small style="display: block; margin-top: 5px; opacity: 0.9;">For patient self check-in on iPad</small>
                     </a>
-                    <a href="task-management.html" style="background: #9c27b0; color: white; padding: 15px 20px; border-radius: 8px; text-decoration: none; display: block; text-align: center; transition: transform 0.3s;">
+                    <a href="task-management-v2.html" style="background: #9c27b0; color: white; padding: 15px 20px; border-radius: 8px; text-decoration: none; display: block; text-align: center; transition: transform 0.3s;">
                         <i class="fas fa-tasks" style="font-size: 1.5rem; margin-bottom: 8px; display: block;"></i>
                         <strong>Task Management</strong>
                         <small style="display: block; margin-top: 5px; opacity: 0.9;">Team tasks & to-do lists</small>
@@ -742,241 +747,90 @@
     </div>
 
     <script>
-        // Individual staff login system
-        let staffData = JSON.parse(localStorage.getItem('staffData')) || [];
-        let currentUser = null;
-        
-        // Initialize with default staff if empty
-        if (staffData.length === 0) {
-            staffData = [
-                {
-                    id: 'admin-001',
-                    name: 'System Administrator',
-                    email: 'admin@bewelllifestylecenters.com',
-                    position: 'Administrator',
-                    location: 'All',
-                    accessLevel: 'admin',
-                    password: '$Be7926570!ADMIN',
-                    active: true
-                },
-                {
-                    id: 'staff-001',
-                    name: 'General Staff',
-                    email: 'staff@bewelllifestylecenters.com',
-                    position: 'Staff Member',
-                    location: 'All',
-                    accessLevel: 'staff',
-                    password: '$Be7926570!',
-                    active: true
-                }
-            ];
-            localStorage.setItem('staffData', JSON.stringify(staffData));
-        }
-        
-        // Bulletproof authentication setup
-        function setupAuthentication() {
-            const authForm = document.getElementById('auth-form');
-            if (!authForm) {
-                setTimeout(setupAuthentication, 100);
-                return;
+        // Initialize page with new authentication system
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check authentication first
+            if (!requireAuth('staff-knowledge-base')) {
+                return; // Will redirect if not authenticated
             }
             
-            // Remove any existing listeners to prevent duplicates
-            const newForm = authForm.cloneNode(true);
-            authForm.parentNode.replaceChild(newForm, authForm);
-            
-            newForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            const password = document.getElementById('password').value;
-            
-            // Direct password check - no server calls
-            let staff = null;
-            
-            // Check against known passwords
-            if (password === '$Be7926570!ADMIN') {
-                staff = {
-                    id: 'admin-001',
-                    name: 'System Administrator',
-                    email: 'admin@bewelllifestylecenters.com',
-                    position: 'Administrator',
-                    location: 'All',
-                    accessLevel: 'admin',
-                    active: true
-                };
-            } else if (password === '$Be7926570!') {
-                staff = {
-                    id: 'staff-001',
-                    name: 'General Staff',
-                    email: 'staff@bewelllifestylecenters.com',
-                    position: 'Staff Member',
-                    location: 'All',
-                    accessLevel: 'staff',
-                    active: true
-                };
-            } else {
-                // Check localStorage for additional staff
-                const localData = localStorage.getItem('staffData');
-                if (localData) {
-                    try {
-                        const localStaff = JSON.parse(localData);
-                        staff = localStaff.find(s => s.password === password && s.active);
-                    } catch (e) {
-                        console.error('Error parsing local staff data:', e);
-                    }
+            // Get current user and show welcome message
+            const currentUser = getCurrentUser();
+            if (currentUser) {
+                // Update welcome message
+                document.querySelector('.kb-header p').innerHTML = `Welcome back, <strong>${currentUser.full_name}</strong> (${currentUser.role.toUpperCase()}) - Access Level: ${currentUser.role}<br><small style="color: #10b981;">✅ Authentication successful</small>`;
+                
+                // Show admin settings button for management users
+                if (currentUser.role === 'management') {
+                    document.getElementById('adminSettingsBtn').style.display = 'block';
                 }
-            }
-            
-            if (staff) {
-                currentUser = staff;
+                
+                // Hide the authentication section and show knowledge base
                 document.getElementById('auth-section').style.display = 'none';
                 document.getElementById('knowledge-base').style.display = 'block';
-                sessionStorage.setItem('staffAuthenticated', 'true');
-                sessionStorage.setItem('currentUser', JSON.stringify(staff));
                 
-                // Update welcome message
-                document.querySelector('.kb-header p').innerHTML = `Welcome back, <strong>${staff.name}</strong> (${staff.position}) - ${staff.location} Location<br><small style="color: #10b981;">✅ Authentication successful</small>`;
-                
-                // Show/hide sections based on access level
-                updateAccessPermissions(staff.accessLevel);
-            } else {
-                document.getElementById('auth-error').style.display = 'block';
-                document.getElementById('auth-error').innerHTML = 'Incorrect password. Please try again.';
-                document.getElementById('password').value = '';
+                // Update access permissions based on role
+                updateAccessPermissions(currentUser.role);
             }
-            });
+        });
+        
+        // Legacy variables for compatibility
+        let staffData = [];
+        let currentUser = null;
+        
+        // Legacy compatibility - no longer used
+        
+        // Legacy authentication setup - replaced with new auth system
+        function setupAuthentication() {
+            // No longer needed - handled by auth-system.js
         }
         
-        // Start authentication setup immediately
-        setupAuthentication();
-        
-        // Access permissions based on staff level
-        function updateAccessPermissions(accessLevel) {
+        // Access permissions based on role
+        function updateAccessPermissions(role) {
             const adminSection = document.getElementById('admin-section');
-            const adminButton = document.querySelector('a[onclick="openAdminDashboard(); return false;"]');
             
-            // Show/hide admin functions
-            if (accessLevel === 'admin') {
-                // Show admin section in the portal
+            // Show/hide admin functions based on role
+            if (role === 'management') {
+                // Management users get access to everything including admin section
                 if (adminSection) {
                     adminSection.style.display = 'block';
                     initializeAdminForms();
                     loadAdminStaffData();
                 }
+            } else if (role === 'admin') {
+                // Admin users get most access but not admin user management
+                if (adminSection) {
+                    adminSection.style.display = 'none';
+                }
+            } else if (role === 'staff') {
+                // Staff users get limited access
+                if (adminSection) {
+                    adminSection.style.display = 'none';
+                }
                 
-                // Hide the old external admin dashboard button since we have it integrated now
-                if (adminButton) adminButton.style.display = 'none';
-                
-            } else if (accessLevel === 'cafe') {
-                // Café staff only see café-related systems
+                // Hide certain administrative links for staff
                 const allLinks = document.querySelectorAll('.kb-section a');
                 allLinks.forEach(link => {
-                    if (link.href.includes('cafe-operations') || 
-                        link.href.includes('inventory-management') || 
-                        link.href.includes('recipe-inventory')) {
-                        link.style.display = 'block';
-                    } else if (link.onclick && (link.onclick.toString().includes('Dashboard') || 
-                              link.onclick.toString().includes('Admin'))) {
+                    if (link.href.includes('admin-dashboard') || 
+                        link.onclick && link.onclick.toString().includes('Admin')) {
                         link.style.display = 'none';
                     }
                 });
             }
-            
-            // Hide certain sections for café-only staff
-            if (accessLevel === 'cafe') {
-                const knowledgeSections = document.querySelectorAll('.kb-section');
-                knowledgeSections.forEach((section, index) => {
-                    if (index > 0) { // Keep first section (Quick Access) but hide others for café staff
-                        const header = section.querySelector('.kb-section-header');
-                        if (header && !header.textContent.includes('Café')) {
-                            section.style.display = 'none';
-                        }
-                    }
-                });
-            }
         }
         
-        // Load staff data on page load
-        async function loadStaffDataForAuth() {
-            try {
-                // Try Dropbox authentication first (includes real passwords)
-                const response = await fetch('/.netlify/functions/dropbox-manager', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        action: 'get-staff-for-auth'
-                    })
-                });
-                
-                if (response.ok) {
-                    const result = await response.json();
-                    if (result.staff) {
-                        staffData = result.staff;
-                        return;
-                    }
-                }
-            } catch (error) {
-                console.error('Dropbox auth data failed:', error);
-            }
-            
-            // Fallback: Use hardcoded default accounts for now
-            staffData = [
-                {
-                    id: 'admin-001',
-                    name: 'System Administrator',
-                    email: 'admin@bewelllifestylecenters.com',
-                    position: 'Administrator',
-                    location: 'All',
-                    accessLevel: 'admin',
-                    password: '$Be7926570!ADMIN',
-                    active: true
-                },
-                {
-                    id: 'staff-001',
-                    name: 'General Staff',
-                    email: 'staff@bewelllifestylecenters.com',
-                    position: 'Staff Member',
-                    location: 'All',
-                    accessLevel: 'staff',
-                    password: '$Be7926570!',
-                    active: true
-                }
-            ];
-            
-            // Also check localStorage for any additional staff
-            const localData = localStorage.getItem('staffData');
-            if (localData) {
-                try {
-                    const localStaff = JSON.parse(localData);
-                    // Merge with defaults (avoiding duplicates)
-                    localStaff.forEach(staff => {
-                        if (!staffData.find(s => s.id === staff.id)) {
-                            staffData.push(staff);
-                        }
-                    });
-                } catch (e) {
-                    console.error('Error parsing local staff data:', e);
-                }
-            }
-        }
-        
-        // Load staff data when page loads
-        loadStaffDataForAuth();
-        
-        // Clear any existing sessions to prevent conflicts
-        sessionStorage.removeItem('staffAuthenticated');
-        sessionStorage.removeItem('currentUser');
-        sessionStorage.removeItem('adminAuthenticated');
+        // Legacy functions - replaced by auth-system.js
         
         // Logout function
         function logout() {
-            sessionStorage.removeItem('staffAuthenticated');
-            sessionStorage.removeItem('currentUser');
-            currentUser = null;
-            document.getElementById('auth-section').style.display = 'flex';
-            document.getElementById('knowledge-base').style.display = 'none';
-            document.getElementById('password').value = '';
+            if (window.authSystem) {
+                window.authSystem.logout();
+            } else {
+                // Fallback logout
+                sessionStorage.clear();
+                localStorage.clear();
+                window.location.href = '/staff-auth.html';
+            }
         }
         
         // Open dashboard in new window
@@ -1000,16 +854,7 @@
             section.classList.toggle('open');
         }
         
-        // Auto-logout after 4 hours of inactivity
-        let inactivityTimer;
-        function resetInactivityTimer() {
-            clearTimeout(inactivityTimer);
-            inactivityTimer = setTimeout(logout, 4 * 60 * 60 * 1000); // 4 hours
-        }
-        
-        document.addEventListener('click', resetInactivityTimer);
-        document.addEventListener('keypress', resetInactivityTimer);
-        resetInactivityTimer();
+        // Auto-logout handled by auth-system.js
         
         // Admin Functions (integrated into staff portal)
         function setupAdminFunctions() {

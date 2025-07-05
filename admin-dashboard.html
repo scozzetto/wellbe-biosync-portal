@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard - Be Well LifeStyle Centers</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="auth-system.js"></script>
     <style>
         .admin-container {
             max-width: 1400px;
@@ -349,21 +350,34 @@
     </div>
 
     <script>
-        // Password protection
-        const ADMIN_PASSWORD = "$Be7926570!"; // Admin password
-        
-        document.getElementById('auth-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const password = document.getElementById('password').value;
+        // Protect this page - admin level access required
+        document.addEventListener('DOMContentLoaded', function() {
+            if (!requireAuth('admin-dashboard', ['read', 'write'])) {
+                return; // Will redirect if not authenticated
+            }
             
-            if (password === ADMIN_PASSWORD) {
-                document.getElementById('auth-section').style.display = 'none';
-                document.getElementById('admin-dashboard').style.display = 'block';
-                sessionStorage.setItem('adminAuthenticated', 'true');
-                loadDashboard();
-            } else {
-                document.getElementById('auth-error').style.display = 'block';
-                document.getElementById('password').value = '';
+            // Check if user has admin or management role
+            const currentUser = getCurrentUser();
+            if (!currentUser || (currentUser.role !== 'admin' && currentUser.role !== 'management')) {
+                window.location.href = '/access-denied.html';
+                return;
+            }
+            
+            // Hide auth section and show dashboard
+            document.getElementById('auth-section').style.display = 'none';
+            document.getElementById('admin-dashboard').style.display = 'block';
+            loadDashboard();
+        });
+        
+        // Legacy auth form handler (kept for compatibility)
+        document.addEventListener('DOMContentLoaded', function() {
+            const authForm = document.getElementById('auth-form');
+            if (authForm) {
+                authForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    // Redirect to new auth system
+                    window.location.href = '/staff-auth.html?redirect=' + encodeURIComponent(window.location.pathname);
+                });
             }
         });
         

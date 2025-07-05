@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Authentication System Test - Be Well LifeStyle Centers</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="permissions-config.js"></script>
+    <script src="auth-system.js"></script>
+    <style>
+        :root {
+            --primary-color: #A47C5B;
+            --secondary-color: #1a5963;
+            --bg-color: #f5f5f5;
+            --card-bg: #ffffff;
+            --text-color: #333333;
+            --border-color: #e0e0e0;
+            --success-color: #4CAF50;
+            --error-color: #dc3545;
+            --warning-color: #ffc107;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: var(--bg-color);
+            color: var(--text-color);
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .test-section {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .test-section h3 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .test-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .test-item {
+            background: #f8f9fa;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 15px;
+        }
+
+        .test-item h4 {
+            color: var(--secondary-color);
+            margin-bottom: 10px;
+        }
+
+        .test-result {
+            padding: 10px;
+            border-radius: 6px;
+            margin: 10px 0;
+            font-weight: 500;
+        }
+
+        .test-result.pass {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .test-result.fail {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .test-result.warning {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+        }
+
+        .btn {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            margin: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            background: #8a6a4a;
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+        }
+
+        .btn-danger {
+            background: var(--error-color);
+        }
+
+        .info-box {
+            background: #e3f2fd;
+            border: 1px solid #90caf9;
+            border-radius: 6px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        .permission-demo {
+            border: 2px dashed #ccc;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 6px;
+        }
+
+        .hidden-element {
+            display: none !important;
+        }
+
+        .readonly-element {
+            opacity: 0.6 !important;
+            cursor: not-allowed !important;
+        }
+
+        pre {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 4px;
+            padding: 10px;
+            overflow-x: auto;
+            font-size: 0.85rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><i class="fas fa-shield-alt"></i> Authentication System Test Suite</h1>
+            <p>Comprehensive testing of the Be Well authentication and authorization system</p>
+        </div>
+
+        <!-- Authentication Status -->
+        <div class="test-section">
+            <h3><i class="fas fa-user-check"></i> Authentication Status</h3>
+            <div id="authStatus">
+                <div class="test-result fail">
+                    <i class="fas fa-times"></i> Testing authentication status...
+                </div>
+            </div>
+        </div>
+
+        <!-- User Information -->
+        <div class="test-section" id="userInfoSection" style="display: none;">
+            <h3><i class="fas fa-user"></i> Current User Information</h3>
+            <div id="userInfo"></div>
+        </div>
+
+        <!-- Permission Tests -->
+        <div class="test-section" id="permissionSection" style="display: none;">
+            <h3><i class="fas fa-key"></i> Permission Tests</h3>
+            <div class="test-grid">
+                <div class="test-item">
+                    <h4>Page Permissions</h4>
+                    <div id="pagePermissions"></div>
+                </div>
+                <div class="test-item">
+                    <h4>Action Permissions</h4>
+                    <div id="actionPermissions"></div>
+                </div>
+                <div class="test-item">
+                    <h4>Tab Permissions</h4>
+                    <div id="tabPermissions"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Role-Based UI Demo -->
+        <div class="test-section" id="roleDemo" style="display: none;">
+            <h3><i class="fas fa-tools"></i> Role-Based UI Demonstration</h3>
+            
+            <div class="permission-demo">
+                <h4>Management Only Features</h4>
+                <button class="btn btn-danger" onclick="alert('User management feature')" data-required-role="management">
+                    <i class="fas fa-users-cog"></i> Manage Users
+                </button>
+                <button class="btn btn-danger" onclick="alert('System settings feature')" data-required-role="management">
+                    <i class="fas fa-cogs"></i> System Settings
+                </button>
+            </div>
+
+            <div class="permission-demo">
+                <h4>Admin Features</h4>
+                <button class="btn" onclick="alert('Reports feature')" data-required-role="admin,management">
+                    <i class="fas fa-chart-bar"></i> View Reports
+                </button>
+                <button class="btn" onclick="alert('Inventory management')" data-required-role="admin,management">
+                    <i class="fas fa-boxes"></i> Manage Inventory
+                </button>
+            </div>
+
+            <div class="permission-demo">
+                <h4>Staff Features</h4>
+                <button class="btn btn-secondary" onclick="alert('Task management')" data-required-role="staff,admin,management">
+                    <i class="fas fa-tasks"></i> Manage Tasks
+                </button>
+                <button class="btn btn-secondary" onclick="alert('Patient check-in')" data-required-role="staff,admin,management">
+                    <i class="fas fa-clipboard-check"></i> Patient Check-in
+                </button>
+            </div>
+
+            <div class="permission-demo">
+                <h4>Form Elements Demo</h4>
+                <input type="text" placeholder="Admin only input" class="admin-only" style="margin: 5px; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+                <input type="text" placeholder="Staff accessible input" class="staff-accessible" style="margin: 5px; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+                <select class="admin-only" style="margin: 5px; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+                    <option>Admin only dropdown</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Test Navigation -->
+        <div class="test-section">
+            <h3><i class="fas fa-link"></i> Navigation Tests</h3>
+            <div class="info-box">
+                <p>Test navigation to different pages based on your role:</p>
+            </div>
+            <div class="test-grid">
+                <div class="test-item">
+                    <h4>General Access</h4>
+                    <a href="staff-knowledge-base.html" class="btn">Knowledge Base</a>
+                    <a href="task-management-v2.html" class="btn">Task Management</a>
+                    <a href="front-desk-dashboard.html" class="btn">Front Desk</a>
+                </div>
+                <div class="test-item">
+                    <h4>Admin Access</h4>
+                    <a href="admin-dashboard.html" class="btn">Admin Dashboard</a>
+                    <a href="inventory-management.html" class="btn">Inventory</a>
+                    <a href="member-portal.html" class="btn">Member Portal</a>
+                </div>
+                <div class="test-item">
+                    <h4>Management Only</h4>
+                    <a href="admin-settings.html" class="btn btn-danger">Admin Settings</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Session Management -->
+        <div class="test-section">
+            <h3><i class="fas fa-clock"></i> Session Management</h3>
+            <div class="test-grid">
+                <div class="test-item">
+                    <h4>Session Actions</h4>
+                    <button class="btn" onclick="testSessionInfo()">View Session Info</button>
+                    <button class="btn btn-secondary" onclick="testInactivity()">Test Inactivity Timer</button>
+                    <button class="btn btn-danger" onclick="logout()">Logout</button>
+                </div>
+                <div class="test-item">
+                    <h4>Session Status</h4>
+                    <div id="sessionInfo"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Authentication Logs -->
+        <div class="test-section" id="authLogsSection" style="display: none;">
+            <h3><i class="fas fa-history"></i> Authentication Logs</h3>
+            <button class="btn" onclick="loadAuthLogs()">Load Recent Logs</button>
+            <div id="authLogs" style="margin-top: 15px;"></div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize test page
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeTests();
+        });
+
+        function initializeTests() {
+            // Test authentication status
+            testAuthenticationStatus();
+            
+            // If authenticated, run other tests
+            if (window.authSystem && window.authSystem.isAuthenticated()) {
+                const currentUser = getCurrentUser();
+                if (currentUser) {
+                    showUserInfo(currentUser);
+                    testPermissions(currentUser);
+                    applyRoleBasedUI(currentUser.role);
+                    testSessionInfo();
+                    
+                    // Show management-only sections
+                    if (currentUser.role === 'management') {
+                        document.getElementById('authLogsSection').style.display = 'block';
+                    }
+                }
+            }
+        }
+
+        function testAuthenticationStatus() {
+            const statusDiv = document.getElementById('authStatus');
+            
+            if (window.authSystem && window.authSystem.isAuthenticated()) {
+                statusDiv.innerHTML = `
+                    <div class="test-result pass">
+                        <i class="fas fa-check"></i> User is authenticated
+                    </div>
+                `;
+            } else {
+                statusDiv.innerHTML = `
+                    <div class="test-result fail">
+                        <i class="fas fa-times"></i> User is not authenticated
+                    </div>
+                    <button class="btn" onclick="window.location.href='staff-auth.html'">Go to Login</button>
+                `;
+            }
+        }
+
+        function showUserInfo(user) {
+            document.getElementById('userInfoSection').style.display = 'block';
+            document.getElementById('userInfo').innerHTML = `
+                <div class="info-box">
+                    <h4>User Details</h4>
+                    <p><strong>Name:</strong> ${user.full_name}</p>
+                    <p><strong>Username:</strong> ${user.username}</p>
+                    <p><strong>Email:</strong> ${user.email}</p>
+                    <p><strong>Role:</strong> ${user.role.toUpperCase()}</p>
+                    <p><strong>ID:</strong> ${user.id}</p>
+                </div>
+            `;
+        }
+
+        function testPermissions(user) {
+            document.getElementById('permissionSection').style.display = 'block';
+            
+            // Test page permissions
+            const testPages = [
+                'staff-knowledge-base.html',
+                'admin-dashboard.html', 
+                'admin-settings.html',
+                'task-management-v2.html',
+                'inventory-management.html'
+            ];
+            
+            let pageResults = '';
+            testPages.forEach(page => {
+                const hasPermission = window.authSystem.hasPagePermission(page);
+                pageResults += `
+                    <div class="test-result ${hasPermission ? 'pass' : 'fail'}">
+                        <i class="fas fa-${hasPermission ? 'check' : 'times'}"></i> ${page}
+                    </div>
+                `;
+            });
+            document.getElementById('pagePermissions').innerHTML = pageResults;
+
+            // Test action permissions
+            const testActions = ['read', 'write', 'create', 'update', 'delete'];
+            let actionResults = '';
+            testActions.forEach(action => {
+                const hasPermission = window.authSystem.hasActionPermission(action);
+                actionResults += `
+                    <div class="test-result ${hasPermission ? 'pass' : 'fail'}">
+                        <i class="fas fa-${hasPermission ? 'check' : 'times'}"></i> ${action}
+                    </div>
+                `;
+            });
+            document.getElementById('actionPermissions').innerHTML = actionResults;
+
+            // Test tab permissions
+            const testTabs = ['dashboard', 'admin', 'tasks', 'inventory', 'cafe', 'patients'];
+            let tabResults = '';
+            testTabs.forEach(tab => {
+                const hasPermission = window.authSystem.hasTabPermission(tab);
+                tabResults += `
+                    <div class="test-result ${hasPermission ? 'pass' : 'fail'}">
+                        <i class="fas fa-${hasPermission ? 'check' : 'times'}"></i> ${tab}
+                    </div>
+                `;
+            });
+            document.getElementById('tabPermissions').innerHTML = tabResults;
+        }
+
+        function applyRoleBasedUI(userRole) {
+            document.getElementById('roleDemo').style.display = 'block';
+            
+            // Apply role-based restrictions to demo elements
+            const roleButtons = document.querySelectorAll('[data-required-role]');
+            roleButtons.forEach(button => {
+                const requiredRoles = button.getAttribute('data-required-role').split(',');
+                if (!requiredRoles.includes(userRole)) {
+                    button.disabled = true;
+                    button.style.opacity = '0.5';
+                    button.title = `Requires role: ${requiredRoles.join(' or ')}`;
+                }
+            });
+
+            // Apply restrictions to form elements
+            if (userRole !== 'management' && userRole !== 'admin') {
+                const adminOnlyElements = document.querySelectorAll('.admin-only');
+                adminOnlyElements.forEach(element => {
+                    element.setAttribute('readonly', true);
+                    element.disabled = true;
+                    element.classList.add('readonly-element');
+                });
+            }
+        }
+
+        function testSessionInfo() {
+            const sessionDiv = document.getElementById('sessionInfo');
+            
+            if (window.authSystem && window.authSystem.isAuthenticated()) {
+                const sessionData = localStorage.getItem(window.authSystem.sessionKey);
+                if (sessionData) {
+                    try {
+                        const decrypted = window.authSystem.decryptData(sessionData);
+                        const session = JSON.parse(decrypted);
+                        
+                        const expiresAt = new Date(session.expires);
+                        const timeLeft = expiresAt - new Date();
+                        const hoursLeft = Math.floor(timeLeft / (1000 * 60 * 60));
+                        const minutesLeft = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+                        
+                        sessionDiv.innerHTML = `
+                            <div class="test-result pass">
+                                <strong>Session Active</strong><br>
+                                Session ID: ${session.sessionId}<br>
+                                Expires: ${expiresAt.toLocaleString()}<br>
+                                Time left: ${hoursLeft}h ${minutesLeft}m
+                            </div>
+                        `;
+                    } catch (error) {
+                        sessionDiv.innerHTML = `
+                            <div class="test-result fail">
+                                Error reading session: ${error.message}
+                            </div>
+                        `;
+                    }
+                }
+            } else {
+                sessionDiv.innerHTML = `
+                    <div class="test-result fail">
+                        No active session
+                    </div>
+                `;
+            }
+        }
+
+        function testInactivity() {
+            alert('Inactivity timer test - the system will logout after 30 minutes of inactivity. Timer resets on user interaction.');
+        }
+
+        function loadAuthLogs() {
+            try {
+                const logs = window.authSystem.getAuthLogs();
+                const logsDiv = document.getElementById('authLogs');
+                
+                if (logs.length === 0) {
+                    logsDiv.innerHTML = '<p>No authentication logs found.</p>';
+                    return;
+                }
+                
+                let logsHtml = '<h4>Recent Authentication Events</h4>';
+                logs.slice(-10).reverse().forEach(log => {
+                    logsHtml += `
+                        <div class="test-result pass" style="text-align: left; font-size: 0.9rem;">
+                            <strong>${log.event}</strong> - ${log.username}<br>
+                            <small>${new Date(log.timestamp).toLocaleString()}</small>
+                        </div>
+                    `;
+                });
+                
+                logsDiv.innerHTML = logsHtml;
+            } catch (error) {
+                document.getElementById('authLogs').innerHTML = `
+                    <div class="test-result fail">
+                        Error loading logs: ${error.message}
+                    </div>
+                `;
+            }
+        }
+
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                if (window.authSystem) {
+                    window.authSystem.logout();
+                } else {
+                    window.location.href = 'staff-auth.html';
+                }
+            }
+        }
+    </script>
+</body>
+</html>

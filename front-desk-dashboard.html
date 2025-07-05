@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Front Desk Dashboard - Be Well LifeStyle Centers</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="auth-system.js"></script>
     <style>
         .dashboard-container {
             min-height: 100vh;
@@ -581,6 +582,13 @@
     </div>
     
     <script>
+        // Protect this page
+        document.addEventListener('DOMContentLoaded', function() {
+            if (!requireAuth('front-desk-dashboard', ['read', 'write'])) {
+                return; // Will redirect if not authenticated
+            }
+        });
+        
         let currentCommentId = null;
         
         // Update current time

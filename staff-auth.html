@@ -6,6 +6,8 @@
     <title>Staff Login - Be Well LifeStyle Centers</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="permissions-config.js"></script>
+    <script src="auth-system.js"></script>
     <style>
         :root {
             --primary-color: #A47C5B;
@@ -77,19 +79,24 @@
             color: var(--text-color);
         }
 
-        .form-group select {
+        .form-group input {
             width: 100%;
             padding: 12px;
             border: 1px solid var(--border-color);
             border-radius: 6px;
             font-size: 1rem;
             background: white;
-            cursor: pointer;
+            transition: border-color 0.3s ease;
         }
 
-        .form-group select:focus {
+        .form-group input:focus {
             outline: none;
             border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(164, 124, 91, 0.2);
+        }
+
+        .form-group input[type="password"] {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, monospace;
         }
 
         .btn {
@@ -192,14 +199,13 @@
 
         <form id="loginForm" onsubmit="login(event)">
             <div class="form-group">
-                <label for="staffSelect">Select Your Account</label>
-                <select id="staffSelect" required>
-                    <option value="">Choose your account...</option>
-                    <option value="silvio@bewelllifestylecenters.com">Silvio Cozzetto (Admin)</option>
-                    <option value="admin@bewelllifestylecenters.com">Admin User</option>
-                    <option value="staff1@bewelllifestylecenters.com">Staff Member 1</option>
-                    <option value="staff2@bewelllifestylecenters.com">Staff Member 2</option>
-                </select>
+                <label for="username">Username</label>
+                <input type="text" id="username" required placeholder="Enter your username" autocomplete="username">
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" required placeholder="Enter your password" autocomplete="current-password">
             </div>
 
             <button type="submit" class="btn" id="loginBtn">
@@ -213,24 +219,18 @@
         </div>
 
         <div class="demo-note">
-            <strong>Demo Mode:</strong>
-            Select any account to login. In production, this will require a password.
+            <strong>Default Accounts:</strong>
+            <p><strong>Admin:</strong> username: <code>admin</code>, password: <code>BeWell2024!Admin</code></p>
+            <p><strong>Staff:</strong> username: <code>staff</code>, password: <code>BeWell2024!Staff</code></p>
         </div>
     </div>
 
     <script>
-        // Supabase Configuration
-        const SUPABASE_URL = 'https://atkfcwdmmwayzyixlpum.supabase.co';
-        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF0a2Zjd2RtbXdheXl5aXhscHVtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTE2NTIzODYsImV4cCI6MjA2NzIyODM4Nn0.VkFA1SIOLgddP-P_KjFdvDyiNdUSgYfbcP5UvOardKI';
-        
-        // Initialize Supabase
-        const { createClient } = supabase;
-        const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        // Authentication system is loaded via auth-system.js
 
         // Check if already logged in
         window.addEventListener('DOMContentLoaded', () => {
-            const savedEmail = localStorage.getItem('currentUserEmail');
-            if (savedEmail) {
+            if (window.authSystem && window.authSystem.isAuthenticated()) {
                 // Already logged in, redirect
                 const redirect = getRedirectUrl();
                 window.location.href = redirect;
@@ -240,16 +240,18 @@
         // Get redirect URL from query params
         function getRedirectUrl() {
             const params = new URLSearchParams(window.location.search);
-            return params.get('redirect') || '/task-management-v2.html';
+            return params.get('redirect') || '/staff-knowledge-base.html';
         }
 
         // Login function
         async function login(event) {
             event.preventDefault();
             
-            const email = document.getElementById('staffSelect').value;
-            if (!email) {
-                showAlert('Please select an account', 'error');
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value;
+            
+            if (!username || !password) {
+                showAlert('Please enter both username and password', 'error');
                 return;
             }
             
@@ -259,55 +261,21 @@
             hideAlert();
             
             try {
-                // For demo mode, skip database check temporarily
-                let data = null;
+                // Use the authentication system
+                const result = await window.authSystem.authenticateUser(username, password);
                 
-                try {
-                    // Try to check database
-                    const response = await supabaseClient
-                        .from('staff')
-                        .select('*')
-                        .eq('email', email)
-                        .eq('active', true)
-                        .single();
+                if (result.success) {
+                    // Show success
+                    showAlert('Login successful! Redirecting...', 'success');
                     
-                    if (!response.error) {
-                        data = response.data;
-                    }
-                } catch (dbError) {
-                    console.warn('Database check failed, using demo mode:', dbError);
+                    // Redirect after short delay
+                    setTimeout(() => {
+                        const redirect = getRedirectUrl();
+                        window.location.href = redirect;
+                    }, 1000);
+                } else {
+                    throw new Error(result.error || 'Authentication failed');
                 }
-                
-                // If database check fails, use demo data
-                if (!data) {
-                    // Demo mode - allow login without database
-                    const demoUsers = {
-                        'silvio@bewelllifestylecenters.com': { full_name: 'Silvio Cozzetto', role: 'admin' },
-                        'admin@bewelllifestylecenters.com': { full_name: 'Admin User', role: 'admin' },
-                        'staff1@bewelllifestylecenters.com': { full_name: 'Staff Member 1', role: 'staff' },
-                        'staff2@bewelllifestylecenters.com': { full_name: 'Staff Member 2', role: 'staff' }
-                    };
-                    
-                    if (demoUsers[email]) {
-                        data = { ...demoUsers[email], email, active: true };
-                    } else {
-                        throw new Error('Invalid account');
-                    }
-                }
-                
-                // Save to localStorage
-                localStorage.setItem('currentUserEmail', email);
-                localStorage.setItem('currentUserName', data.full_name);
-                localStorage.setItem('currentUserRole', data.role);
-                
-                // Show success
-                showAlert('Login successful! Redirecting...', 'success');
-                
-                // Redirect after short delay
-                setTimeout(() => {
-                    const redirect = getRedirectUrl();
-                    window.location.href = redirect;
-                }, 1000);
                 
             } catch (error) {
                 console.error('Login error:', error);
