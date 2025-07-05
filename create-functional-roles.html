@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Functional Role Accounts</title>
+    <script src="auth-system.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        .container {
+            background: #f5f5f5;
+            padding: 30px;
+            border-radius: 10px;
+        }
+        .role-card {
+            background: white;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 8px;
+            border-left: 5px solid #A47C5B;
+        }
+        .role-card h3 {
+            color: #A47C5B;
+            margin-top: 0;
+        }
+        .permissions-list {
+            background: #f9f9f9;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+            font-size: 14px;
+        }
+        button {
+            width: 100%;
+            padding: 15px;
+            background: #A47C5B;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 0;
+        }
+        button:hover {
+            background: #8a6a4a;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            display: none;
+        }
+        .success {
+            background: #e8f5e9;
+            color: #2e7d32;
+            border: 1px solid #81c784;
+        }
+        .error {
+            background: #ffebee;
+            color: #c62828;
+            border: 1px solid #ef5350;
+        }
+        .info {
+            background: #e3f2fd;
+            color: #1565c0;
+            border: 1px solid #64b5f6;
+        }
+        .credentials {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Create Functional Role Accounts</h1>
+        <p>This will create clean, functional role accounts that multiple staff can share based on their job function.</p>
+        
+        <div class="role-card">
+            <h3>🏢 Front Desk Staff</h3>
+            <strong>Username:</strong> front-desk<br>
+            <strong>Password:</strong> BeWell2024!FrontDesk<br>
+            <div class="permissions-list">
+                <strong>Permissions:</strong><br>
+                • Front Desk Dashboard: Full Control<br>
+                • Patient Check-In: Full Control<br>
+                • Member Portal: View Only<br>
+                • Checklists: View Only<br>
+                • Task Management: Read/Write
+            </div>
+        </div>
+
+        <div class="role-card">
+            <h3>☕ Café Staff</h3>
+            <strong>Username:</strong> cafe-staff<br>
+            <strong>Password:</strong> BeWell2024!Cafe<br>
+            <div class="permissions-list">
+                <strong>Permissions:</strong><br>
+                • Café Operations: Full Control<br>
+                • Inventory Management: Read/Write<br>
+                • Task Management: Read/Write<br>
+                • Checklists: View Only
+            </div>
+        </div>
+
+        <div class="role-card">
+            <h3>⚕️ Clinical Staff</h3>
+            <strong>Username:</strong> clinical-staff<br>
+            <strong>Password:</strong> BeWell2024!Clinical<br>
+            <div class="permissions-list">
+                <strong>Permissions:</strong><br>
+                • Patient Check-In: Read/Write<br>
+                • Front Desk Dashboard: View Only<br>
+                • Member Portal: View Only<br>
+                • Checklists: Read/Write<br>
+                • Task Management: Read/Write
+            </div>
+        </div>
+
+        <div class="role-card">
+            <h3>🔧 Admin Staff</h3>
+            <strong>Username:</strong> admin-staff<br>
+            <strong>Password:</strong> BeWell2024!Admin<br>
+            <div class="permissions-list">
+                <strong>Permissions:</strong><br>
+                • Admin Dashboard: Full Control<br>
+                • Inventory Management: Full Control<br>
+                • Task Management: Full Control<br>
+                • Member Portal: Read/Write<br>
+                • Checklists: Full Control<br>
+                • Café Operations: Read/Write
+            </div>
+        </div>
+
+        <div class="role-card">
+            <h3>👑 Manager</h3>
+            <strong>Username:</strong> manager<br>
+            <strong>Password:</strong> BeWell2024!Manager<br>
+            <div class="permissions-list">
+                <strong>Permissions:</strong><br>
+                • All Pages: Full Control<br>
+                • Staff Management: Full Control<br>
+                • Complete System Access
+            </div>
+        </div>
+        
+        <button onclick="createAllFunctionalRoles()">Create All Functional Role Accounts</button>
+        <button onclick="deleteOldAccounts()">Clean Up Old Location-Based Accounts</button>
+        <button onclick="showCredentialsSummary()">Show All Credentials Summary</button>
+        
+        <div id="result" class="result"></div>
+    </div>
+
+    <script>
+        async function createAllFunctionalRoles() {
+            showResult('Creating functional role accounts...', 'info');
+            
+            const roles = [
+                {
+                    username: 'front-desk',
+                    password: 'BeWell2024!FrontDesk',
+                    full_name: 'Front Desk Staff',
+                    email: 'frontdesk@bewelllifestylecenters.com',
+                    permissions: {
+                        'front-desk': 'delete',
+                        'checkin': 'delete', 
+                        'members': 'view',
+                        'checklists': 'view',
+                        'tasks': 'edit'
+                    }
+                },
+                {
+                    username: 'cafe-staff',
+                    password: 'BeWell2024!Cafe',
+                    full_name: 'Café Staff',
+                    email: 'cafe@bewelllifestylecenters.com',
+                    permissions: {
+                        'cafe-operations': 'delete',
+                        'inventory': 'edit',
+                        'tasks': 'edit',
+                        'checklists': 'view'
+                    }
+                },
+                {
+                    username: 'clinical-staff',
+                    password: 'BeWell2024!Clinical',
+                    full_name: 'Clinical Staff',
+                    email: 'clinical@bewelllifestylecenters.com',
+                    permissions: {
+                        'checkin': 'edit',
+                        'front-desk': 'view',
+                        'members': 'view',
+                        'checklists': 'edit',
+                        'tasks': 'edit'
+                    }
+                },
+                {
+                    username: 'admin-staff',
+                    password: 'BeWell2024!Admin',
+                    full_name: 'Administrative Staff',
+                    email: 'admin@bewelllifestylecenters.com',
+                    permissions: {
+                        'admin': 'delete',
+                        'inventory': 'delete',
+                        'tasks': 'delete',
+                        'members': 'edit',
+                        'checklists': 'delete',
+                        'cafe-operations': 'edit'
+                    }
+                },
+                {
+                    username: 'manager',
+                    password: 'BeWell2024!Manager',
+                    full_name: 'Manager',
+                    email: 'manager@bewelllifestylecenters.com',
+                    role: 'management',  // Special management role
+                    permissions: {} // Management gets everything automatically
+                }
+            ];
+
+            let results = [];
+            const supabaseUrl = 'https://atkfcwdmmwayzyixlpum.supabase.co';
+            const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF0a2Zjd2RtbXdheXp5aXhscHVtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTE2NTIzODYsImV4cCI6MjA2NzIyODM4Nn0.VkFA1SIOLgddP-P_KjFdvDyiNdUSgYfbcP5UvOardKI';
+
+            for (const roleData of roles) {
+                try {
+                    // Hash password
+                    const hashedPassword = await hashPassword(roleData.password);
+                    
+                    // Prepare user data
+                    const userData = {
+                        username: roleData.username,
+                        password_hash: hashedPassword,
+                        full_name: roleData.full_name,
+                        email: roleData.email,
+                        role: roleData.role || 'custom',
+                        permissions: roleData.permissions,
+                        active: true,
+                        created_at: new Date().toISOString(),
+                        created_by: 'system'
+                    };
+
+                    // Insert into database (using upsert to handle existing users)
+                    const response = await fetch(`${supabaseUrl}/rest/v1/staff`, {
+                        method: 'POST',
+                        headers: {
+                            'apikey': supabaseKey,
+                            'Authorization': `Bearer ${supabaseKey}`,
+                            'Content-Type': 'application/json',
+                            'Prefer': 'resolution=merge-duplicates'
+                        },
+                        body: JSON.stringify(userData)
+                    });
+
+                    if (response.ok || response.status === 409) {
+                        // Success or conflict (user exists) - try to update instead
+                        if (response.status === 409) {
+                            const updateResponse = await fetch(`${supabaseUrl}/rest/v1/staff?username=eq.${roleData.username}`, {
+                                method: 'PATCH',
+                                headers: {
+                                    'apikey': supabaseKey,
+                                    'Authorization': `Bearer ${supabaseKey}`,
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify({
+                                    password_hash: hashedPassword,
+                                    permissions: roleData.permissions,
+                                    role: roleData.role || 'custom',
+                                    updated_at: new Date().toISOString()
+                                })
+                            });
+                            
+                            if (updateResponse.ok) {
+                                results.push(`✅ Updated: ${roleData.username}`);
+                            } else {
+                                results.push(`⚠️ Partial: ${roleData.username} (update failed)`);
+                            }
+                        } else {
+                            results.push(`✅ Created: ${roleData.username}`);
+                        }
+                    } else {
+                        results.push(`❌ Failed: ${roleData.username} (${response.status})`);
+                    }
+                } catch (error) {
+                    results.push(`❌ Error: ${roleData.username} - ${error.message}`);
+                }
+            }
+
+            const summary = `Functional Role Creation Complete!\n\n${results.join('\n')}\n\nAll accounts are ready for use. Staff can now log in with their functional role credentials.`;
+            showResult(summary, 'success');
+        }
+
+        async function deleteOldAccounts() {
+            showResult('Cleaning up old location-based accounts...', 'info');
+            
+            const oldUsernames = ['birmingham', 'berkley', 'uwm', 'bham-front-desk'];
+            let results = [];
+            
+            const supabaseUrl = 'https://atkfcwdmmwayzyixlpum.supabase.co';
+            const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF0a2Zjd2RtbXdheXp5aXhscHVtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTE2NTIzODYsImV4cCI6MjA2NzIyODM4Nn0.VkFA1SIOLgddP-P_KjFdvDyiNdUSgYfbcP5UvOardKI';
+
+            for (const username of oldUsernames) {
+                try {
+                    const response = await fetch(`${supabaseUrl}/rest/v1/staff?username=eq.${username}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'apikey': supabaseKey,
+                            'Authorization': `Bearer ${supabaseKey}`,
+                            'Content-Type': 'application/json'
+                        }
+                    });
+
+                    if (response.ok) {
+                        results.push(`✅ Deleted: ${username}`);
+                    } else if (response.status === 404) {
+                        results.push(`ℹ️ Not found: ${username}`);
+                    } else {
+                        results.push(`❌ Failed to delete: ${username}`);
+                    }
+                } catch (error) {
+                    results.push(`❌ Error deleting ${username}: ${error.message}`);
+                }
+            }
+
+            const summary = `Cleanup Complete!\n\n${results.join('\n')}\n\nOld location-based accounts have been removed.`;
+            showResult(summary, 'success');
+        }
+
+        function showCredentialsSummary() {
+            const credentials = `
+🏢 FRONT DESK STAFF
+Username: front-desk
+Password: BeWell2024!FrontDesk
+
+☕ CAFÉ STAFF  
+Username: cafe-staff
+Password: BeWell2024!Cafe
+
+⚕️ CLINICAL STAFF
+Username: clinical-staff
+Password: BeWell2024!Clinical
+
+🔧 ADMIN STAFF
+Username: admin-staff
+Password: BeWell2024!Admin
+
+👑 MANAGER
+Username: manager
+Password: BeWell2024!Manager
+
+🎯 MASTER ADMIN (existing)
+Username: admin
+Password: $Be7926570!
+            `;
+            
+            showResult(credentials, 'info');
+        }
+
+        async function hashPassword(password) {
+            const encoder = new TextEncoder();
+            const data = encoder.encode(password);
+            const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+        }
+
+        function showResult(message, type) {
+            const resultDiv = document.getElementById('result');
+            resultDiv.textContent = message;
+            resultDiv.className = `result ${type}`;
+            resultDiv.style.display = 'block';
+        }
+    </script>
+</body>
+</html>
