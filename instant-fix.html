@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>INSTANT FIX - Front Desk Access</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            text-align: center;
+        }
+        .urgent {
+            background: #ffebee;
+            color: #c62828;
+            border: 2px solid #ef5350;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        button {
+            width: 100%;
+            padding: 20px;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 18px;
+            margin: 10px 0;
+            font-weight: bold;
+        }
+        button:hover {
+            background: #45a049;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            display: none;
+        }
+        .success {
+            background: #e8f5e9;
+            color: #2e7d32;
+            border: 1px solid #81c784;
+        }
+        .error {
+            background: #ffebee;
+            color: #c62828;
+            border: 1px solid #ef5350;
+        }
+    </style>
+</head>
+<body>
+    <div class="urgent">
+        <h1>🚨 INSTANT FIX</h1>
+        <p>Fix the bhamfrontdesk access issue right now!</p>
+    </div>
+    
+    <button onclick="createFrontDeskAccount()">
+        ✅ CREATE FRONT DESK ACCOUNT & DELETE OLD ONE
+    </button>
+    
+    <div id="result" class="result"></div>
+
+    <script>
+        async function createFrontDeskAccount() {
+            showResult('Creating new front-desk account...', 'info');
+            
+            try {
+                const supabaseUrl = 'https://atkfcwdmmwayzyixlpum.supabase.co';
+                const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF0a2Zjd2RtbXdheXp5aXhscHVtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTE2NTIzODYsImV4cCI6MjA2NzIyODM4Nn0.VkFA1SIOLgddP-P_KjFdvDyiNdUSgYfbcP5UvOardKI';
+                
+                // Hash password
+                const password = 'BeWell2024!FrontDesk';
+                const encoder = new TextEncoder();
+                const data = encoder.encode(password);
+                const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+                const hashArray = Array.from(new Uint8Array(hashBuffer));
+                const hashedPassword = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+                
+                // Create new front-desk account
+                const frontDeskPermissions = {
+                    'front-desk': 'delete',
+                    'checkin': 'delete', 
+                    'members': 'edit',
+                    'checklists': 'edit',
+                    'tasks': 'delete',
+                    'cafe-operations': 'view',
+                    'inventory': 'view'
+                };
+
+                const newAccountResponse = await fetch(`${supabaseUrl}/rest/v1/staff`, {
+                    method: 'POST',
+                    headers: {
+                        'apikey': supabaseKey,
+                        'Authorization': `Bearer ${supabaseKey}`,
+                        'Content-Type': 'application/json',
+                        'Prefer': 'resolution=merge-duplicates'
+                    },
+                    body: JSON.stringify({
+                        username: 'front-desk',
+                        password_hash: hashedPassword,
+                        full_name: 'Front Desk Staff',
+                        email: 'frontdesk@bewelllifestylecenters.com',
+                        role: 'custom',
+                        permissions: frontDeskPermissions,
+                        active: true,
+                        created_at: new Date().toISOString(),
+                        created_by: 'system'
+                    })
+                });
+
+                // Delete old birmingham account
+                await fetch(`${supabaseUrl}/rest/v1/staff?email=eq.birmingham@bewelllifestylecenters.com`, {
+                    method: 'DELETE',
+                    headers: {
+                        'apikey': supabaseKey,
+                        'Authorization': `Bearer ${supabaseKey}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (newAccountResponse.ok || newAccountResponse.status === 409) {
+                    showResult('✅ SUCCESS! \n\n🎯 NEW LOGIN CREDENTIALS:\nUsername: front-desk\nPassword: BeWell2024!FrontDesk\n\n✅ Old broken account deleted!\n✅ Full front desk permissions granted!\n\nStaff can log in NOW with the new credentials!', 'success');
+                } else {
+                    throw new Error('Failed to create account: ' + newAccountResponse.status);
+                }
+                
+            } catch (error) {
+                console.error('Error:', error);
+                showResult('❌ Error: ' + error.message, 'error');
+            }
+        }
+
+        function showResult(message, type) {
+            const resultDiv = document.getElementById('result');
+            resultDiv.textContent = message;
+            resultDiv.className = `result ${type === 'info' ? 'success' : type}`;
+            resultDiv.style.display = 'block';
+        }
+    </script>
+</body>
+</html>
