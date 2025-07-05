@@ -227,7 +227,6 @@
 
         /* Task Card */
         .task-card {
-            background: var(--card-bg);
             border-radius: 12px;
             box-shadow: var(--shadow);
             padding: 20px;
@@ -242,15 +241,21 @@
         }
 
         .task-card.priority-high {
-            border-left: 4px solid #f44336;
+            background: #dc3545;
+            color: white;
+            border: 3px solid #b02a37;
         }
 
         .task-card.priority-medium {
-            border-left: 4px solid #ff9800;
+            background: #ffc107;
+            color: #000;
+            border: 3px solid #e0a800;
         }
 
         .task-card.priority-low {
-            border-left: 4px solid #4caf50;
+            background: #28a745;
+            color: white;
+            border: 3px solid #1e7e34;
         }
 
         .task-header {
@@ -260,16 +265,38 @@
         .task-due-date {
             font-size: 0.9rem;
             font-weight: 600;
-            color: var(--primary-color);
             margin-bottom: 8px;
+        }
+
+        .task-card.priority-high .task-due-date {
+            color: white;
+        }
+
+        .task-card.priority-medium .task-due-date {
+            color: #000;
+        }
+
+        .task-card.priority-low .task-due-date {
+            color: white;
         }
 
         .task-description {
             font-size: 1.1rem;
             font-weight: 500;
-            color: var(--text-color);
             margin-bottom: 10px;
             line-height: 1.4;
+        }
+
+        .task-card.priority-high .task-description {
+            color: white;
+        }
+
+        .task-card.priority-medium .task-description {
+            color: #000;
+        }
+
+        .task-card.priority-low .task-description {
+            color: white;
         }
 
         .task-meta {
@@ -297,18 +324,23 @@
         }
 
         .status-pending {
-            background: #e3f2fd;
-            color: #1976d2;
+            background: rgba(255,255,255,0.2);
+            color: inherit;
         }
 
         .status-completed {
-            background: #e8f5e9;
-            color: #388e3c;
+            background: rgba(255,255,255,0.2);
+            color: inherit;
         }
 
         .status-overdue {
-            background: #ffebee;
-            color: #c62828;
+            background: rgba(0,0,0,0.3);
+            color: white;
+        }
+
+        .task-card.priority-medium .status-overdue {
+            background: rgba(0,0,0,0.3);
+            color: white;
         }
 
         .task-actions {
@@ -318,9 +350,6 @@
         }
 
         .task-btn {
-            background: rgba(164, 124, 91, 0.1);
-            color: var(--primary-color);
-            border: 1px solid var(--primary-color);
             padding: 6px 12px;
             border-radius: 6px;
             cursor: pointer;
@@ -329,19 +358,59 @@
             display: flex;
             align-items: center;
             gap: 5px;
+            border: none;
         }
 
-        .task-btn:hover {
-            background: var(--primary-color);
+        .task-card.priority-high .task-btn {
+            background: rgba(255,255,255,0.2);
             color: white;
+        }
+
+        .task-card.priority-high .task-btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: scale(1.05);
+        }
+
+        .task-card.priority-medium .task-btn {
+            background: rgba(0,0,0,0.2);
+            color: #000;
+        }
+
+        .task-card.priority-medium .task-btn:hover {
+            background: rgba(0,0,0,0.3);
+            transform: scale(1.05);
+        }
+
+        .task-card.priority-low .task-btn {
+            background: rgba(255,255,255,0.2);
+            color: white;
+        }
+
+        .task-card.priority-low .task-btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: scale(1.05);
         }
 
         .created-by-section {
             font-size: 0.75rem;
-            color: #999;
-            border-top: 1px solid var(--border-color);
             padding-top: 12px;
             margin-top: 12px;
+            border-top: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .task-card.priority-high .created-by-section {
+            color: rgba(255,255,255,0.7);
+            border-top: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .task-card.priority-medium .created-by-section {
+            color: rgba(0,0,0,0.6);
+            border-top: 1px solid rgba(0,0,0,0.2);
+        }
+
+        .task-card.priority-low .created-by-section {
+            color: rgba(255,255,255,0.7);
+            border-top: 1px solid rgba(255,255,255,0.2);
         }
 
         /* Modal */
@@ -491,21 +560,49 @@
         }
 
         /* Overdue Task Card Animation Styles */
-        @keyframes overdueBreathing {
+        @keyframes overdueBreathingHigh {
             0%, 100% { 
                 transform: scale(1);
-                box-shadow: var(--shadow);
+                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
             }
             50% { 
                 transform: scale(1.02);
-                box-shadow: 0 4px 20px rgba(244, 67, 54, 0.3), var(--shadow);
+                box-shadow: 0 8px 25px rgba(220, 53, 69, 0.4), 0 4px 10px rgba(220, 53, 69, 0.3);
             }
         }
 
-        .overdue-breathing {
-            animation: overdueBreathing 2.5s ease-in-out infinite;
-            background: var(--card-bg);
-            border-left: 4px solid #f44336;
+        @keyframes overdueBreathingMedium {
+            0%, 100% { 
+                transform: scale(1);
+                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+            }
+            50% { 
+                transform: scale(1.02);
+                box-shadow: 0 8px 25px rgba(255, 193, 7, 0.4), 0 4px 10px rgba(255, 193, 7, 0.3);
+            }
+        }
+
+        @keyframes overdueBreathingLow {
+            0%, 100% { 
+                transform: scale(1);
+                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+            }
+            50% { 
+                transform: scale(1.02);
+                box-shadow: 0 8px 25px rgba(40, 167, 69, 0.4), 0 4px 10px rgba(40, 167, 69, 0.3);
+            }
+        }
+
+        .overdue-breathing.priority-high {
+            animation: overdueBreathingHigh 2.5s ease-in-out infinite;
+        }
+
+        .overdue-breathing.priority-medium {
+            animation: overdueBreathingMedium 2.5s ease-in-out infinite;
+        }
+
+        .overdue-breathing.priority-low {
+            animation: overdueBreathingLow 2.5s ease-in-out infinite;
         }
 
         .notification-toast {
@@ -1011,7 +1108,7 @@
                 const isOverdue = task.due_date && new Date(task.due_date) < new Date() && !task.completed;
                 const priorityClass = `priority-${task.priority}`;
                 const isActiveOverdue = isOverdue && !snoozedTasks[task.id] && activeOverdueTaskId === task.id;
-                const animationClasses = isActiveOverdue ? 'overdue-breathing' : '';
+                const animationClasses = isActiveOverdue ? `overdue-breathing ${priorityClass}` : '';
                 
                 return `
                     <div class="task-card ${priorityClass} ${animationClasses}">
