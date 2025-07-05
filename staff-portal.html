@@ -4,495 +4,348 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Staff Portal - Be Well LifeStyle Centers</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <script src="permissions-config.js"></script>
-    <script src="auth-system.js"></script>
     <style>
-        :root {
-            --primary-color: #A47C5B;
-            --secondary-color: #1a5963;
-            --bg-color: #f5f5f5;
-            --card-bg: #ffffff;
-            --text-color: #333333;
-            --border-color: #e0e0e0;
-            --shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: var(--bg-color);
-            color: var(--text-color);
-            min-height: 100vh;
-        }
-
-        .header {
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            color: white;
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
             padding: 20px;
+            background: #f5f5f5;
+        }
+        
+        h1 {
+            color: #A47C5B;
+            text-align: center;
+        }
+        
+        .form-container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .field {
+            margin-bottom: 20px;
+        }
+        
+        .field label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .field input[type="text"],
+        .field select {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            background: white;
+        }
+        
+        .field input[type="text"]:focus,
+        .field select:focus {
+            outline: none;
+            border-color: #A47C5B;
+        }
+        
+        button {
+            width: 100%;
+            padding: 15px;
+            background: #A47C5B;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 18px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        
+        button:hover {
+            background: #8a6a4a;
+        }
+        
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            background: #e8f5e9;
+            border-radius: 5px;
+            display: none;
+        }
+        
+        .current-staff {
+            margin-top: 30px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .staff-item {
+            padding: 10px;
+            border-bottom: 1px solid #eee;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
-
-        .header h1 {
-            font-size: 1.8rem;
+        
+        .staff-item:last-child {
+            border-bottom: none;
         }
-
-        .logout-btn {
-            background: rgba(255,255,255,0.2);
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 600;
-        }
-
-        .logout-btn:hover {
-            background: rgba(255,255,255,0.3);
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 30px 20px;
-        }
-
-        .tabs {
-            display: flex;
-            background: white;
-            border-radius: 8px;
-            box-shadow: var(--shadow);
-            margin-bottom: 30px;
-            overflow: hidden;
-        }
-
-        .tab-btn {
+        
+        .staff-info {
             flex: 1;
-            padding: 15px 20px;
-            background: #f8f9fa;
-            border: none;
-            cursor: pointer;
-            font-size: 1rem;
-            font-weight: 600;
-            color: #666;
-            transition: all 0.3s ease;
         }
-
-        .tab-btn.active {
-            background: var(--primary-color);
-            color: white;
-        }
-
-        .tab-btn:hover:not(.active) {
-            background: #e9ecef;
-        }
-
-        .tab-content {
-            display: none;
-        }
-
-        .tab-content.active {
-            display: block;
-        }
-
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
-        }
-
-        .card {
-            background: white;
-            border-radius: 8px;
-            padding: 24px;
-            box-shadow: var(--shadow);
-            text-align: center;
-            transition: transform 0.3s ease;
-        }
-
-        .card:hover {
-            transform: translateY(-2px);
-        }
-
-        .card h3 {
-            color: var(--primary-color);
-            margin-bottom: 12px;
-            font-size: 1.2rem;
-        }
-
-        .card p {
-            color: #666;
-            margin-bottom: 20px;
-            line-height: 1.5;
-        }
-
-        .card-btn {
-            background: var(--primary-color);
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 600;
-            text-decoration: none;
-            display: inline-block;
-            transition: all 0.3s ease;
-        }
-
-        .card-btn:hover {
-            background: #8a6a4a;
-            transform: translateY(-1px);
-        }
-
-        .staff-form {
-            background: white;
-            border-radius: 8px;
-            padding: 24px;
-            box-shadow: var(--shadow);
-            margin-bottom: 30px;
-        }
-
-        .form-row {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: var(--text-color);
-        }
-
-        .form-group input,
-        .form-group select {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            font-size: 1rem;
-            background: white;
-            color: var(--text-color);
-            pointer-events: auto;
-        }
-
-        .form-group input:focus,
-        .form-group select:focus {
-            outline: none;
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 2px rgba(164, 124, 91, 0.2);
-        }
-
-        .staff-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-        }
-
-        .staff-card {
-            background: white;
-            border-radius: 8px;
-            padding: 20px;
-            box-shadow: var(--shadow);
-        }
-
-        .staff-card h4 {
-            color: var(--primary-color);
-            margin-bottom: 10px;
-        }
-
-        .staff-card p {
-            margin: 5px 0;
-            font-size: 0.9rem;
-        }
-
+        
         .staff-actions {
-            margin-top: 15px;
             display: flex;
             gap: 10px;
         }
-
+        
         .btn-small {
-            padding: 6px 12px;
-            font-size: 0.85rem;
+            padding: 5px 10px;
             border: none;
-            border-radius: 4px;
+            border-radius: 3px;
             cursor: pointer;
-            font-weight: 600;
+            font-size: 14px;
         }
-
+        
         .btn-activate {
-            background: #28a745;
+            background: #4CAF50;
             color: white;
         }
-
+        
         .btn-deactivate {
-            background: #dc3545;
+            background: #ff9800;
             color: white;
         }
-
-        .hidden {
-            display: none !important;
+        
+        .btn-delete {
+            background: #f44336;
+            color: white;
+        }
+        
+        .btn-edit {
+            background: #2196F3;
+            color: white;
+        }
+        
+        .btn-archive {
+            background: #9E9E9E;
+            color: white;
+        }
+        
+        .inactive {
+            opacity: 0.6;
+            font-style: italic;
+        }
+        
+        .management-note {
+            background: #fff3cd;
+            color: #856404;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+        
+        .archived {
+            background: #f5f5f5;
+            opacity: 0.7;
+        }
+        
+        .edit-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+        }
+        
+        .edit-modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 500px;
+        }
+        
+        .edit-modal h3 {
+            margin-bottom: 20px;
+            color: #A47C5B;
+        }
+        
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        .back-link {
+            text-align: center;
+            margin-top: 20px;
+        }
+        
+        .back-link a {
+            color: #A47C5B;
+            text-decoration: none;
         }
     </style>
 </head>
 <body>
-    <div class="header">
-        <h1><i class="fas fa-users"></i> Staff Portal</h1>
-        <button class="logout-btn" onclick="logout()">
-            <i class="fas fa-sign-out-alt"></i> Logout
-        </button>
-    </div>
-
-    <div class="container">
-        <!-- Tab Navigation -->
-        <div class="tabs">
-            <button class="tab-btn active" onclick="showTab('operations')">
-                <i class="fas fa-tools"></i> Operations
-            </button>
-            <button class="tab-btn" onclick="showTab('members')">
-                <i class="fas fa-users"></i> Members
-            </button>
-            <button class="tab-btn hidden" id="admin-tab" onclick="showTab('admin')">
-                <i class="fas fa-cogs"></i> Admin
-            </button>
+    <h1>Add New Staff Member</h1>
+    
+    <div class="form-container">
+        <div class="field">
+            <label>Full Name</label>
+            <input type="text" id="fullname" placeholder="John Smith">
         </div>
-
-        <!-- Operations Tab -->
-        <div id="operations" class="tab-content active">
-            <div class="grid">
-                <div class="card">
-                    <h3><i class="fas fa-coffee"></i> Café Operations</h3>
-                    <p>Daily café procedures and recipes</p>
-                    <a href="cafe-operations-portal.html" class="card-btn" target="_blank">Open Portal</a>
-                </div>
-                
-                <div class="card">
-                    <h3><i class="fas fa-boxes"></i> Inventory</h3>
-                    <p>Order supplies and manage inventory</p>
-                    <a href="simple-inventory.html" class="card-btn" target="_blank">Open Inventory</a>
-                </div>
-                
-                <div class="card">
-                    <h3><i class="fas fa-tasks"></i> Checklists</h3>
-                    <p>Daily procedures and checklists</p>
-                    <a href="checklist-hub.html" class="card-btn">Open Checklists</a>
-                </div>
-                
-                <div class="card">
-                    <h3><i class="fas fa-desktop"></i> Front Desk</h3>
-                    <p>Patient check-in management</p>
-                    <a href="front-desk-dashboard.html" class="card-btn" target="_blank">Open Dashboard</a>
-                </div>
-                
-                <div class="card">
-                    <h3><i class="fas fa-clipboard-check"></i> Check-In Kiosk</h3>
-                    <p>Patient self check-in for iPad</p>
-                    <a href="patient-checkin.html" class="card-btn" target="_blank">Open Kiosk</a>
-                </div>
-                
-                <div class="card">
-                    <h3><i class="fas fa-tasks"></i> Task Management</h3>
-                    <p>Team tasks and assignments</p>
-                    <a href="task-management-v2.html" class="card-btn">Open Tasks</a>
-                </div>
-            </div>
-        </div>
-
-        <!-- Members Tab -->
-        <div id="members" class="tab-content">
-            <div class="grid">
-                <div class="card">
-                    <h3><i class="fas fa-user-check"></i> Member Portal</h3>
-                    <p>View member accounts and credits</p>
-                    <a href="member-portal.html" class="card-btn" target="_blank">Open Portal</a>
-                </div>
-                
-                <div class="card">
-                    <h3><i class="fas fa-chart-bar"></i> Reports</h3>
-                    <p>Member analytics and reports</p>
-                    <a href="admin-dashboard.html" class="card-btn" target="_blank">View Reports</a>
-                </div>
-                
-                <div class="card">
-                    <h3><i class="fas fa-credit-card"></i> Membership Sales</h3>
-                    <p>Help customers purchase memberships</p>
-                    <a href="membership-purchase.html" class="card-btn" target="_blank">Sales Portal</a>
-                </div>
-            </div>
-        </div>
-
-        <!-- Admin Tab (Management Only) -->
-        <div id="admin" class="tab-content">
-            <div class="staff-form">
-                <h3><i class="fas fa-user-plus"></i> Add New Staff Member</h3>
-                <div id="add-staff-form">
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="staff-name">Full Name</label>
-                            <input type="text" id="staff-name" name="staffname" placeholder="Enter full name" autocomplete="new-password" data-lpignore="true" data-form-type="">
-                        </div>
-                        <div class="form-group">
-                            <label for="staff-username">Username</label>
-                            <input type="text" id="staff-username" name="staffusername" placeholder="Enter username" autocomplete="new-password" data-lpignore="true" data-form-type="">
-                        </div>
-                        <div class="form-group">
-                            <label for="staff-email">Email</label>
-                            <input type="text" id="staff-email" name="staffemail" placeholder="Enter email address" autocomplete="new-password" data-lpignore="true" data-form-type="">
-                        </div>
-                        <div class="form-group">
-                            <label for="staff-role">Role</label>
-                            <select id="staff-role" name="staffrole" data-lpignore="true">
-                                <option value="">Select Role</option>
-                                <option value="staff">Staff</option>
-                                <option value="admin">Admin</option>
-                                <option value="management">Management</option>
-                            </select>
-                        </div>
-                    </div>
-                    <button type="button" class="card-btn" onclick="addStaffMember()">
-                        <i class="fas fa-user-plus"></i> Add Staff Member
-                    </button>
-                </div>
-            </div>
-
-            <div class="staff-form">
-                <h3><i class="fas fa-users"></i> Current Staff Members</h3>
-                <div id="staff-list" class="staff-list">
-                    <!-- Staff cards will be loaded here -->
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        // Initialize
-        document.addEventListener('DOMContentLoaded', function() {
-            // Check authentication
-            if (!requireAuth('staff-portal')) {
-                return;
-            }
-            
-            // Get current user and setup interface
-            const currentUser = getCurrentUser();
-            if (currentUser) {
-                setupInterface(currentUser);
-            }
-        });
-
-        // Setup interface based on user role
-        function setupInterface(user) {
-            // Show admin tab for management users
-            if (user.role === 'management') {
-                document.getElementById('admin-tab').classList.remove('hidden');
-                setupStaffManagement();
-            }
-        }
-
-        // Tab switching
-        function showTab(tabName) {
-            // Hide all tabs
-            document.querySelectorAll('.tab-content').forEach(tab => {
-                tab.classList.remove('active');
-            });
-            document.querySelectorAll('.tab-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            
-            // Show selected tab
-            document.getElementById(tabName).classList.add('active');
-            event.target.classList.add('active');
-            
-            // Load staff list if admin tab
-            if (tabName === 'admin') {
-                loadStaffList();
-            }
-        }
-
-        // Staff management setup
-        function setupStaffManagement() {
-            // Clear any bad localStorage data first
-            cleanupLocalStorage();
-            console.log('Staff management setup complete');
-        }
         
-        // Clean up localStorage
-        function cleanupLocalStorage() {
-            try {
-                const currentData = localStorage.getItem('created_users');
-                if (currentData) {
-                    const parsed = JSON.parse(currentData);
-                    const cleaned = parsed.filter(staff => 
-                        staff && 
-                        typeof staff === 'object' &&
-                        staff.username && 
-                        staff.full_name && 
-                        staff.full_name !== 'undefined' &&
-                        staff.email &&
-                        staff.role &&
-                        staff.username.trim() !== '' &&
-                        staff.full_name.trim() !== '' &&
-                        staff.email.trim() !== ''
-                    );
-                    localStorage.setItem('created_users', JSON.stringify(cleaned));
-                    console.log('Cleaned localStorage:', cleaned);
-                }
-            } catch (error) {
-                console.error('Error cleaning localStorage:', error);
-                localStorage.setItem('created_users', '[]');
+        <div class="field">
+            <label>Username</label>
+            <input type="text" id="username" placeholder="jsmith">
+        </div>
+        
+        <div class="field">
+            <label>Email</label>
+            <input type="text" id="email" placeholder="jsmith@bewelllifestylecenters.com">
+        </div>
+        
+        <div class="field">
+            <label>Role</label>
+            <select id="role">
+                <option value="">Select Role</option>
+                <option value="staff">Staff</option>
+                <option value="admin">Admin</option>
+                <option value="management">Management</option>
+            </select>
+        </div>
+        
+        <div class="field">
+            <label>Password (leave blank for auto-generated)</label>
+            <input type="text" id="password" placeholder="Enter password or leave blank">
+        </div>
+        
+        <button onclick="addStaff()">Add Staff Member</button>
+        
+        <div id="result" class="result"></div>
+    </div>
+    
+    <div class="current-staff">
+        <h2>Current Staff</h2>
+        <div class="management-note" id="management-note" style="display: none;">
+            <strong>Management Mode:</strong> You can activate, deactivate, or delete staff members.
+        </div>
+        <div id="staff-list"></div>
+    </div>
+    
+    <div class="back-link">
+        <a href="staff-portal-clean.html">← Back to Staff Portal</a>
+    </div>
+    
+    <!-- Edit Modal -->
+    <div id="edit-modal" class="edit-modal">
+        <div class="edit-modal-content">
+            <h3>Edit Staff Member</h3>
+            
+            <div class="field">
+                <label>Full Name</label>
+                <input type="text" id="edit-fullname" placeholder="John Smith">
+            </div>
+            
+            <div class="field">
+                <label>Username</label>
+                <input type="text" id="edit-username" placeholder="jsmith">
+            </div>
+            
+            <div class="field">
+                <label>Email</label>
+                <input type="text" id="edit-email" placeholder="jsmith@bewelllifestylecenters.com">
+            </div>
+            
+            <div class="field">
+                <label>Role</label>
+                <select id="edit-role">
+                    <option value="">Select Role</option>
+                    <option value="staff">Staff</option>
+                    <option value="admin">Admin</option>
+                    <option value="management">Management</option>
+                </select>
+            </div>
+            
+            <div class="field">
+                <label>New Password (leave blank to keep current)</label>
+                <input type="text" id="edit-password" placeholder="Enter new password or leave blank">
+            </div>
+            
+            <div class="modal-buttons">
+                <button onclick="saveEdit()" style="background: #A47C5B; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">Save Changes</button>
+                <button class="btn-secondary" onclick="closeEditModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Load staff list on page load
+        window.onload = function() {
+            loadStaff();
+        };
+        
+        function addStaff() {
+            // Get values
+            const fullname = document.getElementById('fullname').value.trim();
+            const username = document.getElementById('username').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const role = document.getElementById('role').value;
+            
+            // Validate
+            if (!fullname) {
+                alert('Please enter full name');
+                return;
             }
-        }
-
-        // Add staff member
-        function addStaffMember() {
-            console.log('Add staff member function called');
-            
-            const nameElement = document.getElementById('staff-name');
-            const usernameElement = document.getElementById('staff-username');
-            const emailElement = document.getElementById('staff-email');
-            const roleElement = document.getElementById('staff-role');
-            
-            console.log('Form elements:', { nameElement, usernameElement, emailElement, roleElement });
-            
-            const name = nameElement ? nameElement.value.trim() : '';
-            const username = usernameElement ? usernameElement.value.trim() : '';
-            const email = emailElement ? emailElement.value.trim() : '';
-            const role = roleElement ? roleElement.value : '';
-            
-            console.log('Form values:', { name, username, email, role });
-            
-            // Validation
-            if (!name || !username || !email || !role) {
-                alert('❌ Please fill in all fields.');
-                console.log('Validation failed - missing fields');
+            if (!username) {
+                alert('Please enter username');
+                return;
+            }
+            if (!email) {
+                alert('Please enter email');
+                return;
+            }
+            if (!role) {
+                alert('Please select role');
                 return;
             }
             
-            // Check if username already exists
-            const localStaff = JSON.parse(localStorage.getItem('created_users') || '[]');
-            const demoAccounts = ['admin', 'staff'];
-            
-            if (demoAccounts.includes(username) || localStaff.some(s => s.username === username)) {
-                alert('❌ Username already exists. Please choose a different username.');
-                return;
+            // Get password or generate one
+            let password = document.getElementById('password').value.trim();
+            if (!password) {
+                password = 'BeWell2024!' + Math.random().toString(36).substring(2, 8).toUpperCase();
             }
             
-            // Generate secure password
-            const password = 'BeWell2024!' + Math.random().toString(36).substring(2, 8).toUpperCase();
-            
+            // Create staff object
             const newStaff = {
                 id: 'staff-' + Date.now(),
                 username: username,
-                full_name: name,
+                full_name: fullname,
                 email: email,
                 role: role,
                 password: password,
@@ -500,110 +353,224 @@
                 created: new Date().toISOString()
             };
             
-            // Store locally
-            localStaff.push(newStaff);
-            localStorage.setItem('created_users', JSON.stringify(localStaff));
+            // Get existing staff
+            const existing = JSON.parse(localStorage.getItem('created_users') || '[]');
             
-            alert(`✅ Staff member added successfully!\n\nUsername: ${username}\nPassword: ${password}\n\nThese credentials have been saved. Share them securely with the new staff member.`);
+            // Check if username exists
+            if (existing.some(s => s.username === username)) {
+                alert('Username already exists!');
+                return;
+            }
             
-            // Reset form and reload list
-            document.getElementById('add-staff-form').reset();
-            loadStaffList();
+            // Add new staff
+            existing.push(newStaff);
+            localStorage.setItem('created_users', JSON.stringify(existing));
+            
+            // Show result
+            const resultDiv = document.getElementById('result');
+            resultDiv.style.display = 'block';
+            resultDiv.innerHTML = `
+                <strong>✅ Staff member created!</strong><br><br>
+                <strong>Username:</strong> ${username}<br>
+                <strong>Password:</strong> ${password}<br><br>
+                <em>Please save these credentials securely.</em>
+            `;
+            
+            // Clear form
+            document.getElementById('fullname').value = '';
+            document.getElementById('username').value = '';
+            document.getElementById('email').value = '';
+            document.getElementById('role').value = '';
+            document.getElementById('password').value = '';
+            
+            // Reload list
+            loadStaff();
         }
-
-        // Load staff list
-        function loadStaffList() {
-            const demoStaff = [
+        
+        function loadStaff() {
+            const staffList = document.getElementById('staff-list');
+            const users = JSON.parse(localStorage.getItem('created_users') || '[]');
+            
+            // Check if current user is management (for demo, we'll check localStorage)
+            const currentUser = JSON.parse(localStorage.getItem('bewell_current_user') || '{}');
+            const isManagement = currentUser.role === 'management' || window.location.search.includes('management=true');
+            
+            // Show/hide management note
+            document.getElementById('management-note').style.display = isManagement ? 'block' : 'none';
+            
+            // Default staff
+            const allStaff = [
                 {
-                    id: 'demo-admin-001',
+                    id: 'master-admin',
                     username: 'admin',
-                    full_name: 'System Administrator',
+                    full_name: 'Master Administrator',
                     email: 'admin@bewelllifestylecenters.com',
                     role: 'management',
-                    active: true
+                    active: true,
+                    isDemo: true
                 },
                 {
-                    id: 'demo-staff-001',
+                    id: 'demo-staff',
                     username: 'staff',
-                    full_name: 'General Staff Member',
+                    full_name: 'General Staff',
                     email: 'staff@bewelllifestylecenters.com',
                     role: 'staff',
-                    active: true
-                }
+                    active: true,
+                    isDemo: true
+                },
+                ...users.filter(u => u.username && u.full_name && u.full_name !== 'undefined')
             ];
             
-            // Clean up localStorage - remove any entries with undefined or invalid data
-            let localStaff = JSON.parse(localStorage.getItem('created_users') || '[]');
-            localStaff = localStaff.filter(staff => 
-                staff && 
-                staff.username && 
-                staff.full_name && 
-                staff.full_name !== 'undefined' &&
-                staff.email &&
-                staff.role
-            );
-            
-            // Save cleaned data back to localStorage
-            localStorage.setItem('created_users', JSON.stringify(localStaff));
-            
-            const allStaff = [...demoStaff, ...localStaff];
-            
-            const staffList = document.getElementById('staff-list');
-            staffList.innerHTML = '';
-            
-            allStaff.forEach(staff => {
-                // Skip staff with undefined or missing critical fields
-                if (!staff.username || !staff.full_name || staff.full_name === 'undefined') {
-                    return;
-                }
-                
-                const card = document.createElement('div');
-                card.className = 'staff-card';
-                
-                const isDemo = staff.id.startsWith('demo-');
-                
-                card.innerHTML = `
-                    <h4>${staff.full_name || 'Unnamed Staff'}</h4>
-                    <p><strong>Username:</strong> ${staff.username || 'N/A'}</p>
-                    <p><strong>Email:</strong> ${staff.email || 'N/A'}</p>
-                    <p><strong>Role:</strong> ${(staff.role || 'staff').toUpperCase()}</p>
-                    <p><strong>Status:</strong> <span style="color: ${staff.active ? '#28a745' : '#dc3545'};">${staff.active ? 'Active' : 'Inactive'}</span></p>
-                    <div class="staff-actions">
-                        ${!isDemo ? `
-                            <button class="btn-small ${staff.active ? 'btn-deactivate' : 'btn-activate'}" 
-                                    onclick="toggleStaffStatus('${staff.id}', ${!staff.active})">
-                                ${staff.active ? 'Deactivate' : 'Activate'}
-                            </button>
-                        ` : '<small style="color: #666;">Demo Account</small>'}
+            staffList.innerHTML = allStaff.map(s => `
+                <div class="staff-item ${s.active === false ? 'inactive' : ''} ${s.archived ? 'archived' : ''}">
+                    <div class="staff-info">
+                        <strong>${s.full_name}</strong> - ${s.username} (${s.role})
+                        ${s.active === false ? ' - INACTIVE' : ''}
+                        ${s.archived ? ' - ARCHIVED' : ''}
                     </div>
-                `;
-                
-                staffList.appendChild(card);
-            });
+                    ${isManagement && !s.isDemo ? `
+                        <div class="staff-actions">
+                            <button class="btn-small btn-edit" onclick="editStaff('${s.id}')">Edit</button>
+                            ${s.active !== false ? `
+                                <button class="btn-small btn-deactivate" onclick="toggleStaff('${s.id}', false)">Deactivate</button>
+                            ` : `
+                                <button class="btn-small btn-activate" onclick="toggleStaff('${s.id}', true)">Activate</button>
+                            `}
+                            ${!s.archived ? `
+                                <button class="btn-small btn-archive" onclick="archiveStaff('${s.id}', '${s.username}')">Archive</button>
+                            ` : `
+                                <button class="btn-small btn-activate" onclick="unarchiveStaff('${s.id}', '${s.username}')">Unarchive</button>
+                            `}
+                            <button class="btn-small btn-delete" onclick="deleteStaff('${s.id}', '${s.username}')">Delete</button>
+                        </div>
+                    ` : ''}
+                </div>
+            `).join('');
         }
-
-        // Toggle staff status
-        function toggleStaffStatus(staffId, newStatus) {
-            const localStaff = JSON.parse(localStorage.getItem('created_users') || '[]');
-            const staffIndex = localStaff.findIndex(s => s.id === staffId);
+        
+        function toggleStaff(staffId, activate) {
+            const users = JSON.parse(localStorage.getItem('created_users') || '[]');
+            const userIndex = users.findIndex(u => u.id === staffId);
             
-            if (staffIndex !== -1) {
-                localStaff[staffIndex].active = newStatus;
-                localStorage.setItem('created_users', JSON.stringify(localStaff));
-                
-                loadStaffList();
-                alert(`Staff member ${newStatus ? 'activated' : 'deactivated'} successfully!`);
+            if (userIndex !== -1) {
+                users[userIndex].active = activate;
+                localStorage.setItem('created_users', JSON.stringify(users));
+                loadStaff();
+                alert(`Staff member ${activate ? 'activated' : 'deactivated'} successfully!`);
             }
         }
-
-        // Logout
-        function logout() {
-            if (confirm('Are you sure you want to logout?')) {
-                if (window.authSystem) {
-                    window.authSystem.logout();
-                } else {
-                    window.location.href = 'staff-auth.html';
+        
+        function deleteStaff(staffId, username) {
+            if (confirm(`Are you sure you want to DELETE ${username}? This cannot be undone.`)) {
+                let users = JSON.parse(localStorage.getItem('created_users') || '[]');
+                users = users.filter(u => u.id !== staffId);
+                localStorage.setItem('created_users', JSON.stringify(users));
+                loadStaff();
+                alert('Staff member deleted successfully!');
+            }
+        }
+        
+        let currentEditId = null;
+        
+        function editStaff(staffId) {
+            const users = JSON.parse(localStorage.getItem('created_users') || '[]');
+            const user = users.find(u => u.id === staffId);
+            
+            if (!user) {
+                alert('Staff member not found!');
+                return;
+            }
+            
+            currentEditId = staffId;
+            
+            // Populate modal fields
+            document.getElementById('edit-fullname').value = user.full_name || '';
+            document.getElementById('edit-username').value = user.username || '';
+            document.getElementById('edit-email').value = user.email || '';
+            document.getElementById('edit-role').value = user.role || '';
+            document.getElementById('edit-password').value = '';
+            
+            // Show modal
+            document.getElementById('edit-modal').style.display = 'block';
+        }
+        
+        function closeEditModal() {
+            document.getElementById('edit-modal').style.display = 'none';
+            currentEditId = null;
+        }
+        
+        function saveEdit() {
+            if (!currentEditId) return;
+            
+            const fullname = document.getElementById('edit-fullname').value.trim();
+            const username = document.getElementById('edit-username').value.trim();
+            const email = document.getElementById('edit-email').value.trim();
+            const role = document.getElementById('edit-role').value;
+            const newPassword = document.getElementById('edit-password').value.trim();
+            
+            if (!fullname || !username || !email || !role) {
+                alert('Please fill in all required fields');
+                return;
+            }
+            
+            let users = JSON.parse(localStorage.getItem('created_users') || '[]');
+            const userIndex = users.findIndex(u => u.id === currentEditId);
+            
+            if (userIndex === -1) {
+                alert('Staff member not found!');
+                return;
+            }
+            
+            // Check if username is taken by another user
+            const existingUser = users.find(u => u.username === username && u.id !== currentEditId);
+            if (existingUser) {
+                alert('Username already exists!');
+                return;
+            }
+            
+            // Update user
+            users[userIndex].full_name = fullname;
+            users[userIndex].username = username;
+            users[userIndex].email = email;
+            users[userIndex].role = role;
+            users[userIndex].updated = new Date().toISOString();
+            
+            // Update password if provided
+            if (newPassword) {
+                users[userIndex].password = newPassword;
+            }
+            
+            localStorage.setItem('created_users', JSON.stringify(users));
+            closeEditModal();
+            loadStaff();
+            alert('Staff member updated successfully!');
+        }
+        
+        function archiveStaff(staffId, username) {
+            if (confirm(`Archive ${username}? They will be hidden but not deleted.`)) {
+                const users = JSON.parse(localStorage.getItem('created_users') || '[]');
+                const userIndex = users.findIndex(u => u.id === staffId);
+                
+                if (userIndex !== -1) {
+                    users[userIndex].archived = true;
+                    users[userIndex].active = false; // Also deactivate when archiving
+                    localStorage.setItem('created_users', JSON.stringify(users));
+                    loadStaff();
+                    alert('Staff member archived successfully!');
                 }
+            }
+        }
+        
+        function unarchiveStaff(staffId, username) {
+            const users = JSON.parse(localStorage.getItem('created_users') || '[]');
+            const userIndex = users.findIndex(u => u.id === staffId);
+            
+            if (userIndex !== -1) {
+                users[userIndex].archived = false;
+                users[userIndex].active = true; // Activate when unarchiving
+                localStorage.setItem('created_users', JSON.stringify(users));
+                loadStaff();
+                alert(`${username} unarchived and activated!`);
             }
         }
     </script>
