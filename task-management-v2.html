@@ -490,6 +490,39 @@
             100% { transform: scale(1); }
         }
 
+        /* Overdue Task Card Animation Styles */
+        @keyframes overdueFlash {
+            0%, 100% { 
+                background: var(--card-bg); 
+                border-color: transparent;
+                box-shadow: var(--shadow);
+            }
+            50% { 
+                background: rgba(244, 67, 54, 0.05); 
+                border-color: rgba(244, 67, 54, 0.3);
+                box-shadow: 0 0 15px rgba(244, 67, 54, 0.2);
+            }
+        }
+
+        @keyframes overdueBorderGlow {
+            0%, 100% { 
+                border-color: transparent;
+                box-shadow: var(--shadow);
+            }
+            50% { 
+                border-color: rgba(244, 67, 54, 0.4);
+                box-shadow: 0 0 20px rgba(244, 67, 54, 0.3), var(--shadow);
+            }
+        }
+
+        .overdue-flashing {
+            animation: overdueFlash 3s ease-in-out infinite;
+        }
+
+        .overdue-border-glow {
+            animation: overdueBorderGlow 2s ease-in-out infinite;
+        }
+
         .notification-toast {
             position: fixed;
             top: 20px;
@@ -828,6 +861,7 @@
         let continuousFlashInterval = null;
         let continuousSoundInterval = null;
         let activeNotificationTaskId = null;
+        let activeOverdueTaskId = null;
         
         // Audio context for notification sounds
         let audioContext = null;
@@ -991,9 +1025,11 @@
             const tasksHTML = filteredTasks.map(task => {
                 const isOverdue = task.due_date && new Date(task.due_date) < new Date() && !task.completed;
                 const priorityClass = `priority-${task.priority}`;
+                const isActiveOverdue = isOverdue && !snoozedTasks[task.id] && activeOverdueTaskId === task.id;
+                const animationClasses = isActiveOverdue ? 'overdue-flashing overdue-border-glow' : '';
                 
                 return `
-                    <div class="task-card ${priorityClass}">
+                    <div class="task-card ${priorityClass} ${animationClasses}">
                         <div class="task-header">
                             ${task.due_date ? `
                                 <div class="task-due-date">
@@ -1404,6 +1440,9 @@
             const now = new Date();
             console.log('Checking overdue tasks at:', now.toLocaleString());
             
+            let mostOverdueTask = null;
+            let mostOverdueTime = 0;
+            
             tasks.forEach(task => {
                 if (!task.completed && task.due_date && !snoozedTasks[task.id]) {
                     const dueDate = new Date(task.due_date);
@@ -1411,6 +1450,13 @@
                     // Check if overdue
                     if (dueDate < now) {
                         console.log('Task overdue:', task.description, 'Due:', dueDate.toLocaleString());
+                        
+                        // Track the most overdue task for flashing
+                        const overdueTime = now.getTime() - dueDate.getTime();
+                        if (!mostOverdueTask || overdueTime > mostOverdueTime) {
+                            mostOverdueTask = task;
+                            mostOverdueTime = overdueTime;
+                        }
                         
                         // Check if we haven't notified for this task yet
                         const notifiedKey = `notified_${task.id}`;
@@ -1423,6 +1469,15 @@
                     }
                 }
             });
+            
+            // Set the active overdue task for flashing (the most overdue one)
+            const previousActiveOverdueTaskId = activeOverdueTaskId;
+            activeOverdueTaskId = mostOverdueTask ? mostOverdueTask.id : null;
+            
+            // Re-render tasks if the active overdue task changed
+            if (previousActiveOverdueTaskId !== activeOverdueTaskId) {
+                renderTasks();
+            }
         }
 
         // Start task notification
