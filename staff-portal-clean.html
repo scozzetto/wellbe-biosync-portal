@@ -364,6 +364,9 @@
 
             <div class="staff-form">
                 <h3><i class="fas fa-users"></i> Current Staff Members</h3>
+                <button class="btn-small" onclick="clearBadData()" style="background: #6c757d; color: white; margin-bottom: 15px;">
+                    <i class="fas fa-broom"></i> Clean Up Bad Entries
+                </button>
                 <div id="staff-list" class="staff-list">
                     <!-- Staff cards will be loaded here -->
                 </div>
@@ -374,6 +377,9 @@
     <script>
         // Initialize
         document.addEventListener('DOMContentLoaded', function() {
+            // Clean up bad data first
+            cleanupBadData();
+            
             // Check authentication
             if (!requireAuth('staff-portal')) {
                 return;
@@ -385,6 +391,25 @@
                 setupInterface(currentUser);
             }
         });
+        
+        // Clean up bad localStorage data
+        function cleanupBadData() {
+            try {
+                const users = JSON.parse(localStorage.getItem('created_users') || '[]');
+                const cleaned = users.filter(user => 
+                    user && 
+                    user.username && 
+                    user.username.trim() !== '' &&
+                    user.full_name && 
+                    user.full_name !== 'undefined' &&
+                    user.email &&
+                    user.role
+                );
+                localStorage.setItem('created_users', JSON.stringify(cleaned));
+            } catch (e) {
+                localStorage.setItem('created_users', '[]');
+            }
+        }
 
         // Setup interface based on user role
         function setupInterface(user) {
@@ -417,10 +442,22 @@
 
         // Create staff member
         function createStaff() {
-            const name = document.getElementById('new-name').value.trim();
-            const username = document.getElementById('new-username').value.trim();
-            const email = document.getElementById('new-email').value.trim();
-            const role = document.getElementById('new-role').value;
+            console.log('Create staff called');
+            
+            const nameInput = document.getElementById('new-name');
+            const usernameInput = document.getElementById('new-username');
+            const emailInput = document.getElementById('new-email');
+            const roleInput = document.getElementById('new-role');
+            
+            if (!nameInput || !usernameInput || !emailInput || !roleInput) {
+                alert('Error: Form inputs not found. Please refresh the page.');
+                return;
+            }
+            
+            const name = nameInput.value.trim();
+            const username = usernameInput.value.trim();
+            const email = emailInput.value.trim();
+            const role = roleInput.value;
             
             // Simple validation
             if (!name) {
@@ -512,22 +549,27 @@
             container.innerHTML = '';
             
             staff.forEach(person => {
+                // Skip invalid entries
+                if (!person.username || !person.full_name || person.full_name === 'undefined') {
+                    return;
+                }
+                
                 const card = document.createElement('div');
                 card.className = 'staff-card';
                 
-                const isDemo = person.id.startsWith('demo-');
+                const isDemo = person.id && person.id.startsWith('demo-');
                 
                 card.innerHTML = `
-                    <h4>${person.full_name}</h4>
-                    <p><strong>Username:</strong> ${person.username}</p>
-                    <p><strong>Email:</strong> ${person.email}</p>
-                    <p><strong>Role:</strong> ${person.role.toUpperCase()}</p>
-                    <p><strong>Status:</strong> <span style="color: ${person.active ? '#28a745' : '#dc3545'};">${person.active ? 'Active' : 'Inactive'}</span></p>
+                    <h4>${person.full_name || 'Unknown'}</h4>
+                    <p><strong>Username:</strong> ${person.username || 'N/A'}</p>
+                    <p><strong>Email:</strong> ${person.email || 'N/A'}</p>
+                    <p><strong>Role:</strong> ${(person.role || 'staff').toUpperCase()}</p>
+                    <p><strong>Status:</strong> <span style="color: ${person.active !== false ? '#28a745' : '#dc3545'};">${person.active !== false ? 'Active' : 'Inactive'}</span></p>
                     <div class="staff-actions">
                         ${!isDemo ? `
-                            <button class="btn-small ${person.active ? 'btn-deactivate' : 'btn-activate'}" 
-                                    onclick="toggleStatus('${person.id}', ${!person.active})">
-                                ${person.active ? 'Deactivate' : 'Activate'}
+                            <button class="btn-small ${person.active !== false ? 'btn-deactivate' : 'btn-activate'}" 
+                                    onclick="toggleStatus('${person.id}', ${person.active === false})">
+                                ${person.active !== false ? 'Deactivate' : 'Activate'}
                             </button>
                         ` : '<small style="color: #666;">Demo Account</small>'}
                     </div>
@@ -550,6 +592,23 @@
             }
         }
 
+        // Clear bad data manually
+        function clearBadData() {
+            const users = JSON.parse(localStorage.getItem('created_users') || '[]');
+            const cleaned = users.filter(user => 
+                user && 
+                user.username && 
+                user.username.trim() !== '' &&
+                user.full_name && 
+                user.full_name !== 'undefined' &&
+                user.email &&
+                user.role
+            );
+            localStorage.setItem('created_users', JSON.stringify(cleaned));
+            loadStaffList();
+            alert('Bad entries cleaned up!');
+        }
+        
         // Logout
         function logout() {
             if (confirm('Are you sure you want to logout?')) {
