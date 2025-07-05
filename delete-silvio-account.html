@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delete Silvio Account</title>
+    <script src="auth-system.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        .container {
+            background: #f5f5f5;
+            padding: 30px;
+            border-radius: 10px;
+        }
+        button {
+            width: 100%;
+            padding: 15px;
+            background: #f44336;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 0;
+        }
+        button:hover {
+            background: #d32f2f;
+        }
+        .check-btn {
+            background: #2196F3;
+        }
+        .check-btn:hover {
+            background: #1976D2;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            display: none;
+        }
+        .success {
+            background: #e8f5e9;
+            color: #2e7d32;
+            border: 1px solid #81c784;
+        }
+        .error {
+            background: #ffebee;
+            color: #c62828;
+            border: 1px solid #ef5350;
+        }
+        .info {
+            background: #e3f2fd;
+            color: #1565c0;
+            border: 1px solid #64b5f6;
+        }
+        .warning {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Delete Silvio Account</h1>
+        
+        <div class="warning">
+            <strong>⚠️ Warning:</strong> This will permanently delete Silvio's staff account from the system. This action cannot be undone.
+        </div>
+        
+        <button class="check-btn" onclick="findSilvioAccount()">Find Silvio's Account</button>
+        <button onclick="deleteSilvioAccount()">Delete Silvio's Account</button>
+        
+        <div id="result" class="result"></div>
+    </div>
+
+    <script>
+        async function findSilvioAccount() {
+            showResult('Searching for Silvio\'s account...', 'info');
+            
+            try {
+                const supabaseUrl = 'https://atkfcwdmmwayzyixlpum.supabase.co';
+                const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF0a2Zjd2RtbXdheXp5aXhscHVtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTE2NTIzODYsImV4cCI6MjA2NzIyODM4Nn0.VkFA1SIOLgddP-P_KjFdvDyiNdUSgYfbcP5UvOardKI';
+                
+                // Search for Silvio by name patterns
+                const response = await fetch(`${supabaseUrl}/rest/v1/staff?select=*`, {
+                    headers: {
+                        'apikey': supabaseKey,
+                        'Authorization': `Bearer ${supabaseKey}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                if (response.ok) {
+                    const users = await response.json();
+                    
+                    // Find Silvio by name patterns
+                    const silvioAccounts = users.filter(user => 
+                        user.full_name && (
+                            user.full_name.toLowerCase().includes('silvio') ||
+                            user.full_name.toLowerCase().includes('cozzetto') ||
+                            user.username && user.username.toLowerCase().includes('silvio')
+                        )
+                    );
+                    
+                    if (silvioAccounts.length > 0) {
+                        let output = `Found ${silvioAccounts.length} Silvio account(s):\n\n`;
+                        
+                        silvioAccounts.forEach((account, index) => {
+                            output += `Account ${index + 1}:\n`;
+                            output += `- ID: ${account.id}\n`;
+                            output += `- Name: ${account.full_name || 'Unknown'}\n`;
+                            output += `- Username: ${account.username || 'Unknown'}\n`;
+                            output += `- Email: ${account.email || 'Unknown'}\n`;
+                            output += `- Role: ${account.role || 'Unknown'}\n`;
+                            output += `- Permissions: ${JSON.stringify(account.permissions) || 'None'}\n`;
+                            output += `- Active: ${account.active}\n\n`;
+                        });
+                        
+                        showResult(output, 'info');
+                    } else {
+                        showResult('❌ No Silvio accounts found in the database.', 'error');
+                    }
+                } else {
+                    throw new Error('Failed to fetch users: ' + response.status);
+                }
+                
+            } catch (error) {
+                console.error('Search error:', error);
+                showResult('❌ Error searching for accounts: ' + error.message, 'error');
+            }
+        }
+
+        async function deleteSilvioAccount() {
+            if (!confirm('Are you sure you want to permanently delete Silvio\'s account? This cannot be undone.')) {
+                return;
+            }
+            
+            showResult('Deleting Silvio\'s account...', 'info');
+            
+            try {
+                const supabaseUrl = 'https://atkfcwdmmwayzyixlpum.supabase.co';
+                const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF0a2Zjd2RtbXdheXp5aXhscHVtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTE2NTIzODYsImV4cCI6MjA2NzIyODM4Nn0.VkFA1SIOLgddP-P_KjFdvDyiNdUSgYfbcP5UvOardKI';
+                
+                // First find Silvio's account
+                const searchResponse = await fetch(`${supabaseUrl}/rest/v1/staff?select=*`, {
+                    headers: {
+                        'apikey': supabaseKey,
+                        'Authorization': `Bearer ${supabaseKey}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                if (!searchResponse.ok) {
+                    throw new Error('Failed to search for Silvio\'s account');
+                }
+                
+                const users = await searchResponse.json();
+                const silvioAccounts = users.filter(user => 
+                    user.full_name && (
+                        user.full_name.toLowerCase().includes('silvio') ||
+                        user.full_name.toLowerCase().includes('cozzetto') ||
+                        (user.username && user.username.toLowerCase().includes('silvio'))
+                    )
+                );
+                
+                if (silvioAccounts.length === 0) {
+                    showResult('❌ No Silvio accounts found to delete.', 'error');
+                    return;
+                }
+                
+                let deletedCount = 0;
+                let results = [];
+                
+                // Delete each Silvio account found
+                for (const account of silvioAccounts) {
+                    try {
+                        const deleteResponse = await fetch(`${supabaseUrl}/rest/v1/staff?id=eq.${account.id}`, {
+                            method: 'DELETE',
+                            headers: {
+                                'apikey': supabaseKey,
+                                'Authorization': `Bearer ${supabaseKey}`,
+                                'Content-Type': 'application/json'
+                            }
+                        });
+                        
+                        if (deleteResponse.ok) {
+                            deletedCount++;
+                            results.push(`✅ Deleted: ${account.full_name} (${account.username || account.email})`);
+                        } else {
+                            results.push(`❌ Failed to delete: ${account.full_name} (${deleteResponse.status})`);
+                        }
+                    } catch (error) {
+                        results.push(`❌ Error deleting ${account.full_name}: ${error.message}`);
+                    }
+                }
+                
+                const summary = `Deletion Complete!\n\n${results.join('\n')}\n\nTotal accounts deleted: ${deletedCount}`;
+                showResult(summary, deletedCount > 0 ? 'success' : 'error');
+                
+            } catch (error) {
+                console.error('Delete error:', error);
+                showResult('❌ Error deleting account: ' + error.message, 'error');
+            }
+        }
+
+        function showResult(message, type) {
+            const resultDiv = document.getElementById('result');
+            resultDiv.textContent = message;
+            resultDiv.className = `result ${type}`;
+            resultDiv.style.display = 'block';
+        }
+    </script>
+</body>
+</html>
