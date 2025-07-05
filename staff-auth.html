@@ -270,8 +270,7 @@
                     
                     // Redirect after short delay
                     setTimeout(() => {
-                        const redirect = getRedirectUrl();
-                        window.location.href = redirect;
+                        window.location.href = 'staff-portal.html';
                     }, 1000);
                 } else {
                     throw new Error(result.error || 'Authentication failed');
