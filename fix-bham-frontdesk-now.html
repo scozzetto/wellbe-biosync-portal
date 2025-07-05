@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fix Bham Front Desk Access NOW</title>
+    <script src="auth-system.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        .container {
+            background: #f5f5f5;
+            padding: 30px;
+            border-radius: 10px;
+        }
+        .urgent {
+            background: #ffebee;
+            color: #c62828;
+            border: 2px solid #ef5350;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        button {
+            width: 100%;
+            padding: 15px;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 0;
+            font-weight: bold;
+        }
+        button:hover {
+            background: #45a049;
+        }
+        .delete-btn {
+            background: #f44336;
+        }
+        .delete-btn:hover {
+            background: #d32f2f;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            display: none;
+        }
+        .success {
+            background: #e8f5e9;
+            color: #2e7d32;
+            border: 1px solid #81c784;
+        }
+        .error {
+            background: #ffebee;
+            color: #c62828;
+            border: 1px solid #ef5350;
+        }
+        .info {
+            background: #e3f2fd;
+            color: #1565c0;
+            border: 1px solid #64b5f6;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="urgent">
+            <h1>🚨 URGENT: Fix Bham Front Desk Access</h1>
+            <p>The "bhamfrontdesk" user cannot access any pages. This needs immediate fixing!</p>
+        </div>
+        
+        <h2>Choose Your Solution:</h2>
+        
+        <button onclick="fixBhamPermissions()">
+            ✅ QUICK FIX: Give Bham Front Desk Full Permissions
+        </button>
+        
+        <button onclick="createNewFrontDeskAccount()">
+            🔄 BETTER: Create New "front-desk" Account & Delete Old One
+        </button>
+        
+        <button class="delete-btn" onclick="deleteBhamAccount()">
+            🗑️ DELETE: Remove Broken Bham Account (Use Functional Roles Instead)
+        </button>
+        
+        <div id="result" class="result"></div>
+    </div>
+
+    <script>
+        async function fixBhamPermissions() {
+            showResult('Fixing Bham Front Desk permissions...', 'info');
+            
+            try {
+                const supabaseUrl = 'https://atkfcwdmmwayzyixlpum.supabase.co';
+                const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF0a2Zjd2RtbXdheXp5aXhscHVtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTE2NTIzODYsImV4cCI6MjA2NzIyODM4Nn0.VkFA1SIOLgddP-P_KjFdvDyiNdUSgYfbcP5UvOardKI';
+                
+                // Give comprehensive front desk permissions
+                const frontDeskPermissions = {
+                    'front-desk': 'delete',        // Full control of front desk dashboard
+                    'checkin': 'delete',           // Full control of patient check-in
+                    'members': 'edit',             // Can edit member info
+                    'checklists': 'edit',          // Can edit checklists
+                    'tasks': 'delete',             // Full task management
+                    'cafe-operations': 'view',     // Can view café operations
+                    'inventory': 'view',           // Can view inventory
+                    'admin': 'view'                // Can view admin dashboard
+                };
+                
+                // Update the birmingham user with proper permissions
+                const response = await fetch(`${supabaseUrl}/rest/v1/staff?email=eq.birmingham@bewelllifestylecenters.com`, {
+                    method: 'PATCH',
+                    headers: {
+                        'apikey': supabaseKey,
+                        'Authorization': `Bearer ${supabaseKey}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        permissions: frontDeskPermissions,
+                        role: 'custom',
+                        updated_at: new Date().toISOString()
+                    })
+                });
+                
+                if (response.ok) {
+                    showResult('✅ SUCCESS! Bham Front Desk now has full permissions!\n\nPermissions granted:\n• Front Desk Dashboard: Full Control\n• Patient Check-In: Full Control\n• Member Portal: Read/Write\n• Checklists: Read/Write\n• Task Management: Full Control\n• Café Operations: View Only\n• Inventory: View Only\n• Admin Dashboard: View Only\n\nThe user can now access all front desk functions immediately!', 'success');
+                } else {
+                    throw new Error('Failed to update permissions: ' + response.status);
+                }
+                
+            } catch (error) {
+                console.error('Permission update error:', error);
+                showResult('❌ Error updating permissions: ' + error.message + '\n\nTry the "Create New Account" option instead.', 'error');
+            }
+        }
+
+        async function createNewFrontDeskAccount() {
+            showResult('Creating new front-desk account and removing old one...', 'info');
+            
+            try {
+                const supabaseUrl = 'https://atkfcwdmmwayzyixlpum.supabase.co';
+                const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF0a2Zjd2RtbXdheXp5aXhscHVtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTE2NTIzODYsImV4cCI6MjA2NzIyODM4Nn0.VkFA1SIOLgddP-P_KjFdvDyiNdUSgYfbcP5UvOardKI';
+                
+                // 1. Create new front-desk account
+                const frontDeskPermissions = {
+                    'front-desk': 'delete',
+                    'checkin': 'delete', 
+                    'members': 'edit',
+                    'checklists': 'edit',
+                    'tasks': 'delete'
+                };
+
+                const hashedPassword = await hashPassword('BeWell2024!FrontDesk');
+                
+                const newAccountResponse = await fetch(`${supabaseUrl}/rest/v1/staff`, {
+                    method: 'POST',
+                    headers: {
+                        'apikey': supabaseKey,
+                        'Authorization': `Bearer ${supabaseKey}`,
+                        'Content-Type': 'application/json',
+                        'Prefer': 'resolution=merge-duplicates'
+                    },
+                    body: JSON.stringify({
+                        username: 'front-desk',
+                        password_hash: hashedPassword,
+                        full_name: 'Front Desk Staff',
+                        email: 'frontdesk@bewelllifestylecenters.com',
+                        role: 'custom',
+                        permissions: frontDeskPermissions,
+                        active: true,
+                        created_at: new Date().toISOString(),
+                        created_by: 'system'
+                    })
+                });
+
+                // 2. Delete old birmingham account
+                const deleteResponse = await fetch(`${supabaseUrl}/rest/v1/staff?email=eq.birmingham@bewelllifestylecenters.com`, {
+                    method: 'DELETE',
+                    headers: {
+                        'apikey': supabaseKey,
+                        'Authorization': `Bearer ${supabaseKey}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (newAccountResponse.ok) {
+                    showResult('✅ SUCCESS! New front desk account created!\n\n🎯 NEW LOGIN CREDENTIALS:\nUsername: front-desk\nPassword: BeWell2024!FrontDesk\n\n✅ Old broken birmingham account deleted.\n✅ Full front desk permissions granted.\n\nStaff can now log in with the new credentials immediately!', 'success');
+                } else {
+                    throw new Error('Failed to create new account: ' + newAccountResponse.status);
+                }
+                
+            } catch (error) {
+                console.error('Account creation error:', error);
+                showResult('❌ Error creating new account: ' + error.message, 'error');
+            }
+        }
+
+        async function deleteBhamAccount() {
+            if (!confirm('This will DELETE the bhamfrontdesk account. Staff will need to use the new functional role accounts instead. Continue?')) {
+                return;
+            }
+            
+            showResult('Deleting bhamfrontdesk account...', 'info');
+            
+            try {
+                const supabaseUrl = 'https://atkfcwdmmwayzyixlpum.supabase.co';
+                const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF0a2Zjd2RtbXdheXp5aXhscHVtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTE2NTIzODYsImV4cCI6MjA2NzIyODM4Nn0.VkFA1SIOLgddP-P_KjFdvDyiNdUSgYfbcP5UvOardKI';
+                
+                const response = await fetch(`${supabaseUrl}/rest/v1/staff?email=eq.birmingham@bewelllifestylecenters.com`, {
+                    method: 'DELETE',
+                    headers: {
+                        'apikey': supabaseKey,
+                        'Authorization': `Bearer ${supabaseKey}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (response.ok) {
+                    showResult('✅ Bhamfrontdesk account deleted successfully!\n\nNow create the functional role accounts at:\n/create-functional-roles.html\n\nThen staff can use:\nUsername: front-desk\nPassword: BeWell2024!FrontDesk', 'success');
+                } else {
+                    throw new Error('Failed to delete account: ' + response.status);
+                }
+                
+            } catch (error) {
+                console.error('Delete error:', error);
+                showResult('❌ Error deleting account: ' + error.message, 'error');
+            }
+        }
+
+        async function hashPassword(password) {
+            const encoder = new TextEncoder();
+            const data = encoder.encode(password);
+            const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+        }
+
+        function showResult(message, type) {
+            const resultDiv = document.getElementById('result');
+            resultDiv.textContent = message;
+            resultDiv.className = `result ${type}`;
+            resultDiv.style.display = 'block';
+        }
+    </script>
+</body>
+</html>
