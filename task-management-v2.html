@@ -787,6 +787,13 @@
         </div>
     </div>
 
+    <!-- Back to Portal Button -->
+    <div style="padding: 20px 40px 0 40px;">
+        <a href="staff-portal-clean.html" style="display: inline-flex; align-items: center; gap: 8px; background: var(--primary-color); color: white; text-decoration: none; padding: 12px 20px; border-radius: 8px; font-weight: 500; transition: all 0.3s ease; box-shadow: 0 2px 4px rgba(0,0,0,0.1);" onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 4px 8px rgba(0,0,0,0.15)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 4px rgba(0,0,0,0.1)'">
+            <i class="fas fa-arrow-left"></i> Back to Staff Portal
+        </a>
+    </div>
+
     <!-- Main Container -->
     <div class="container">
         <!-- Connection Alert -->
@@ -1478,6 +1485,7 @@
                                         <i class="fas fa-clock"></i> Snooze
                                     </button>
                                     <div id="snooze-menu-${task.id}" class="snooze-menu">
+                                        <button onclick="event.stopPropagation(); snoozeTask('${task.id}', 5); toggleSnoozeMenu('${task.id}');">5 minutes</button>
                                         <button onclick="event.stopPropagation(); snoozeTask('${task.id}', 15); toggleSnoozeMenu('${task.id}');">15 minutes</button>
                                         <button onclick="event.stopPropagation(); snoozeTask('${task.id}', 30); toggleSnoozeMenu('${task.id}');">30 minutes</button>
                                         <button onclick="event.stopPropagation(); snoozeTask('${task.id}', 60); toggleSnoozeMenu('${task.id}');">1 hour</button>
